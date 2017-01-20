@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <propel>
+        <datasources default="zarely">
+            <datasource id="zarely">
+                <adapter>mysql</adapter> <!-- sqlite, mysql, myssql, oracle, or pgsql -->
+                <connection>
+                    <dsn>mysql:host=localhost;dbname=oneclick_zarely</dsn>
+                    <user>oneclick_zarely</user>
+                    <password>Q5DYve2mxZfmgbFt</password>
+                </connection>
+            </datasource>
+        </datasources>
+    </propel>
+</config>
