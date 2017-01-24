@@ -1,11 +1,14 @@
 td.td_options span{
-    margin-left: 15px;
+
+	margin-left: 15px;
 }
 
 td.td_options .icon-eye{
-    color:blue;
+	color: blue;
 }
 
+
 td.td_options span{
-    font-size: medium;
+	font-size: medium;
+
 }

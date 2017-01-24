@@ -20,6 +20,7 @@ return array(
                     ),
                 ),
             ),
+
             'materiales' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -91,6 +92,7 @@ return array(
             ),
         ),
     ),
+    
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
@@ -98,6 +100,7 @@ return array(
             'Application\Catalogo\Controller\Marcas' => 'Application\Catalogo\Controller\MarcasController'
         ),
     ),
+
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
