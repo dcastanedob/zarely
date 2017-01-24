@@ -20,6 +20,26 @@ return array(
                     ),
                 ),
             ),
+            'materiales' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/materiales[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Materiales',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'marcas' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/marcas[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Marcas',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -73,7 +93,9 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Catalogo\Controller\Materiales' => 'Application\Catalogo\Controller\MaterialesController',
+            'Application\Catalogo\Controller\Marcas' => 'Application\Catalogo\Controller\MarcasController'
         ),
     ),
     'view_manager' => array(
