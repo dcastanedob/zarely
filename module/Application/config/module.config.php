@@ -21,6 +21,39 @@ return array(
                 ),
             ),
 
+            'empleados' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/empleados[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Empleados',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'temporadas' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/temporadas[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Temporadas',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'colores' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/colores[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Colores',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'materiales' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -30,13 +63,36 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
-            ),
+            ),  
+
             'marcas' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route'    => '/catalogo/marcas[/:action][/:id]',
                     'defaults' => array(
                         'controller' => 'Application\Catalogo\Controller\Marcas',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'tipocalzados' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/tipocalzados[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\TipoCalzados',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'gastos' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/gastos[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Gastos',
                         'action'     => 'index',
                     ),
                 ),
@@ -97,7 +153,12 @@ return array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Catalogo\Controller\Materiales' => 'Application\Catalogo\Controller\MaterialesController',
-            'Application\Catalogo\Controller\Marcas' => 'Application\Catalogo\Controller\MarcasController'
+            'Application\Catalogo\Controller\Marcas' => 'Application\Catalogo\Controller\MarcasController',
+            'Application\Catalogo\Controller\Temporadas' => 'Application\Catalogo\Controller\TemporadasController',
+            'Application\Catalogo\Controller\Colores' => 'Application\Catalogo\Controller\ColoresController',
+            'Application\Catalogo\Controller\TipoCalzados' => 'Application\Catalogo\Controller\TipoCalzadosController',
+            'Application\Catalogo\Controller\Gastos' => 'Application\Catalogo\Controller\GastosController',
+            'Application\Catalogo\Controller\Empleados' => 'Application\Catalogo\Controller\EmpleadosController'
         ),
     ),
 

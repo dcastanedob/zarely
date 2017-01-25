@@ -42,6 +42,12 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
     protected $tipocalzado_nombre;
 
     /**
+     * The value for the tipocalzado_descripcion field.
+     * @var        string
+     */
+    protected $tipocalzado_descripcion;
+
+    /**
      * @var        PropelObjectCollection|Producto[] Collection to store aggregation of Producto objects.
      */
     protected $collProductos;
@@ -96,6 +102,17 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [tipocalzado_descripcion] column value.
+     *
+     * @return string
+     */
+    public function getTipocalzadoDescripcion()
+    {
+
+        return $this->tipocalzado_descripcion;
+    }
+
+    /**
      * Set the value of [idtipocalzado] column.
      *
      * @param  int $v new value
@@ -138,6 +155,27 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
     } // setTipocalzadoNombre()
 
     /**
+     * Set the value of [tipocalzado_descripcion] column.
+     *
+     * @param  string $v new value
+     * @return Tipocalzado The current object (for fluent API support)
+     */
+    public function setTipocalzadoDescripcion($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->tipocalzado_descripcion !== $v) {
+            $this->tipocalzado_descripcion = $v;
+            $this->modifiedColumns[] = TipocalzadoPeer::TIPOCALZADO_DESCRIPCION;
+        }
+
+
+        return $this;
+    } // setTipocalzadoDescripcion()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -171,6 +209,7 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
 
             $this->idtipocalzado = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->tipocalzado_nombre = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->tipocalzado_descripcion = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -180,7 +219,7 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 2; // 2 = TipocalzadoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = TipocalzadoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Tipocalzado object", $e);
@@ -417,6 +456,9 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
         if ($this->isColumnModified(TipocalzadoPeer::TIPOCALZADO_NOMBRE)) {
             $modifiedColumns[':p' . $index++]  = '`tipocalzado_nombre`';
         }
+        if ($this->isColumnModified(TipocalzadoPeer::TIPOCALZADO_DESCRIPCION)) {
+            $modifiedColumns[':p' . $index++]  = '`tipocalzado_descripcion`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `tipocalzado` (%s) VALUES (%s)',
@@ -433,6 +475,9 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
                         break;
                     case '`tipocalzado_nombre`':
                         $stmt->bindValue($identifier, $this->tipocalzado_nombre, PDO::PARAM_STR);
+                        break;
+                    case '`tipocalzado_descripcion`':
+                        $stmt->bindValue($identifier, $this->tipocalzado_descripcion, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -582,6 +627,9 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
             case 1:
                 return $this->getTipocalzadoNombre();
                 break;
+            case 2:
+                return $this->getTipocalzadoDescripcion();
+                break;
             default:
                 return null;
                 break;
@@ -613,6 +661,7 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getIdtipocalzado(),
             $keys[1] => $this->getTipocalzadoNombre(),
+            $keys[2] => $this->getTipocalzadoDescripcion(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -663,6 +712,9 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
             case 1:
                 $this->setTipocalzadoNombre($value);
                 break;
+            case 2:
+                $this->setTipocalzadoDescripcion($value);
+                break;
         } // switch()
     }
 
@@ -689,6 +741,7 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setIdtipocalzado($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setTipocalzadoNombre($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTipocalzadoDescripcion($arr[$keys[2]]);
     }
 
     /**
@@ -702,6 +755,7 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
 
         if ($this->isColumnModified(TipocalzadoPeer::IDTIPOCALZADO)) $criteria->add(TipocalzadoPeer::IDTIPOCALZADO, $this->idtipocalzado);
         if ($this->isColumnModified(TipocalzadoPeer::TIPOCALZADO_NOMBRE)) $criteria->add(TipocalzadoPeer::TIPOCALZADO_NOMBRE, $this->tipocalzado_nombre);
+        if ($this->isColumnModified(TipocalzadoPeer::TIPOCALZADO_DESCRIPCION)) $criteria->add(TipocalzadoPeer::TIPOCALZADO_DESCRIPCION, $this->tipocalzado_descripcion);
 
         return $criteria;
     }
@@ -766,6 +820,7 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setTipocalzadoNombre($this->getTipocalzadoNombre());
+        $copyObj->setTipocalzadoDescripcion($this->getTipocalzadoDescripcion());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1178,6 +1233,7 @@ abstract class BaseTipocalzado extends BaseObject implements Persistent
     {
         $this->idtipocalzado = null;
         $this->tipocalzado_nombre = null;
+        $this->tipocalzado_descripcion = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

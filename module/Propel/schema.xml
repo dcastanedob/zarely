@@ -340,6 +340,7 @@
   <table name="tipocalzado" phpName="Tipocalzado" idMethod="native">
     <column name="idtipocalzado" phpName="Idtipocalzado" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="tipocalzado_nombre" phpName="TipocalzadoNombre" type="VARCHAR" size="45" required="true"/>
+    <column name="tipocalzado_descripcion" phpName="TipocalzadoDescripcion" type="VARCHAR" size="255" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
