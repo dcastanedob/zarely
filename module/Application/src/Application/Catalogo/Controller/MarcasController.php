@@ -115,7 +115,41 @@ class MarcasController extends AbstractActionController
                 $tmp['idmarca'] = $value['idmarca'];
                 $tmp['marca_nombre'] = $value['marca_nombre'];
 
-                $tmp['options'] = '<td><a href="/catalogo/marcas/ver/'.$value['idmarca'].'"><span class="icon icon-eye"></span></a><a href="javascript:;"><span class="icon icon-trash"></span></a></td>';
+                $tmp['options'] = '<td><div class="btn-group dropdown">
+                  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
+                    <span class="icon icon-gear icon-lg icon-fw"></span>
+                    Opciones
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="/catalogo/marcas/ver/' . $value['idmarca'] . '">
+                        <div class="media">
+                          <div class="media-left">
+                            <span class="icon icon-edit icon-lg icon-fw"></span>
+                          </div>
+                          <div class="media-body">
+                            <span class="d-b">Editar</span>
+                           
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:;" class="delete_modal">
+                        <div class="media">
+                          <div class="media-left">
+                            <span class="icon icon-trash icon-lg icon-fw"></span>
+                          </div>
+                          <div class="media-body">
+                            <span class="d-b">Eliminar</span>
+                       
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div></td>';
                 
                 $data[] = $tmp;
  
@@ -227,6 +261,25 @@ class MarcasController extends AbstractActionController
     		$this->flashMessenger()->addErrorMessage('Id inválido');
     		return $this->redirect()->toUrl('/catalogo/marcas');	
     	}
+    }
+
+    public function eliminarAction(){
+        $request = $this->getRequest();
+
+        if($request->isPost())
+        {
+            $id = $this->params()->fromRoute('id');
+            $entity = \MarcaQuery::Create()->findPk($id);
+            $entity->delete();
+
+            if($entity->isDeleted()){
+                $this->flashMessenger()->addSuccessMessage('Su registro ha sido eliminado satisfactoriamente.');
+            }else{
+                $this->flashMessenger()->addErrorMessage('Ocurrió un error al intentar eliminar. Pruebe más tarde.');
+            }
+        }
+
+        return $this->redirect()->toUrl('/catalogo/marcas');
     }
 
 
