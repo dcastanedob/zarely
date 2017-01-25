@@ -97,7 +97,41 @@ class MaterialesController extends AbstractActionController
                 $tmp['DT_RowId'] = $value['idmaterial'];
                 $tmp['idmaterial'] = $value['idmaterial'];
                 $tmp['material_nombre'] = $value['material_nombre'];
-                $tmp['options'] = '<td><a href="/catalogo/materiales/ver/'.$value['idmaterial'].'"><span class="icon icon-eye"></span></a><a href="javascript:;"><span class="icon icon-trash"></span></a></td>';
+                $tmp['options'] = '<td><div class="btn-group dropdown">
+                  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
+                    <span class="icon icon-gear icon-lg icon-fw"></span>
+                    Opciones
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="/catalogo/materiales/ver/' . $value['idmaterial'] . '">
+                        <div class="media">
+                          <div class="media-left">
+                            <span class="icon icon-edit icon-lg icon-fw"></span>
+                          </div>
+                          <div class="media-body">
+                            <span class="d-b">Editar</span>
+                           
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:;" class="delete_modal">
+                        <div class="media">
+                          <div class="media-left">
+                            <span class="icon icon-trash icon-lg icon-fw"></span>
+                          </div>
+                          <div class="media-body">
+                            <span class="d-b">Eliminar</span>
+                       
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div></td>';
 
 
                 $data[] = $tmp;
@@ -203,6 +237,31 @@ class MaterialesController extends AbstractActionController
         }else{
             $this->flashMessenger()->addErrorMessage('Id Invalido.');
             return $this->redirect()->toUrl('/catalogo/materiales');
+        }
+        
+    }
+    
+    public function eliminarAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
+            
+            $id = $this->params()->fromRoute('id');
+            
+            $entity = \MaterialQuery::create()->findPk($id);
+            $entity->delete();
+            
+            
+            if($entity->isDeleted()){
+                $this->flashMessenger()->addSuccessMessage('Su registro ha sido eliminado satisfactoriamente.');
+            }else{
+                $this->flashMessenger()->addErrorMessage('Ocurrio un error al intentar eliminar. Prueba mas tarde');
+            }
+            
+            return $this->redirect()->toUrl('/catalogo/materiales');
+            
+            
+            
         }
         
     }
