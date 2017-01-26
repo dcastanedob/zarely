@@ -43,6 +43,28 @@ return array(
                 ),
             ),
 
+            'sucursales' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/sucursales[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Sucursales',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'tallajes' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/tallajes[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Tallajes',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'colores' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -158,7 +180,9 @@ return array(
             'Application\Catalogo\Controller\Colores' => 'Application\Catalogo\Controller\ColoresController',
             'Application\Catalogo\Controller\TipoCalzados' => 'Application\Catalogo\Controller\TipoCalzadosController',
             'Application\Catalogo\Controller\Gastos' => 'Application\Catalogo\Controller\GastosController',
-            'Application\Catalogo\Controller\Empleados' => 'Application\Catalogo\Controller\EmpleadosController'
+            'Application\Catalogo\Controller\Empleados' => 'Application\Catalogo\Controller\EmpleadosController',
+            'Application\Catalogo\Controller\Sucursales' => 'Application\Catalogo\Controller\SucursalesController',
+            'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController'
         ),
     ),
 

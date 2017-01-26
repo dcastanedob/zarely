@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.empleados= function(data){
+    $.fn.sucursales= function(data){
         var _this = $(this);
-        var plugin = _this.data('empleados');
+        var plugin = _this.data('sucursales');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.empleados(this, data);
+            plugin = new $.sucursales(this, data);
             
-            _this.data('empleados', plugin);
+            _this.data('sucursales', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.empleados = function(container, options){
+    $.sucursales = function(container, options){
         
         var plugin = this;
        
@@ -61,14 +61,14 @@
 
                     ajax:{
                         method: 'POST',
-                        url:'/catalogo/empleados/serverside',
+                        url:'/catalogo/sucursales/serverside',
                     },
                     columns:[
-                        {"data":"idempleado","name":"idempleado","orderable":true},
-                        {"data":"empleado_nombre","name":"empleado_nombre","orderable":true},
-                        {"data":"empleado_telefono","name":"empleado_telefono","orderable":true},
-                        {"data":"empleado_email","name":"empleado_email","orderable":true},
-                        {"data":"empleado_estatus","name":"empleado_estatus","orderable":true},
+                        {"data":"idsucursal","name":"idsucursal","orderable":true},
+                        {"data":"sucursal_nombrecomercial","name":"sucursal_nombrecomercial","orderable":true},
+                        {"data":"sucursal_razonsocial","name":"sucursal_razonsocial","orderable":true},
+                        {"data":"sucursal_ciudad","name":"sucursal_ciudad","orderable":true},
+                        {"data":"sucursal_estado","name":"sucursal_estado","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},
                     ],
                     proccesing: true,
@@ -86,7 +86,7 @@
                                           '<span class="sr-only">Close</span>',
                                         '</button>',
                                       '</div>',
-                                      '<form action="/catalogo/empleados/eliminar/'+id+'" method="POST">',
+                                      '<form action="/catalogo/sucursales/eliminar/'+id+'" method="POST">',
                                      ' <div class="modal-body">',
                                         '<div class="text-center">',
                                          ' <span class="text-primary icon icon-times-circle icon-5x"></span>',

@@ -12,17 +12,16 @@ namespace Application\Catalogo\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class EmpleadosController extends AbstractActionController
+class SucursalesController extends AbstractActionController
 {
-
+    
+    
     public $column_map = array(
-        0 => 'Idempleado',
-        1 => 'EmpleadoNombre',
-        2 => 'EmpleadoApaterno',
-        3 => 'EmpleadoAmaterno',
-        4 => 'EmpleadoTelefono',
-        5=> 'EmpleadoEmail',
-        6 => 'EmpleadoAEstatus',
+        0 => 'Idsucursal',
+        1 => 'SucursalNombrecomercial',
+        2 => 'SucursalRazonsocial',
+        3 => 'SucursalEstado',
+        4 => 'SucursalCiudad',
     );
 
     public function serversideAction()
@@ -31,7 +30,7 @@ class EmpleadosController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
            
-            $query = new \EmpleadoQuery();
+            $query = new \SucursalQuery();
             
              /*JOIN
             $query->useCategoriaRelatedByIdcategoriaQuery('a')->endUse();
@@ -77,20 +76,20 @@ class EmpleadosController extends AbstractActionController
                 }
                 $c = new \Criteria();
                
-                $c1= $c->getNewCriterion('empleado.idempleado', '%'.$search_value.'%', \Criteria::LIKE);
-                $c2= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1= $c->getNewCriterion('sucursal.idsucursal', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('sucursal.sucursal_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('empleado.empleado_telefono', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c3= $c->getNewCriterion('sucursal.sucursal_razonsocial', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c4= $c->getNewCriterion('empleado.empleado_email', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c4= $c->getNewCriterion('sucursal.sucursal_estado', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c5= $c->getNewCriterion('sucursal.sucursal_ciudad', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c5= $c->getNewCriterion('empleado.empleado_estatus', '%'.$search_value.'%', \Criteria::LIKE);
 
           
                 $c1->addOr($c2)->addOr($c3)->addOr($c4)->addOr($c5);
 
                 $query->addAnd($c1);
-                $query->groupByIdempleado();
+                $query->groupByIdsucursal();
                 
                 $records_filtered = $query->count();
                 
@@ -120,16 +119,13 @@ class EmpleadosController extends AbstractActionController
             
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
 
-                if($value['empleado_estatus']){
-                    $tmp['empleado_estatus'] = "Activo";
-                }else{
-                    $tmp['empleado_estatus'] = "Inactivo";
-                }
-                $tmp['DT_RowId'] = $value['idempleado'];
-                $tmp['idempleado'] = $value['idempleado'];
-                $tmp['empleado_nombre'] = $value['empleado_nombre'];
-                $tmp['empleado_telefono'] = $value['empleado_telefono'];
-                $tmp['empleado_email'] = $value['empleado_email'];
+ 
+                $tmp['DT_RowId'] = $value['idsucursal'];
+                $tmp['idsucursal'] = $value['idsucursal'];
+                $tmp['sucursal_nombrecomercial'] = $value['sucursal_nombrecomercial'];
+                $tmp['sucursal_razonsocial'] = $value['sucursal_razonsocial'];
+                $tmp['sucursal_ciudad'] = $value['sucursal_ciudad'];
+                $tmp['sucursal_estado'] = $value['sucursal_estado'];
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
                     <span class="icon icon-gear icon-lg icon-fw"></span>
@@ -138,7 +134,7 @@ class EmpleadosController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/catalogo/empleados/ver/' . $value['idempleado'] . '">
+                      <a href="/catalogo/sucursales/ver/' . $value['idsucursal'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -184,119 +180,119 @@ class EmpleadosController extends AbstractActionController
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }
-
+    
     public function indexAction()
-    {
+    {   
+        
         $view_model = new ViewModel();
-
-        $view_model->setTemplate('application/catalogo/empleados/index');
+        $view_model->setTemplate('application/catalogo/sucursales/index');
         $view_model->setVariables(array(
-            'messages' =>$this->flashMessenger()
+             'messages' => $this->flashMessenger(),
         ));
         return $view_model;
     }
-
-    public function nuevoAction()
-    {
+    
+    public function nuevoAction(){
+        
         $request = $this->getRequest();
-
-        if($request->isPost())
-        {
+        
+        if($request->isPost()){
             $post_data = $request->getPost();
-
-            $entity = new \Empleado();
-
-            foreach ($post_data as $key => $value) {
-                if(\EmpleadoPeer::getTableMap()->hasColumn($key))
-                {
-                    $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
+            
+            $entity = new \Sucursal();
+            foreach ($post_data as $key => $value){
+                if(\SucursalPeer::getTableMap()->hasColumn($key)){
+                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
             $entity->save();
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
+            return $this->redirect()->toUrl('/catalogo/sucursales');
+    
 
-            return $this->redirect()->toUrl('/catalogo/empleados');
         }
-
-
-        $form = new \Application\Catalogo\Form\EmpleadosForm();
+        
+        
+        $form = new \Application\Catalogo\Form\SucursalesForm();
+        
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/catalogo/empleados/nuevo');
+        $view_model->setTemplate('application/catalogo/sucursales/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
-  
         return $view_model;
+        
     }
-
-    public function verAction()
-    {
-
-        $request = $this->getRequest();
-
+    
+    public function verAction(){
+        
+        $reqest = $this->getRequest();
+        
         $id = $this->params()->fromRoute('id');
-
-        $exists = \EmpleadoQuery::create()->filterByIdempleado($id)->exists();
-
-        if($exists)
-        {
-            $entity = \EmpleadoQuery::create()->findPk($id);
-
-            if($request->isPost())
-            {
-                $post_data = $request->getPost();
-
-                foreach ($post_data as $key => $value) {
-                    if(\EmpleadoPeer::getTableMap()->hasColumn($key))
-                    {
-                        $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
+        
+        $exist = \SucursalQuery::create()->filterByIdsucursal($id)->exists();
+        
+        if($exist){
+            
+            $entity = \SucursalQuery::create()->findPk($id);
+            
+            if($reqest->isPost()){
+                $post_data = $reqest->getPost();
+                foreach ($post_data as $key => $value){
+                    if(\SucursalPeer::getTableMap()->hasColumn($key)){
+                        $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
                 }
                 $entity->save();
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-
-                return $this->redirect()->toUrl('/catalogo/empleados');
+                return $this->redirect()->toUrl('/catalogo/sucursales');
             }
-
-            $form = new \Application\Catalogo\Form\EmpleadosForm();
-
+            
+            
+            
+            $form = new \Application\Catalogo\Form\SucursalesForm();
+            
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-
-
+            
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/catalogo/empleados/ver');
-
+            $view_model->setTemplate('application/catalogo/sucursales/ver'); 
             $view_model->setVariables(array(
                 'form' => $form,
-                'entity' =>$entity
+                'entity' => $entity,
             ));
-
             return $view_model;
-        }else
-        {
-            $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/empleados');   
+            
+            
+        }else{
+            $this->flashMessenger()->addErrorMessage('Id Invalido.');
+            return $this->redirect()->toUrl('/catalogo/sucursales');
         }
+        
     }
-
+    
     public function eliminarAction(){
+        
         $request = $this->getRequest();
-
-        if($request->isPost())
-        {
+        if($request->isPost()){
+            
             $id = $this->params()->fromRoute('id');
-            $entity = \EmpleadoQuery::Create()->findPk($id);
+            
+            $entity = \SucursalQuery::create()->findPk($id);
             $entity->delete();
-
+            
+            
             if($entity->isDeleted()){
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido eliminado satisfactoriamente.');
             }else{
-                $this->flashMessenger()->addErrorMessage('Ocurrió un error al intentar eliminar. Pruebe más tarde.');
+                $this->flashMessenger()->addErrorMessage('Ocurrio un error al intentar eliminar. Prueba mas tarde');
             }
+            
+            return $this->redirect()->toUrl('/catalogo/sucursales');
+            
+            
+            
         }
-
-        return $this->redirect()->toUrl('/catalogo/empleados');
+        
     }
-
-
+    
 }
