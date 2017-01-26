@@ -24,19 +24,22 @@ abstract class BaseTipocalzadoPeer
     const TM_CLASS = 'TipocalzadoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /** the column name for the idtipocalzado field */
     const IDTIPOCALZADO = 'tipocalzado.idtipocalzado';
 
     /** the column name for the tipocalzado_nombre field */
     const TIPOCALZADO_NOMBRE = 'tipocalzado.tipocalzado_nombre';
+
+    /** the column name for the tipocalzado_descripcion field */
+    const TIPOCALZADO_DESCRIPCION = 'tipocalzado.tipocalzado_descripcion';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -57,12 +60,12 @@ abstract class BaseTipocalzadoPeer
      * e.g. TipocalzadoPeer::$fieldNames[TipocalzadoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idtipocalzado', 'TipocalzadoNombre', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idtipocalzado', 'tipocalzadoNombre', ),
-        BasePeer::TYPE_COLNAME => array (TipocalzadoPeer::IDTIPOCALZADO, TipocalzadoPeer::TIPOCALZADO_NOMBRE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDTIPOCALZADO', 'TIPOCALZADO_NOMBRE', ),
-        BasePeer::TYPE_FIELDNAME => array ('idtipocalzado', 'tipocalzado_nombre', ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('Idtipocalzado', 'TipocalzadoNombre', 'TipocalzadoDescripcion', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idtipocalzado', 'tipocalzadoNombre', 'tipocalzadoDescripcion', ),
+        BasePeer::TYPE_COLNAME => array (TipocalzadoPeer::IDTIPOCALZADO, TipocalzadoPeer::TIPOCALZADO_NOMBRE, TipocalzadoPeer::TIPOCALZADO_DESCRIPCION, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDTIPOCALZADO', 'TIPOCALZADO_NOMBRE', 'TIPOCALZADO_DESCRIPCION', ),
+        BasePeer::TYPE_FIELDNAME => array ('idtipocalzado', 'tipocalzado_nombre', 'tipocalzado_descripcion', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, )
     );
 
     /**
@@ -72,12 +75,12 @@ abstract class BaseTipocalzadoPeer
      * e.g. TipocalzadoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idtipocalzado' => 0, 'TipocalzadoNombre' => 1, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idtipocalzado' => 0, 'tipocalzadoNombre' => 1, ),
-        BasePeer::TYPE_COLNAME => array (TipocalzadoPeer::IDTIPOCALZADO => 0, TipocalzadoPeer::TIPOCALZADO_NOMBRE => 1, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDTIPOCALZADO' => 0, 'TIPOCALZADO_NOMBRE' => 1, ),
-        BasePeer::TYPE_FIELDNAME => array ('idtipocalzado' => 0, 'tipocalzado_nombre' => 1, ),
-        BasePeer::TYPE_NUM => array (0, 1, )
+        BasePeer::TYPE_PHPNAME => array ('Idtipocalzado' => 0, 'TipocalzadoNombre' => 1, 'TipocalzadoDescripcion' => 2, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idtipocalzado' => 0, 'tipocalzadoNombre' => 1, 'tipocalzadoDescripcion' => 2, ),
+        BasePeer::TYPE_COLNAME => array (TipocalzadoPeer::IDTIPOCALZADO => 0, TipocalzadoPeer::TIPOCALZADO_NOMBRE => 1, TipocalzadoPeer::TIPOCALZADO_DESCRIPCION => 2, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDTIPOCALZADO' => 0, 'TIPOCALZADO_NOMBRE' => 1, 'TIPOCALZADO_DESCRIPCION' => 2, ),
+        BasePeer::TYPE_FIELDNAME => array ('idtipocalzado' => 0, 'tipocalzado_nombre' => 1, 'tipocalzado_descripcion' => 2, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, )
     );
 
     /**
@@ -153,9 +156,11 @@ abstract class BaseTipocalzadoPeer
         if (null === $alias) {
             $criteria->addSelectColumn(TipocalzadoPeer::IDTIPOCALZADO);
             $criteria->addSelectColumn(TipocalzadoPeer::TIPOCALZADO_NOMBRE);
+            $criteria->addSelectColumn(TipocalzadoPeer::TIPOCALZADO_DESCRIPCION);
         } else {
             $criteria->addSelectColumn($alias . '.idtipocalzado');
             $criteria->addSelectColumn($alias . '.tipocalzado_nombre');
+            $criteria->addSelectColumn($alias . '.tipocalzado_descripcion');
         }
     }
 

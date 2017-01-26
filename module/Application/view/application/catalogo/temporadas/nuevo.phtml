@@ -1,0 +1,26 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title">Temporadas - Agregar</h1>
+	</div>
+    <div class="row">
+        <div class="col-md-8">
+    		<div class="demo-form-wrapper">
+    			<form class="form form-horizontal" action="/catalogo/temporadas/nuevo" method="POST">
+	       			<div class="form-group">
+		           		<label class="col-sm-3 control-label" for="form-control-18">Nombre</label>
+		            	<div class="col-sm-9">
+		                	<?php echo $this->formText($form->get('temporada_nombre')) ?>
+		            	</div>
+	        		</div>
+		        	<div class="form-group">
+		       			<label class="col-sm-3 control-label" for="form-control-18"></label>
+		    			<div class="col-sm-9">
+		        			<button class="btn btn-primary btn-block btn-next" type="submit">Guardar</button>
+		    			</div>
+		        	</div>
+ 
+    			</form>
+    		</div>
+    	</div>
+	</div>
+</div>

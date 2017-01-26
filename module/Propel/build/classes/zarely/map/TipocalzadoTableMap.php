@@ -40,6 +40,7 @@ class TipocalzadoTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idtipocalzado', 'Idtipocalzado', 'INTEGER', true, null, null);
         $this->addColumn('tipocalzado_nombre', 'TipocalzadoNombre', 'VARCHAR', true, 45, null);
+        $this->addColumn('tipocalzado_descripcion', 'TipocalzadoDescripcion', 'VARCHAR', true, 255, null);
         // validators
     } // initialize()
 
