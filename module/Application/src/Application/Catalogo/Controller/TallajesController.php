@@ -12,7 +12,7 @@ namespace Application\Catalogo\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class EmpleadosController extends AbstractActionController
+class TallajesController extends AbstractActionController
 {
 
     public $column_map = array(
@@ -189,7 +189,7 @@ class EmpleadosController extends AbstractActionController
     {
         $view_model = new ViewModel();
 
-        $view_model->setTemplate('application/catalogo/empleados/index');
+        $view_model->setTemplate('application/catalogo/tallajes/index');
         $view_model->setVariables(array(
             'messages' =>$this->flashMessenger()
         ));
@@ -204,10 +204,10 @@ class EmpleadosController extends AbstractActionController
         {
             $post_data = $request->getPost();
 
-            $entity = new \Empleado();
+            $entity = new \Tallaje();
 
             foreach ($post_data as $key => $value) {
-                if(\EmpleadoPeer::getTableMap()->hasColumn($key))
+                if(\TallajePeer::getTableMap()->hasColumn($key))
                 {
                     $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                 }
@@ -215,13 +215,13 @@ class EmpleadosController extends AbstractActionController
             $entity->save();
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-            return $this->redirect()->toUrl('/catalogo/empleados');
+            return $this->redirect()->toUrl('/catalogo/tallajes');
         }
 
 
-        $form = new \Application\Catalogo\Form\EmpleadosForm();
+        $form = new \Application\Catalogo\Form\TallajesForm();
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/catalogo/empleados/nuevo');
+        $view_model->setTemplate('application/catalogo/tallajes/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
@@ -247,7 +247,7 @@ class EmpleadosController extends AbstractActionController
                 $post_data = $request->getPost();
 
                 foreach ($post_data as $key => $value) {
-                    if(\EmpleadoPeer::getTableMap()->hasColumn($key))
+                    if(\TallajePeer::getTableMap()->hasColumn($key))
                     {
                         $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                     }
@@ -258,7 +258,7 @@ class EmpleadosController extends AbstractActionController
                 return $this->redirect()->toUrl('/catalogo/empleados');
             }
 
-            $form = new \Application\Catalogo\Form\EmpleadosForm();
+            $form = new \Application\Catalogo\Form\TallajesForm();
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
 
