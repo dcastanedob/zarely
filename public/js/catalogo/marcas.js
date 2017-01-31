@@ -109,7 +109,47 @@
 
 
         }
-
+        
+        plugin.initForm = function(){
+            
+            $container.find('select[name*=idtallaje]').multipleSelect({
+                filter:true,
+                selectAllText: 'Seleccionar Todos',
+                width: '100%',
+                allSelected: 'Todos seleccionados',
+                countSelected: '# de % Seleccionados',
+                //multiple: true,
+                //multipleWidth: 100
+            });
+            
+            $('button[type=submit]').on('click',function(e){
+                e.preventDefault();
+                var tallajes = $container.find('select[name*=idtallaje]').multipleSelect("getSelects");
+                tallajes.forEach(function(value){
+                    var $input = $('<input type="hidden" name="tallajes_array[]">');
+                    $input.val(value);
+                    $container.find('form').append($input);
+                });
+                $container.find('form').submit();
+                
+            });
+            
+            var idmarca = $('input[name=idmarca]').val();
+            $.ajax({
+                url:'/catalogo/marcas/get',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    name: 'tallajes',
+                    data: {
+                        idmarca:idmarca,
+                    },
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $container.find('select[name*=idtallaje]').multipleSelect("setSelects", data);
+                }
+            });
+        };
         /*
         * Plugin initializing
         */

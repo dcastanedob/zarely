@@ -6,7 +6,7 @@ use Zend\Form\Form;
 
 class MarcaForm extends Form
 {
-    public function __construct()
+    public function __construct($tallaje_array = array())
     {
         // we want to ignore the name passed
         parent::__construct('MarcaForm');
@@ -25,6 +25,21 @@ class MarcaForm extends Form
                 'class' => 'form-control infput-thick',
             ),
         ));
+        
+        $this->add(array(
+            'name' => 'idtallaje[]',
+            'type' => 'Select',
+            'options' => array(
+              
+                'value_options' => $tallaje_array,
+            ),
+            'attributes' => array(
+                'required' => true,
+                'class' => '',
+               
+            ),
+        ));
+
         
     }
 }

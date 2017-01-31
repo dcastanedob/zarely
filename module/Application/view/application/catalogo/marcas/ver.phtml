@@ -9,7 +9,14 @@
 	       			<div class="form-group">
 		           		<label class="col-sm-3 control-label" for="form-control-18">Nombre</label>
 		            	<div class="col-sm-9">
+                                        <input type="hidden" name="idmarca" value="<?php echo $entity->getIdmarca()?>">
 		                	<?php echo $this->formText($form->get('marca_nombre')) ?>
+		            	</div>
+	        		</div>
+                                <div class="form-group">
+		           		<label class="col-sm-3 control-label" for="form-control-18">Tallaje</label>
+		            	<div class="col-sm-9">
+		                	<?php echo $this->formSelect($form->get('idtallaje[]')) ?>
 		            	</div>
 	        		</div>
 		        	<div class="form-group">
@@ -24,3 +31,8 @@
     	</div>
 	</div>
 </div>
+<script src="/js/catalogo/marcas.js"></script>
+<script>
+	var marcas = $('.body_container').marcas();
+	marcas.initForm();
+</script>

@@ -169,8 +169,37 @@ class MarcasController extends AbstractActionController
             return $this->getResponse()->setContent(json_encode($json_data));
         }
 	}
+        
+        public function getTallajes($data){
+            
+            $tallajes = \MarcatallajeQuery::create()->select('idtallaje')->filterByIdmarca($data['idmarca'])->find()->toArray();
+            return $tallajes;
 
-    public function indexAction()
+        }
+
+        public function getAction(){
+            
+            $request = $this->getRequest();
+            if($request->isPost()){
+                
+                $post_data = $request->getPost();
+                
+                if($post_data['name'] == 'tallajes'){
+                    
+                    $response = $this->getTallajes($post_data['data']);
+                    return $this->getResponse()->setContent(json_encode($response));
+                    
+                }
+                
+                
+            };
+            
+        }
+
+
+
+
+        public function indexAction()
     {
     	$view_model = new ViewModel();
     	$view_model->setTemplate('application/catalogo/marcas/index');
@@ -196,14 +225,29 @@ class MarcasController extends AbstractActionController
     				$entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
     			}
     		}
+                
+                
     		$entity->save();
+                
+                //TALLAJE
+                foreach ($post_data['tallajes_array'] as $value){
+                    $marcatallaje = new \Marcatallaje();
+                    $marcatallaje->setIdmarca($entity->getIdmarca())
+                                 ->setIdtallaje($value)
+                                 ->save();
+                }
     		$this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
     		return $this->redirect()->toUrl('/catalogo/marcas');
     	}
 
-
-    	$form = new \Application\Catalogo\Form\MarcaForm();
+        $tallajes = \TallajeQuery::create()->find();
+        $tallajes_array = array();
+        $value = new \Tallaje();
+        foreach ($tallajes as $value){
+            $tallajes_array[$value->getIdtallaje()] = $value->getTallajeNombre()." (".$value->getTallajerango().")";
+        }
+    	$form = new \Application\Catalogo\Form\MarcaForm($tallajes_array);
     	$view_model = new ViewModel();
     	$view_model->setTemplate('application/catalogo/marcas/nuevo');
     	$view_model->setVariables(array(
@@ -229,6 +273,7 @@ class MarcasController extends AbstractActionController
     		if($request->isPost())
     		{
     			$post_data = $request->getPost();
+                     
 
     			foreach ($post_data as $key => $value) {
 	    			if(\MarcaPeer::getTableMap()->hasColumn($key))
@@ -236,13 +281,30 @@ class MarcasController extends AbstractActionController
 	    				$entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
 	    			}
     			}
+                        
+                        //TALLAJE
+                        $entity->getMarcatallajes()->delete();
+                        foreach ($post_data['tallajes_array'] as $value){
+                            $marcatallaje = new \Marcatallaje();
+                            $marcatallaje->setIdmarca($entity->getIdmarca())
+                                         ->setIdtallaje($value)
+                                         ->save();
+                        }
+                        
 	    		$entity->save();
 	    		$this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
 	    		return $this->redirect()->toUrl('/catalogo/marcas');
 	    	}
+                
+                $tallajes = \TallajeQuery::create()->find();
+                $tallajes_array = array();
+                $value = new \Tallaje();
+                foreach ($tallajes as $value){
+                    $tallajes_array[$value->getIdtallaje()] = $value->getTallajeNombre()." (".$value->getTallajerango().")";
+                }
 
-    		$form = new \Application\Catalogo\Form\MarcaForm();
+    		$form = new \Application\Catalogo\Form\MarcaForm($tallajes_array);
 
     		$form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
 
