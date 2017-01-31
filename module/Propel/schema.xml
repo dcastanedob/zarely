@@ -326,6 +326,7 @@
     <column name="talla_340" phpName="Talla340" type="BOOLEAN" size="1" required="false"/>
     <column name="talla_345" phpName="Talla345" type="BOOLEAN" size="1" required="false"/>
     <column name="talla_350" phpName="Talla350" type="BOOLEAN" size="1" required="false"/>
+    <column name="tallajerango" phpName="Tallajerango" type="VARCHAR" size="45" required="false"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

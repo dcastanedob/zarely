@@ -384,6 +384,12 @@ abstract class BaseTallaje extends BaseObject implements Persistent
     protected $talla_350;
 
     /**
+     * The value for the tallajerango field.
+     * @var        string
+     */
+    protected $tallajerango;
+
+    /**
      * @var        PropelObjectCollection|Marcatallaje[] Collection to store aggregation of Marcatallaje objects.
      */
     protected $collMarcatallajes;
@@ -1074,6 +1080,17 @@ abstract class BaseTallaje extends BaseObject implements Persistent
     {
 
         return $this->talla_350;
+    }
+
+    /**
+     * Get the [tallajerango] column value.
+     *
+     * @return string
+     */
+    public function getTallajerango()
+    {
+
+        return $this->tallajerango;
     }
 
     /**
@@ -2772,6 +2789,27 @@ abstract class BaseTallaje extends BaseObject implements Persistent
     } // setTalla350()
 
     /**
+     * Set the value of [tallajerango] column.
+     *
+     * @param  string $v new value
+     * @return Tallaje The current object (for fluent API support)
+     */
+    public function setTallajerango($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->tallajerango !== $v) {
+            $this->tallajerango = $v;
+            $this->modifiedColumns[] = TallajePeer::TALLAJERANGO;
+        }
+
+
+        return $this;
+    } // setTallajerango()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -2862,6 +2900,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
             $this->talla_340 = ($row[$startcol + 56] !== null) ? (boolean) $row[$startcol + 56] : null;
             $this->talla_345 = ($row[$startcol + 57] !== null) ? (boolean) $row[$startcol + 57] : null;
             $this->talla_350 = ($row[$startcol + 58] !== null) ? (boolean) $row[$startcol + 58] : null;
+            $this->tallajerango = ($row[$startcol + 59] !== null) ? (string) $row[$startcol + 59] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2871,7 +2910,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 59; // 59 = TallajePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 60; // 60 = TallajePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Tallaje object", $e);
@@ -3298,6 +3337,9 @@ abstract class BaseTallaje extends BaseObject implements Persistent
         if ($this->isColumnModified(TallajePeer::TALLA_350)) {
             $modifiedColumns[':p' . $index++]  = '`talla_350`';
         }
+        if ($this->isColumnModified(TallajePeer::TALLAJERANGO)) {
+            $modifiedColumns[':p' . $index++]  = '`tallajerango`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `tallaje` (%s) VALUES (%s)',
@@ -3485,6 +3527,9 @@ abstract class BaseTallaje extends BaseObject implements Persistent
                         break;
                     case '`talla_350`':
                         $stmt->bindValue($identifier, (int) $this->talla_350, PDO::PARAM_INT);
+                        break;
+                    case '`tallajerango`':
+                        $stmt->bindValue($identifier, $this->tallajerango, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -3813,6 +3858,9 @@ abstract class BaseTallaje extends BaseObject implements Persistent
             case 58:
                 return $this->getTalla350();
                 break;
+            case 59:
+                return $this->getTallajerango();
+                break;
             default:
                 return null;
                 break;
@@ -3901,6 +3949,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
             $keys[56] => $this->getTalla340(),
             $keys[57] => $this->getTalla345(),
             $keys[58] => $this->getTalla350(),
+            $keys[59] => $this->getTallajerango(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -4125,6 +4174,9 @@ abstract class BaseTallaje extends BaseObject implements Persistent
             case 58:
                 $this->setTalla350($value);
                 break;
+            case 59:
+                $this->setTallajerango($value);
+                break;
         } // switch()
     }
 
@@ -4208,6 +4260,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
         if (array_key_exists($keys[56], $arr)) $this->setTalla340($arr[$keys[56]]);
         if (array_key_exists($keys[57], $arr)) $this->setTalla345($arr[$keys[57]]);
         if (array_key_exists($keys[58], $arr)) $this->setTalla350($arr[$keys[58]]);
+        if (array_key_exists($keys[59], $arr)) $this->setTallajerango($arr[$keys[59]]);
     }
 
     /**
@@ -4278,6 +4331,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
         if ($this->isColumnModified(TallajePeer::TALLA_340)) $criteria->add(TallajePeer::TALLA_340, $this->talla_340);
         if ($this->isColumnModified(TallajePeer::TALLA_345)) $criteria->add(TallajePeer::TALLA_345, $this->talla_345);
         if ($this->isColumnModified(TallajePeer::TALLA_350)) $criteria->add(TallajePeer::TALLA_350, $this->talla_350);
+        if ($this->isColumnModified(TallajePeer::TALLAJERANGO)) $criteria->add(TallajePeer::TALLAJERANGO, $this->tallajerango);
 
         return $criteria;
     }
@@ -4399,6 +4453,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
         $copyObj->setTalla340($this->getTalla340());
         $copyObj->setTalla345($this->getTalla345());
         $copyObj->setTalla350($this->getTalla350());
+        $copyObj->setTallajerango($this->getTallajerango());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -5127,6 +5182,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
         $this->talla_340 = null;
         $this->talla_345 = null;
         $this->talla_350 = null;
+        $this->tallajerango = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

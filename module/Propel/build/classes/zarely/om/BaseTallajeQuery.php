@@ -65,6 +65,7 @@
  * @method TallajeQuery orderByTalla340($order = Criteria::ASC) Order by the talla_340 column
  * @method TallajeQuery orderByTalla345($order = Criteria::ASC) Order by the talla_345 column
  * @method TallajeQuery orderByTalla350($order = Criteria::ASC) Order by the talla_350 column
+ * @method TallajeQuery orderByTallajerango($order = Criteria::ASC) Order by the tallajerango column
  *
  * @method TallajeQuery groupByIdtallaje() Group by the idtallaje column
  * @method TallajeQuery groupByTallajeNombre() Group by the tallaje_nombre column
@@ -125,6 +126,7 @@
  * @method TallajeQuery groupByTalla340() Group by the talla_340 column
  * @method TallajeQuery groupByTalla345() Group by the talla_345 column
  * @method TallajeQuery groupByTalla350() Group by the talla_350 column
+ * @method TallajeQuery groupByTallajerango() Group by the tallajerango column
  *
  * @method TallajeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method TallajeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -199,6 +201,7 @@
  * @method Tallaje findOneByTalla340(boolean $talla_340) Return the first Tallaje filtered by the talla_340 column
  * @method Tallaje findOneByTalla345(boolean $talla_345) Return the first Tallaje filtered by the talla_345 column
  * @method Tallaje findOneByTalla350(boolean $talla_350) Return the first Tallaje filtered by the talla_350 column
+ * @method Tallaje findOneByTallajerango(string $tallajerango) Return the first Tallaje filtered by the tallajerango column
  *
  * @method array findByIdtallaje(int $idtallaje) Return Tallaje objects filtered by the idtallaje column
  * @method array findByTallajeNombre(string $tallaje_nombre) Return Tallaje objects filtered by the tallaje_nombre column
@@ -259,6 +262,7 @@
  * @method array findByTalla340(boolean $talla_340) Return Tallaje objects filtered by the talla_340 column
  * @method array findByTalla345(boolean $talla_345) Return Tallaje objects filtered by the talla_345 column
  * @method array findByTalla350(boolean $talla_350) Return Tallaje objects filtered by the talla_350 column
+ * @method array findByTallajerango(string $tallajerango) Return Tallaje objects filtered by the tallajerango column
  *
  * @package    propel.generator.zarely.om
  */
@@ -366,7 +370,7 @@ abstract class BaseTallajeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idtallaje`, `tallaje_nombre`, `talla_70`, `talla_75`, `talla_80`, `talla_85`, `talla_90`, `talla_95`, `talla_100`, `talla_105`, `talla_110`, `talla_115`, `talla_120`, `talla_125`, `talla_130`, `talla_135`, `talla_140`, `talla_145`, `talla_150`, `talla_155`, `talla_160`, `talla_165`, `talla_170`, `talla_175`, `talla_180`, `talla_185`, `talla_190`, `talla_195`, `talla_200`, `talla_205`, `talla_210`, `talla_215`, `talla_220`, `talla_225`, `talla_230`, `talla_235`, `talla_240`, `talla_245`, `talla_250`, `talla_255`, `talla_260`, `talla_265`, `talla_270`, `talla_275`, `talla_280`, `talla_285`, `talla_290`, `talla_295`, `talla_300`, `talla_305`, `talla_310`, `talla_315`, `talla_320`, `talla_325`, `talla_330`, `talla_335`, `talla_340`, `talla_345`, `talla_350` FROM `tallaje` WHERE `idtallaje` = :p0';
+        $sql = 'SELECT `idtallaje`, `tallaje_nombre`, `talla_70`, `talla_75`, `talla_80`, `talla_85`, `talla_90`, `talla_95`, `talla_100`, `talla_105`, `talla_110`, `talla_115`, `talla_120`, `talla_125`, `talla_130`, `talla_135`, `talla_140`, `talla_145`, `talla_150`, `talla_155`, `talla_160`, `talla_165`, `talla_170`, `talla_175`, `talla_180`, `talla_185`, `talla_190`, `talla_195`, `talla_200`, `talla_205`, `talla_210`, `talla_215`, `talla_220`, `talla_225`, `talla_230`, `talla_235`, `talla_240`, `talla_245`, `talla_250`, `talla_255`, `talla_260`, `talla_265`, `talla_270`, `talla_275`, `talla_280`, `talla_285`, `talla_290`, `talla_295`, `talla_300`, `talla_305`, `talla_310`, `talla_315`, `talla_320`, `talla_325`, `talla_330`, `talla_335`, `talla_340`, `talla_345`, `talla_350`, `tallajerango` FROM `tallaje` WHERE `idtallaje` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -2063,6 +2067,35 @@ abstract class BaseTallajeQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TallajePeer::TALLA_350, $talla350, $comparison);
+    }
+
+    /**
+     * Filter the query on the tallajerango column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTallajerango('fooValue');   // WHERE tallajerango = 'fooValue'
+     * $query->filterByTallajerango('%fooValue%'); // WHERE tallajerango LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $tallajerango The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return TallajeQuery The current query, for fluid interface
+     */
+    public function filterByTallajerango($tallajerango = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($tallajerango)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $tallajerango)) {
+                $tallajerango = str_replace('*', '%', $tallajerango);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(TallajePeer::TALLAJERANGO, $tallajerango, $comparison);
     }
 
     /**

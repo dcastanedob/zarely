@@ -97,6 +97,7 @@ class TallajeTableMap extends TableMap
         $this->addColumn('talla_340', 'Talla340', 'BOOLEAN', false, 1, null);
         $this->addColumn('talla_345', 'Talla345', 'BOOLEAN', false, 1, null);
         $this->addColumn('talla_350', 'Talla350', 'BOOLEAN', false, 1, null);
+        $this->addColumn('tallajerango', 'Tallajerango', 'VARCHAR', false, 45, null);
         // validators
     } // initialize()
 

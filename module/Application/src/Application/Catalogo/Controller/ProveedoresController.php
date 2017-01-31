@@ -12,13 +12,17 @@ namespace Application\Catalogo\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class TallajesController extends AbstractActionController
+class ProveedoresController extends AbstractActionController
 {
 
     public $column_map = array(
-        0 => 'Idtallaje',
-        1 => 'TallajeNombre',
-        2 => 'Tallajerango',
+        0 => 'Idempleado',
+        1 => 'EmpleadoNombre',
+        2 => 'EmpleadoApaterno',
+        3 => 'EmpleadoAmaterno',
+        4 => 'EmpleadoTelefono',
+        5=> 'EmpleadoEmail',
+        6 => 'EmpleadoAEstatus',
     );
 
     public function serversideAction()
@@ -27,7 +31,7 @@ class TallajesController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
            
-            $query = new \TallajeQuery();
+            $query = new \EmpleadoQuery();
             
              /*JOIN
             $query->useCategoriaRelatedByIdcategoriaQuery('a')->endUse();
@@ -73,14 +77,17 @@ class TallajesController extends AbstractActionController
                 }
                 $c = new \Criteria();
                
-                $c1= $c->getNewCriterion('tallaje.idtallaje', '%'.$search_value.'%', \Criteria::LIKE);
-                $c2= $c->getNewCriterion('tallaje.tallaje_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1= $c->getNewCriterion('empleado.idempleado', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('talaje.tallajerango', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c3= $c->getNewCriterion('empleado.empleado_telefono', '%'.$search_value.'%', \Criteria::LIKE);
 
+                 $c4= $c->getNewCriterion('empleado.empleado_email', '%'.$search_value.'%', \Criteria::LIKE);
+
+                 $c5= $c->getNewCriterion('empleado.empleado_estatus', '%'.$search_value.'%', \Criteria::LIKE);
 
           
-                $c1->addOr($c2)->addOr($c3);
+                $c1->addOr($c2)->addOr($c3)->addOr($c4)->addOr($c5);
 
                 $query->addAnd($c1);
                 $query->groupByIdempleado();
@@ -113,10 +120,16 @@ class TallajesController extends AbstractActionController
             
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
 
-                $tmp['DT_RowId'] = $value['idtallaje'];
-                $tmp['idtallaje'] = $value['idtallaje'];
-                $tmp['tallaje_nombre'] = $value['tallaje_nombre'];
-                $tmp['tallajerango'] = $value['tallajerango'];
+                if($value['empleado_estatus']){
+                    $tmp['empleado_estatus'] = "Activo";
+                }else{
+                    $tmp['empleado_estatus'] = "Inactivo";
+                }
+                $tmp['DT_RowId'] = $value['idempleado'];
+                $tmp['idempleado'] = $value['idempleado'];
+                $tmp['empleado_nombre'] = $value['empleado_nombre'];
+                $tmp['empleado_telefono'] = $value['empleado_telefono'];
+                $tmp['empleado_email'] = $value['empleado_email'];
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
                     <span class="icon icon-gear icon-lg icon-fw"></span>
@@ -125,7 +138,7 @@ class TallajesController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/catalogo/tallajes/ver/' . $value['idtallaje'] . '">
+                      <a href="/catalogo/empleados/ver/' . $value['idempleado'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -176,7 +189,7 @@ class TallajesController extends AbstractActionController
     {
         $view_model = new ViewModel();
 
-        $view_model->setTemplate('application/catalogo/tallajes/index');
+        $view_model->setTemplate('application/catalogo/empleados/index');
         $view_model->setVariables(array(
             'messages' =>$this->flashMessenger()
         ));
@@ -190,42 +203,25 @@ class TallajesController extends AbstractActionController
         if($request->isPost())
         {
             $post_data = $request->getPost();
-            $entity = new \Tallaje();
-            $inicio =null;
-            $fin =null;
-            $inicioEncontrado = false;
+
+            $entity = new \Empleado();
 
             foreach ($post_data as $key => $value) {
-                if(\TallajePeer::getTableMap()->hasColumn($key))
+                if(\EmpleadoPeer::getTableMap()->hasColumn($key))
                 {
-                    if(!$inicioEncontrado && $value == 1 ){
-                        $inicio = $key;
-                        $inicioEncontrado = true;
-                    }
-                    if($inicioEncontrado && $value == 1)
-                    {
-                        $fin = $key;
-                    }
-
                     $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                 }
             }
-            $inicio = str_replace("talla_", "", $inicio);
-            $inicio = (int)$inicio/10;
-            $fin = str_replace("talla_", "", $fin);
-            $fin = (int)$fin/10;
-            $rango = $inicio ." - ". $fin;
-            $entity->setByName("tallajerango",$rango,\BasePeer::TYPE_FIELDNAME);
             $entity->save();
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-            return $this->redirect()->toUrl('/catalogo/tallajes');
+            return $this->redirect()->toUrl('/catalogo/empleados');
         }
 
 
-        $form = new \Application\Catalogo\Form\TallajesForm();
+        $form = new \Application\Catalogo\Form\EmpleadosForm();
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/catalogo/tallajes/nuevo');
+        $view_model->setTemplate('application/catalogo/empleados/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
@@ -240,53 +236,35 @@ class TallajesController extends AbstractActionController
 
         $id = $this->params()->fromRoute('id');
 
-        $exists = \TallajeQuery::create()->filterByIdtallaje($id)->exists();
+        $exists = \EmpleadoQuery::create()->filterByIdempleado($id)->exists();
 
         if($exists)
         {
-            $entity = \TallajeQuery::create()->findPk($id);
+            $entity = \EmpleadoQuery::create()->findPk($id);
 
             if($request->isPost())
             {
                 $post_data = $request->getPost();
-                $inicio =null;
-                $fin =null;
-                $inicioEncontrado = false;
 
                 foreach ($post_data as $key => $value) {
-                    if(\TallajePeer::getTableMap()->hasColumn($key))
+                    if(\EmpleadoPeer::getTableMap()->hasColumn($key))
                     {
-                        if(!$inicioEncontrado && $value == 1 ){
-                            $inicio = $key;
-                            $inicioEncontrado = true;
-                        }
-                        if($inicioEncontrado && $value == 1)
-                        {
-                            $fin = $key;
-                        }
-
                         $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                     }
                 }
-                $inicio = str_replace("talla_", "", $inicio);
-                $inicio = (int)$inicio/10;
-                $fin = str_replace("talla_", "", $fin);
-                $fin = (int)$fin/10;
-                $rango = $inicio ." - ". $fin;
-                $entity->setByName("tallajerango",$rango,\BasePeer::TYPE_FIELDNAME);
                 $entity->save();
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-                return $this->redirect()->toUrl('/catalogo/tallajes');
+                return $this->redirect()->toUrl('/catalogo/empleados');
             }
 
-            $form = new \Application\Catalogo\Form\TallajesForm();
+            $form = new \Application\Catalogo\Form\EmpleadosForm();
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
 
 
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/catalogo/tallajes/ver');
+            $view_model->setTemplate('application/catalogo/empleados/ver');
 
             $view_model->setVariables(array(
                 'form' => $form,
@@ -297,7 +275,7 @@ class TallajesController extends AbstractActionController
         }else
         {
             $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/tallajes');   
+            return $this->redirect()->toUrl('/catalogo/empleados');   
         }
     }
 
@@ -307,7 +285,7 @@ class TallajesController extends AbstractActionController
         if($request->isPost())
         {
             $id = $this->params()->fromRoute('id');
-            $entity = \TallajeQuery::create()->findPk($id);
+            $entity = \EmpleadoQuery::Create()->findPk($id);
             $entity->delete();
 
             if($entity->isDeleted()){
@@ -317,7 +295,7 @@ class TallajesController extends AbstractActionController
             }
         }
 
-        return $this->redirect()->toUrl('/catalogo/tallajes');
+        return $this->redirect()->toUrl('/catalogo/empleados');
     }
 
 

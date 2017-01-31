@@ -109,6 +109,28 @@ return array(
                 ),
             ),
 
+            'proveedores' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/proveedores[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Proveedores',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'productos' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/productos[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Productos',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'gastos' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -182,7 +204,9 @@ return array(
             'Application\Catalogo\Controller\Gastos' => 'Application\Catalogo\Controller\GastosController',
             'Application\Catalogo\Controller\Empleados' => 'Application\Catalogo\Controller\EmpleadosController',
             'Application\Catalogo\Controller\Sucursales' => 'Application\Catalogo\Controller\SucursalesController',
-            'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController'
+            'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController',
+            'Application\Catalogo\Controller\Proveedores' => 'Application\Catalogo\Controller\ProveedoresController',
+            'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController'
         ),
     ),
 
