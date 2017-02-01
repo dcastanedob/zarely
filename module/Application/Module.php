@@ -16,6 +16,8 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        
+        date_default_timezone_set('America/Mexico_City');
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);

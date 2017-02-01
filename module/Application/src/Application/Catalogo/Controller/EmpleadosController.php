@@ -203,18 +203,23 @@ class EmpleadosController extends AbstractActionController
         if($request->isPost())
         {
             $post_data = $request->getPost();
+            
 
             $entity = new \Empleado();
-
+            
+            $post_data['empleado_fechaentrada'] = date_create_from_format('d/m/Y', $post_data['empleado_fechaentrada']);
+            $post_data['empleado_fechanacimiento'] = date_create_from_format('d/m/Y', $post_data['empleado_fechanacimiento']);
+             
             foreach ($post_data as $key => $value) {
                 if(\EmpleadoPeer::getTableMap()->hasColumn($key))
                 {
                     $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                 }
             }
+            
             $entity->save();
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-
+           
             return $this->redirect()->toUrl('/catalogo/empleados');
         }
 
@@ -261,8 +266,9 @@ class EmpleadosController extends AbstractActionController
             $form = new \Application\Catalogo\Form\EmpleadosForm();
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-
-
+            $form->get('empleado_fechaentrada')->setValue($entity->getEmpleadoFechaentrada('d/m/Y'));
+            $form->get('empleado_fechanacimiento')->setValue($entity->getEmpleadoFechanacimiento('d/m/Y'));
+            
             $view_model = new ViewModel();
             $view_model->setTemplate('application/catalogo/empleados/ver');
 
