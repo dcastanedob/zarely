@@ -49,7 +49,18 @@
             settings = plugin.settings = $.extend({}, defaults, options);
 
         }
-
+        
+        plugin.initForm = function(){
+            
+            $container.find('input[name=empleado_fechaentrada]').datepicker({
+                language:'es',
+            });
+            $container.find('input[name=empleado_fechanacimiento]').datepicker({
+                language:'es',
+            });
+            
+        }
+        
         plugin.list =function(){
             var $table = $container.find('.dataTable').dataTable(
                 {
