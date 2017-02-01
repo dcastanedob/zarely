@@ -41,7 +41,6 @@ class SucursalempleadoTableMap extends TableMap
         $this->addPrimaryKey('idsucursalempleado', 'Idsucursalempleado', 'INTEGER', true, null, null);
         $this->addForeignKey('idsucursal', 'Idsucursal', 'INTEGER', 'sucursal', 'idsucursal', true, null, null);
         $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
-        $this->addForeignKey('idrol', 'Idrol', 'INTEGER', 'rol', 'idrol', true, null, null);
         $this->addColumn('sucursalempleado_estatus', 'SucursalempleadoEstatus', 'BOOLEAN', true, 1, null);
         // validators
     } // initialize()
@@ -52,7 +51,6 @@ class SucursalempleadoTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Empleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Rol', 'Rol', RelationMap::MANY_TO_ONE, array('idrol' => 'idrol', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Sucursal', 'Sucursal', RelationMap::MANY_TO_ONE, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 

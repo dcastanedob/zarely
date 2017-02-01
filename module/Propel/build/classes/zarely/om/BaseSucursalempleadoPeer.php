@@ -24,13 +24,13 @@ abstract class BaseSucursalempleadoPeer
     const TM_CLASS = 'SucursalempleadoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the idsucursalempleado field */
     const IDSUCURSALEMPLEADO = 'sucursalempleado.idsucursalempleado';
@@ -40,9 +40,6 @@ abstract class BaseSucursalempleadoPeer
 
     /** the column name for the idempleado field */
     const IDEMPLEADO = 'sucursalempleado.idempleado';
-
-    /** the column name for the idrol field */
-    const IDROL = 'sucursalempleado.idrol';
 
     /** the column name for the sucursalempleado_estatus field */
     const SUCURSALEMPLEADO_ESTATUS = 'sucursalempleado.sucursalempleado_estatus';
@@ -66,12 +63,12 @@ abstract class BaseSucursalempleadoPeer
      * e.g. SucursalempleadoPeer::$fieldNames[SucursalempleadoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idsucursalempleado', 'Idsucursal', 'Idempleado', 'Idrol', 'SucursalempleadoEstatus', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idsucursalempleado', 'idsucursal', 'idempleado', 'idrol', 'sucursalempleadoEstatus', ),
-        BasePeer::TYPE_COLNAME => array (SucursalempleadoPeer::IDSUCURSALEMPLEADO, SucursalempleadoPeer::IDSUCURSAL, SucursalempleadoPeer::IDEMPLEADO, SucursalempleadoPeer::IDROL, SucursalempleadoPeer::SUCURSALEMPLEADO_ESTATUS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDSUCURSALEMPLEADO', 'IDSUCURSAL', 'IDEMPLEADO', 'IDROL', 'SUCURSALEMPLEADO_ESTATUS', ),
-        BasePeer::TYPE_FIELDNAME => array ('idsucursalempleado', 'idsucursal', 'idempleado', 'idrol', 'sucursalempleado_estatus', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idsucursalempleado', 'Idsucursal', 'Idempleado', 'SucursalempleadoEstatus', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idsucursalempleado', 'idsucursal', 'idempleado', 'sucursalempleadoEstatus', ),
+        BasePeer::TYPE_COLNAME => array (SucursalempleadoPeer::IDSUCURSALEMPLEADO, SucursalempleadoPeer::IDSUCURSAL, SucursalempleadoPeer::IDEMPLEADO, SucursalempleadoPeer::SUCURSALEMPLEADO_ESTATUS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDSUCURSALEMPLEADO', 'IDSUCURSAL', 'IDEMPLEADO', 'SUCURSALEMPLEADO_ESTATUS', ),
+        BasePeer::TYPE_FIELDNAME => array ('idsucursalempleado', 'idsucursal', 'idempleado', 'sucursalempleado_estatus', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -81,12 +78,12 @@ abstract class BaseSucursalempleadoPeer
      * e.g. SucursalempleadoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idsucursalempleado' => 0, 'Idsucursal' => 1, 'Idempleado' => 2, 'Idrol' => 3, 'SucursalempleadoEstatus' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idsucursalempleado' => 0, 'idsucursal' => 1, 'idempleado' => 2, 'idrol' => 3, 'sucursalempleadoEstatus' => 4, ),
-        BasePeer::TYPE_COLNAME => array (SucursalempleadoPeer::IDSUCURSALEMPLEADO => 0, SucursalempleadoPeer::IDSUCURSAL => 1, SucursalempleadoPeer::IDEMPLEADO => 2, SucursalempleadoPeer::IDROL => 3, SucursalempleadoPeer::SUCURSALEMPLEADO_ESTATUS => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDSUCURSALEMPLEADO' => 0, 'IDSUCURSAL' => 1, 'IDEMPLEADO' => 2, 'IDROL' => 3, 'SUCURSALEMPLEADO_ESTATUS' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('idsucursalempleado' => 0, 'idsucursal' => 1, 'idempleado' => 2, 'idrol' => 3, 'sucursalempleado_estatus' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idsucursalempleado' => 0, 'Idsucursal' => 1, 'Idempleado' => 2, 'SucursalempleadoEstatus' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idsucursalempleado' => 0, 'idsucursal' => 1, 'idempleado' => 2, 'sucursalempleadoEstatus' => 3, ),
+        BasePeer::TYPE_COLNAME => array (SucursalempleadoPeer::IDSUCURSALEMPLEADO => 0, SucursalempleadoPeer::IDSUCURSAL => 1, SucursalempleadoPeer::IDEMPLEADO => 2, SucursalempleadoPeer::SUCURSALEMPLEADO_ESTATUS => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDSUCURSALEMPLEADO' => 0, 'IDSUCURSAL' => 1, 'IDEMPLEADO' => 2, 'SUCURSALEMPLEADO_ESTATUS' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('idsucursalempleado' => 0, 'idsucursal' => 1, 'idempleado' => 2, 'sucursalempleado_estatus' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -163,13 +160,11 @@ abstract class BaseSucursalempleadoPeer
             $criteria->addSelectColumn(SucursalempleadoPeer::IDSUCURSALEMPLEADO);
             $criteria->addSelectColumn(SucursalempleadoPeer::IDSUCURSAL);
             $criteria->addSelectColumn(SucursalempleadoPeer::IDEMPLEADO);
-            $criteria->addSelectColumn(SucursalempleadoPeer::IDROL);
             $criteria->addSelectColumn(SucursalempleadoPeer::SUCURSALEMPLEADO_ESTATUS);
         } else {
             $criteria->addSelectColumn($alias . '.idsucursalempleado');
             $criteria->addSelectColumn($alias . '.idsucursal');
             $criteria->addSelectColumn($alias . '.idempleado');
-            $criteria->addSelectColumn($alias . '.idrol');
             $criteria->addSelectColumn($alias . '.sucursalempleado_estatus');
         }
     }
@@ -524,57 +519,6 @@ abstract class BaseSucursalempleadoPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Rol table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinRol(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(SucursalempleadoPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            SucursalempleadoPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(SucursalempleadoPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(SucursalempleadoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(SucursalempleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
      * Returns the number of rows matching criteria, joining the related Sucursal table
      *
      * @param      Criteria $criteria
@@ -693,73 +637,6 @@ abstract class BaseSucursalempleadoPeer
 
 
     /**
-     * Selects a collection of Sucursalempleado objects pre-filled with their Rol objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Sucursalempleado objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinRol(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(SucursalempleadoPeer::DATABASE_NAME);
-        }
-
-        SucursalempleadoPeer::addSelectColumns($criteria);
-        $startcol = SucursalempleadoPeer::NUM_HYDRATE_COLUMNS;
-        RolPeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(SucursalempleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = SucursalempleadoPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = SucursalempleadoPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = SucursalempleadoPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                SucursalempleadoPeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = RolPeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = RolPeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = RolPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    RolPeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (Sucursalempleado) to $obj2 (Rol)
-                $obj2->addSucursalempleado($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
      * Selects a collection of Sucursalempleado objects pre-filled with their Sucursal objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -864,8 +741,6 @@ abstract class BaseSucursalempleadoPeer
 
         $criteria->addJoin(SucursalempleadoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
-        $criteria->addJoin(SucursalempleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
-
         $criteria->addJoin(SucursalempleadoPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -905,15 +780,10 @@ abstract class BaseSucursalempleadoPeer
         EmpleadoPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
 
-        RolPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + RolPeer::NUM_HYDRATE_COLUMNS;
-
         SucursalPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + SucursalPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + SucursalPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(SucursalempleadoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
-
-        $criteria->addJoin(SucursalempleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
 
         $criteria->addJoin(SucursalempleadoPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
 
@@ -952,40 +822,22 @@ abstract class BaseSucursalempleadoPeer
                 $obj2->addSucursalempleado($obj1);
             } // if joined row not null
 
-            // Add objects for joined Rol rows
-
-            $key3 = RolPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-            if ($key3 !== null) {
-                $obj3 = RolPeer::getInstanceFromPool($key3);
-                if (!$obj3) {
-
-                    $cls = RolPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    RolPeer::addInstanceToPool($obj3, $key3);
-                } // if obj3 loaded
-
-                // Add the $obj1 (Sucursalempleado) to the collection in $obj3 (Rol)
-                $obj3->addSucursalempleado($obj1);
-            } // if joined row not null
-
             // Add objects for joined Sucursal rows
 
-            $key4 = SucursalPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-            if ($key4 !== null) {
-                $obj4 = SucursalPeer::getInstanceFromPool($key4);
-                if (!$obj4) {
+            $key3 = SucursalPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = SucursalPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
 
                     $cls = SucursalPeer::getOMClass();
 
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    SucursalPeer::addInstanceToPool($obj4, $key4);
-                } // if obj4 loaded
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    SucursalPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
 
-                // Add the $obj1 (Sucursalempleado) to the collection in $obj4 (Sucursal)
-                $obj4->addSucursalempleado($obj1);
+                // Add the $obj1 (Sucursalempleado) to the collection in $obj3 (Sucursal)
+                $obj3->addSucursalempleado($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -1031,61 +883,6 @@ abstract class BaseSucursalempleadoPeer
         if ($con === null) {
             $con = Propel::getConnection(SucursalempleadoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-
-        $criteria->addJoin(SucursalempleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
-
-        $criteria->addJoin(SucursalempleadoPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Rol table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptRol(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(SucursalempleadoPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            SucursalempleadoPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(SucursalempleadoPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(SucursalempleadoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(SucursalempleadoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $criteria->addJoin(SucursalempleadoPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
 
@@ -1140,8 +937,6 @@ abstract class BaseSucursalempleadoPeer
 
         $criteria->addJoin(SucursalempleadoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
-        $criteria->addJoin(SucursalempleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
-
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1179,13 +974,8 @@ abstract class BaseSucursalempleadoPeer
         SucursalempleadoPeer::addSelectColumns($criteria);
         $startcol2 = SucursalempleadoPeer::NUM_HYDRATE_COLUMNS;
 
-        RolPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + RolPeer::NUM_HYDRATE_COLUMNS;
-
         SucursalPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + SucursalPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(SucursalempleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
+        $startcol3 = $startcol2 + SucursalPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(SucursalempleadoPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
 
@@ -1207,139 +997,22 @@ abstract class BaseSucursalempleadoPeer
                 SucursalempleadoPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined Rol rows
-
-                $key2 = RolPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = RolPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = RolPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    RolPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Sucursalempleado) to the collection in $obj2 (Rol)
-                $obj2->addSucursalempleado($obj1);
-
-            } // if joined row is not null
-
                 // Add objects for joined Sucursal rows
 
-                $key3 = SucursalPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = SucursalPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
+                $key2 = SucursalPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = SucursalPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
 
                         $cls = SucursalPeer::getOMClass();
 
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    SucursalPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Sucursalempleado) to the collection in $obj3 (Sucursal)
-                $obj3->addSucursalempleado($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Sucursalempleado objects pre-filled with all related objects except Rol.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Sucursalempleado objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptRol(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(SucursalempleadoPeer::DATABASE_NAME);
-        }
-
-        SucursalempleadoPeer::addSelectColumns($criteria);
-        $startcol2 = SucursalempleadoPeer::NUM_HYDRATE_COLUMNS;
-
-        EmpleadoPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
-
-        SucursalPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + SucursalPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(SucursalempleadoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
-
-        $criteria->addJoin(SucursalempleadoPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = SucursalempleadoPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = SucursalempleadoPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = SucursalempleadoPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                SucursalempleadoPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Empleado rows
-
-                $key2 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = EmpleadoPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = EmpleadoPeer::getOMClass();
-
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    EmpleadoPeer::addInstanceToPool($obj2, $key2);
+                    SucursalPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (Sucursalempleado) to the collection in $obj2 (Empleado)
+                // Add the $obj1 (Sucursalempleado) to the collection in $obj2 (Sucursal)
                 $obj2->addSucursalempleado($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Sucursal rows
-
-                $key3 = SucursalPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = SucursalPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = SucursalPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    SucursalPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Sucursalempleado) to the collection in $obj3 (Sucursal)
-                $obj3->addSucursalempleado($obj1);
 
             } // if joined row is not null
 
@@ -1378,12 +1051,7 @@ abstract class BaseSucursalempleadoPeer
         EmpleadoPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
 
-        RolPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + RolPeer::NUM_HYDRATE_COLUMNS;
-
         $criteria->addJoin(SucursalempleadoPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
-
-        $criteria->addJoin(SucursalempleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1419,25 +1087,6 @@ abstract class BaseSucursalempleadoPeer
 
                 // Add the $obj1 (Sucursalempleado) to the collection in $obj2 (Empleado)
                 $obj2->addSucursalempleado($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Rol rows
-
-                $key3 = RolPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = RolPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = RolPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    RolPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Sucursalempleado) to the collection in $obj3 (Rol)
-                $obj3->addSucursalempleado($obj1);
 
             } // if joined row is not null
 

@@ -9,13 +9,11 @@
  * @method SucursalempleadoQuery orderByIdsucursalempleado($order = Criteria::ASC) Order by the idsucursalempleado column
  * @method SucursalempleadoQuery orderByIdsucursal($order = Criteria::ASC) Order by the idsucursal column
  * @method SucursalempleadoQuery orderByIdempleado($order = Criteria::ASC) Order by the idempleado column
- * @method SucursalempleadoQuery orderByIdrol($order = Criteria::ASC) Order by the idrol column
  * @method SucursalempleadoQuery orderBySucursalempleadoEstatus($order = Criteria::ASC) Order by the sucursalempleado_estatus column
  *
  * @method SucursalempleadoQuery groupByIdsucursalempleado() Group by the idsucursalempleado column
  * @method SucursalempleadoQuery groupByIdsucursal() Group by the idsucursal column
  * @method SucursalempleadoQuery groupByIdempleado() Group by the idempleado column
- * @method SucursalempleadoQuery groupByIdrol() Group by the idrol column
  * @method SucursalempleadoQuery groupBySucursalempleadoEstatus() Group by the sucursalempleado_estatus column
  *
  * @method SucursalempleadoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -26,10 +24,6 @@
  * @method SucursalempleadoQuery rightJoinEmpleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Empleado relation
  * @method SucursalempleadoQuery innerJoinEmpleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Empleado relation
  *
- * @method SucursalempleadoQuery leftJoinRol($relationAlias = null) Adds a LEFT JOIN clause to the query using the Rol relation
- * @method SucursalempleadoQuery rightJoinRol($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Rol relation
- * @method SucursalempleadoQuery innerJoinRol($relationAlias = null) Adds a INNER JOIN clause to the query using the Rol relation
- *
  * @method SucursalempleadoQuery leftJoinSucursal($relationAlias = null) Adds a LEFT JOIN clause to the query using the Sucursal relation
  * @method SucursalempleadoQuery rightJoinSucursal($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Sucursal relation
  * @method SucursalempleadoQuery innerJoinSucursal($relationAlias = null) Adds a INNER JOIN clause to the query using the Sucursal relation
@@ -39,13 +33,11 @@
  *
  * @method Sucursalempleado findOneByIdsucursal(int $idsucursal) Return the first Sucursalempleado filtered by the idsucursal column
  * @method Sucursalempleado findOneByIdempleado(int $idempleado) Return the first Sucursalempleado filtered by the idempleado column
- * @method Sucursalempleado findOneByIdrol(int $idrol) Return the first Sucursalempleado filtered by the idrol column
  * @method Sucursalempleado findOneBySucursalempleadoEstatus(boolean $sucursalempleado_estatus) Return the first Sucursalempleado filtered by the sucursalempleado_estatus column
  *
  * @method array findByIdsucursalempleado(int $idsucursalempleado) Return Sucursalempleado objects filtered by the idsucursalempleado column
  * @method array findByIdsucursal(int $idsucursal) Return Sucursalempleado objects filtered by the idsucursal column
  * @method array findByIdempleado(int $idempleado) Return Sucursalempleado objects filtered by the idempleado column
- * @method array findByIdrol(int $idrol) Return Sucursalempleado objects filtered by the idrol column
  * @method array findBySucursalempleadoEstatus(boolean $sucursalempleado_estatus) Return Sucursalempleado objects filtered by the sucursalempleado_estatus column
  *
  * @package    propel.generator.zarely.om
@@ -154,7 +146,7 @@ abstract class BaseSucursalempleadoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idsucursalempleado`, `idsucursal`, `idempleado`, `idrol`, `sucursalempleado_estatus` FROM `sucursalempleado` WHERE `idsucursalempleado` = :p0';
+        $sql = 'SELECT `idsucursalempleado`, `idsucursal`, `idempleado`, `sucursalempleado_estatus` FROM `sucursalempleado` WHERE `idsucursalempleado` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -374,50 +366,6 @@ abstract class BaseSucursalempleadoQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the idrol column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByIdrol(1234); // WHERE idrol = 1234
-     * $query->filterByIdrol(array(12, 34)); // WHERE idrol IN (12, 34)
-     * $query->filterByIdrol(array('min' => 12)); // WHERE idrol >= 12
-     * $query->filterByIdrol(array('max' => 12)); // WHERE idrol <= 12
-     * </code>
-     *
-     * @see       filterByRol()
-     *
-     * @param     mixed $idrol The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return SucursalempleadoQuery The current query, for fluid interface
-     */
-    public function filterByIdrol($idrol = null, $comparison = null)
-    {
-        if (is_array($idrol)) {
-            $useMinMax = false;
-            if (isset($idrol['min'])) {
-                $this->addUsingAlias(SucursalempleadoPeer::IDROL, $idrol['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($idrol['max'])) {
-                $this->addUsingAlias(SucursalempleadoPeer::IDROL, $idrol['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(SucursalempleadoPeer::IDROL, $idrol, $comparison);
-    }
-
-    /**
      * Filter the query on the sucursalempleado_estatus column
      *
      * Example usage:
@@ -518,82 +466,6 @@ abstract class BaseSucursalempleadoQuery extends ModelCriteria
         return $this
             ->joinEmpleado($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Empleado', 'EmpleadoQuery');
-    }
-
-    /**
-     * Filter the query by a related Rol object
-     *
-     * @param   Rol|PropelObjectCollection $rol The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 SucursalempleadoQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByRol($rol, $comparison = null)
-    {
-        if ($rol instanceof Rol) {
-            return $this
-                ->addUsingAlias(SucursalempleadoPeer::IDROL, $rol->getIdrol(), $comparison);
-        } elseif ($rol instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(SucursalempleadoPeer::IDROL, $rol->toKeyValue('PrimaryKey', 'Idrol'), $comparison);
-        } else {
-            throw new PropelException('filterByRol() only accepts arguments of type Rol or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Rol relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return SucursalempleadoQuery The current query, for fluid interface
-     */
-    public function joinRol($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Rol');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Rol');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Rol relation Rol object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   RolQuery A secondary query class using the current class as primary query
-     */
-    public function useRolQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinRol($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Rol', 'RolQuery');
     }
 
     /**

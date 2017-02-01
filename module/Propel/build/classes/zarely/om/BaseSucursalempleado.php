@@ -48,12 +48,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
     protected $idempleado;
 
     /**
-     * The value for the idrol field.
-     * @var        int
-     */
-    protected $idrol;
-
-    /**
      * The value for the sucursalempleado_estatus field.
      * @var        boolean
      */
@@ -63,11 +57,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
      * @var        Empleado
      */
     protected $aEmpleado;
-
-    /**
-     * @var        Rol
-     */
-    protected $aRol;
 
     /**
      * @var        Sucursal
@@ -125,17 +114,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
     {
 
         return $this->idempleado;
-    }
-
-    /**
-     * Get the [idrol] column value.
-     *
-     * @return int
-     */
-    public function getIdrol()
-    {
-
-        return $this->idrol;
     }
 
     /**
@@ -221,31 +199,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
     } // setIdempleado()
 
     /**
-     * Set the value of [idrol] column.
-     *
-     * @param  int $v new value
-     * @return Sucursalempleado The current object (for fluent API support)
-     */
-    public function setIdrol($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->idrol !== $v) {
-            $this->idrol = $v;
-            $this->modifiedColumns[] = SucursalempleadoPeer::IDROL;
-        }
-
-        if ($this->aRol !== null && $this->aRol->getIdrol() !== $v) {
-            $this->aRol = null;
-        }
-
-
-        return $this;
-    } // setIdrol()
-
-    /**
      * Sets the value of the [sucursalempleado_estatus] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -309,8 +262,7 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
             $this->idsucursalempleado = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idsucursal = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idempleado = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->idrol = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->sucursalempleado_estatus = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+            $this->sucursalempleado_estatus = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -320,7 +272,7 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = SucursalempleadoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = SucursalempleadoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Sucursalempleado object", $e);
@@ -348,9 +300,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
         }
         if ($this->aEmpleado !== null && $this->idempleado !== $this->aEmpleado->getIdempleado()) {
             $this->aEmpleado = null;
-        }
-        if ($this->aRol !== null && $this->idrol !== $this->aRol->getIdrol()) {
-            $this->aRol = null;
         }
     } // ensureConsistency
 
@@ -392,7 +341,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aEmpleado = null;
-            $this->aRol = null;
             $this->aSucursal = null;
         } // if (deep)
     }
@@ -519,13 +467,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
                 $this->setEmpleado($this->aEmpleado);
             }
 
-            if ($this->aRol !== null) {
-                if ($this->aRol->isModified() || $this->aRol->isNew()) {
-                    $affectedRows += $this->aRol->save($con);
-                }
-                $this->setRol($this->aRol);
-            }
-
             if ($this->aSucursal !== null) {
                 if ($this->aSucursal->isModified() || $this->aSucursal->isNew()) {
                     $affectedRows += $this->aSucursal->save($con);
@@ -579,9 +520,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
         if ($this->isColumnModified(SucursalempleadoPeer::IDEMPLEADO)) {
             $modifiedColumns[':p' . $index++]  = '`idempleado`';
         }
-        if ($this->isColumnModified(SucursalempleadoPeer::IDROL)) {
-            $modifiedColumns[':p' . $index++]  = '`idrol`';
-        }
         if ($this->isColumnModified(SucursalempleadoPeer::SUCURSALEMPLEADO_ESTATUS)) {
             $modifiedColumns[':p' . $index++]  = '`sucursalempleado_estatus`';
         }
@@ -604,9 +542,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
                         break;
                     case '`idempleado`':
                         $stmt->bindValue($identifier, $this->idempleado, PDO::PARAM_INT);
-                        break;
-                    case '`idrol`':
-                        $stmt->bindValue($identifier, $this->idrol, PDO::PARAM_INT);
                         break;
                     case '`sucursalempleado_estatus`':
                         $stmt->bindValue($identifier, (int) $this->sucursalempleado_estatus, PDO::PARAM_INT);
@@ -716,12 +651,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->aRol !== null) {
-                if (!$this->aRol->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aRol->getValidationFailures());
-                }
-            }
-
             if ($this->aSucursal !== null) {
                 if (!$this->aSucursal->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aSucursal->getValidationFailures());
@@ -779,9 +708,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
                 return $this->getIdempleado();
                 break;
             case 3:
-                return $this->getIdrol();
-                break;
-            case 4:
                 return $this->getSucursalempleadoEstatus();
                 break;
             default:
@@ -816,8 +742,7 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
             $keys[0] => $this->getIdsucursalempleado(),
             $keys[1] => $this->getIdsucursal(),
             $keys[2] => $this->getIdempleado(),
-            $keys[3] => $this->getIdrol(),
-            $keys[4] => $this->getSucursalempleadoEstatus(),
+            $keys[3] => $this->getSucursalempleadoEstatus(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -827,9 +752,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->aEmpleado) {
                 $result['Empleado'] = $this->aEmpleado->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aRol) {
-                $result['Rol'] = $this->aRol->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aSucursal) {
                 $result['Sucursal'] = $this->aSucursal->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -878,9 +800,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
                 $this->setIdempleado($value);
                 break;
             case 3:
-                $this->setIdrol($value);
-                break;
-            case 4:
                 $this->setSucursalempleadoEstatus($value);
                 break;
         } // switch()
@@ -910,8 +829,7 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setIdsucursalempleado($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdsucursal($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setIdempleado($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setIdrol($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setSucursalempleadoEstatus($arr[$keys[4]]);
+        if (array_key_exists($keys[3], $arr)) $this->setSucursalempleadoEstatus($arr[$keys[3]]);
     }
 
     /**
@@ -926,7 +844,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
         if ($this->isColumnModified(SucursalempleadoPeer::IDSUCURSALEMPLEADO)) $criteria->add(SucursalempleadoPeer::IDSUCURSALEMPLEADO, $this->idsucursalempleado);
         if ($this->isColumnModified(SucursalempleadoPeer::IDSUCURSAL)) $criteria->add(SucursalempleadoPeer::IDSUCURSAL, $this->idsucursal);
         if ($this->isColumnModified(SucursalempleadoPeer::IDEMPLEADO)) $criteria->add(SucursalempleadoPeer::IDEMPLEADO, $this->idempleado);
-        if ($this->isColumnModified(SucursalempleadoPeer::IDROL)) $criteria->add(SucursalempleadoPeer::IDROL, $this->idrol);
         if ($this->isColumnModified(SucursalempleadoPeer::SUCURSALEMPLEADO_ESTATUS)) $criteria->add(SucursalempleadoPeer::SUCURSALEMPLEADO_ESTATUS, $this->sucursalempleado_estatus);
 
         return $criteria;
@@ -993,7 +910,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
     {
         $copyObj->setIdsucursal($this->getIdsucursal());
         $copyObj->setIdempleado($this->getIdempleado());
-        $copyObj->setIdrol($this->getIdrol());
         $copyObj->setSucursalempleadoEstatus($this->getSucursalempleadoEstatus());
 
         if ($deepCopy && !$this->startCopy) {
@@ -1106,58 +1022,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a Rol object.
-     *
-     * @param                  Rol $v
-     * @return Sucursalempleado The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setRol(Rol $v = null)
-    {
-        if ($v === null) {
-            $this->setIdrol(NULL);
-        } else {
-            $this->setIdrol($v->getIdrol());
-        }
-
-        $this->aRol = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Rol object, it will not be re-added.
-        if ($v !== null) {
-            $v->addSucursalempleado($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Rol object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Rol The associated Rol object.
-     * @throws PropelException
-     */
-    public function getRol(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aRol === null && ($this->idrol !== null) && $doQuery) {
-            $this->aRol = RolQuery::create()->findPk($this->idrol, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aRol->addSucursalempleados($this);
-             */
-        }
-
-        return $this->aRol;
-    }
-
-    /**
      * Declares an association between this object and a Sucursal object.
      *
      * @param                  Sucursal $v
@@ -1217,7 +1081,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
         $this->idsucursalempleado = null;
         $this->idsucursal = null;
         $this->idempleado = null;
-        $this->idrol = null;
         $this->sucursalempleado_estatus = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
@@ -1244,9 +1107,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
             if ($this->aEmpleado instanceof Persistent) {
               $this->aEmpleado->clearAllReferences($deep);
             }
-            if ($this->aRol instanceof Persistent) {
-              $this->aRol->clearAllReferences($deep);
-            }
             if ($this->aSucursal instanceof Persistent) {
               $this->aSucursal->clearAllReferences($deep);
             }
@@ -1255,7 +1115,6 @@ abstract class BaseSucursalempleado extends BaseObject implements Persistent
         } // if ($deep)
 
         $this->aEmpleado = null;
-        $this->aRol = null;
         $this->aSucursal = null;
     }
 

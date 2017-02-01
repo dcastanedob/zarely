@@ -223,8 +223,13 @@ class EmpleadosController extends AbstractActionController
             return $this->redirect()->toUrl('/catalogo/empleados');
         }
 
-
-        $form = new \Application\Catalogo\Form\EmpleadosForm();
+        $roles = \RolQuery::create()->find();
+        $roles_array = array();
+        $value = new \Rol();
+        foreach ($roles as $value){
+            $roles_array[$value->getIdrol()] = $value->getRolNombre();
+        }
+        $form = new \Application\Catalogo\Form\EmpleadosForm($roles_array );
         $view_model = new ViewModel();
         $view_model->setTemplate('application/catalogo/empleados/nuevo');
         $view_model->setVariables(array(
@@ -250,7 +255,8 @@ class EmpleadosController extends AbstractActionController
             if($request->isPost())
             {
                 $post_data = $request->getPost();
-
+                $post_data['empleado_fechaentrada'] = date_create_from_format('d/m/Y', $post_data['empleado_fechaentrada']);
+                $post_data['empleado_fechanacimiento'] = date_create_from_format('d/m/Y', $post_data['empleado_fechanacimiento']);
                 foreach ($post_data as $key => $value) {
                     if(\EmpleadoPeer::getTableMap()->hasColumn($key))
                     {
@@ -262,8 +268,13 @@ class EmpleadosController extends AbstractActionController
 
                 return $this->redirect()->toUrl('/catalogo/empleados');
             }
-
-            $form = new \Application\Catalogo\Form\EmpleadosForm();
+            $roles = \RolQuery::create()->find();
+            $roles_array = array();
+            $value = new \Rol();
+            foreach ($roles as $value){
+                $roles_array[$value->getIdrol()] = $value->getRolNombre();
+            }
+            $form = new \Application\Catalogo\Form\EmpleadosForm($roles_array );
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
             $form->get('empleado_fechaentrada')->setValue($entity->getEmpleadoFechaentrada('d/m/Y'));

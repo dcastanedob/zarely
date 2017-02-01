@@ -170,31 +170,30 @@ class MarcasController extends AbstractActionController
         }
 	}
         
-        public function getTallajes($data){
-            
-            $tallajes = \MarcatallajeQuery::create()->select('idtallaje')->filterByIdmarca($data['idmarca'])->find()->toArray();
-            return $tallajes;
+    public function getTallajes($data){
+        
+        $tallajes = \MarcatallajeQuery::create()->select('idtallaje')->filterByIdmarca($data['idmarca'])->find()->toArray();
+        return $tallajes;
 
-        }
+    }
 
-        public function getAction(){
+    public function getAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
             
-            $request = $this->getRequest();
-            if($request->isPost()){
-                
-                $post_data = $request->getPost();
-                
-                if($post_data['name'] == 'tallajes'){
+            $post_data = $request->getPost();
+            if($post_data['name'] == 'tallajes'){
                     
-                    $response = $this->getTallajes($post_data['data']);
-                    return $this->getResponse()->setContent(json_encode($response));
-                    
-                }
+                $response = $this->getTallajes($post_data['data']);
+                return $this->getResponse()->setContent(json_encode($response));
                 
-                
-            };
+            }
             
-        }
+            
+        };
+        
+    }
 
 
 
@@ -229,13 +228,13 @@ class MarcasController extends AbstractActionController
                 
     		$entity->save();
                 
-                //TALLAJE
-                foreach ($post_data['tallajes_array'] as $value){
-                    $marcatallaje = new \Marcatallaje();
-                    $marcatallaje->setIdmarca($entity->getIdmarca())
-                                 ->setIdtallaje($value)
-                                 ->save();
-                }
+            //TALLAJE
+            foreach ($post_data['tallajes_array'] as $value){
+                $marcatallaje = new \Marcatallaje();
+                $marcatallaje->setIdmarca($entity->getIdmarca())
+                             ->setIdtallaje($value)
+                             ->save();
+            }
     		$this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
     		return $this->redirect()->toUrl('/catalogo/marcas');

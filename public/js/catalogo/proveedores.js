@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.empleados= function(data){
+    $.fn.proveedores= function(data){
         var _this = $(this);
-        var plugin = _this.data('empleados');
+        var plugin = _this.data('proveedores');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.empleados(this, data);
+            plugin = new $.proveedores(this, data);
             
-            _this.data('empleados', plugin);
+            _this.data('proveedores', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.empleados = function(container, options){
+    $.proveedores = function(container, options){
         
         var plugin = this;
        
@@ -61,14 +61,14 @@
 
                     ajax:{
                         method: 'POST',
-                        url:'/catalogo/empleados/serverside',
+                        url:'/catalogo/proveedores/serverside',
                     },
                     columns:[
-                        {"data":"idempleado","name":"idempleado","orderable":true},
-                        {"data":"empleado_nombre","name":"empleado_nombre","orderable":true},
-                        {"data":"empleado_telefono","name":"empleado_telefono","orderable":true},
-                        {"data":"empleado_email","name":"empleado_email","orderable":true},
-                        {"data":"empleado_estatus","name":"empleado_estatus","orderable":true},
+                        {"data":"idproveedor","name":"idproveedor","orderable":true},
+                        {"data":"proveedor_nombrecomercial","name":"proveedor_nombrecomercial","orderable":true},
+                        {"data":"proveedor_celular","name":"proveedor_celular","orderable":true},
+                        {"data":"proveedor_fechainicio","name":"proveedor_fechainicio","orderable":true},
+                        {"data":"proveedor_email","name":"proveedor_email","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},
                     ],
                     proccesing: true,
@@ -86,7 +86,7 @@
                                           '<span class="sr-only">Close</span>',
                                         '</button>',
                                       '</div>',
-                                      '<form action="/catalogo/empleados/eliminar/'+id+'" method="POST">',
+                                      '<form action="/catalogo/proveedores/eliminar/'+id+'" method="POST">',
                                      ' <div class="modal-body">',
                                         '<div class="text-center">',
                                          ' <span class="text-primary icon icon-times-circle icon-5x"></span>',
@@ -112,7 +112,47 @@
 
 
         }
+        
+        plugin.initForm = function(){
 
+            $container.find('select[name*=idmarca]').multipleSelect({
+                filter:true,
+                selectAllText: 'Seleccionar Todos',
+                width: '100%',
+                allSelected: 'Todos seleccionados',
+                countSelected: '# de % Seleccionados',
+                //multiple: true,
+                //multipleWidth: 100
+            });
+            
+            $('button[type=submit]').on('click',function(e){
+                e.preventDefault();
+                var marcas = $container.find('select[name*=idmarca]').multipleSelect("getSelects");
+                marcas.forEach(function(value){
+                    var $input = $('<input type="hidden" name="marcas_array[]">');
+                    $input.val(value);
+                    $container.find('form').append($input);
+                });
+                $container.find('form').submit();
+                
+            });
+            
+            var idproveedor = $('input[name=idproveedor]').val();
+            $.ajax({
+                url:'/catalogo/proveedores/get',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    name: 'marcas',
+                    data: {
+                        idproveedor:idproveedor,
+                    },
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $container.find('select[name*=idmarca]').multipleSelect("setSelects", data);
+                }
+            });
+        };
         /*
         * Plugin initializing
         */

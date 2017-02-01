@@ -135,6 +135,7 @@
             });
             
             var idmarca = $('input[name=idmarca]').val();
+            
             $.ajax({
                 url:'/catalogo/marcas/get',
                 type: 'POST',

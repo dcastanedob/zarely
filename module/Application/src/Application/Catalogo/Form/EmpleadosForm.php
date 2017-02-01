@@ -6,7 +6,7 @@ use Zend\Form\Form;
 
 class EmpleadosForm extends Form
 {
-    public function __construct()
+    public function __construct($roles_array = array())
     {
         // we want to ignore the name passed
         parent::__construct('EmpleadosForm');
@@ -226,6 +226,20 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'idrol',
+            'type' => 'Select',
+            'options' => array(
+              
+                'value_options' => $roles_array,
+            ),
+            'attributes' => array(
+                'required' => true,
+                'class' => 'form-control infput-thick',
+               
             ),
         ));
     }
