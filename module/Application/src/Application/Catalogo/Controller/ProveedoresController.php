@@ -16,13 +16,11 @@ class ProveedoresController extends AbstractActionController
 {
 
     public $column_map = array(
-        0 => 'Idempleado',
-        1 => 'EmpleadoNombre',
-        2 => 'EmpleadoApaterno',
-        3 => 'EmpleadoAmaterno',
-        4 => 'EmpleadoTelefono',
-        5=> 'EmpleadoEmail',
-        6 => 'EmpleadoAEstatus',
+        0 => 'Idproveedor',
+        1 => 'ProveedorNombrecomercial',
+        2 =>'ProveedorCelular',
+        3 => 'ProveedorEmail',
+        4 => 'ProveedorFechainicio'
     );
 
     public function serversideAction()
@@ -31,7 +29,7 @@ class ProveedoresController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
            
-            $query = new \EmpleadoQuery();
+            $query = new \ProveedorQuery();
             
              /*JOIN
             $query->useCategoriaRelatedByIdcategoriaQuery('a')->endUse();
@@ -77,20 +75,20 @@ class ProveedoresController extends AbstractActionController
                 }
                 $c = new \Criteria();
                
-                $c1= $c->getNewCriterion('empleado.idempleado', '%'.$search_value.'%', \Criteria::LIKE);
-                $c2= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1= $c->getNewCriterion('proveedor.idproveedor', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('proveedor.proveedor_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('empleado.empleado_telefono', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c3= $c->getNewCriterion('proveedor.proveedor_celular', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c4= $c->getNewCriterion('empleado.empleado_email', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c4= $c->getNewCriterion('proveedor.proveedor_email', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c5= $c->getNewCriterion('empleado.empleado_estatus', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c5= $c->getNewCriterion('proveedor.proveedor_fechainicio', '%'.$search_value.'%', \Criteria::LIKE);
 
           
                 $c1->addOr($c2)->addOr($c3)->addOr($c4)->addOr($c5);
 
                 $query->addAnd($c1);
-                $query->groupByIdempleado();
+                $query->groupByIdproveedor();
                 
                 $records_filtered = $query->count();
                 
@@ -119,17 +117,14 @@ class ProveedoresController extends AbstractActionController
            
             
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+         
+                $tmp['DT_RowId'] = $value['idproveedor'];
+                $tmp['idproveedor'] = $value['idproveedor'];
+                $tmp['proveedor_nombrecomercial'] = $value['proveedor_nombrecomercial'];
+                $tmp['proveedor_celular'] = $value['proveedor_celular'];
+                $tmp['proveedor_email'] = $value['proveedor_email'];
+                $tmp['proveedor_fechainicio'] = $value['proveedor_fechainicio'];
 
-                if($value['empleado_estatus']){
-                    $tmp['empleado_estatus'] = "Activo";
-                }else{
-                    $tmp['empleado_estatus'] = "Inactivo";
-                }
-                $tmp['DT_RowId'] = $value['idempleado'];
-                $tmp['idempleado'] = $value['idempleado'];
-                $tmp['empleado_nombre'] = $value['empleado_nombre'];
-                $tmp['empleado_telefono'] = $value['empleado_telefono'];
-                $tmp['empleado_email'] = $value['empleado_email'];
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
                     <span class="icon icon-gear icon-lg icon-fw"></span>
@@ -138,7 +133,7 @@ class ProveedoresController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/catalogo/empleados/ver/' . $value['idempleado'] . '">
+                      <a href="/catalogo/proveedores/ver/' . $value['idproveedor'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -167,7 +162,6 @@ class ProveedoresController extends AbstractActionController
                 </div></td>';
                 
                 $data[] = $tmp;
- 
             }   
       
             //El arreglo que regresamos
@@ -184,12 +178,40 @@ class ProveedoresController extends AbstractActionController
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }
+        
+    public function getMarcas($data){
+        
+        $marcas = \ProveedormarcaQuery::create()->select('idmarca')->filterByIdproveedor($data['idproveedor'])->find()->toArray();
+        return $marcas;
 
-    public function indexAction()
+    }
+
+    public function getAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+                
+            if($post_data['name'] == 'marcas'){
+                
+                $response = $this->getMarcas($post_data['data']);
+                return $this->getResponse()->setContent(json_encode($response));
+                
+            }
+            
+            
+        };
+        
+    }
+
+
+
+
+        public function indexAction()
     {
         $view_model = new ViewModel();
-
-        $view_model->setTemplate('application/catalogo/empleados/index');
+        $view_model->setTemplate('application/catalogo/proveedores/index');
         $view_model->setVariables(array(
             'messages' =>$this->flashMessenger()
         ));
@@ -204,24 +226,38 @@ class ProveedoresController extends AbstractActionController
         {
             $post_data = $request->getPost();
 
-            $entity = new \Empleado();
+            $entity = new \Proveedor();
 
             foreach ($post_data as $key => $value) {
-                if(\EmpleadoPeer::getTableMap()->hasColumn($key))
+                if(\ProveedorPeer::getTableMap()->hasColumn($key))
                 {
                     $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                 }
             }
+                
+                
             $entity->save();
+                //Marca
+                foreach ($post_data['marcas_array'] as $value){
+                    $proveedormarca = new \Proveedormarca();
+                    $proveedormarca->setIdproveedor($entity->getIdproveedor())
+                                 ->setIdmarca($value)
+                                 ->save();
+                }
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-            return $this->redirect()->toUrl('/catalogo/empleados');
+            return $this->redirect()->toUrl('/catalogo/proveedores');
         }
 
-
-        $form = new \Application\Catalogo\Form\EmpleadosForm();
+        $marcas = \MarcaQuery::create()->find();
+        $marcas_array = array();
+        $value = new \Marca();
+        foreach ($marcas as $value){
+            $marcas_array[$value->getIdmarca()] = $value->getMarcaNombre();
+        }
+        $form = new \Application\Catalogo\Form\ProveedoresForm($marcas_array);
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/catalogo/empleados/nuevo');
+        $view_model->setTemplate('application/catalogo/proveedores/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
@@ -236,47 +272,61 @@ class ProveedoresController extends AbstractActionController
 
         $id = $this->params()->fromRoute('id');
 
-        $exists = \EmpleadoQuery::create()->filterByIdempleado($id)->exists();
+        $exists = \ProveedorQuery::create()->filterByIdproveedor($id)->exists();
 
         if($exists)
         {
-            $entity = \EmpleadoQuery::create()->findPk($id);
+            $entity = \ProveedorQuery::create()->findPk($id);
 
             if($request->isPost())
             {
                 $post_data = $request->getPost();
+                     
 
                 foreach ($post_data as $key => $value) {
-                    if(\EmpleadoPeer::getTableMap()->hasColumn($key))
+                    if(\ProveedorPeer::getTableMap()->hasColumn($key))
                     {
                         $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                     }
                 }
+                        
+                    //TALLAJE
+                    $entity->getProveedormarcas()->delete();
+                    foreach ($post_data['marcas_array'] as $value){
+                        $proveedormarca = new \Proveedormarca();
+                        $proveedormarca->setIdproveedor($entity->getIdproveedor())
+                                     ->setIdmarca($value)
+                                     ->save();
+                    }
+                        
                 $entity->save();
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-                return $this->redirect()->toUrl('/catalogo/empleados');
+                return $this->redirect()->toUrl('/catalogo/proveedores');
+            }
+                
+            $marcas = \MarcaQuery::create()->find();
+            $marcas_array = array();
+            $value = new \Marca();
+            foreach ($marcas as $value){
+                $marcas_array[$value->getIdmarca()] = $value->getMarcaNombre();
             }
 
-            $form = new \Application\Catalogo\Form\EmpleadosForm();
-
+            $form = new \Application\Catalogo\Form\ProveedoresForm($marcas_array);
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
 
-
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/catalogo/empleados/ver');
-
+            $view_model->setTemplate('application/catalogo/proveedores/ver');
             $view_model->setVariables(array(
                 'form' => $form,
-                'entity' =>$entity
+                'entity' => $entity
             ));
-
             return $view_model;
-        }else
-        {
-            $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/empleados');   
-        }
+            }else
+            {
+                $this->flashMessenger()->addErrorMessage('Id inválido');
+                return $this->redirect()->toUrl('/catalogo/proveedores');    
+            }
     }
 
     public function eliminarAction(){
@@ -285,7 +335,7 @@ class ProveedoresController extends AbstractActionController
         if($request->isPost())
         {
             $id = $this->params()->fromRoute('id');
-            $entity = \EmpleadoQuery::Create()->findPk($id);
+            $entity = \ProveedorQuery::Create()->findPk($id);
             $entity->delete();
 
             if($entity->isDeleted()){
@@ -295,7 +345,7 @@ class ProveedoresController extends AbstractActionController
             }
         }
 
-        return $this->redirect()->toUrl('/catalogo/empleados');
+        return $this->redirect()->toUrl('/catalogo/proveedores');
     }
 
 

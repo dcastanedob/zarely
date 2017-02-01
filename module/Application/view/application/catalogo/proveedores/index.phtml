@@ -1,6 +1,6 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title">Empleados</h1>
+	    <h1 class="title-bar-title">Proveedores</h1>
 	    
 	</div>
 
@@ -23,7 +23,7 @@
 
 	<div class="row">
 		<div class="col-md-12">
-			<a class="btn btn-bg btn-success btn-labeled pull-right" href="/catalogo/empleados/nuevo">
+			<a class="btn btn-bg btn-success btn-labeled pull-right" href="/catalogo/proveedores/nuevo">
               Agregar
               <span class="btn-label btn-label-right">
                 <span class="icon icon-plus-square icon-lg icon-fw"></span>
@@ -39,9 +39,9 @@
 		            <tr>
 		                <th>ID</th>
 		                <th>Nombre</th>
-		                <th>Telefono</th>
+		                <th>Celular</th>
+		                <th>Fecha de inicio</th>
 		                <th>Email</th>
-		                <th>Estatus</th>
 		                <th>Opciones</th>
 		            </tr>
 		        </thead>
@@ -49,9 +49,9 @@
 		            <tr>
 		                <th>ID</th>
 		                <th>Nombre</th>
-		                <th>Telefono</th>
+		                <th>Celular</th>
+		                <th>Fecha de inicio</th>
 		                <th>Email</th>
-		                <th>Estatus</th>
 		                <th>Opciones</th>
 		            </tr>
 		        </tfoot>
@@ -63,9 +63,10 @@
 	</div>
 
 </div>
-<script src="/js/catalogo/empleados.js"></script>
+<script src="/js/catalogo/proveedores.js"></script>
 
 <script>
-	var empleados = $('.body_container').empleados();
-	empleados.list();
+	var proveedores = $('.body_container').proveedores();
+	proveedores.list();
+
 </script>

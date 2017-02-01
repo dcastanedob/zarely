@@ -162,6 +162,17 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $empleado_estado;
 
     /**
+     * The value for the idrol field.
+     * @var        int
+     */
+    protected $idrol;
+
+    /**
+     * @var        Rol
+     */
+    protected $aRol;
+
+    /**
      * @var        PropelObjectCollection|Sucursalempleado[] Collection to store aggregation of Sucursalempleado objects.
      */
     protected $collSucursalempleados;
@@ -491,6 +502,17 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     {
 
         return $this->empleado_estado;
+    }
+
+    /**
+     * Get the [idrol] column value.
+     *
+     * @return int
+     */
+    public function getIdrol()
+    {
+
+        return $this->idrol;
     }
 
     /**
@@ -976,6 +998,31 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     } // setEmpleadoEstado()
 
     /**
+     * Set the value of [idrol] column.
+     *
+     * @param  int $v new value
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setIdrol($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idrol !== $v) {
+            $this->idrol = $v;
+            $this->modifiedColumns[] = EmpleadoPeer::IDROL;
+        }
+
+        if ($this->aRol !== null && $this->aRol->getIdrol() !== $v) {
+            $this->aRol = null;
+        }
+
+
+        return $this;
+    } // setIdrol()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1029,6 +1076,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->empleado_codigopostal = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->empleado_ciudad = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
             $this->empleado_estado = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
+            $this->idrol = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1038,7 +1086,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 22; // 22 = EmpleadoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 23; // 23 = EmpleadoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Empleado object", $e);
@@ -1061,6 +1109,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aRol !== null && $this->idrol !== $this->aRol->getIdrol()) {
+            $this->aRol = null;
+        }
     } // ensureConsistency
 
     /**
@@ -1100,6 +1151,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aRol = null;
             $this->collSucursalempleados = null;
 
         } // if (deep)
@@ -1214,6 +1266,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aRol !== null) {
+                if ($this->aRol->isModified() || $this->aRol->isNew()) {
+                    $affectedRows += $this->aRol->save($con);
+                }
+                $this->setRol($this->aRol);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -1335,6 +1399,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_ESTADO)) {
             $modifiedColumns[':p' . $index++]  = '`empleado_estado`';
         }
+        if ($this->isColumnModified(EmpleadoPeer::IDROL)) {
+            $modifiedColumns[':p' . $index++]  = '`idrol`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `empleado` (%s) VALUES (%s)',
@@ -1411,6 +1478,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                         break;
                     case '`empleado_estado`':
                         $stmt->bindValue($identifier, $this->empleado_estado, PDO::PARAM_STR);
+                        break;
+                    case '`idrol`':
+                        $stmt->bindValue($identifier, $this->idrol, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1504,6 +1574,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $retval = null;
 
             $failureMap = array();
+
+
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aRol !== null) {
+                if (!$this->aRol->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aRol->getValidationFailures());
+                }
+            }
 
 
             if (($retval = EmpleadoPeer::doValidate($this, $columns)) !== true) {
@@ -1620,6 +1702,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             case 21:
                 return $this->getEmpleadoEstado();
                 break;
+            case 22:
+                return $this->getIdrol();
+                break;
             default:
                 return null;
                 break;
@@ -1671,6 +1756,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $keys[19] => $this->getEmpleadoCodigopostal(),
             $keys[20] => $this->getEmpleadoCiudad(),
             $keys[21] => $this->getEmpleadoEstado(),
+            $keys[22] => $this->getIdrol(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1678,6 +1764,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aRol) {
+                $result['Rol'] = $this->aRol->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collSucursalempleados) {
                 $result['Sucursalempleados'] = $this->collSucursalempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1781,6 +1870,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             case 21:
                 $this->setEmpleadoEstado($value);
                 break;
+            case 22:
+                $this->setIdrol($value);
+                break;
         } // switch()
     }
 
@@ -1827,6 +1919,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if (array_key_exists($keys[19], $arr)) $this->setEmpleadoCodigopostal($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setEmpleadoCiudad($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setEmpleadoEstado($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setIdrol($arr[$keys[22]]);
     }
 
     /**
@@ -1860,6 +1953,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_CODIGOPOSTAL)) $criteria->add(EmpleadoPeer::EMPLEADO_CODIGOPOSTAL, $this->empleado_codigopostal);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_CIUDAD)) $criteria->add(EmpleadoPeer::EMPLEADO_CIUDAD, $this->empleado_ciudad);
         if ($this->isColumnModified(EmpleadoPeer::EMPLEADO_ESTADO)) $criteria->add(EmpleadoPeer::EMPLEADO_ESTADO, $this->empleado_estado);
+        if ($this->isColumnModified(EmpleadoPeer::IDROL)) $criteria->add(EmpleadoPeer::IDROL, $this->idrol);
 
         return $criteria;
     }
@@ -1944,6 +2038,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $copyObj->setEmpleadoCodigopostal($this->getEmpleadoCodigopostal());
         $copyObj->setEmpleadoCiudad($this->getEmpleadoCiudad());
         $copyObj->setEmpleadoEstado($this->getEmpleadoEstado());
+        $copyObj->setIdrol($this->getIdrol());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2006,6 +2101,58 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a Rol object.
+     *
+     * @param                  Rol $v
+     * @return Empleado The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setRol(Rol $v = null)
+    {
+        if ($v === null) {
+            $this->setIdrol(NULL);
+        } else {
+            $this->setIdrol($v->getIdrol());
+        }
+
+        $this->aRol = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Rol object, it will not be re-added.
+        if ($v !== null) {
+            $v->addEmpleado($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Rol object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Rol The associated Rol object.
+     * @throws PropelException
+     */
+    public function getRol(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aRol === null && ($this->idrol !== null) && $doQuery) {
+            $this->aRol = RolQuery::create()->findPk($this->idrol, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aRol->addEmpleados($this);
+             */
+        }
+
+        return $this->aRol;
     }
 
 
@@ -2266,31 +2413,6 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Sucursalempleado[] List of Sucursalempleado objects
      */
-    public function getSucursalempleadosJoinRol($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = SucursalempleadoQuery::create(null, $criteria);
-        $query->joinWith('Rol', $join_behavior);
-
-        return $this->getSucursalempleados($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Empleado is new, it will return
-     * an empty collection; or if this Empleado has previously
-     * been saved, it will retrieve related Sucursalempleados from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Empleado.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Sucursalempleado[] List of Sucursalempleado objects
-     */
     public function getSucursalempleadosJoinSucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = SucursalempleadoQuery::create(null, $criteria);
@@ -2326,6 +2448,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $this->empleado_codigopostal = null;
         $this->empleado_ciudad = null;
         $this->empleado_estado = null;
+        $this->idrol = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -2353,6 +2476,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aRol instanceof Persistent) {
+              $this->aRol->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -2361,6 +2487,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->collSucursalempleados->clearIterator();
         }
         $this->collSucursalempleados = null;
+        $this->aRol = null;
     }
 
     /**

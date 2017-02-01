@@ -180,6 +180,33 @@ class SucursalesController extends AbstractActionController
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }
+    public function getEmpleados($data){
+        
+        $empleados = \SucursalempleadoQuery::create()->select('idempleado')->filterByIdsucursal($data['idsucursal'])->find()->toArray();
+
+        return $empleados;
+
+    }
+
+    public function getAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+
+            if($post_data['name'] == 'empleados'){
+                
+                $response = $this->getempleados($post_data['data']);
+
+                return $this->getResponse()->setContent(json_encode($response));
+                
+            }
+            
+            
+        };
+        
+    }
     
     public function indexAction()
     {   
@@ -206,14 +233,39 @@ class SucursalesController extends AbstractActionController
                 }
             }
             $entity->save();
+
+
+            foreach ($post_data['empleados_array'] as $value){
+                $sucursalempleado = new \Sucursalempleado();
+                $sucursalempleado->setIdsucursal($entity->getIdsucursal())
+                             ->setIdempleado($value)
+                             ->save();
+            }
+
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
             return $this->redirect()->toUrl('/catalogo/sucursales');
-    
+        
 
         }
+        $query = \SucursalempleadoQuery::create()->select(array('idempleado'))->groupByIdempleado()->find()->toArray();
         
+        $vendedores = \EmpleadoQuery::create()->filterByIdrol(5)->filterByIdempleado($query,\Criteria::NOT_IN)->find();
+        $cajeros = \EmpleadoQuery::create()->filterByIdrol(4)->filterByIdempleado($query,\Criteria::NOT_IN)->find();
+
+        $vendedores_array = array();
+        $value = new \Empleado();
+        foreach ($vendedores as $value){
+            $vendedores_array[$value->getIdempleado()] = $value->getEmpleadoNombre();
+        }
+
+        $cajeros_array = array();
+        $value = new \Empleado();
+        foreach ($cajeros as $value){
+            $cajeros_array[$value->getIdempleado()] = $value->getEmpleadoNombre();
+        }
         
-        $form = new \Application\Catalogo\Form\SucursalesForm();
+
+        $form = new \Application\Catalogo\Form\SucursalesForm($vendedores_array,$cajeros_array);
         
         $view_model = new ViewModel();
         $view_model->setTemplate('application/catalogo/sucursales/nuevo');
@@ -244,13 +296,28 @@ class SucursalesController extends AbstractActionController
                     }
                 }
                 $entity->save();
+                
+                foreach ($post_data['empleados_array'] as $value){
+                    $sucursalempleado = new \Sucursalempleado();
+                    $sucursalempleado->setIdsucursal($entity->getIdsucursal())
+                                 ->setIdempleado($value)
+                                 ->save();
+                }
+
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
                 return $this->redirect()->toUrl('/catalogo/sucursales');
             }
             
             
-            
-            $form = new \Application\Catalogo\Form\SucursalesForm();
+            $empleados = \EmpleadoQuery::create()->find();
+            $empleados_array = array();
+            $value = new \Empleado();
+            foreach ($empleados as $value){
+                $empleados_array[$value->getIdempleado()] = $value->getEmpleadoNombre();
+            }
+        
+
+            $form = new \Application\Catalogo\Form\SucursalesForm($empleados_array);
             
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
             

@@ -48,10 +48,10 @@ abstract class BaseRol extends BaseObject implements Persistent
     protected $rol_descripcion;
 
     /**
-     * @var        PropelObjectCollection|Sucursalempleado[] Collection to store aggregation of Sucursalempleado objects.
+     * @var        PropelObjectCollection|Empleado[] Collection to store aggregation of Empleado objects.
      */
-    protected $collSucursalempleados;
-    protected $collSucursalempleadosPartial;
+    protected $collEmpleados;
+    protected $collEmpleadosPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -77,7 +77,7 @@ abstract class BaseRol extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $sucursalempleadosScheduledForDeletion = null;
+    protected $empleadosScheduledForDeletion = null;
 
     /**
      * Get the [idrol] column value.
@@ -281,7 +281,7 @@ abstract class BaseRol extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collSucursalempleados = null;
+            $this->collEmpleados = null;
 
         } // if (deep)
     }
@@ -407,17 +407,17 @@ abstract class BaseRol extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->sucursalempleadosScheduledForDeletion !== null) {
-                if (!$this->sucursalempleadosScheduledForDeletion->isEmpty()) {
-                    SucursalempleadoQuery::create()
-                        ->filterByPrimaryKeys($this->sucursalempleadosScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->empleadosScheduledForDeletion !== null) {
+                if (!$this->empleadosScheduledForDeletion->isEmpty()) {
+                    EmpleadoQuery::create()
+                        ->filterByPrimaryKeys($this->empleadosScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->sucursalempleadosScheduledForDeletion = null;
+                    $this->empleadosScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collSucursalempleados !== null) {
-                foreach ($this->collSucursalempleados as $referrerFK) {
+            if ($this->collEmpleados !== null) {
+                foreach ($this->collEmpleados as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -578,8 +578,8 @@ abstract class BaseRol extends BaseObject implements Persistent
             }
 
 
-                if ($this->collSucursalempleados !== null) {
-                    foreach ($this->collSucursalempleados as $referrerFK) {
+                if ($this->collEmpleados !== null) {
+                    foreach ($this->collEmpleados as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -669,8 +669,8 @@ abstract class BaseRol extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collSucursalempleados) {
-                $result['Sucursalempleados'] = $this->collSucursalempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collEmpleados) {
+                $result['Empleados'] = $this->collEmpleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -829,9 +829,9 @@ abstract class BaseRol extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getSucursalempleados() as $relObj) {
+            foreach ($this->getEmpleados() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addSucursalempleado($relObj->copy($deepCopy));
+                    $copyObj->addEmpleado($relObj->copy($deepCopy));
                 }
             }
 
@@ -896,42 +896,42 @@ abstract class BaseRol extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('Sucursalempleado' == $relationName) {
-            $this->initSucursalempleados();
+        if ('Empleado' == $relationName) {
+            $this->initEmpleados();
         }
     }
 
     /**
-     * Clears out the collSucursalempleados collection
+     * Clears out the collEmpleados collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return Rol The current object (for fluent API support)
-     * @see        addSucursalempleados()
+     * @see        addEmpleados()
      */
-    public function clearSucursalempleados()
+    public function clearEmpleados()
     {
-        $this->collSucursalempleados = null; // important to set this to null since that means it is uninitialized
-        $this->collSucursalempleadosPartial = null;
+        $this->collEmpleados = null; // important to set this to null since that means it is uninitialized
+        $this->collEmpleadosPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collSucursalempleados collection loaded partially
+     * reset is the collEmpleados collection loaded partially
      *
      * @return void
      */
-    public function resetPartialSucursalempleados($v = true)
+    public function resetPartialEmpleados($v = true)
     {
-        $this->collSucursalempleadosPartial = $v;
+        $this->collEmpleadosPartial = $v;
     }
 
     /**
-     * Initializes the collSucursalempleados collection.
+     * Initializes the collEmpleados collection.
      *
-     * By default this just sets the collSucursalempleados collection to an empty array (like clearcollSucursalempleados());
+     * By default this just sets the collEmpleados collection to an empty array (like clearcollEmpleados());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -940,17 +940,17 @@ abstract class BaseRol extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initSucursalempleados($overrideExisting = true)
+    public function initEmpleados($overrideExisting = true)
     {
-        if (null !== $this->collSucursalempleados && !$overrideExisting) {
+        if (null !== $this->collEmpleados && !$overrideExisting) {
             return;
         }
-        $this->collSucursalempleados = new PropelObjectCollection();
-        $this->collSucursalempleados->setModel('Sucursalempleado');
+        $this->collEmpleados = new PropelObjectCollection();
+        $this->collEmpleados->setModel('Empleado');
     }
 
     /**
-     * Gets an array of Sucursalempleado objects which contain a foreign key that references this object.
+     * Gets an array of Empleado objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -960,107 +960,107 @@ abstract class BaseRol extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Sucursalempleado[] List of Sucursalempleado objects
+     * @return PropelObjectCollection|Empleado[] List of Empleado objects
      * @throws PropelException
      */
-    public function getSucursalempleados($criteria = null, PropelPDO $con = null)
+    public function getEmpleados($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collSucursalempleadosPartial && !$this->isNew();
-        if (null === $this->collSucursalempleados || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collSucursalempleados) {
+        $partial = $this->collEmpleadosPartial && !$this->isNew();
+        if (null === $this->collEmpleados || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collEmpleados) {
                 // return empty collection
-                $this->initSucursalempleados();
+                $this->initEmpleados();
             } else {
-                $collSucursalempleados = SucursalempleadoQuery::create(null, $criteria)
+                $collEmpleados = EmpleadoQuery::create(null, $criteria)
                     ->filterByRol($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collSucursalempleadosPartial && count($collSucursalempleados)) {
-                      $this->initSucursalempleados(false);
+                    if (false !== $this->collEmpleadosPartial && count($collEmpleados)) {
+                      $this->initEmpleados(false);
 
-                      foreach ($collSucursalempleados as $obj) {
-                        if (false == $this->collSucursalempleados->contains($obj)) {
-                          $this->collSucursalempleados->append($obj);
+                      foreach ($collEmpleados as $obj) {
+                        if (false == $this->collEmpleados->contains($obj)) {
+                          $this->collEmpleados->append($obj);
                         }
                       }
 
-                      $this->collSucursalempleadosPartial = true;
+                      $this->collEmpleadosPartial = true;
                     }
 
-                    $collSucursalempleados->getInternalIterator()->rewind();
+                    $collEmpleados->getInternalIterator()->rewind();
 
-                    return $collSucursalempleados;
+                    return $collEmpleados;
                 }
 
-                if ($partial && $this->collSucursalempleados) {
-                    foreach ($this->collSucursalempleados as $obj) {
+                if ($partial && $this->collEmpleados) {
+                    foreach ($this->collEmpleados as $obj) {
                         if ($obj->isNew()) {
-                            $collSucursalempleados[] = $obj;
+                            $collEmpleados[] = $obj;
                         }
                     }
                 }
 
-                $this->collSucursalempleados = $collSucursalempleados;
-                $this->collSucursalempleadosPartial = false;
+                $this->collEmpleados = $collEmpleados;
+                $this->collEmpleadosPartial = false;
             }
         }
 
-        return $this->collSucursalempleados;
+        return $this->collEmpleados;
     }
 
     /**
-     * Sets a collection of Sucursalempleado objects related by a one-to-many relationship
+     * Sets a collection of Empleado objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $sucursalempleados A Propel collection.
+     * @param PropelCollection $empleados A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return Rol The current object (for fluent API support)
      */
-    public function setSucursalempleados(PropelCollection $sucursalempleados, PropelPDO $con = null)
+    public function setEmpleados(PropelCollection $empleados, PropelPDO $con = null)
     {
-        $sucursalempleadosToDelete = $this->getSucursalempleados(new Criteria(), $con)->diff($sucursalempleados);
+        $empleadosToDelete = $this->getEmpleados(new Criteria(), $con)->diff($empleados);
 
 
-        $this->sucursalempleadosScheduledForDeletion = $sucursalempleadosToDelete;
+        $this->empleadosScheduledForDeletion = $empleadosToDelete;
 
-        foreach ($sucursalempleadosToDelete as $sucursalempleadoRemoved) {
-            $sucursalempleadoRemoved->setRol(null);
+        foreach ($empleadosToDelete as $empleadoRemoved) {
+            $empleadoRemoved->setRol(null);
         }
 
-        $this->collSucursalempleados = null;
-        foreach ($sucursalempleados as $sucursalempleado) {
-            $this->addSucursalempleado($sucursalempleado);
+        $this->collEmpleados = null;
+        foreach ($empleados as $empleado) {
+            $this->addEmpleado($empleado);
         }
 
-        $this->collSucursalempleados = $sucursalempleados;
-        $this->collSucursalempleadosPartial = false;
+        $this->collEmpleados = $empleados;
+        $this->collEmpleadosPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related Sucursalempleado objects.
+     * Returns the number of related Empleado objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related Sucursalempleado objects.
+     * @return int             Count of related Empleado objects.
      * @throws PropelException
      */
-    public function countSucursalempleados(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countEmpleados(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collSucursalempleadosPartial && !$this->isNew();
-        if (null === $this->collSucursalempleados || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collSucursalempleados) {
+        $partial = $this->collEmpleadosPartial && !$this->isNew();
+        if (null === $this->collEmpleados || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collEmpleados) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getSucursalempleados());
+                return count($this->getEmpleados());
             }
-            $query = SucursalempleadoQuery::create(null, $criteria);
+            $query = EmpleadoQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -1070,28 +1070,28 @@ abstract class BaseRol extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collSucursalempleados);
+        return count($this->collEmpleados);
     }
 
     /**
-     * Method called to associate a Sucursalempleado object to this object
-     * through the Sucursalempleado foreign key attribute.
+     * Method called to associate a Empleado object to this object
+     * through the Empleado foreign key attribute.
      *
-     * @param    Sucursalempleado $l Sucursalempleado
+     * @param    Empleado $l Empleado
      * @return Rol The current object (for fluent API support)
      */
-    public function addSucursalempleado(Sucursalempleado $l)
+    public function addEmpleado(Empleado $l)
     {
-        if ($this->collSucursalempleados === null) {
-            $this->initSucursalempleados();
-            $this->collSucursalempleadosPartial = true;
+        if ($this->collEmpleados === null) {
+            $this->initEmpleados();
+            $this->collEmpleadosPartial = true;
         }
 
-        if (!in_array($l, $this->collSucursalempleados->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddSucursalempleado($l);
+        if (!in_array($l, $this->collEmpleados->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddEmpleado($l);
 
-            if ($this->sucursalempleadosScheduledForDeletion and $this->sucursalempleadosScheduledForDeletion->contains($l)) {
-                $this->sucursalempleadosScheduledForDeletion->remove($this->sucursalempleadosScheduledForDeletion->search($l));
+            if ($this->empleadosScheduledForDeletion and $this->empleadosScheduledForDeletion->contains($l)) {
+                $this->empleadosScheduledForDeletion->remove($this->empleadosScheduledForDeletion->search($l));
             }
         }
 
@@ -1099,81 +1099,31 @@ abstract class BaseRol extends BaseObject implements Persistent
     }
 
     /**
-     * @param	Sucursalempleado $sucursalempleado The sucursalempleado object to add.
+     * @param	Empleado $empleado The empleado object to add.
      */
-    protected function doAddSucursalempleado($sucursalempleado)
+    protected function doAddEmpleado($empleado)
     {
-        $this->collSucursalempleados[]= $sucursalempleado;
-        $sucursalempleado->setRol($this);
+        $this->collEmpleados[]= $empleado;
+        $empleado->setRol($this);
     }
 
     /**
-     * @param	Sucursalempleado $sucursalempleado The sucursalempleado object to remove.
+     * @param	Empleado $empleado The empleado object to remove.
      * @return Rol The current object (for fluent API support)
      */
-    public function removeSucursalempleado($sucursalempleado)
+    public function removeEmpleado($empleado)
     {
-        if ($this->getSucursalempleados()->contains($sucursalempleado)) {
-            $this->collSucursalempleados->remove($this->collSucursalempleados->search($sucursalempleado));
-            if (null === $this->sucursalempleadosScheduledForDeletion) {
-                $this->sucursalempleadosScheduledForDeletion = clone $this->collSucursalempleados;
-                $this->sucursalempleadosScheduledForDeletion->clear();
+        if ($this->getEmpleados()->contains($empleado)) {
+            $this->collEmpleados->remove($this->collEmpleados->search($empleado));
+            if (null === $this->empleadosScheduledForDeletion) {
+                $this->empleadosScheduledForDeletion = clone $this->collEmpleados;
+                $this->empleadosScheduledForDeletion->clear();
             }
-            $this->sucursalempleadosScheduledForDeletion[]= clone $sucursalempleado;
-            $sucursalempleado->setRol(null);
+            $this->empleadosScheduledForDeletion[]= $empleado;
+            $empleado->setRol(null);
         }
 
         return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Rol is new, it will return
-     * an empty collection; or if this Rol has previously
-     * been saved, it will retrieve related Sucursalempleados from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Rol.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Sucursalempleado[] List of Sucursalempleado objects
-     */
-    public function getSucursalempleadosJoinEmpleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = SucursalempleadoQuery::create(null, $criteria);
-        $query->joinWith('Empleado', $join_behavior);
-
-        return $this->getSucursalempleados($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Rol is new, it will return
-     * an empty collection; or if this Rol has previously
-     * been saved, it will retrieve related Sucursalempleados from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Rol.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Sucursalempleado[] List of Sucursalempleado objects
-     */
-    public function getSucursalempleadosJoinSucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = SucursalempleadoQuery::create(null, $criteria);
-        $query->joinWith('Sucursal', $join_behavior);
-
-        return $this->getSucursalempleados($query, $con);
     }
 
     /**
@@ -1206,8 +1156,8 @@ abstract class BaseRol extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collSucursalempleados) {
-                foreach ($this->collSucursalempleados as $o) {
+            if ($this->collEmpleados) {
+                foreach ($this->collEmpleados as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -1215,10 +1165,10 @@ abstract class BaseRol extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collSucursalempleados instanceof PropelCollection) {
-            $this->collSucursalempleados->clearIterator();
+        if ($this->collEmpleados instanceof PropelCollection) {
+            $this->collEmpleados->clearIterator();
         }
-        $this->collSucursalempleados = null;
+        $this->collEmpleados = null;
     }
 
     /**

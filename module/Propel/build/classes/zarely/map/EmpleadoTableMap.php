@@ -60,6 +60,7 @@ class EmpleadoTableMap extends TableMap
         $this->addColumn('empleado_codigopostal', 'EmpleadoCodigopostal', 'VARCHAR', false, 45, null);
         $this->addColumn('empleado_ciudad', 'EmpleadoCiudad', 'VARCHAR', false, 45, null);
         $this->addColumn('empleado_estado', 'EmpleadoEstado', 'VARCHAR', false, 45, null);
+        $this->addForeignKey('idrol', 'Idrol', 'INTEGER', 'rol', 'idrol', false, null, null);
         // validators
     } // initialize()
 
@@ -68,6 +69,7 @@ class EmpleadoTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Rol', 'Rol', RelationMap::MANY_TO_ONE, array('idrol' => 'idrol', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Sucursalempleado', 'Sucursalempleado', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Sucursalempleados');
     } // buildRelations()
 

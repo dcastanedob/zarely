@@ -75,7 +75,14 @@ CREATE TABLE `empleado`
     `empleado_codigopostal` VARCHAR(45),
     `empleado_ciudad` VARCHAR(45),
     `empleado_estado` VARCHAR(45),
-    PRIMARY KEY (`idempleado`)
+    `idrol` INTEGER,
+    PRIMARY KEY (`idempleado`),
+    INDEX `idrol` (`idrol`),
+    CONSTRAINT `idrol_empleado`
+        FOREIGN KEY (`idrol`)
+        REFERENCES `rol` (`idrol`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -339,20 +346,13 @@ CREATE TABLE `sucursalempleado`
     `idsucursalempleado` INTEGER NOT NULL AUTO_INCREMENT,
     `idsucursal` INTEGER NOT NULL,
     `idempleado` INTEGER NOT NULL,
-    `idrol` INTEGER NOT NULL,
     `sucursalempleado_estatus` TINYINT(1) NOT NULL,
     PRIMARY KEY (`idsucursalempleado`),
     INDEX `idsucursal` (`idsucursal`),
     INDEX `idempleado` (`idempleado`),
-    INDEX `idrol` (`idrol`),
     CONSTRAINT `idempleado_sucursalempleado`
         FOREIGN KEY (`idempleado`)
         REFERENCES `empleado` (`idempleado`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `idrol_sucursalempleado`
-        FOREIGN KEY (`idrol`)
-        REFERENCES `rol` (`idrol`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idsucursal_sucursalempleado`
@@ -429,6 +429,7 @@ CREATE TABLE `tallaje`
     `talla_340` TINYINT(1),
     `talla_345` TINYINT(1),
     `talla_350` TINYINT(1),
+    `tallajerango` VARCHAR(45),
     PRIMARY KEY (`idtallaje`)
 ) ENGINE=InnoDB;
 
@@ -455,6 +456,7 @@ CREATE TABLE `tipocalzado`
 (
     `idtipocalzado` INTEGER NOT NULL AUTO_INCREMENT,
     `tipocalzado_nombre` VARCHAR(45) NOT NULL,
+    `tipocalzado_descripcion` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`idtipocalzado`)
 ) ENGINE=InnoDB;
 

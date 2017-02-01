@@ -365,9 +365,9 @@ abstract class BaseRolPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in SucursalempleadoPeer instance pool,
+        // Invalidate objects in EmpleadoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        SucursalempleadoPeer::clearInstancePool();
+        EmpleadoPeer::clearInstancePool();
     }
 
     /**
@@ -702,11 +702,11 @@ abstract class BaseRolPeer
         foreach ($objects as $obj) {
 
 
-            // delete related Sucursalempleado objects
-            $criteria = new Criteria(SucursalempleadoPeer::DATABASE_NAME);
+            // delete related Empleado objects
+            $criteria = new Criteria(EmpleadoPeer::DATABASE_NAME);
 
-            $criteria->add(SucursalempleadoPeer::IDROL, $obj->getIdrol());
-            $affectedRows += SucursalempleadoPeer::doDelete($criteria, $con);
+            $criteria->add(EmpleadoPeer::IDROL, $obj->getIdrol());
+            $affectedRows += EmpleadoPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

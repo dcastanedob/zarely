@@ -31,6 +31,10 @@
 			           		<label  for="Número interior">Número interior</label>
 			                <?php echo $this->formText($form->get('sucursal_numinterior')) ?>
 		        		</div>
+		        		<div class="form-group">
+			           		<label  for="Número exterior">Asignar vendedor</label>
+			                <?php echo $this->formSelect($form->get('idempleado[]')) ?>
+		        		</div>
 
 		        		
 		        	</div>
@@ -55,10 +59,15 @@
 			           		<label  for="Número exterior">Número exterior</label>
 			                <?php echo $this->formText($form->get('sucursal_numexterno')) ?>
 		        		</div>
-
+		        		
+		        		<div class="form-group">
+			           		<label  for="Número exterior">Asignar cajero</label>
+			                <?php echo $this->formSelect($form->get('idempleado[]')) ?>
+		        		</div>
 		        		
 
 		        	</div>
+		        	
 
 		     
 
@@ -72,3 +81,9 @@
     	</div>
 	</div>
 </div>
+
+<script src="/js/catalogo/sucursales.js"></script>
+<script>
+	var sucursales = $('.body_container').sucursales();
+	sucursales.initForm();
+</script>

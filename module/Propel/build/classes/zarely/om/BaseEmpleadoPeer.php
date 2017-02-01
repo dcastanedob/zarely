@@ -24,13 +24,13 @@ abstract class BaseEmpleadoPeer
     const TM_CLASS = 'EmpleadoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 22;
+    const NUM_COLUMNS = 23;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 22;
+    const NUM_HYDRATE_COLUMNS = 23;
 
     /** the column name for the idempleado field */
     const IDEMPLEADO = 'empleado.idempleado';
@@ -98,6 +98,9 @@ abstract class BaseEmpleadoPeer
     /** the column name for the empleado_estado field */
     const EMPLEADO_ESTADO = 'empleado.empleado_estado';
 
+    /** the column name for the idrol field */
+    const IDROL = 'empleado.idrol';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -117,12 +120,12 @@ abstract class BaseEmpleadoPeer
      * e.g. EmpleadoPeer::$fieldNames[EmpleadoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleado', 'EmpleadoNombre', 'EmpleadoApaterno', 'EmpleadoAmaterno', 'EmpleadoRfc', 'EmpleadoNss', 'EmpleadoCurp', 'EmpleadoTelefono', 'EmpleadoEmail', 'EmpleadoEstatus', 'EmpleadoUsername', 'EmpleadoPassword', 'EmpleadoComision', 'EmpleadoFechaentrada', 'EmpleadoFechanacimiento', 'EmpleadoCalle', 'EmpleadoNumexterno', 'EmpleadoNuminterno', 'EmpleadoColonia', 'EmpleadoCodigopostal', 'EmpleadoCiudad', 'EmpleadoEstado', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado', 'empleadoNombre', 'empleadoApaterno', 'empleadoAmaterno', 'empleadoRfc', 'empleadoNss', 'empleadoCurp', 'empleadoTelefono', 'empleadoEmail', 'empleadoEstatus', 'empleadoUsername', 'empleadoPassword', 'empleadoComision', 'empleadoFechaentrada', 'empleadoFechanacimiento', 'empleadoCalle', 'empleadoNumexterno', 'empleadoNuminterno', 'empleadoColonia', 'empleadoCodigopostal', 'empleadoCiudad', 'empleadoEstado', ),
-        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO, EmpleadoPeer::EMPLEADO_NOMBRE, EmpleadoPeer::EMPLEADO_APATERNO, EmpleadoPeer::EMPLEADO_AMATERNO, EmpleadoPeer::EMPLEADO_RFC, EmpleadoPeer::EMPLEADO_NSS, EmpleadoPeer::EMPLEADO_CURP, EmpleadoPeer::EMPLEADO_TELEFONO, EmpleadoPeer::EMPLEADO_EMAIL, EmpleadoPeer::EMPLEADO_ESTATUS, EmpleadoPeer::EMPLEADO_USERNAME, EmpleadoPeer::EMPLEADO_PASSWORD, EmpleadoPeer::EMPLEADO_COMISION, EmpleadoPeer::EMPLEADO_FECHAENTRADA, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO, EmpleadoPeer::EMPLEADO_CALLE, EmpleadoPeer::EMPLEADO_NUMEXTERNO, EmpleadoPeer::EMPLEADO_NUMINTERNO, EmpleadoPeer::EMPLEADO_COLONIA, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL, EmpleadoPeer::EMPLEADO_CIUDAD, EmpleadoPeer::EMPLEADO_ESTADO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO', 'EMPLEADO_NOMBRE', 'EMPLEADO_APATERNO', 'EMPLEADO_AMATERNO', 'EMPLEADO_RFC', 'EMPLEADO_NSS', 'EMPLEADO_CURP', 'EMPLEADO_TELEFONO', 'EMPLEADO_EMAIL', 'EMPLEADO_ESTATUS', 'EMPLEADO_USERNAME', 'EMPLEADO_PASSWORD', 'EMPLEADO_COMISION', 'EMPLEADO_FECHAENTRADA', 'EMPLEADO_FECHANACIMIENTO', 'EMPLEADO_CALLE', 'EMPLEADO_NUMEXTERNO', 'EMPLEADO_NUMINTERNO', 'EMPLEADO_COLONIA', 'EMPLEADO_CODIGOPOSTAL', 'EMPLEADO_CIUDAD', 'EMPLEADO_ESTADO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleado', 'empleado_nombre', 'empleado_apaterno', 'empleado_amaterno', 'empleado_rfc', 'empleado_nss', 'empleado_curp', 'empleado_telefono', 'empleado_email', 'empleado_estatus', 'empleado_username', 'empleado_password', 'empleado_comision', 'empleado_fechaentrada', 'empleado_fechanacimiento', 'empleado_calle', 'empleado_numexterno', 'empleado_numinterno', 'empleado_colonia', 'empleado_codigopostal', 'empleado_ciudad', 'empleado_estado', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleado', 'EmpleadoNombre', 'EmpleadoApaterno', 'EmpleadoAmaterno', 'EmpleadoRfc', 'EmpleadoNss', 'EmpleadoCurp', 'EmpleadoTelefono', 'EmpleadoEmail', 'EmpleadoEstatus', 'EmpleadoUsername', 'EmpleadoPassword', 'EmpleadoComision', 'EmpleadoFechaentrada', 'EmpleadoFechanacimiento', 'EmpleadoCalle', 'EmpleadoNumexterno', 'EmpleadoNuminterno', 'EmpleadoColonia', 'EmpleadoCodigopostal', 'EmpleadoCiudad', 'EmpleadoEstado', 'Idrol', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado', 'empleadoNombre', 'empleadoApaterno', 'empleadoAmaterno', 'empleadoRfc', 'empleadoNss', 'empleadoCurp', 'empleadoTelefono', 'empleadoEmail', 'empleadoEstatus', 'empleadoUsername', 'empleadoPassword', 'empleadoComision', 'empleadoFechaentrada', 'empleadoFechanacimiento', 'empleadoCalle', 'empleadoNumexterno', 'empleadoNuminterno', 'empleadoColonia', 'empleadoCodigopostal', 'empleadoCiudad', 'empleadoEstado', 'idrol', ),
+        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO, EmpleadoPeer::EMPLEADO_NOMBRE, EmpleadoPeer::EMPLEADO_APATERNO, EmpleadoPeer::EMPLEADO_AMATERNO, EmpleadoPeer::EMPLEADO_RFC, EmpleadoPeer::EMPLEADO_NSS, EmpleadoPeer::EMPLEADO_CURP, EmpleadoPeer::EMPLEADO_TELEFONO, EmpleadoPeer::EMPLEADO_EMAIL, EmpleadoPeer::EMPLEADO_ESTATUS, EmpleadoPeer::EMPLEADO_USERNAME, EmpleadoPeer::EMPLEADO_PASSWORD, EmpleadoPeer::EMPLEADO_COMISION, EmpleadoPeer::EMPLEADO_FECHAENTRADA, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO, EmpleadoPeer::EMPLEADO_CALLE, EmpleadoPeer::EMPLEADO_NUMEXTERNO, EmpleadoPeer::EMPLEADO_NUMINTERNO, EmpleadoPeer::EMPLEADO_COLONIA, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL, EmpleadoPeer::EMPLEADO_CIUDAD, EmpleadoPeer::EMPLEADO_ESTADO, EmpleadoPeer::IDROL, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO', 'EMPLEADO_NOMBRE', 'EMPLEADO_APATERNO', 'EMPLEADO_AMATERNO', 'EMPLEADO_RFC', 'EMPLEADO_NSS', 'EMPLEADO_CURP', 'EMPLEADO_TELEFONO', 'EMPLEADO_EMAIL', 'EMPLEADO_ESTATUS', 'EMPLEADO_USERNAME', 'EMPLEADO_PASSWORD', 'EMPLEADO_COMISION', 'EMPLEADO_FECHAENTRADA', 'EMPLEADO_FECHANACIMIENTO', 'EMPLEADO_CALLE', 'EMPLEADO_NUMEXTERNO', 'EMPLEADO_NUMINTERNO', 'EMPLEADO_COLONIA', 'EMPLEADO_CODIGOPOSTAL', 'EMPLEADO_CIUDAD', 'EMPLEADO_ESTADO', 'IDROL', ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleado', 'empleado_nombre', 'empleado_apaterno', 'empleado_amaterno', 'empleado_rfc', 'empleado_nss', 'empleado_curp', 'empleado_telefono', 'empleado_email', 'empleado_estatus', 'empleado_username', 'empleado_password', 'empleado_comision', 'empleado_fechaentrada', 'empleado_fechanacimiento', 'empleado_calle', 'empleado_numexterno', 'empleado_numinterno', 'empleado_colonia', 'empleado_codigopostal', 'empleado_ciudad', 'empleado_estado', 'idrol', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /**
@@ -132,12 +135,12 @@ abstract class BaseEmpleadoPeer
      * e.g. EmpleadoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idempleado' => 0, 'EmpleadoNombre' => 1, 'EmpleadoApaterno' => 2, 'EmpleadoAmaterno' => 3, 'EmpleadoRfc' => 4, 'EmpleadoNss' => 5, 'EmpleadoCurp' => 6, 'EmpleadoTelefono' => 7, 'EmpleadoEmail' => 8, 'EmpleadoEstatus' => 9, 'EmpleadoUsername' => 10, 'EmpleadoPassword' => 11, 'EmpleadoComision' => 12, 'EmpleadoFechaentrada' => 13, 'EmpleadoFechanacimiento' => 14, 'EmpleadoCalle' => 15, 'EmpleadoNumexterno' => 16, 'EmpleadoNuminterno' => 17, 'EmpleadoColonia' => 18, 'EmpleadoCodigopostal' => 19, 'EmpleadoCiudad' => 20, 'EmpleadoEstado' => 21, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado' => 0, 'empleadoNombre' => 1, 'empleadoApaterno' => 2, 'empleadoAmaterno' => 3, 'empleadoRfc' => 4, 'empleadoNss' => 5, 'empleadoCurp' => 6, 'empleadoTelefono' => 7, 'empleadoEmail' => 8, 'empleadoEstatus' => 9, 'empleadoUsername' => 10, 'empleadoPassword' => 11, 'empleadoComision' => 12, 'empleadoFechaentrada' => 13, 'empleadoFechanacimiento' => 14, 'empleadoCalle' => 15, 'empleadoNumexterno' => 16, 'empleadoNuminterno' => 17, 'empleadoColonia' => 18, 'empleadoCodigopostal' => 19, 'empleadoCiudad' => 20, 'empleadoEstado' => 21, ),
-        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO => 0, EmpleadoPeer::EMPLEADO_NOMBRE => 1, EmpleadoPeer::EMPLEADO_APATERNO => 2, EmpleadoPeer::EMPLEADO_AMATERNO => 3, EmpleadoPeer::EMPLEADO_RFC => 4, EmpleadoPeer::EMPLEADO_NSS => 5, EmpleadoPeer::EMPLEADO_CURP => 6, EmpleadoPeer::EMPLEADO_TELEFONO => 7, EmpleadoPeer::EMPLEADO_EMAIL => 8, EmpleadoPeer::EMPLEADO_ESTATUS => 9, EmpleadoPeer::EMPLEADO_USERNAME => 10, EmpleadoPeer::EMPLEADO_PASSWORD => 11, EmpleadoPeer::EMPLEADO_COMISION => 12, EmpleadoPeer::EMPLEADO_FECHAENTRADA => 13, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO => 14, EmpleadoPeer::EMPLEADO_CALLE => 15, EmpleadoPeer::EMPLEADO_NUMEXTERNO => 16, EmpleadoPeer::EMPLEADO_NUMINTERNO => 17, EmpleadoPeer::EMPLEADO_COLONIA => 18, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL => 19, EmpleadoPeer::EMPLEADO_CIUDAD => 20, EmpleadoPeer::EMPLEADO_ESTADO => 21, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO' => 0, 'EMPLEADO_NOMBRE' => 1, 'EMPLEADO_APATERNO' => 2, 'EMPLEADO_AMATERNO' => 3, 'EMPLEADO_RFC' => 4, 'EMPLEADO_NSS' => 5, 'EMPLEADO_CURP' => 6, 'EMPLEADO_TELEFONO' => 7, 'EMPLEADO_EMAIL' => 8, 'EMPLEADO_ESTATUS' => 9, 'EMPLEADO_USERNAME' => 10, 'EMPLEADO_PASSWORD' => 11, 'EMPLEADO_COMISION' => 12, 'EMPLEADO_FECHAENTRADA' => 13, 'EMPLEADO_FECHANACIMIENTO' => 14, 'EMPLEADO_CALLE' => 15, 'EMPLEADO_NUMEXTERNO' => 16, 'EMPLEADO_NUMINTERNO' => 17, 'EMPLEADO_COLONIA' => 18, 'EMPLEADO_CODIGOPOSTAL' => 19, 'EMPLEADO_CIUDAD' => 20, 'EMPLEADO_ESTADO' => 21, ),
-        BasePeer::TYPE_FIELDNAME => array ('idempleado' => 0, 'empleado_nombre' => 1, 'empleado_apaterno' => 2, 'empleado_amaterno' => 3, 'empleado_rfc' => 4, 'empleado_nss' => 5, 'empleado_curp' => 6, 'empleado_telefono' => 7, 'empleado_email' => 8, 'empleado_estatus' => 9, 'empleado_username' => 10, 'empleado_password' => 11, 'empleado_comision' => 12, 'empleado_fechaentrada' => 13, 'empleado_fechanacimiento' => 14, 'empleado_calle' => 15, 'empleado_numexterno' => 16, 'empleado_numinterno' => 17, 'empleado_colonia' => 18, 'empleado_codigopostal' => 19, 'empleado_ciudad' => 20, 'empleado_estado' => 21, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
+        BasePeer::TYPE_PHPNAME => array ('Idempleado' => 0, 'EmpleadoNombre' => 1, 'EmpleadoApaterno' => 2, 'EmpleadoAmaterno' => 3, 'EmpleadoRfc' => 4, 'EmpleadoNss' => 5, 'EmpleadoCurp' => 6, 'EmpleadoTelefono' => 7, 'EmpleadoEmail' => 8, 'EmpleadoEstatus' => 9, 'EmpleadoUsername' => 10, 'EmpleadoPassword' => 11, 'EmpleadoComision' => 12, 'EmpleadoFechaentrada' => 13, 'EmpleadoFechanacimiento' => 14, 'EmpleadoCalle' => 15, 'EmpleadoNumexterno' => 16, 'EmpleadoNuminterno' => 17, 'EmpleadoColonia' => 18, 'EmpleadoCodigopostal' => 19, 'EmpleadoCiudad' => 20, 'EmpleadoEstado' => 21, 'Idrol' => 22, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idempleado' => 0, 'empleadoNombre' => 1, 'empleadoApaterno' => 2, 'empleadoAmaterno' => 3, 'empleadoRfc' => 4, 'empleadoNss' => 5, 'empleadoCurp' => 6, 'empleadoTelefono' => 7, 'empleadoEmail' => 8, 'empleadoEstatus' => 9, 'empleadoUsername' => 10, 'empleadoPassword' => 11, 'empleadoComision' => 12, 'empleadoFechaentrada' => 13, 'empleadoFechanacimiento' => 14, 'empleadoCalle' => 15, 'empleadoNumexterno' => 16, 'empleadoNuminterno' => 17, 'empleadoColonia' => 18, 'empleadoCodigopostal' => 19, 'empleadoCiudad' => 20, 'empleadoEstado' => 21, 'idrol' => 22, ),
+        BasePeer::TYPE_COLNAME => array (EmpleadoPeer::IDEMPLEADO => 0, EmpleadoPeer::EMPLEADO_NOMBRE => 1, EmpleadoPeer::EMPLEADO_APATERNO => 2, EmpleadoPeer::EMPLEADO_AMATERNO => 3, EmpleadoPeer::EMPLEADO_RFC => 4, EmpleadoPeer::EMPLEADO_NSS => 5, EmpleadoPeer::EMPLEADO_CURP => 6, EmpleadoPeer::EMPLEADO_TELEFONO => 7, EmpleadoPeer::EMPLEADO_EMAIL => 8, EmpleadoPeer::EMPLEADO_ESTATUS => 9, EmpleadoPeer::EMPLEADO_USERNAME => 10, EmpleadoPeer::EMPLEADO_PASSWORD => 11, EmpleadoPeer::EMPLEADO_COMISION => 12, EmpleadoPeer::EMPLEADO_FECHAENTRADA => 13, EmpleadoPeer::EMPLEADO_FECHANACIMIENTO => 14, EmpleadoPeer::EMPLEADO_CALLE => 15, EmpleadoPeer::EMPLEADO_NUMEXTERNO => 16, EmpleadoPeer::EMPLEADO_NUMINTERNO => 17, EmpleadoPeer::EMPLEADO_COLONIA => 18, EmpleadoPeer::EMPLEADO_CODIGOPOSTAL => 19, EmpleadoPeer::EMPLEADO_CIUDAD => 20, EmpleadoPeer::EMPLEADO_ESTADO => 21, EmpleadoPeer::IDROL => 22, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDEMPLEADO' => 0, 'EMPLEADO_NOMBRE' => 1, 'EMPLEADO_APATERNO' => 2, 'EMPLEADO_AMATERNO' => 3, 'EMPLEADO_RFC' => 4, 'EMPLEADO_NSS' => 5, 'EMPLEADO_CURP' => 6, 'EMPLEADO_TELEFONO' => 7, 'EMPLEADO_EMAIL' => 8, 'EMPLEADO_ESTATUS' => 9, 'EMPLEADO_USERNAME' => 10, 'EMPLEADO_PASSWORD' => 11, 'EMPLEADO_COMISION' => 12, 'EMPLEADO_FECHAENTRADA' => 13, 'EMPLEADO_FECHANACIMIENTO' => 14, 'EMPLEADO_CALLE' => 15, 'EMPLEADO_NUMEXTERNO' => 16, 'EMPLEADO_NUMINTERNO' => 17, 'EMPLEADO_COLONIA' => 18, 'EMPLEADO_CODIGOPOSTAL' => 19, 'EMPLEADO_CIUDAD' => 20, 'EMPLEADO_ESTADO' => 21, 'IDROL' => 22, ),
+        BasePeer::TYPE_FIELDNAME => array ('idempleado' => 0, 'empleado_nombre' => 1, 'empleado_apaterno' => 2, 'empleado_amaterno' => 3, 'empleado_rfc' => 4, 'empleado_nss' => 5, 'empleado_curp' => 6, 'empleado_telefono' => 7, 'empleado_email' => 8, 'empleado_estatus' => 9, 'empleado_username' => 10, 'empleado_password' => 11, 'empleado_comision' => 12, 'empleado_fechaentrada' => 13, 'empleado_fechanacimiento' => 14, 'empleado_calle' => 15, 'empleado_numexterno' => 16, 'empleado_numinterno' => 17, 'empleado_colonia' => 18, 'empleado_codigopostal' => 19, 'empleado_ciudad' => 20, 'empleado_estado' => 21, 'idrol' => 22, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
     );
 
     /**
@@ -233,6 +236,7 @@ abstract class BaseEmpleadoPeer
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_CODIGOPOSTAL);
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_CIUDAD);
             $criteria->addSelectColumn(EmpleadoPeer::EMPLEADO_ESTADO);
+            $criteria->addSelectColumn(EmpleadoPeer::IDROL);
         } else {
             $criteria->addSelectColumn($alias . '.idempleado');
             $criteria->addSelectColumn($alias . '.empleado_nombre');
@@ -256,6 +260,7 @@ abstract class BaseEmpleadoPeer
             $criteria->addSelectColumn($alias . '.empleado_codigopostal');
             $criteria->addSelectColumn($alias . '.empleado_ciudad');
             $criteria->addSelectColumn($alias . '.empleado_estado');
+            $criteria->addSelectColumn($alias . '.idrol');
         }
     }
 
@@ -557,6 +562,244 @@ abstract class BaseEmpleadoPeer
         }
 
         return array($obj, $col);
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Rol table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinRol(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EmpleadoPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EmpleadoPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(EmpleadoPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EmpleadoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EmpleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Empleado objects pre-filled with their Rol objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Empleado objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinRol(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EmpleadoPeer::DATABASE_NAME);
+        }
+
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol = EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+        RolPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(EmpleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EmpleadoPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = EmpleadoPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EmpleadoPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = RolPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = RolPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = RolPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    RolPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Empleado) to $obj2 (Rol)
+                $obj2->addEmpleado($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining all related tables
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EmpleadoPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EmpleadoPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(EmpleadoPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EmpleadoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EmpleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+    /**
+     * Selects a collection of Empleado objects pre-filled with all related objects.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Empleado objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EmpleadoPeer::DATABASE_NAME);
+        }
+
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol2 = EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        RolPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + RolPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EmpleadoPeer::IDROL, RolPeer::IDROL, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EmpleadoPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = EmpleadoPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EmpleadoPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+            // Add objects for joined Rol rows
+
+            $key2 = RolPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = RolPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = RolPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    RolPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (Empleado) to the collection in $obj2 (Rol)
+                $obj2->addEmpleado($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
     /**

@@ -112,7 +112,48 @@
 
 
         }
-
+        
+        plugin.initForm = function(){
+            
+            $container.find('select[name*=idempleado]').multipleSelect({
+                filter:true,
+                selectAllText: 'Seleccionar Todos',
+                width: '100%',
+                allSelected: 'Todos seleccionados',
+                countSelected: '# de % Seleccionados',
+                //multiple: true,
+                //multipleWidth: 100
+            });
+            
+            $('button[type=submit]').on('click',function(e){
+                e.preventDefault();
+                var empleados = $container.find('select[name*=idempleado]').multipleSelect("getSelects");
+                empleados.forEach(function(value){
+                    var $input = $('<input type="hidden" name="empleados_array[]">');
+                    $input.val(value);
+                    $container.find('form').append($input);
+                });
+                $container.find('form').submit();
+                
+            });
+            
+            var idsucursal = $('input[name=idsucursal]').val();
+            
+            $.ajax({
+                url:'/catalogo/sucursales/get',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    name: 'empleados',
+                    data: {
+                        idsucursal:idsucursal,
+                    },
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $container.find('select[name*=idempleado]').multipleSelect("setSelects", data);
+                }
+            });
+        };
         /*
         * Plugin initializing
         */
