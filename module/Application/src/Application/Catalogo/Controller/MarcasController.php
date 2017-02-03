@@ -281,14 +281,14 @@ class MarcasController extends AbstractActionController
 	    			}
     			}
                         
-                        //TALLAJE
-                        $entity->getMarcatallajes()->delete();
-                        foreach ($post_data['tallajes_array'] as $value){
-                            $marcatallaje = new \Marcatallaje();
-                            $marcatallaje->setIdmarca($entity->getIdmarca())
-                                         ->setIdtallaje($value)
-                                         ->save();
-                        }
+                //TALLAJE
+                $entity->getMarcatallajes()->delete();
+                foreach ($post_data['tallajes_array'] as $value){
+                    $marcatallaje = new \Marcatallaje();
+                    $marcatallaje->setIdmarca($entity->getIdmarca())
+                                 ->setIdtallaje($value)
+                                 ->save();
+                }
                         
 	    		$entity->save();
 	    		$this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
@@ -296,12 +296,12 @@ class MarcasController extends AbstractActionController
 	    		return $this->redirect()->toUrl('/catalogo/marcas');
 	    	}
                 
-                $tallajes = \TallajeQuery::create()->find();
-                $tallajes_array = array();
-                $value = new \Tallaje();
-                foreach ($tallajes as $value){
-                    $tallajes_array[$value->getIdtallaje()] = $value->getTallajeNombre()." (".$value->getTallajerango().")";
-                }
+            $tallajes = \TallajeQuery::create()->find();
+            $tallajes_array = array();
+            $value = new \Tallaje();
+            foreach ($tallajes as $value){
+                $tallajes_array[$value->getIdtallaje()] = $value->getTallajeNombre()." (".$value->getTallajerango().")";
+            }
 
     		$form = new \Application\Catalogo\Form\MarcaForm($tallajes_array);
 

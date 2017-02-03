@@ -100,7 +100,7 @@ class SucursalesForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'idempleado[]',
+            'name' => 'idempleadovendedor[]',
             'type' => 'Select',
             'options' => array(
               
@@ -114,7 +114,7 @@ class SucursalesForm extends Form
         ));
 
         $this->add(array(
-            'name' => 'vendedor',
+            'name' => 'idempleadocajero[]',
             'type' => 'Select',
             'options' => array(
               
@@ -122,7 +122,7 @@ class SucursalesForm extends Form
             ),
             'attributes' => array(
                 'required' => true,
-                'class' => 'form-control infput-thick',
+                'class' => '',
                
             ),
         ));

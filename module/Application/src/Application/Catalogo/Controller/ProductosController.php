@@ -189,44 +189,117 @@ class ProductosController extends AbstractActionController
     {
         $view_model = new ViewModel();
 
-        $view_model->setTemplate('application/catalogo/empleados/index');
+        $view_model->setTemplate('application/catalogo/productos/index');
         $view_model->setVariables(array(
             'messages' =>$this->flashMessenger()
         ));
         return $view_model;
     }
 
-    public function nuevoAction()
-    {
+    public function nuevoAction(){
+        
         $request = $this->getRequest();
-
-        if($request->isPost())
-        {
+        
+        if($request->isPost()){
             $post_data = $request->getPost();
+            
+            $entity = new \Producto();
 
-            $entity = new \Empleado();
-
-            foreach ($post_data as $key => $value) {
-                if(\EmpleadoPeer::getTableMap()->hasColumn($key))
-                {
-                    $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
+            foreach ($post_data as $key => $value){
+                if(\ProductoPeer::getTableMap()->hasColumn($key)){
+                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
+            
             $entity->save();
-            $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-            return $this->redirect()->toUrl('/catalogo/empleados');
+            $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
+            return $this->redirect()->toUrl('/catalogo/productos');
+        
+
+        }
+
+        //traer los tipos de calzado
+        $calzados = \TipocalzadoQuery::create()->find();
+        $calzados_array = array();
+        $value = new \Tipocalzado();
+        foreach ($calzados as $value){
+            $calzados_array[$value->getIdtipocalzado()] = $value->getTipocalzadoNombre();
+        }
+
+        //traer los proveedores
+        $provedorees = \ProveedorQuery::create()->find();
+        $provedorees_array = array();
+        $value = new \Proveedor();
+        foreach ($provedorees as $value){
+            $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
+        }
+
+        //traer las marcas
+        $marcas = \MarcaQuery::create()->find();
+        $marcas_array = array();
+        $value = new \Marca();
+        foreach ($marcas as $value){
+            $marcas_array[$value->getIdMarca()] = $value->getMarcaNombre();
+        }
+
+        //traer las temporadas
+        $temporadas = \TemporadaQuery::create()->find();
+
+        $temporadas_array = array();
+        $value = new \Temporada();
+        foreach ($temporadas as $value){
+            $temporadas_array[$value->getIdtemporada()] = $value->getTemporadaNombre();
         }
 
 
-        $form = new \Application\Catalogo\Form\EmpleadosForm();
+        //traer los tallajes
+        $tallajes = \TallajeQuery::create()->find();
+        $tallajes_array = array();
+        $value = new \Tallaje();
+        foreach ($tallajes as $value){
+            $tallajes_array[$value->getIdtallaje()] = $value->getTallajeNombre()." (".$value->getTallajerango().")";
+        }
+
+
+        //traer los materiales
+        $materiales = \MaterialQuery::create()->find();
+        $materiales_array = array();
+        $value = new \Material();
+        foreach ($materiales as $value){
+            $materiales_array[$value->getIdmaterial()] = $value->getMaterialNombre();
+        }
+
+        //traer los colores
+        $colores = \ColorQuery::create()->find();
+        $colores_array = array();
+        $value = new \Color();
+        foreach ($colores as $value){
+            $colores_array[$value->getIdcolor()] = $value->getColorNombre();
+        }
+
+
+
+        //traer las temporadas
+        $temporadas = \TemporadaQuery::create()->find();
+
+        $temporadas_array = array();
+        $value = new \Temporada();
+        foreach ($temporadas as $value){
+            $temporadas_array[$value->getIdtemporada()] = $value->getTemporadaNombre();
+        }
+
+
+
+        $form = new \Application\Catalogo\Form\ProductosForm($calzados_array,$provedorees_array,$marcas_array,$temporadas_array,$tallajes_array,$materiales_array,$colores_array);
+        
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/catalogo/empleados/nuevo');
+        $view_model->setTemplate('application/catalogo/productos/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
-  
         return $view_model;
+        
     }
 
     public function verAction()

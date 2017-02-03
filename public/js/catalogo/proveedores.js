@@ -114,6 +114,9 @@
         }
         
         plugin.initForm = function(){
+            $container.find('input[name=proveedor_fechainicio]').datepicker({
+                language:'es',
+            });
 
             $container.find('select[name*=idmarca]').multipleSelect({
                 filter:true,

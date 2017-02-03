@@ -1,6 +1,6 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title">Empleados</h1>
+	    <h1 class="title-bar-title">Productos</h1>
 	    
 	</div>
 
@@ -23,7 +23,7 @@
 
 	<div class="row">
 		<div class="col-md-12">
-			<a class="btn btn-bg btn-success btn-labeled pull-right" href="/catalogo/empleados/nuevo">
+			<a class="btn btn-bg btn-success btn-labeled pull-right" href="/catalogo/productos/nuevo">
               Agregar
               <span class="btn-label btn-label-right">
                 <span class="icon icon-plus-square icon-lg icon-fw"></span>
@@ -38,20 +38,22 @@
 		        <thead>
 		            <tr>
 		                <th>ID</th>
-		                <th>Nombre</th>
-		                <th>Telefono</th>
-		                <th>Email</th>
-		                <th>Estatus</th>
+		                <th>Modelo</th>
+		                <th>Marca</th>
+		                <th>Temporada</th>
+		                <th>Precio de venta</th>
+		                <th>Precio mayoreo</th>
 		                <th>Opciones</th>
 		            </tr>
 		        </thead>
 		        <tfoot>
 		            <tr>
 		                <th>ID</th>
-		                <th>Nombre</th>
-		                <th>Telefono</th>
-		                <th>Email</th>
-		                <th>Estatus</th>
+		                <th>Modelo</th>
+		                <th>Marca</th>
+		                <th>Temporada</th>
+		                <th>Precio de venta</th>
+		                <th>Precio mayoreo</th>
 		                <th>Opciones</th>
 		            </tr>
 		        </tfoot>
@@ -63,9 +65,9 @@
 	</div>
 
 </div>
-<script src="/js/catalogo/empleados.js"></script>
+<script src="/js/catalogo/productos.js"></script>
 
 <script>
-	var empleados = $('.body_container').empleados();
-	empleados.list();
+	var productos = $('.body_container').productos();
+	productos.list();
 </script>

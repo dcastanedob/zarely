@@ -181,6 +181,7 @@ class SucursalesController extends AbstractActionController
         }
     }
     public function getEmpleados($data){
+
         
         $empleados = \SucursalempleadoQuery::create()->select('idempleado')->filterByIdsucursal($data['idsucursal'])->find()->toArray();
 
@@ -196,7 +197,7 @@ class SucursalesController extends AbstractActionController
             $post_data = $request->getPost();
 
             if($post_data['name'] == 'empleados'){
-                
+                    
                 $response = $this->getempleados($post_data['data']);
 
                 return $this->getResponse()->setContent(json_encode($response));
@@ -232,8 +233,8 @@ class SucursalesController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
-            $entity->save();
 
+            $entity->save();
 
             foreach ($post_data['empleados_array'] as $value){
                 $sucursalempleado = new \Sucursalempleado();
@@ -247,10 +248,10 @@ class SucursalesController extends AbstractActionController
         
 
         }
-        $query = \SucursalempleadoQuery::create()->select(array('idempleado'))->groupByIdempleado()->find()->toArray();
+
         
-        $vendedores = \EmpleadoQuery::create()->filterByIdrol(5)->filterByIdempleado($query,\Criteria::NOT_IN)->find();
-        $cajeros = \EmpleadoQuery::create()->filterByIdrol(4)->filterByIdempleado($query,\Criteria::NOT_IN)->find();
+        $vendedores = \EmpleadoQuery::create()->filterByIdrol(5)->find();
+        $cajeros = \EmpleadoQuery::create()->filterByIdrol(4)->find();
 
         $vendedores_array = array();
         $value = new \Empleado();
@@ -295,29 +296,38 @@ class SucursalesController extends AbstractActionController
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
                 }
-                $entity->save();
-                
+                $entity->getSucursalempleados()->delete();
                 foreach ($post_data['empleados_array'] as $value){
                     $sucursalempleado = new \Sucursalempleado();
                     $sucursalempleado->setIdsucursal($entity->getIdsucursal())
                                  ->setIdempleado($value)
                                  ->save();
                 }
+                $entity->save();
+
 
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
                 return $this->redirect()->toUrl('/catalogo/sucursales');
             }
             
             
-            $empleados = \EmpleadoQuery::create()->find();
-            $empleados_array = array();
+            $vendedores = \EmpleadoQuery::create()->filterByIdrol(5)->find();
+            $cajeros = \EmpleadoQuery::create()->filterByIdrol(4)->find();
+
+            $vendedores_array = array();
             $value = new \Empleado();
-            foreach ($empleados as $value){
-                $empleados_array[$value->getIdempleado()] = $value->getEmpleadoNombre();
+            foreach ($vendedores as $value){
+                $vendedores_array[$value->getIdempleado()] = $value->getEmpleadoNombre();
+            }
+
+            $cajeros_array = array();
+            $value = new \Empleado();
+            foreach ($cajeros as $value){
+                $cajeros_array[$value->getIdempleado()] = $value->getEmpleadoNombre();
             }
         
 
-            $form = new \Application\Catalogo\Form\SucursalesForm($empleados_array);
+            $form = new \Application\Catalogo\Form\SucursalesForm($vendedores_array,$cajeros_array);
             
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
             

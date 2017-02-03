@@ -11,16 +11,7 @@
 			           		<label  for="Nombre comercial">Nombre comercial </label>
 			                <?php echo $this->formText($form->get('sucursal_nombrecomercial')) ?>
 		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="Estado"> Estado</label>
-			                <?php echo $this->formText($form->get('sucursal_estado')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="Colonia">Colonia</label>
-			                <?php echo $this->formText($form->get('sucursal_colonia')) ?>
-		        		</div>
+		        		<input type="hidden" name="idsucursal" value="<?php echo $entity->getIdsucursal()?>">
 
 		        		<div class="form-group">
 			           		<label  for="Calle">Calle</label>
@@ -31,9 +22,24 @@
 			           		<label  for="Número interior">Número interior</label>
 			                <?php echo $this->formText($form->get('sucursal_numinterior')) ?>
 		        		</div>
+
+		        		<div class="form-group">
+			           		<label  for="Estado"> Estado</label>
+			                <?php echo $this->formText($form->get('sucursal_estado')) ?>
+		        		</div>
+		        		
+		        		<div class="form-group">
+			           		<label  for="Código postal">Código postal</label>
+			                <?php echo $this->formText($form->get('sucursal_codigopostal')) ?>
+		        		</div>
+		        		
+
+		        		
+
+		        		
 		        		<div class="form-group">
 			           		<label  for="Número exterior">Asignar vendedor</label>
-			                <?php echo $this->formSelect($form->get('idempleado[]')) ?>
+			                <?php echo $this->formSelect($form->get('idempleadovendedor[]')) ?>
 		        		</div>
 
 		        		
@@ -46,23 +52,25 @@
 		        		</div>
 
 		        		<div class="form-group">
+			           		<label  for="Número exterior">Número exterior</label>
+			                <?php echo $this->formText($form->get('sucursal_numexterno')) ?>
+		        		</div>
+
+		        		<div class="form-group">
 			           		<label  for="Ciudad"> Ciudad</label>
 			                <?php echo $this->formText($form->get('sucursal_ciudad')) ?>
 		        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Código postal">Código postal</label>
-			                <?php echo $this->formText($form->get('sucursal_codigopostal')) ?>
-		        		</div>
+		        		
 
 		        		<div class="form-group">
-			           		<label  for="Número exterior">Número exterior</label>
-			                <?php echo $this->formText($form->get('sucursal_numexterno')) ?>
+			           		<label  for="Colonia">Colonia</label>
+			                <?php echo $this->formText($form->get('sucursal_colonia')) ?>
 		        		</div>
 		        		
 		        		<div class="form-group">
 			           		<label  for="Número exterior">Asignar cajero</label>
-			                <?php echo $this->formSelect($form->get('idempleado[]')) ?>
+			                <?php echo $this->formSelect($form->get('idempleadocajero[]')) ?>
 		        		</div>
 		        		
 

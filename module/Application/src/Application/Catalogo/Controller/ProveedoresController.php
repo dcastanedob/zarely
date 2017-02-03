@@ -227,6 +227,7 @@ class ProveedoresController extends AbstractActionController
             $post_data = $request->getPost();
 
             $entity = new \Proveedor();
+            $post_data['proveedor_fechainicio'] = date_create_from_format('d/m/Y', $post_data['proveedor_fechainicio']);
 
             foreach ($post_data as $key => $value) {
                 if(\ProveedorPeer::getTableMap()->hasColumn($key))
@@ -282,7 +283,7 @@ class ProveedoresController extends AbstractActionController
             {
                 $post_data = $request->getPost();
                      
-
+                $post_data['proveedor_fechainicio'] = date_create_from_format('d/m/Y', $post_data['proveedor_fechainicio']);
                 foreach ($post_data as $key => $value) {
                     if(\ProveedorPeer::getTableMap()->hasColumn($key))
                     {

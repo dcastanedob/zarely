@@ -1,6 +1,6 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title">Empleados - Agregar</h1>
+	    <h1 class="title-bar-title">Sucursales - Agregar</h1>
 	</div>
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
@@ -10,16 +10,6 @@
 		       			<div class="form-group">
 			           		<label  for="Nombre comercial">Nombre comercial </label>
 			                <?php echo $this->formText($form->get('sucursal_nombrecomercial')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="Estado"> Estado</label>
-			                <?php echo $this->formText($form->get('sucursal_estado')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="Colonia">Colonia</label>
-			                <?php echo $this->formText($form->get('sucursal_colonia')) ?>
 		        		</div>
 
 		        		<div class="form-group">
@@ -33,8 +23,18 @@
 		        		</div>
 
 		        		<div class="form-group">
+			           		<label  for="Estado"> Estado</label>
+			                <?php echo $this->formText($form->get('sucursal_estado')) ?>
+		        		</div>
+
+		        		<div class="form-group">
+			           		<label  for="Código postal">Código postal</label>
+			                <?php echo $this->formText($form->get('sucursal_codigopostal')) ?>
+		        		</div>
+
+		        		<div class="form-group">
 			           		<label  for="Número exterior">Asignar vendedor</label>
-			                <?php echo $this->formSelect($form->get('idempleado[]')) ?>
+			                <?php echo $this->formSelect($form->get('idempleadovendedor[]')) ?>
 		        		</div>
 
 		        		
@@ -47,23 +47,28 @@
 		        		</div>
 
 		        		<div class="form-group">
-			           		<label  for="Ciudad"> Ciudad</label>
-			                <?php echo $this->formText($form->get('sucursal_ciudad')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="Código postal">Código postal</label>
-			                <?php echo $this->formText($form->get('sucursal_codigopostal')) ?>
-		        		</div>
-
-		        		<div class="form-group">
 			           		<label  for="Número exterior">Número exterior</label>
 			                <?php echo $this->formText($form->get('sucursal_numexterno')) ?>
 		        		</div>
 
+
+		        		
+		        		<div class="form-group">
+			           		<label  for="Ciudad"> Ciudad</label>
+			                <?php echo $this->formText($form->get('sucursal_ciudad')) ?>
+		        		</div>
+		        		
+
+		        		
+		        		<div class="form-group">
+			           		<label  for="Colonia">Colonia</label>
+			                <?php echo $this->formText($form->get('sucursal_colonia')) ?>
+		        		</div>
+		        		
+
 		        		<div class="form-group">
 			           		<label  for="Número exterior">Asignar cajero</label>
-			                <?php echo $this->formSelect($form->get('vendedor')) ?>
+			                <?php echo $this->formSelect($form->get('idempleadocajero[]')) ?>
 		        		</div>
 
 		        		
