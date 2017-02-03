@@ -144,6 +144,7 @@
                 //multipleWidth: 100
             });
             
+            /*
             $('button[type=submit]').on('click',function(e){
                 e.preventDefault();
                 var cajeros = $container.find('select[name*=idempleadovendedor]').multipleSelect("getSelects");
@@ -163,7 +164,7 @@
                 $container.find('form').submit();
                 
             });
-            
+            */
             var idsucursal = $('input[name=idsucursal]').val();
             
             $.ajax({
@@ -180,7 +181,48 @@
                     $container.find('select[name*=idempleado]').multipleSelect("setSelects", data);
                 }
             });
+            
+            $container.find('#btn_add_tallaje').on('click',function(){
+                 
+                 var tallajes = $container.find('select[name*=idtallaje]').multipleSelect("getSelects");
+                 var tallajes_text =  $container.find('select[name*=idtallaje]').multipleSelect("getSelects", "text");
+                 
+                  tallajes_text.forEach(function(value,index){
+                     
+                     var id =  tallajes[index];
+                     
+                     var $tr = $('<tr>');
+                     
+                     $tr.append('<td><input type="hidden" name="tallaje[]" value="'+id+'">'+value+'</td>');
+                     $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+                     
+                     $tr.find('a').on('click',function(){
+                         $tr.remove();
+                         
+                         var index = tallajes.indexOf(id);
+                         if (index > -1) {
+                            tallajes.splice(index, 1);
+                         }
+                         $container.find('select[name*=idtallaje]') .multipleSelect("setSelects", tallajes);
+                     });
+                     
+                     $container.find('#tabla_tallaje tbody').append($tr);
+                     
+                     
+                     
+                     
+                  }); 
+                 
+                 
+                 
+                 console.log(tallajes);
+                 console.log(tallajes_text);
+            });
+            
         };
+        
+        
+        
 
         /*
         * Plugin initializing

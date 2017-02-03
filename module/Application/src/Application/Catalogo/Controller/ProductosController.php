@@ -202,7 +202,8 @@ class ProductosController extends AbstractActionController
         
         if($request->isPost()){
             $post_data = $request->getPost();
-            
+            echo '<pre>';var_dump($post_data);echo '</pre>';exit();
+
             $entity = new \Producto();
 
             foreach ($post_data as $key => $value){

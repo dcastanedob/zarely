@@ -74,7 +74,7 @@
  					<div class="row">
 		        		
     					<div class="col-md-5 alineamiento" >
-	        				<form class="form form-horizontal" action="/catalogo/productos/nuevo" method="POST">
+
 		        				<div class="col-md-9">
 				                    <div class="form-group">
 						           		<label for="tallaje">Tallaje</label>
@@ -85,30 +85,24 @@
 				        		<div class="col-md-2">		
 				        			<div class="form-group">
 						           		<label  for="guardar"></label>
-						                <button class="btn btn-primary btn-block btn-next" type="submit">Agregar</button>
+                                                                        <a class="btn btn-primary btn-block btn-next" id="btn_add_tallaje">Agregar</a>
 					        		</div>
 					        	</div>
 
-					        	<table class="table table-bordered">
+                                                        <table class="table table-bordered" id="tabla_tallaje">
 	        				    <thead>
 	        				      <tr>
 	        				        <th>Nombre</th>
-	        				        <th>Rango</th>
 	        				        <th>Opciones</th>
 	        				      </tr>
 	        				    </thead>
 	        				    <tbody>
-	        				      <tr>
-	        				        <td>Niño</td>
-	        				        <td>7-12</td>
-	        				        <td>Eliminar</td>
-	        				      </tr>
-	        				      
+ 
 	        				    </tbody>
 	        				  </table>
-	        				</form>
+	        				
 
-	        				<form class="form form-horizontal" action="/catalogo/productos/nuevo" method="POST">
+	        				
 		        				<div class="col-md-9">
 				                    <div class="form-group">
 						           		<label for="tallaje">Materiales</label>
@@ -138,13 +132,13 @@
 	        				      
 	        				    </tbody>
 	        				  </table>
-	        				</form>
+	        				
 
 
 	        			</div>	
 	        			<div class="col-md-1"></div>
 	        			<div class="col-md-5 alineamiento" >
-	        				<form class="form form-horizontal" action="/catalogo/productos/nuevo" method="POST">
+	        				
 		        				<div class="col-md-9">
 				                    <div class="form-group">
 						           		<label for="tallaje">Colores</label>
@@ -174,7 +168,7 @@
 	        				      
 	        				    </tbody>
 	        				  </table>
-	        				</form>
+	        				
 
 	        			</div>
 
@@ -183,7 +177,7 @@
 
 		        	<div class="form-group">
 		           		<label  for="guardar"></label>
-		                <button class="btn btn-primary btn-block btn-next" onClick = "document.formulario.action='/catalogo/productos/nuevo; document.formulatio.submit;'">Guardar</button>
+                                        <button class="btn btn-primary btn-block btn-next" type="submit">Guardar</button>
 	        		</div>
  
     			</form>
