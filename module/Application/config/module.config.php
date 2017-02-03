@@ -43,6 +43,17 @@ return array(
                 ),
             ),
 
+            'medidas' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/medidas[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Medidas',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'sucursales' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -206,7 +217,8 @@ return array(
             'Application\Catalogo\Controller\Sucursales' => 'Application\Catalogo\Controller\SucursalesController',
             'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController',
             'Application\Catalogo\Controller\Proveedores' => 'Application\Catalogo\Controller\ProveedoresController',
-            'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController'
+            'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController',
+            'Application\Catalogo\Controller\Medidas' => 'Application\Catalogo\Controller\MedidasController'
         ),
     ),
 

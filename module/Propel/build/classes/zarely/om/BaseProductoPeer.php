@@ -24,13 +24,13 @@ abstract class BaseProductoPeer
     const TM_CLASS = 'ProductoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 15;
+    const NUM_COLUMNS = 14;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 15;
+    const NUM_HYDRATE_COLUMNS = 14;
 
     /** the column name for the idproducto field */
     const IDPRODUCTO = 'producto.idproducto';
@@ -43,9 +43,6 @@ abstract class BaseProductoPeer
 
     /** the column name for the idtemporada field */
     const IDTEMPORADA = 'producto.idtemporada';
-
-    /** the column name for the idtallaje field */
-    const IDTALLAJE = 'producto.idtallaje';
 
     /** the column name for the producto_comisionable field */
     const PRODUCTO_COMISIONABLE = 'producto.producto_comisionable';
@@ -103,12 +100,12 @@ abstract class BaseProductoPeer
      * e.g. ProductoPeer::$fieldNames[ProductoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproducto', 'ProductoModelo', 'Idmarca', 'Idtemporada', 'Idtallaje', 'ProductoComisionable', 'Idproveedor', 'ProductoDirigidoa', 'ProductoPrecioventa', 'ProductoPreciomayoreo', 'ProductoMinimo', 'ProductoReorden', 'ProductoMaximo', 'Idtipocalzado', 'ProductoDescripcion', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto', 'productoModelo', 'idmarca', 'idtemporada', 'idtallaje', 'productoComisionable', 'idproveedor', 'productoDirigidoa', 'productoPrecioventa', 'productoPreciomayoreo', 'productoMinimo', 'productoReorden', 'productoMaximo', 'idtipocalzado', 'productoDescripcion', ),
-        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO, ProductoPeer::PRODUCTO_MODELO, ProductoPeer::IDMARCA, ProductoPeer::IDTEMPORADA, ProductoPeer::IDTALLAJE, ProductoPeer::PRODUCTO_COMISIONABLE, ProductoPeer::IDPROVEEDOR, ProductoPeer::PRODUCTO_DIRIGIDOA, ProductoPeer::PRODUCTO_PRECIOVENTA, ProductoPeer::PRODUCTO_PRECIOMAYOREO, ProductoPeer::PRODUCTO_MINIMO, ProductoPeer::PRODUCTO_REORDEN, ProductoPeer::PRODUCTO_MAXIMO, ProductoPeer::IDTIPOCALZADO, ProductoPeer::PRODUCTO_DESCRIPCION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO', 'PRODUCTO_MODELO', 'IDMARCA', 'IDTEMPORADA', 'IDTALLAJE', 'PRODUCTO_COMISIONABLE', 'IDPROVEEDOR', 'PRODUCTO_DIRIGIDOA', 'PRODUCTO_PRECIOVENTA', 'PRODUCTO_PRECIOMAYOREO', 'PRODUCTO_MINIMO', 'PRODUCTO_REORDEN', 'PRODUCTO_MAXIMO', 'IDTIPOCALZADO', 'PRODUCTO_DESCRIPCION', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproducto', 'producto_modelo', 'idmarca', 'idtemporada', 'idtallaje', 'producto_comisionable', 'idproveedor', 'producto_dirigidoa', 'producto_precioventa', 'producto_preciomayoreo', 'producto_minimo', 'producto_reorden', 'producto_maximo', 'idtipocalzado', 'producto_descripcion', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Idproducto', 'ProductoModelo', 'Idmarca', 'Idtemporada', 'ProductoComisionable', 'Idproveedor', 'ProductoDirigidoa', 'ProductoPrecioventa', 'ProductoPreciomayoreo', 'ProductoMinimo', 'ProductoReorden', 'ProductoMaximo', 'Idtipocalzado', 'ProductoDescripcion', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto', 'productoModelo', 'idmarca', 'idtemporada', 'productoComisionable', 'idproveedor', 'productoDirigidoa', 'productoPrecioventa', 'productoPreciomayoreo', 'productoMinimo', 'productoReorden', 'productoMaximo', 'idtipocalzado', 'productoDescripcion', ),
+        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO, ProductoPeer::PRODUCTO_MODELO, ProductoPeer::IDMARCA, ProductoPeer::IDTEMPORADA, ProductoPeer::PRODUCTO_COMISIONABLE, ProductoPeer::IDPROVEEDOR, ProductoPeer::PRODUCTO_DIRIGIDOA, ProductoPeer::PRODUCTO_PRECIOVENTA, ProductoPeer::PRODUCTO_PRECIOMAYOREO, ProductoPeer::PRODUCTO_MINIMO, ProductoPeer::PRODUCTO_REORDEN, ProductoPeer::PRODUCTO_MAXIMO, ProductoPeer::IDTIPOCALZADO, ProductoPeer::PRODUCTO_DESCRIPCION, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO', 'PRODUCTO_MODELO', 'IDMARCA', 'IDTEMPORADA', 'PRODUCTO_COMISIONABLE', 'IDPROVEEDOR', 'PRODUCTO_DIRIGIDOA', 'PRODUCTO_PRECIOVENTA', 'PRODUCTO_PRECIOMAYOREO', 'PRODUCTO_MINIMO', 'PRODUCTO_REORDEN', 'PRODUCTO_MAXIMO', 'IDTIPOCALZADO', 'PRODUCTO_DESCRIPCION', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproducto', 'producto_modelo', 'idmarca', 'idtemporada', 'producto_comisionable', 'idproveedor', 'producto_dirigidoa', 'producto_precioventa', 'producto_preciomayoreo', 'producto_minimo', 'producto_reorden', 'producto_maximo', 'idtipocalzado', 'producto_descripcion', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -118,12 +115,12 @@ abstract class BaseProductoPeer
      * e.g. ProductoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproducto' => 0, 'ProductoModelo' => 1, 'Idmarca' => 2, 'Idtemporada' => 3, 'Idtallaje' => 4, 'ProductoComisionable' => 5, 'Idproveedor' => 6, 'ProductoDirigidoa' => 7, 'ProductoPrecioventa' => 8, 'ProductoPreciomayoreo' => 9, 'ProductoMinimo' => 10, 'ProductoReorden' => 11, 'ProductoMaximo' => 12, 'Idtipocalzado' => 13, 'ProductoDescripcion' => 14, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto' => 0, 'productoModelo' => 1, 'idmarca' => 2, 'idtemporada' => 3, 'idtallaje' => 4, 'productoComisionable' => 5, 'idproveedor' => 6, 'productoDirigidoa' => 7, 'productoPrecioventa' => 8, 'productoPreciomayoreo' => 9, 'productoMinimo' => 10, 'productoReorden' => 11, 'productoMaximo' => 12, 'idtipocalzado' => 13, 'productoDescripcion' => 14, ),
-        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO => 0, ProductoPeer::PRODUCTO_MODELO => 1, ProductoPeer::IDMARCA => 2, ProductoPeer::IDTEMPORADA => 3, ProductoPeer::IDTALLAJE => 4, ProductoPeer::PRODUCTO_COMISIONABLE => 5, ProductoPeer::IDPROVEEDOR => 6, ProductoPeer::PRODUCTO_DIRIGIDOA => 7, ProductoPeer::PRODUCTO_PRECIOVENTA => 8, ProductoPeer::PRODUCTO_PRECIOMAYOREO => 9, ProductoPeer::PRODUCTO_MINIMO => 10, ProductoPeer::PRODUCTO_REORDEN => 11, ProductoPeer::PRODUCTO_MAXIMO => 12, ProductoPeer::IDTIPOCALZADO => 13, ProductoPeer::PRODUCTO_DESCRIPCION => 14, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO' => 0, 'PRODUCTO_MODELO' => 1, 'IDMARCA' => 2, 'IDTEMPORADA' => 3, 'IDTALLAJE' => 4, 'PRODUCTO_COMISIONABLE' => 5, 'IDPROVEEDOR' => 6, 'PRODUCTO_DIRIGIDOA' => 7, 'PRODUCTO_PRECIOVENTA' => 8, 'PRODUCTO_PRECIOMAYOREO' => 9, 'PRODUCTO_MINIMO' => 10, 'PRODUCTO_REORDEN' => 11, 'PRODUCTO_MAXIMO' => 12, 'IDTIPOCALZADO' => 13, 'PRODUCTO_DESCRIPCION' => 14, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproducto' => 0, 'producto_modelo' => 1, 'idmarca' => 2, 'idtemporada' => 3, 'idtallaje' => 4, 'producto_comisionable' => 5, 'idproveedor' => 6, 'producto_dirigidoa' => 7, 'producto_precioventa' => 8, 'producto_preciomayoreo' => 9, 'producto_minimo' => 10, 'producto_reorden' => 11, 'producto_maximo' => 12, 'idtipocalzado' => 13, 'producto_descripcion' => 14, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Idproducto' => 0, 'ProductoModelo' => 1, 'Idmarca' => 2, 'Idtemporada' => 3, 'ProductoComisionable' => 4, 'Idproveedor' => 5, 'ProductoDirigidoa' => 6, 'ProductoPrecioventa' => 7, 'ProductoPreciomayoreo' => 8, 'ProductoMinimo' => 9, 'ProductoReorden' => 10, 'ProductoMaximo' => 11, 'Idtipocalzado' => 12, 'ProductoDescripcion' => 13, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto' => 0, 'productoModelo' => 1, 'idmarca' => 2, 'idtemporada' => 3, 'productoComisionable' => 4, 'idproveedor' => 5, 'productoDirigidoa' => 6, 'productoPrecioventa' => 7, 'productoPreciomayoreo' => 8, 'productoMinimo' => 9, 'productoReorden' => 10, 'productoMaximo' => 11, 'idtipocalzado' => 12, 'productoDescripcion' => 13, ),
+        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO => 0, ProductoPeer::PRODUCTO_MODELO => 1, ProductoPeer::IDMARCA => 2, ProductoPeer::IDTEMPORADA => 3, ProductoPeer::PRODUCTO_COMISIONABLE => 4, ProductoPeer::IDPROVEEDOR => 5, ProductoPeer::PRODUCTO_DIRIGIDOA => 6, ProductoPeer::PRODUCTO_PRECIOVENTA => 7, ProductoPeer::PRODUCTO_PRECIOMAYOREO => 8, ProductoPeer::PRODUCTO_MINIMO => 9, ProductoPeer::PRODUCTO_REORDEN => 10, ProductoPeer::PRODUCTO_MAXIMO => 11, ProductoPeer::IDTIPOCALZADO => 12, ProductoPeer::PRODUCTO_DESCRIPCION => 13, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO' => 0, 'PRODUCTO_MODELO' => 1, 'IDMARCA' => 2, 'IDTEMPORADA' => 3, 'PRODUCTO_COMISIONABLE' => 4, 'IDPROVEEDOR' => 5, 'PRODUCTO_DIRIGIDOA' => 6, 'PRODUCTO_PRECIOVENTA' => 7, 'PRODUCTO_PRECIOMAYOREO' => 8, 'PRODUCTO_MINIMO' => 9, 'PRODUCTO_REORDEN' => 10, 'PRODUCTO_MAXIMO' => 11, 'IDTIPOCALZADO' => 12, 'PRODUCTO_DESCRIPCION' => 13, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproducto' => 0, 'producto_modelo' => 1, 'idmarca' => 2, 'idtemporada' => 3, 'producto_comisionable' => 4, 'idproveedor' => 5, 'producto_dirigidoa' => 6, 'producto_precioventa' => 7, 'producto_preciomayoreo' => 8, 'producto_minimo' => 9, 'producto_reorden' => 10, 'producto_maximo' => 11, 'idtipocalzado' => 12, 'producto_descripcion' => 13, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /** The enumerated values for this table */
@@ -257,7 +254,6 @@ abstract class BaseProductoPeer
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_MODELO);
             $criteria->addSelectColumn(ProductoPeer::IDMARCA);
             $criteria->addSelectColumn(ProductoPeer::IDTEMPORADA);
-            $criteria->addSelectColumn(ProductoPeer::IDTALLAJE);
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_COMISIONABLE);
             $criteria->addSelectColumn(ProductoPeer::IDPROVEEDOR);
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_DIRIGIDOA);
@@ -273,7 +269,6 @@ abstract class BaseProductoPeer
             $criteria->addSelectColumn($alias . '.producto_modelo');
             $criteria->addSelectColumn($alias . '.idmarca');
             $criteria->addSelectColumn($alias . '.idtemporada');
-            $criteria->addSelectColumn($alias . '.idtallaje');
             $criteria->addSelectColumn($alias . '.producto_comisionable');
             $criteria->addSelectColumn($alias . '.idproveedor');
             $criteria->addSelectColumn($alias . '.producto_dirigidoa');
@@ -491,6 +486,12 @@ abstract class BaseProductoPeer
         // Invalidate objects in ProductomaterialPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductomaterialPeer::clearInstancePool();
+        // Invalidate objects in ProductomedidaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ProductomedidaPeer::clearInstancePool();
+        // Invalidate objects in ProductotallajePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ProductotallajePeer::clearInstancePool();
     }
 
     /**
@@ -676,57 +677,6 @@ abstract class BaseProductoPeer
         }
 
         $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Tallaje table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinTallaje(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductoPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            ProductoPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(ProductoPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(ProductoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -978,73 +928,6 @@ abstract class BaseProductoPeer
 
 
     /**
-     * Selects a collection of Producto objects pre-filled with their Tallaje objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Producto objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinTallaje(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductoPeer::DATABASE_NAME);
-        }
-
-        ProductoPeer::addSelectColumns($criteria);
-        $startcol = ProductoPeer::NUM_HYDRATE_COLUMNS;
-        TallajePeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductoPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductoPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = ProductoPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                ProductoPeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = TallajePeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = TallajePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = TallajePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    TallajePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (Producto) to $obj2 (Tallaje)
-                $obj2->addProducto($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
      * Selects a collection of Producto objects pre-filled with their Temporada objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1218,8 +1101,6 @@ abstract class BaseProductoPeer
 
         $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
 
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
-
         $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDTIPOCALZADO, TipocalzadoPeer::IDTIPOCALZADO, $join_behavior);
@@ -1264,20 +1145,15 @@ abstract class BaseProductoPeer
         ProveedorPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + ProveedorPeer::NUM_HYDRATE_COLUMNS;
 
-        TallajePeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + TallajePeer::NUM_HYDRATE_COLUMNS;
-
         TemporadaPeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + TemporadaPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + TemporadaPeer::NUM_HYDRATE_COLUMNS;
 
         TipocalzadoPeer::addSelectColumns($criteria);
-        $startcol7 = $startcol6 + TipocalzadoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol6 = $startcol5 + TipocalzadoPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(ProductoPeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
 
@@ -1336,58 +1212,40 @@ abstract class BaseProductoPeer
                 $obj3->addProducto($obj1);
             } // if joined row not null
 
-            // Add objects for joined Tallaje rows
-
-            $key4 = TallajePeer::getPrimaryKeyHashFromRow($row, $startcol4);
-            if ($key4 !== null) {
-                $obj4 = TallajePeer::getInstanceFromPool($key4);
-                if (!$obj4) {
-
-                    $cls = TallajePeer::getOMClass();
-
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    TallajePeer::addInstanceToPool($obj4, $key4);
-                } // if obj4 loaded
-
-                // Add the $obj1 (Producto) to the collection in $obj4 (Tallaje)
-                $obj4->addProducto($obj1);
-            } // if joined row not null
-
             // Add objects for joined Temporada rows
 
-            $key5 = TemporadaPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-            if ($key5 !== null) {
-                $obj5 = TemporadaPeer::getInstanceFromPool($key5);
-                if (!$obj5) {
+            $key4 = TemporadaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            if ($key4 !== null) {
+                $obj4 = TemporadaPeer::getInstanceFromPool($key4);
+                if (!$obj4) {
 
                     $cls = TemporadaPeer::getOMClass();
 
-                    $obj5 = new $cls();
-                    $obj5->hydrate($row, $startcol5);
-                    TemporadaPeer::addInstanceToPool($obj5, $key5);
-                } // if obj5 loaded
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    TemporadaPeer::addInstanceToPool($obj4, $key4);
+                } // if obj4 loaded
 
-                // Add the $obj1 (Producto) to the collection in $obj5 (Temporada)
-                $obj5->addProducto($obj1);
+                // Add the $obj1 (Producto) to the collection in $obj4 (Temporada)
+                $obj4->addProducto($obj1);
             } // if joined row not null
 
             // Add objects for joined Tipocalzado rows
 
-            $key6 = TipocalzadoPeer::getPrimaryKeyHashFromRow($row, $startcol6);
-            if ($key6 !== null) {
-                $obj6 = TipocalzadoPeer::getInstanceFromPool($key6);
-                if (!$obj6) {
+            $key5 = TipocalzadoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+            if ($key5 !== null) {
+                $obj5 = TipocalzadoPeer::getInstanceFromPool($key5);
+                if (!$obj5) {
 
                     $cls = TipocalzadoPeer::getOMClass();
 
-                    $obj6 = new $cls();
-                    $obj6->hydrate($row, $startcol6);
-                    TipocalzadoPeer::addInstanceToPool($obj6, $key6);
-                } // if obj6 loaded
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    TipocalzadoPeer::addInstanceToPool($obj5, $key5);
+                } // if obj5 loaded
 
-                // Add the $obj1 (Producto) to the collection in $obj6 (Tipocalzado)
-                $obj6->addProducto($obj1);
+                // Add the $obj1 (Producto) to the collection in $obj5 (Tipocalzado)
+                $obj5->addProducto($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -1435,8 +1293,6 @@ abstract class BaseProductoPeer
         }
 
         $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
 
@@ -1492,65 +1348,6 @@ abstract class BaseProductoPeer
         }
 
         $criteria->addJoin(ProductoPeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTIPOCALZADO, TipocalzadoPeer::IDTIPOCALZADO, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Tallaje table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptTallaje(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductoPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            ProductoPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(ProductoPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(ProductoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(ProductoPeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
 
@@ -1609,8 +1406,6 @@ abstract class BaseProductoPeer
 
         $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
 
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
-
         $criteria->addJoin(ProductoPeer::IDTIPOCALZADO, TipocalzadoPeer::IDTIPOCALZADO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -1666,8 +1461,6 @@ abstract class BaseProductoPeer
 
         $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
 
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
-
         $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -1710,18 +1503,13 @@ abstract class BaseProductoPeer
         ProveedorPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + ProveedorPeer::NUM_HYDRATE_COLUMNS;
 
-        TallajePeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + TallajePeer::NUM_HYDRATE_COLUMNS;
-
         TemporadaPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + TemporadaPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + TemporadaPeer::NUM_HYDRATE_COLUMNS;
 
         TipocalzadoPeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + TipocalzadoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + TipocalzadoPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
 
@@ -1764,60 +1552,41 @@ abstract class BaseProductoPeer
 
             } // if joined row is not null
 
-                // Add objects for joined Tallaje rows
-
-                $key3 = TallajePeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = TallajePeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = TallajePeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    TallajePeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Producto) to the collection in $obj3 (Tallaje)
-                $obj3->addProducto($obj1);
-
-            } // if joined row is not null
-
                 // Add objects for joined Temporada rows
 
-                $key4 = TemporadaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-                if ($key4 !== null) {
-                    $obj4 = TemporadaPeer::getInstanceFromPool($key4);
-                    if (!$obj4) {
+                $key3 = TemporadaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = TemporadaPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
 
                         $cls = TemporadaPeer::getOMClass();
 
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    TemporadaPeer::addInstanceToPool($obj4, $key4);
-                } // if $obj4 already loaded
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    TemporadaPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
 
-                // Add the $obj1 (Producto) to the collection in $obj4 (Temporada)
-                $obj4->addProducto($obj1);
+                // Add the $obj1 (Producto) to the collection in $obj3 (Temporada)
+                $obj3->addProducto($obj1);
 
             } // if joined row is not null
 
                 // Add objects for joined Tipocalzado rows
 
-                $key5 = TipocalzadoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-                if ($key5 !== null) {
-                    $obj5 = TipocalzadoPeer::getInstanceFromPool($key5);
-                    if (!$obj5) {
+                $key4 = TipocalzadoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = TipocalzadoPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
 
                         $cls = TipocalzadoPeer::getOMClass();
 
-                    $obj5 = new $cls();
-                    $obj5->hydrate($row, $startcol5);
-                    TipocalzadoPeer::addInstanceToPool($obj5, $key5);
-                } // if $obj5 already loaded
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    TipocalzadoPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
 
-                // Add the $obj1 (Producto) to the collection in $obj5 (Tipocalzado)
-                $obj5->addProducto($obj1);
+                // Add the $obj1 (Producto) to the collection in $obj4 (Tipocalzado)
+                $obj4->addProducto($obj1);
 
             } // if joined row is not null
 
@@ -1856,18 +1625,13 @@ abstract class BaseProductoPeer
         MarcaPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + MarcaPeer::NUM_HYDRATE_COLUMNS;
 
-        TallajePeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + TallajePeer::NUM_HYDRATE_COLUMNS;
-
         TemporadaPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + TemporadaPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + TemporadaPeer::NUM_HYDRATE_COLUMNS;
 
         TipocalzadoPeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + TipocalzadoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + TipocalzadoPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(ProductoPeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
 
@@ -1910,206 +1674,41 @@ abstract class BaseProductoPeer
 
             } // if joined row is not null
 
-                // Add objects for joined Tallaje rows
-
-                $key3 = TallajePeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = TallajePeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = TallajePeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    TallajePeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Producto) to the collection in $obj3 (Tallaje)
-                $obj3->addProducto($obj1);
-
-            } // if joined row is not null
-
                 // Add objects for joined Temporada rows
 
-                $key4 = TemporadaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-                if ($key4 !== null) {
-                    $obj4 = TemporadaPeer::getInstanceFromPool($key4);
-                    if (!$obj4) {
+                $key3 = TemporadaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = TemporadaPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
 
                         $cls = TemporadaPeer::getOMClass();
 
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    TemporadaPeer::addInstanceToPool($obj4, $key4);
-                } // if $obj4 already loaded
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    TemporadaPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
 
-                // Add the $obj1 (Producto) to the collection in $obj4 (Temporada)
-                $obj4->addProducto($obj1);
+                // Add the $obj1 (Producto) to the collection in $obj3 (Temporada)
+                $obj3->addProducto($obj1);
 
             } // if joined row is not null
 
                 // Add objects for joined Tipocalzado rows
 
-                $key5 = TipocalzadoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-                if ($key5 !== null) {
-                    $obj5 = TipocalzadoPeer::getInstanceFromPool($key5);
-                    if (!$obj5) {
-
-                        $cls = TipocalzadoPeer::getOMClass();
-
-                    $obj5 = new $cls();
-                    $obj5->hydrate($row, $startcol5);
-                    TipocalzadoPeer::addInstanceToPool($obj5, $key5);
-                } // if $obj5 already loaded
-
-                // Add the $obj1 (Producto) to the collection in $obj5 (Tipocalzado)
-                $obj5->addProducto($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Producto objects pre-filled with all related objects except Tallaje.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Producto objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptTallaje(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductoPeer::DATABASE_NAME);
-        }
-
-        ProductoPeer::addSelectColumns($criteria);
-        $startcol2 = ProductoPeer::NUM_HYDRATE_COLUMNS;
-
-        MarcaPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + MarcaPeer::NUM_HYDRATE_COLUMNS;
-
-        ProveedorPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + ProveedorPeer::NUM_HYDRATE_COLUMNS;
-
-        TemporadaPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + TemporadaPeer::NUM_HYDRATE_COLUMNS;
-
-        TipocalzadoPeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + TipocalzadoPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(ProductoPeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTIPOCALZADO, TipocalzadoPeer::IDTIPOCALZADO, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductoPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductoPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = ProductoPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                ProductoPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Marca rows
-
-                $key2 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = MarcaPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = MarcaPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    MarcaPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Producto) to the collection in $obj2 (Marca)
-                $obj2->addProducto($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Proveedor rows
-
-                $key3 = ProveedorPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = ProveedorPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = ProveedorPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    ProveedorPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Producto) to the collection in $obj3 (Proveedor)
-                $obj3->addProducto($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Temporada rows
-
-                $key4 = TemporadaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                $key4 = TipocalzadoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
                 if ($key4 !== null) {
-                    $obj4 = TemporadaPeer::getInstanceFromPool($key4);
+                    $obj4 = TipocalzadoPeer::getInstanceFromPool($key4);
                     if (!$obj4) {
 
-                        $cls = TemporadaPeer::getOMClass();
+                        $cls = TipocalzadoPeer::getOMClass();
 
                     $obj4 = new $cls();
                     $obj4->hydrate($row, $startcol4);
-                    TemporadaPeer::addInstanceToPool($obj4, $key4);
+                    TipocalzadoPeer::addInstanceToPool($obj4, $key4);
                 } // if $obj4 already loaded
 
-                // Add the $obj1 (Producto) to the collection in $obj4 (Temporada)
+                // Add the $obj1 (Producto) to the collection in $obj4 (Tipocalzado)
                 $obj4->addProducto($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Tipocalzado rows
-
-                $key5 = TipocalzadoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-                if ($key5 !== null) {
-                    $obj5 = TipocalzadoPeer::getInstanceFromPool($key5);
-                    if (!$obj5) {
-
-                        $cls = TipocalzadoPeer::getOMClass();
-
-                    $obj5 = new $cls();
-                    $obj5->hydrate($row, $startcol5);
-                    TipocalzadoPeer::addInstanceToPool($obj5, $key5);
-                } // if $obj5 already loaded
-
-                // Add the $obj1 (Producto) to the collection in $obj5 (Tipocalzado)
-                $obj5->addProducto($obj1);
 
             } // if joined row is not null
 
@@ -2151,17 +1750,12 @@ abstract class BaseProductoPeer
         ProveedorPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + ProveedorPeer::NUM_HYDRATE_COLUMNS;
 
-        TallajePeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + TallajePeer::NUM_HYDRATE_COLUMNS;
-
         TipocalzadoPeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + TipocalzadoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + TipocalzadoPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(ProductoPeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDTIPOCALZADO, TipocalzadoPeer::IDTIPOCALZADO, $join_behavior);
 
@@ -2221,41 +1815,22 @@ abstract class BaseProductoPeer
 
             } // if joined row is not null
 
-                // Add objects for joined Tallaje rows
-
-                $key4 = TallajePeer::getPrimaryKeyHashFromRow($row, $startcol4);
-                if ($key4 !== null) {
-                    $obj4 = TallajePeer::getInstanceFromPool($key4);
-                    if (!$obj4) {
-
-                        $cls = TallajePeer::getOMClass();
-
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    TallajePeer::addInstanceToPool($obj4, $key4);
-                } // if $obj4 already loaded
-
-                // Add the $obj1 (Producto) to the collection in $obj4 (Tallaje)
-                $obj4->addProducto($obj1);
-
-            } // if joined row is not null
-
                 // Add objects for joined Tipocalzado rows
 
-                $key5 = TipocalzadoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-                if ($key5 !== null) {
-                    $obj5 = TipocalzadoPeer::getInstanceFromPool($key5);
-                    if (!$obj5) {
+                $key4 = TipocalzadoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = TipocalzadoPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
 
                         $cls = TipocalzadoPeer::getOMClass();
 
-                    $obj5 = new $cls();
-                    $obj5->hydrate($row, $startcol5);
-                    TipocalzadoPeer::addInstanceToPool($obj5, $key5);
-                } // if $obj5 already loaded
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    TipocalzadoPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
 
-                // Add the $obj1 (Producto) to the collection in $obj5 (Tipocalzado)
-                $obj5->addProducto($obj1);
+                // Add the $obj1 (Producto) to the collection in $obj4 (Tipocalzado)
+                $obj4->addProducto($obj1);
 
             } // if joined row is not null
 
@@ -2297,17 +1872,12 @@ abstract class BaseProductoPeer
         ProveedorPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + ProveedorPeer::NUM_HYDRATE_COLUMNS;
 
-        TallajePeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + TallajePeer::NUM_HYDRATE_COLUMNS;
-
         TemporadaPeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + TemporadaPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + TemporadaPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(ProductoPeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDPROVEEDOR, ProveedorPeer::IDPROVEEDOR, $join_behavior);
-
-        $criteria->addJoin(ProductoPeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $criteria->addJoin(ProductoPeer::IDTEMPORADA, TemporadaPeer::IDTEMPORADA, $join_behavior);
 
@@ -2367,41 +1937,22 @@ abstract class BaseProductoPeer
 
             } // if joined row is not null
 
-                // Add objects for joined Tallaje rows
-
-                $key4 = TallajePeer::getPrimaryKeyHashFromRow($row, $startcol4);
-                if ($key4 !== null) {
-                    $obj4 = TallajePeer::getInstanceFromPool($key4);
-                    if (!$obj4) {
-
-                        $cls = TallajePeer::getOMClass();
-
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    TallajePeer::addInstanceToPool($obj4, $key4);
-                } // if $obj4 already loaded
-
-                // Add the $obj1 (Producto) to the collection in $obj4 (Tallaje)
-                $obj4->addProducto($obj1);
-
-            } // if joined row is not null
-
                 // Add objects for joined Temporada rows
 
-                $key5 = TemporadaPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-                if ($key5 !== null) {
-                    $obj5 = TemporadaPeer::getInstanceFromPool($key5);
-                    if (!$obj5) {
+                $key4 = TemporadaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = TemporadaPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
 
                         $cls = TemporadaPeer::getOMClass();
 
-                    $obj5 = new $cls();
-                    $obj5->hydrate($row, $startcol5);
-                    TemporadaPeer::addInstanceToPool($obj5, $key5);
-                } // if $obj5 already loaded
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    TemporadaPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
 
-                // Add the $obj1 (Producto) to the collection in $obj5 (Temporada)
-                $obj5->addProducto($obj1);
+                // Add the $obj1 (Producto) to the collection in $obj4 (Temporada)
+                $obj4->addProducto($obj1);
 
             } // if joined row is not null
 
@@ -2655,6 +2206,18 @@ abstract class BaseProductoPeer
 
             $criteria->add(ProductomaterialPeer::IDPRODUCTO, $obj->getIdproducto());
             $affectedRows += ProductomaterialPeer::doDelete($criteria, $con);
+
+            // delete related Productomedida objects
+            $criteria = new Criteria(ProductomedidaPeer::DATABASE_NAME);
+
+            $criteria->add(ProductomedidaPeer::IDPRODUCTO, $obj->getIdproducto());
+            $affectedRows += ProductomedidaPeer::doDelete($criteria, $con);
+
+            // delete related Productotallaje objects
+            $criteria = new Criteria(ProductotallajePeer::DATABASE_NAME);
+
+            $criteria->add(ProductotallajePeer::IDPRODUCTO, $obj->getIdproducto());
+            $affectedRows += ProductotallajePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

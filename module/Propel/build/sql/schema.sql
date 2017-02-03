@@ -152,6 +152,26 @@ CREATE TABLE `material`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- medida
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `medida`;
+
+CREATE TABLE `medida`
+(
+    `idmedida` INTEGER NOT NULL AUTO_INCREMENT,
+    `medida_nombre` VARCHAR(45),
+    `medida_xs` TINYINT(1),
+    `medida_s` TINYINT(1),
+    `medida_m` TINYINT(1),
+    `medida_l` TINYINT(1),
+    `medida_xl` TINYINT(1),
+    `medida_xxl` TINYINT(1),
+    `medida_unitalla` TINYINT(1),
+    PRIMARY KEY (`idmedida`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- producto
 -- ---------------------------------------------------------------------
 
@@ -163,7 +183,6 @@ CREATE TABLE `producto`
     `producto_modelo` VARCHAR(100) NOT NULL,
     `idmarca` INTEGER NOT NULL,
     `idtemporada` INTEGER NOT NULL,
-    `idtallaje` INTEGER NOT NULL,
     `producto_comisionable` TINYINT NOT NULL,
     `idproveedor` INTEGER NOT NULL,
     `producto_dirigidoa` enum('dama','caballero','nino','nina','jovenes') NOT NULL,
@@ -177,7 +196,6 @@ CREATE TABLE `producto`
     PRIMARY KEY (`idproducto`),
     INDEX `idmarca` (`idmarca`),
     INDEX `idtemporada` (`idtemporada`),
-    INDEX `idtallaje` (`idtallaje`),
     INDEX `idproveedor` (`idproveedor`),
     INDEX `idtipocalzado` (`idtipocalzado`),
     CONSTRAINT `idmarca_producto`
@@ -188,11 +206,6 @@ CREATE TABLE `producto`
     CONSTRAINT `idproveedor_producto`
         FOREIGN KEY (`idproveedor`)
         REFERENCES `proveedor` (`idproveedor`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `idtallaje_producto`
-        FOREIGN KEY (`idtallaje`)
-        REFERENCES `tallaje` (`idtallaje`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idtemporada_producto`
@@ -239,7 +252,7 @@ DROP TABLE IF EXISTS `productomaterial`;
 
 CREATE TABLE `productomaterial`
 (
-    `idproductomaterial` INTEGER NOT NULL,
+    `idproductomaterial` INTEGER NOT NULL AUTO_INCREMENT,
     `idproducto` INTEGER NOT NULL,
     `idmaterial` INTEGER NOT NULL,
     PRIMARY KEY (`idproductomaterial`),
@@ -253,6 +266,58 @@ CREATE TABLE `productomaterial`
     CONSTRAINT `idproducto_productomaterial`
         FOREIGN KEY (`idproducto`)
         REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- productomedida
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `productomedida`;
+
+CREATE TABLE `productomedida`
+(
+    `idproductomedida` INTEGER NOT NULL AUTO_INCREMENT,
+    `idproducto` INTEGER NOT NULL,
+    `idmedida` INTEGER NOT NULL,
+    PRIMARY KEY (`idproductomedida`),
+    INDEX `idproducto` (`idproducto`),
+    INDEX `idmedida` (`idmedida`),
+    CONSTRAINT `idmedida_productomedida`
+        FOREIGN KEY (`idmedida`)
+        REFERENCES `medida` (`idmedida`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproducto_productomedida`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- productotallaje
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `productotallaje`;
+
+CREATE TABLE `productotallaje`
+(
+    `idproductotallaje` INTEGER NOT NULL AUTO_INCREMENT,
+    `idproducto` INTEGER NOT NULL,
+    `idtallaje` INTEGER NOT NULL,
+    PRIMARY KEY (`idproductotallaje`),
+    INDEX `idproducto` (`idproducto`),
+    INDEX `idtallaje` (`idtallaje`),
+    CONSTRAINT `idproducto_productotallaje`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idtallaje_productotallaje`
+        FOREIGN KEY (`idtallaje`)
+        REFERENCES `tallaje` (`idtallaje`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -456,7 +521,7 @@ CREATE TABLE `tipocalzado`
 (
     `idtipocalzado` INTEGER NOT NULL AUTO_INCREMENT,
     `tipocalzado_nombre` VARCHAR(45) NOT NULL,
-    `tipocalzado_descripcion` VARCHAR(255) NOT NULL,
+    `tipocalzado_descripcion` TEXT,
     PRIMARY KEY (`idtipocalzado`)
 ) ENGINE=InnoDB;
 

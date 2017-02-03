@@ -107,7 +107,7 @@ class TallajeTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Marcatallaje', 'Marcatallaje', RelationMap::ONE_TO_MANY, array('idtallaje' => 'idtallaje', ), 'CASCADE', 'CASCADE', 'Marcatallajes');
-        $this->addRelation('Producto', 'Producto', RelationMap::ONE_TO_MANY, array('idtallaje' => 'idtallaje', ), 'CASCADE', 'CASCADE', 'Productos');
+        $this->addRelation('Productotallaje', 'Productotallaje', RelationMap::ONE_TO_MANY, array('idtallaje' => 'idtallaje', ), 'CASCADE', 'CASCADE', 'Productotallajes');
     } // buildRelations()
 
 } // TallajeTableMap

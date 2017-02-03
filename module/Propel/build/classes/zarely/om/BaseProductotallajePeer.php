@@ -2,26 +2,26 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'productomaterial' table.
+ * Base static class for performing query and update operations on the 'productotallaje' table.
  *
  *
  *
  * @package propel.generator.zarely.om
  */
-abstract class BaseProductomaterialPeer
+abstract class BaseProductotallajePeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'zarely';
 
     /** the table name for this class */
-    const TABLE_NAME = 'productomaterial';
+    const TABLE_NAME = 'productotallaje';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Productomaterial';
+    const OM_CLASS = 'Productotallaje';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'ProductomaterialTableMap';
+    const TM_CLASS = 'ProductotallajeTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 3;
@@ -32,23 +32,23 @@ abstract class BaseProductomaterialPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 3;
 
-    /** the column name for the idproductomaterial field */
-    const IDPRODUCTOMATERIAL = 'productomaterial.idproductomaterial';
+    /** the column name for the idproductotallaje field */
+    const IDPRODUCTOTALLAJE = 'productotallaje.idproductotallaje';
 
     /** the column name for the idproducto field */
-    const IDPRODUCTO = 'productomaterial.idproducto';
+    const IDPRODUCTO = 'productotallaje.idproducto';
 
-    /** the column name for the idmaterial field */
-    const IDMATERIAL = 'productomaterial.idmaterial';
+    /** the column name for the idtallaje field */
+    const IDTALLAJE = 'productotallaje.idtallaje';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of Productomaterial objects.
+     * An identity map to hold any loaded instances of Productotallaje objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array Productomaterial[]
+     * @var        array Productotallaje[]
      */
     public static $instances = array();
 
@@ -57,14 +57,14 @@ abstract class BaseProductomaterialPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. ProductomaterialPeer::$fieldNames[ProductomaterialPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. ProductotallajePeer::$fieldNames[ProductotallajePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductomaterial', 'Idproducto', 'Idmaterial', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductomaterial', 'idproducto', 'idmaterial', ),
-        BasePeer::TYPE_COLNAME => array (ProductomaterialPeer::IDPRODUCTOMATERIAL, ProductomaterialPeer::IDPRODUCTO, ProductomaterialPeer::IDMATERIAL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOMATERIAL', 'IDPRODUCTO', 'IDMATERIAL', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductomaterial', 'idproducto', 'idmaterial', ),
+        BasePeer::TYPE_PHPNAME => array ('Idproductotallaje', 'Idproducto', 'Idtallaje', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductotallaje', 'idproducto', 'idtallaje', ),
+        BasePeer::TYPE_COLNAME => array (ProductotallajePeer::IDPRODUCTOTALLAJE, ProductotallajePeer::IDPRODUCTO, ProductotallajePeer::IDTALLAJE, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOTALLAJE', 'IDPRODUCTO', 'IDTALLAJE', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductotallaje', 'idproducto', 'idtallaje', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, )
     );
 
@@ -72,14 +72,14 @@ abstract class BaseProductomaterialPeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. ProductomaterialPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. ProductotallajePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductomaterial' => 0, 'Idproducto' => 1, 'Idmaterial' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductomaterial' => 0, 'idproducto' => 1, 'idmaterial' => 2, ),
-        BasePeer::TYPE_COLNAME => array (ProductomaterialPeer::IDPRODUCTOMATERIAL => 0, ProductomaterialPeer::IDPRODUCTO => 1, ProductomaterialPeer::IDMATERIAL => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOMATERIAL' => 0, 'IDPRODUCTO' => 1, 'IDMATERIAL' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductomaterial' => 0, 'idproducto' => 1, 'idmaterial' => 2, ),
+        BasePeer::TYPE_PHPNAME => array ('Idproductotallaje' => 0, 'Idproducto' => 1, 'Idtallaje' => 2, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductotallaje' => 0, 'idproducto' => 1, 'idtallaje' => 2, ),
+        BasePeer::TYPE_COLNAME => array (ProductotallajePeer::IDPRODUCTOTALLAJE => 0, ProductotallajePeer::IDPRODUCTO => 1, ProductotallajePeer::IDTALLAJE => 2, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOTALLAJE' => 0, 'IDPRODUCTO' => 1, 'IDTALLAJE' => 2, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductotallaje' => 0, 'idproducto' => 1, 'idtallaje' => 2, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, )
     );
 
@@ -95,10 +95,10 @@ abstract class BaseProductomaterialPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = ProductomaterialPeer::getFieldNames($toType);
-        $key = isset(ProductomaterialPeer::$fieldKeys[$fromType][$name]) ? ProductomaterialPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = ProductotallajePeer::getFieldNames($toType);
+        $key = isset(ProductotallajePeer::$fieldKeys[$fromType][$name]) ? ProductotallajePeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ProductomaterialPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ProductotallajePeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -115,11 +115,11 @@ abstract class BaseProductomaterialPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, ProductomaterialPeer::$fieldNames)) {
+        if (!array_key_exists($type, ProductotallajePeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return ProductomaterialPeer::$fieldNames[$type];
+        return ProductotallajePeer::$fieldNames[$type];
     }
 
     /**
@@ -131,12 +131,12 @@ abstract class BaseProductomaterialPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. ProductomaterialPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. ProductotallajePeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(ProductomaterialPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(ProductotallajePeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -154,13 +154,13 @@ abstract class BaseProductomaterialPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ProductomaterialPeer::IDPRODUCTOMATERIAL);
-            $criteria->addSelectColumn(ProductomaterialPeer::IDPRODUCTO);
-            $criteria->addSelectColumn(ProductomaterialPeer::IDMATERIAL);
+            $criteria->addSelectColumn(ProductotallajePeer::IDPRODUCTOTALLAJE);
+            $criteria->addSelectColumn(ProductotallajePeer::IDPRODUCTO);
+            $criteria->addSelectColumn(ProductotallajePeer::IDTALLAJE);
         } else {
-            $criteria->addSelectColumn($alias . '.idproductomaterial');
+            $criteria->addSelectColumn($alias . '.idproductotallaje');
             $criteria->addSelectColumn($alias . '.idproducto');
-            $criteria->addSelectColumn($alias . '.idmaterial');
+            $criteria->addSelectColumn($alias . '.idtallaje');
         }
     }
 
@@ -180,21 +180,21 @@ abstract class BaseProductomaterialPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductomaterialPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(ProductotallajePeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductomaterialPeer::addSelectColumns($criteria);
+            ProductotallajePeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -213,7 +213,7 @@ abstract class BaseProductomaterialPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return Productomaterial
+     * @return Productotallaje
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -221,7 +221,7 @@ abstract class BaseProductomaterialPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = ProductomaterialPeer::doSelect($critcopy, $con);
+        $objects = ProductotallajePeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -239,7 +239,7 @@ abstract class BaseProductomaterialPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return ProductomaterialPeer::populateObjects(ProductomaterialPeer::doSelectStmt($criteria, $con));
+        return ProductotallajePeer::populateObjects(ProductotallajePeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -257,16 +257,16 @@ abstract class BaseProductomaterialPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            ProductomaterialPeer::addSelectColumns($criteria);
+            ProductotallajePeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -280,16 +280,16 @@ abstract class BaseProductomaterialPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param Productomaterial $obj A Productomaterial object.
+     * @param Productotallaje $obj A Productotallaje object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = (string) $obj->getIdproductomaterial();
+                $key = (string) $obj->getIdproductotallaje();
             } // if key === null
-            ProductomaterialPeer::$instances[$key] = $obj;
+            ProductotallajePeer::$instances[$key] = $obj;
         }
     }
 
@@ -301,7 +301,7 @@ abstract class BaseProductomaterialPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A Productomaterial object or a primary key value.
+     * @param      mixed $value A Productotallaje object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -309,17 +309,17 @@ abstract class BaseProductomaterialPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof Productomaterial) {
-                $key = (string) $value->getIdproductomaterial();
+            if (is_object($value) && $value instanceof Productotallaje) {
+                $key = (string) $value->getIdproductotallaje();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Productomaterial object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Productotallaje object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(ProductomaterialPeer::$instances[$key]);
+            unset(ProductotallajePeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -330,14 +330,14 @@ abstract class BaseProductomaterialPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return Productomaterial Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return Productotallaje Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(ProductomaterialPeer::$instances[$key])) {
-                return ProductomaterialPeer::$instances[$key];
+            if (isset(ProductotallajePeer::$instances[$key])) {
+                return ProductotallajePeer::$instances[$key];
             }
         }
 
@@ -352,15 +352,15 @@ abstract class BaseProductomaterialPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (ProductomaterialPeer::$instances as $instance) {
+        foreach (ProductotallajePeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        ProductomaterialPeer::$instances = array();
+        ProductotallajePeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to productomaterial
+     * Method to invalidate the instance pool of all tables related to productotallaje
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
@@ -414,11 +414,11 @@ abstract class BaseProductomaterialPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = ProductomaterialPeer::getOMClass();
+        $cls = ProductotallajePeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = ProductomaterialPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = ProductomaterialPeer::getInstanceFromPool($key))) {
+            $key = ProductotallajePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = ProductotallajePeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -427,7 +427,7 @@ abstract class BaseProductomaterialPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                ProductomaterialPeer::addInstanceToPool($obj, $key);
+                ProductotallajePeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -441,75 +441,24 @@ abstract class BaseProductomaterialPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (Productomaterial object, last column rank)
+     * @return array (Productotallaje object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = ProductomaterialPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = ProductomaterialPeer::getInstanceFromPool($key))) {
+        $key = ProductotallajePeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = ProductotallajePeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + ProductomaterialPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + ProductotallajePeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = ProductomaterialPeer::OM_CLASS;
+            $cls = ProductotallajePeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            ProductomaterialPeer::addInstanceToPool($obj, $key);
+            ProductotallajePeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Material table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinMaterial(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductomaterialPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            ProductomaterialPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, MaterialPeer::IDMATERIAL, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
     }
 
 
@@ -530,26 +479,26 @@ abstract class BaseProductomaterialPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductomaterialPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(ProductotallajePeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductomaterialPeer::addSelectColumns($criteria);
+            ProductotallajePeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductotallajePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -565,78 +514,62 @@ abstract class BaseProductomaterialPeer
 
 
     /**
-     * Selects a collection of Productomaterial objects pre-filled with their Material objects.
-     * @param      Criteria  $criteria
+     * Returns the number of rows matching criteria, joining the related Tallaje table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productomaterial objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
+     * @return int Number of matching rows.
      */
-    public static function doSelectJoinMaterial(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinTallaje(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
+        // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
 
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ProductotallajePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
         }
 
-        ProductomaterialPeer::addSelectColumns($criteria);
-        $startcol = ProductomaterialPeer::NUM_HYDRATE_COLUMNS;
-        MaterialPeer::addSelectColumns($criteria);
+        if (!$criteria->hasSelectClause()) {
+            ProductotallajePeer::addSelectColumns($criteria);
+        }
 
-        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, MaterialPeer::IDMATERIAL, $join_behavior);
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
+        // Set the correct dbName
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
 
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductomaterialPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductomaterialPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
+        if ($con === null) {
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
 
-                $cls = ProductomaterialPeer::getOMClass();
+        $criteria->addJoin(ProductotallajePeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                ProductomaterialPeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
+        $stmt = BasePeer::doCount($criteria, $con);
 
-            $key2 = MaterialPeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = MaterialPeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = MaterialPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    MaterialPeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (Productomaterial) to $obj2 (Material)
-                $obj2->addProductomaterial($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
         }
         $stmt->closeCursor();
 
-        return $results;
+        return $count;
     }
 
 
     /**
-     * Selects a collection of Productomaterial objects pre-filled with their Producto objects.
+     * Selects a collection of Productotallaje objects pre-filled with their Producto objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productomaterial objects.
+     * @return array           Array of Productotallaje objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -646,31 +579,31 @@ abstract class BaseProductomaterialPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+            $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
         }
 
-        ProductomaterialPeer::addSelectColumns($criteria);
-        $startcol = ProductomaterialPeer::NUM_HYDRATE_COLUMNS;
+        ProductotallajePeer::addSelectColumns($criteria);
+        $startcol = ProductotallajePeer::NUM_HYDRATE_COLUMNS;
         ProductoPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductotallajePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductomaterialPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductomaterialPeer::getInstanceFromPool($key1))) {
+            $key1 = ProductotallajePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductotallajePeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = ProductomaterialPeer::getOMClass();
+                $cls = ProductotallajePeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                ProductomaterialPeer::addInstanceToPool($obj1, $key1);
+                ProductotallajePeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
             $key2 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -685,8 +618,75 @@ abstract class BaseProductomaterialPeer
                     ProductoPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (Productomaterial) to $obj2 (Producto)
-                $obj2->addProductomaterial($obj1);
+                // Add the $obj1 (Productotallaje) to $obj2 (Producto)
+                $obj2->addProductotallaje($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Productotallaje objects pre-filled with their Tallaje objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Productotallaje objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinTallaje(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
+        }
+
+        ProductotallajePeer::addSelectColumns($criteria);
+        $startcol = ProductotallajePeer::NUM_HYDRATE_COLUMNS;
+        TallajePeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(ProductotallajePeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ProductotallajePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductotallajePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = ProductotallajePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ProductotallajePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = TallajePeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = TallajePeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = TallajePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    TallajePeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Productotallaje) to $obj2 (Tallaje)
+                $obj2->addProductotallaje($obj1);
 
             } // if joined row was not null
 
@@ -715,28 +715,28 @@ abstract class BaseProductomaterialPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductomaterialPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(ProductotallajePeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductomaterialPeer::addSelectColumns($criteria);
+            ProductotallajePeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, MaterialPeer::IDMATERIAL, $join_behavior);
+        $criteria->addJoin(ProductotallajePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductotallajePeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -751,12 +751,12 @@ abstract class BaseProductomaterialPeer
     }
 
     /**
-     * Selects a collection of Productomaterial objects pre-filled with all related objects.
+     * Selects a collection of Productotallaje objects pre-filled with all related objects.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productomaterial objects.
+     * @return array           Array of Productotallaje objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -766,73 +766,73 @@ abstract class BaseProductomaterialPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+            $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
         }
 
-        ProductomaterialPeer::addSelectColumns($criteria);
-        $startcol2 = ProductomaterialPeer::NUM_HYDRATE_COLUMNS;
-
-        MaterialPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + MaterialPeer::NUM_HYDRATE_COLUMNS;
+        ProductotallajePeer::addSelectColumns($criteria);
+        $startcol2 = ProductotallajePeer::NUM_HYDRATE_COLUMNS;
 
         ProductoPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol3 = $startcol2 + ProductoPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, MaterialPeer::IDMATERIAL, $join_behavior);
+        TallajePeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + TallajePeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductotallajePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+
+        $criteria->addJoin(ProductotallajePeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductomaterialPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductomaterialPeer::getInstanceFromPool($key1))) {
+            $key1 = ProductotallajePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductotallajePeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = ProductomaterialPeer::getOMClass();
+                $cls = ProductotallajePeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                ProductomaterialPeer::addInstanceToPool($obj1, $key1);
+                ProductotallajePeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
-
-            // Add objects for joined Material rows
-
-            $key2 = MaterialPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-            if ($key2 !== null) {
-                $obj2 = MaterialPeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = MaterialPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    MaterialPeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 loaded
-
-                // Add the $obj1 (Productomaterial) to the collection in $obj2 (Material)
-                $obj2->addProductomaterial($obj1);
-            } // if joined row not null
 
             // Add objects for joined Producto rows
 
-            $key3 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-            if ($key3 !== null) {
-                $obj3 = ProductoPeer::getInstanceFromPool($key3);
-                if (!$obj3) {
+            $key2 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = ProductoPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
 
                     $cls = ProductoPeer::getOMClass();
 
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ProductoPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (Productotallaje) to the collection in $obj2 (Producto)
+                $obj2->addProductotallaje($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Tallaje rows
+
+            $key3 = TallajePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = TallajePeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = TallajePeer::getOMClass();
+
                     $obj3 = new $cls();
                     $obj3->hydrate($row, $startcol3);
-                    ProductoPeer::addInstanceToPool($obj3, $key3);
+                    TallajePeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (Productomaterial) to the collection in $obj3 (Producto)
-                $obj3->addProductomaterial($obj1);
+                // Add the $obj1 (Productotallaje) to the collection in $obj3 (Tallaje)
+                $obj3->addProductotallaje($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -840,57 +840,6 @@ abstract class BaseProductomaterialPeer
         $stmt->closeCursor();
 
         return $results;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Material table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptMaterial(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductomaterialPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            ProductomaterialPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
     }
 
 
@@ -911,26 +860,26 @@ abstract class BaseProductomaterialPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductomaterialPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(ProductotallajePeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductomaterialPeer::addSelectColumns($criteria);
+            ProductotallajePeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, MaterialPeer::IDMATERIAL, $join_behavior);
+        $criteria->addJoin(ProductotallajePeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -946,16 +895,67 @@ abstract class BaseProductomaterialPeer
 
 
     /**
-     * Selects a collection of Productomaterial objects pre-filled with all related objects except Material.
+     * Returns the number of rows matching criteria, joining the related Tallaje table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptTallaje(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(ProductotallajePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            ProductotallajePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(ProductotallajePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Productotallaje objects pre-filled with all related objects except Producto.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productomaterial objects.
+     * @return array           Array of Productotallaje objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptMaterial(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptProducto(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -963,33 +963,107 @@ abstract class BaseProductomaterialPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+            $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
         }
 
-        ProductomaterialPeer::addSelectColumns($criteria);
-        $startcol2 = ProductomaterialPeer::NUM_HYDRATE_COLUMNS;
+        ProductotallajePeer::addSelectColumns($criteria);
+        $startcol2 = ProductotallajePeer::NUM_HYDRATE_COLUMNS;
 
-        ProductoPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+        TallajePeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + TallajePeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductotallajePeer::IDTALLAJE, TallajePeer::IDTALLAJE, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductomaterialPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductomaterialPeer::getInstanceFromPool($key1))) {
+            $key1 = ProductotallajePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductotallajePeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = ProductomaterialPeer::getOMClass();
+                $cls = ProductotallajePeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                ProductomaterialPeer::addInstanceToPool($obj1, $key1);
+                ProductotallajePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Tallaje rows
+
+                $key2 = TallajePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = TallajePeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = TallajePeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    TallajePeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Productotallaje) to the collection in $obj2 (Tallaje)
+                $obj2->addProductotallaje($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Productotallaje objects pre-filled with all related objects except Tallaje.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Productotallaje objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptTallaje(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
+        }
+
+        ProductotallajePeer::addSelectColumns($criteria);
+        $startcol2 = ProductotallajePeer::NUM_HYDRATE_COLUMNS;
+
+        ProductoPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(ProductotallajePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = ProductotallajePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = ProductotallajePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = ProductotallajePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                ProductotallajePeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
                 // Add objects for joined Producto rows
@@ -1006,82 +1080,8 @@ abstract class BaseProductomaterialPeer
                     ProductoPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (Productomaterial) to the collection in $obj2 (Producto)
-                $obj2->addProductomaterial($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Productomaterial objects pre-filled with all related objects except Producto.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productomaterial objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptProducto(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
-        }
-
-        ProductomaterialPeer::addSelectColumns($criteria);
-        $startcol2 = ProductomaterialPeer::NUM_HYDRATE_COLUMNS;
-
-        MaterialPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + MaterialPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, MaterialPeer::IDMATERIAL, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductomaterialPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductomaterialPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = ProductomaterialPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                ProductomaterialPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Material rows
-
-                $key2 = MaterialPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = MaterialPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = MaterialPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    MaterialPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Productomaterial) to the collection in $obj2 (Material)
-                $obj2->addProductomaterial($obj1);
+                // Add the $obj1 (Productotallaje) to the collection in $obj2 (Producto)
+                $obj2->addProductotallaje($obj1);
 
             } // if joined row is not null
 
@@ -1101,7 +1101,7 @@ abstract class BaseProductomaterialPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(ProductomaterialPeer::DATABASE_NAME)->getTable(ProductomaterialPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(ProductotallajePeer::DATABASE_NAME)->getTable(ProductotallajePeer::TABLE_NAME);
     }
 
     /**
@@ -1109,9 +1109,9 @@ abstract class BaseProductomaterialPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BaseProductomaterialPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BaseProductomaterialPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \ProductomaterialTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseProductotallajePeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseProductotallajePeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \ProductotallajeTableMap());
       }
     }
 
@@ -1123,13 +1123,13 @@ abstract class BaseProductomaterialPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return ProductomaterialPeer::OM_CLASS;
+        return ProductotallajePeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a Productomaterial or Criteria object.
+     * Performs an INSERT on the database, given a Productotallaje or Criteria object.
      *
-     * @param      mixed $values Criteria or Productomaterial object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or Productotallaje object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -1138,22 +1138,22 @@ abstract class BaseProductomaterialPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from Productomaterial object
+            $criteria = $values->buildCriteria(); // build Criteria from Productotallaje object
         }
 
-        if ($criteria->containsKey(ProductomaterialPeer::IDPRODUCTOMATERIAL) && $criteria->keyContainsValue(ProductomaterialPeer::IDPRODUCTOMATERIAL) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProductomaterialPeer::IDPRODUCTOMATERIAL.')');
+        if ($criteria->containsKey(ProductotallajePeer::IDPRODUCTOTALLAJE) && $criteria->keyContainsValue(ProductotallajePeer::IDPRODUCTOTALLAJE) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProductotallajePeer::IDPRODUCTOTALLAJE.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1170,9 +1170,9 @@ abstract class BaseProductomaterialPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a Productomaterial or Criteria object.
+     * Performs an UPDATE on the database, given a Productotallaje or Criteria object.
      *
-     * @param      mixed $values Criteria or Productomaterial object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or Productotallaje object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -1181,35 +1181,35 @@ abstract class BaseProductomaterialPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(ProductomaterialPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(ProductotallajePeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(ProductomaterialPeer::IDPRODUCTOMATERIAL);
-            $value = $criteria->remove(ProductomaterialPeer::IDPRODUCTOMATERIAL);
+            $comparison = $criteria->getComparison(ProductotallajePeer::IDPRODUCTOTALLAJE);
+            $value = $criteria->remove(ProductotallajePeer::IDPRODUCTOTALLAJE);
             if ($value) {
-                $selectCriteria->add(ProductomaterialPeer::IDPRODUCTOMATERIAL, $value, $comparison);
+                $selectCriteria->add(ProductotallajePeer::IDPRODUCTOTALLAJE, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(ProductomaterialPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(ProductotallajePeer::TABLE_NAME);
             }
 
-        } else { // $values is Productomaterial object
+        } else { // $values is Productotallaje object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the productomaterial table.
+     * Deletes all rows from the productotallaje table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -1218,19 +1218,19 @@ abstract class BaseProductomaterialPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(ProductomaterialPeer::TABLE_NAME, $con, ProductomaterialPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(ProductotallajePeer::TABLE_NAME, $con, ProductotallajePeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            ProductomaterialPeer::clearInstancePool();
-            ProductomaterialPeer::clearRelatedInstancePool();
+            ProductotallajePeer::clearInstancePool();
+            ProductotallajePeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1241,9 +1241,9 @@ abstract class BaseProductomaterialPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a Productomaterial or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Productotallaje or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or Productomaterial object or primary key or array of primary keys
+     * @param      mixed $values Criteria or Productotallaje object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -1254,32 +1254,32 @@ abstract class BaseProductomaterialPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            ProductomaterialPeer::clearInstancePool();
+            ProductotallajePeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof Productomaterial) { // it's a model object
+        } elseif ($values instanceof Productotallaje) { // it's a model object
             // invalidate the cache for this single object
-            ProductomaterialPeer::removeInstanceFromPool($values);
+            ProductotallajePeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ProductomaterialPeer::DATABASE_NAME);
-            $criteria->add(ProductomaterialPeer::IDPRODUCTOMATERIAL, (array) $values, Criteria::IN);
+            $criteria = new Criteria(ProductotallajePeer::DATABASE_NAME);
+            $criteria->add(ProductotallajePeer::IDPRODUCTOTALLAJE, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                ProductomaterialPeer::removeInstanceFromPool($singleval);
+                ProductotallajePeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ProductomaterialPeer::DATABASE_NAME);
+        $criteria->setDbName(ProductotallajePeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1289,7 +1289,7 @@ abstract class BaseProductomaterialPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            ProductomaterialPeer::clearRelatedInstancePool();
+            ProductotallajePeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1300,13 +1300,13 @@ abstract class BaseProductomaterialPeer
     }
 
     /**
-     * Validates all modified columns of given Productomaterial object.
+     * Validates all modified columns of given Productotallaje object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param Productomaterial $obj The object to validate.
+     * @param Productotallaje $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -1316,8 +1316,8 @@ abstract class BaseProductomaterialPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(ProductomaterialPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(ProductomaterialPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(ProductotallajePeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(ProductotallajePeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -1333,7 +1333,7 @@ abstract class BaseProductomaterialPeer
 
         }
 
-        return BasePeer::doValidate(ProductomaterialPeer::DATABASE_NAME, ProductomaterialPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(ProductotallajePeer::DATABASE_NAME, ProductotallajePeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -1341,23 +1341,23 @@ abstract class BaseProductomaterialPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return Productomaterial
+     * @return Productotallaje
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = ProductomaterialPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = ProductotallajePeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(ProductomaterialPeer::DATABASE_NAME);
-        $criteria->add(ProductomaterialPeer::IDPRODUCTOMATERIAL, $pk);
+        $criteria = new Criteria(ProductotallajePeer::DATABASE_NAME);
+        $criteria->add(ProductotallajePeer::IDPRODUCTOTALLAJE, $pk);
 
-        $v = ProductomaterialPeer::doSelect($criteria, $con);
+        $v = ProductotallajePeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -1367,31 +1367,31 @@ abstract class BaseProductomaterialPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return Productomaterial[]
+     * @return Productotallaje[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ProductotallajePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(ProductomaterialPeer::DATABASE_NAME);
-            $criteria->add(ProductomaterialPeer::IDPRODUCTOMATERIAL, $pks, Criteria::IN);
-            $objs = ProductomaterialPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(ProductotallajePeer::DATABASE_NAME);
+            $criteria->add(ProductotallajePeer::IDPRODUCTOTALLAJE, $pks, Criteria::IN);
+            $objs = ProductotallajePeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BaseProductomaterialPeer
+} // BaseProductotallajePeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseProductomaterialPeer::buildTableMap();
+BaseProductotallajePeer::buildTableMap();
 

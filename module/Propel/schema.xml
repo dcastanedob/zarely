@@ -101,12 +101,25 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="medida" phpName="Medida" idMethod="native">
+    <column name="idmedida" phpName="Idmedida" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="medida_nombre" phpName="MedidaNombre" type="VARCHAR" size="45" required="false"/>
+    <column name="medida_xs" phpName="MedidaXs" type="BOOLEAN" size="1" required="false"/>
+    <column name="medida_s" phpName="MedidaS" type="BOOLEAN" size="1" required="false"/>
+    <column name="medida_m" phpName="MedidaM" type="BOOLEAN" size="1" required="false"/>
+    <column name="medida_l" phpName="MedidaL" type="BOOLEAN" size="1" required="false"/>
+    <column name="medida_xl" phpName="MedidaXl" type="BOOLEAN" size="1" required="false"/>
+    <column name="medida_xxl" phpName="MedidaXxl" type="BOOLEAN" size="1" required="false"/>
+    <column name="medida_unitalla" phpName="MedidaUnitalla" type="BOOLEAN" size="1" required="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="producto" phpName="Producto" idMethod="native">
     <column name="idproducto" phpName="Idproducto" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="producto_modelo" phpName="ProductoModelo" type="VARCHAR" size="100" required="true"/>
     <column name="idmarca" phpName="Idmarca" type="INTEGER" required="true"/>
     <column name="idtemporada" phpName="Idtemporada" type="INTEGER" required="true"/>
-    <column name="idtallaje" phpName="Idtallaje" type="INTEGER" required="true"/>
     <column name="producto_comisionable" phpName="ProductoComisionable" type="TINYINT" required="true"/>
     <column name="idproveedor" phpName="Idproveedor" type="INTEGER" required="true"/>
     <column name="producto_dirigidoa" phpName="ProductoDirigidoa" type="CHAR" sqlType="enum('dama','caballero','nino','nina','jovenes')" required="true"/>
@@ -123,9 +136,6 @@
     <foreign-key foreignTable="proveedor" name="idproveedor_producto" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idproveedor" foreign="idproveedor"/>
     </foreign-key>
-    <foreign-key foreignTable="tallaje" name="idtallaje_producto" onDelete="CASCADE" onUpdate="CASCADE">
-      <reference local="idtallaje" foreign="idtallaje"/>
-    </foreign-key>
     <foreign-key foreignTable="temporada" name="idtemporada_producto" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idtemporada" foreign="idtemporada"/>
     </foreign-key>
@@ -137,9 +147,6 @@
     </index>
     <index name="idtemporada">
       <index-column name="idtemporada"/>
-    </index>
-    <index name="idtallaje">
-      <index-column name="idtallaje"/>
     </index>
     <index name="idproveedor">
       <index-column name="idproveedor"/>
@@ -172,7 +179,7 @@
     </vendor>
   </table>
   <table name="productomaterial" phpName="Productomaterial" idMethod="native">
-    <column name="idproductomaterial" phpName="Idproductomaterial" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="idproductomaterial" phpName="Idproductomaterial" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
     <column name="idmaterial" phpName="Idmaterial" type="INTEGER" required="true"/>
     <foreign-key foreignTable="material" name="idmaterial_productomaterial" onDelete="CASCADE" onUpdate="CASCADE">
@@ -186,6 +193,46 @@
     </index>
     <index name="idmaterial">
       <index-column name="idmaterial"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="productomedida" phpName="Productomedida" idMethod="native">
+    <column name="idproductomedida" phpName="Idproductomedida" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
+    <column name="idmedida" phpName="Idmedida" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="medida" name="idmedida_productomedida" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idmedida" foreign="idmedida"/>
+    </foreign-key>
+    <foreign-key foreignTable="producto" name="idproducto_productomedida" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproducto" foreign="idproducto"/>
+    </foreign-key>
+    <index name="idproducto">
+      <index-column name="idproducto"/>
+    </index>
+    <index name="idmedida">
+      <index-column name="idmedida"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="productotallaje" phpName="Productotallaje" idMethod="native">
+    <column name="idproductotallaje" phpName="Idproductotallaje" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
+    <column name="idtallaje" phpName="Idtallaje" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="producto" name="idproducto_productotallaje" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproducto" foreign="idproducto"/>
+    </foreign-key>
+    <foreign-key foreignTable="tallaje" name="idtallaje_productotallaje" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idtallaje" foreign="idtallaje"/>
+    </foreign-key>
+    <index name="idproducto">
+      <index-column name="idproducto"/>
+    </index>
+    <index name="idtallaje">
+      <index-column name="idtallaje"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
@@ -341,7 +388,7 @@
   <table name="tipocalzado" phpName="Tipocalzado" idMethod="native">
     <column name="idtipocalzado" phpName="Idtipocalzado" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="tipocalzado_nombre" phpName="TipocalzadoNombre" type="VARCHAR" size="45" required="true"/>
-    <column name="tipocalzado_descripcion" phpName="TipocalzadoDescripcion" type="VARCHAR" size="255" required="true"/>
+    <column name="tipocalzado_descripcion" phpName="TipocalzadoDescripcion" type="LONGVARCHAR" required="false"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

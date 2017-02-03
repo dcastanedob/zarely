@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'tipocalzado' table.
+ * This class defines the structure of the 'productomedida' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.zarely.map
  */
-class TipocalzadoTableMap extends TableMap
+class ProductomedidaTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'zarely.map.TipocalzadoTableMap';
+    const CLASS_NAME = 'zarely.map.ProductomedidaTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,15 +32,15 @@ class TipocalzadoTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('tipocalzado');
-        $this->setPhpName('Tipocalzado');
-        $this->setClassname('Tipocalzado');
+        $this->setName('productomedida');
+        $this->setPhpName('Productomedida');
+        $this->setClassname('Productomedida');
         $this->setPackage('zarely');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('idtipocalzado', 'Idtipocalzado', 'INTEGER', true, null, null);
-        $this->addColumn('tipocalzado_nombre', 'TipocalzadoNombre', 'VARCHAR', true, 45, null);
-        $this->addColumn('tipocalzado_descripcion', 'TipocalzadoDescripcion', 'LONGVARCHAR', false, null, null);
+        $this->addPrimaryKey('idproductomedida', 'Idproductomedida', 'INTEGER', true, null, null);
+        $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', true, null, null);
+        $this->addForeignKey('idmedida', 'Idmedida', 'INTEGER', 'medida', 'idmedida', true, null, null);
         // validators
     } // initialize()
 
@@ -49,7 +49,8 @@ class TipocalzadoTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Producto', 'Producto', RelationMap::ONE_TO_MANY, array('idtipocalzado' => 'idtipocalzado', ), 'CASCADE', 'CASCADE', 'Productos');
+        $this->addRelation('Medida', 'Medida', RelationMap::MANY_TO_ONE, array('idmedida' => 'idmedida', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
-} // TipocalzadoTableMap
+} // ProductomedidaTableMap

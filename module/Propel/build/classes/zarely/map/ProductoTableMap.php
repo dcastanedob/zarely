@@ -42,7 +42,6 @@ class ProductoTableMap extends TableMap
         $this->addColumn('producto_modelo', 'ProductoModelo', 'VARCHAR', true, 100, null);
         $this->addForeignKey('idmarca', 'Idmarca', 'INTEGER', 'marca', 'idmarca', true, null, null);
         $this->addForeignKey('idtemporada', 'Idtemporada', 'INTEGER', 'temporada', 'idtemporada', true, null, null);
-        $this->addForeignKey('idtallaje', 'Idtallaje', 'INTEGER', 'tallaje', 'idtallaje', true, null, null);
         $this->addColumn('producto_comisionable', 'ProductoComisionable', 'TINYINT', true, null, null);
         $this->addForeignKey('idproveedor', 'Idproveedor', 'INTEGER', 'proveedor', 'idproveedor', true, null, null);
         $this->addColumn('producto_dirigidoa', 'ProductoDirigidoa', 'CHAR', true, null, null);
@@ -70,11 +69,12 @@ class ProductoTableMap extends TableMap
     {
         $this->addRelation('Marca', 'Marca', RelationMap::MANY_TO_ONE, array('idmarca' => 'idmarca', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Proveedor', 'Proveedor', RelationMap::MANY_TO_ONE, array('idproveedor' => 'idproveedor', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Tallaje', 'Tallaje', RelationMap::MANY_TO_ONE, array('idtallaje' => 'idtallaje', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Temporada', 'Temporada', RelationMap::MANY_TO_ONE, array('idtemporada' => 'idtemporada', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Tipocalzado', 'Tipocalzado', RelationMap::MANY_TO_ONE, array('idtipocalzado' => 'idtipocalzado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Productocolor', 'Productocolor', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), null, null, 'Productocolors');
         $this->addRelation('Productomaterial', 'Productomaterial', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productomaterials');
+        $this->addRelation('Productomedida', 'Productomedida', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productomedidas');
+        $this->addRelation('Productotallaje', 'Productotallaje', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productotallajes');
     } // buildRelations()
 
 } // ProductoTableMap

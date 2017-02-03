@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'temporada' table.
+ * Base class that represents a row from the 'productomedida' table.
  *
  *
  *
  * @package    propel.generator.zarely.om
  */
-abstract class BaseTemporada extends BaseObject implements Persistent
+abstract class BaseProductomedida extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'TemporadaPeer';
+    const PEER = 'ProductomedidaPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        TemporadaPeer
+     * @var        ProductomedidaPeer
      */
     protected static $peer;
 
@@ -30,22 +30,32 @@ abstract class BaseTemporada extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
-     * The value for the idtemporada field.
+     * The value for the idproductomedida field.
      * @var        int
      */
-    protected $idtemporada;
+    protected $idproductomedida;
 
     /**
-     * The value for the temporada_nombre field.
-     * @var        string
+     * The value for the idproducto field.
+     * @var        int
      */
-    protected $temporada_nombre;
+    protected $idproducto;
 
     /**
-     * @var        PropelObjectCollection|Producto[] Collection to store aggregation of Producto objects.
+     * The value for the idmedida field.
+     * @var        int
      */
-    protected $collProductos;
-    protected $collProductosPartial;
+    protected $idmedida;
+
+    /**
+     * @var        Medida
+     */
+    protected $aMedida;
+
+    /**
+     * @var        Producto
+     */
+    protected $aProducto;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -68,74 +78,108 @@ abstract class BaseTemporada extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $productosScheduledForDeletion = null;
-
-    /**
-     * Get the [idtemporada] column value.
+     * Get the [idproductomedida] column value.
      *
      * @return int
      */
-    public function getIdtemporada()
+    public function getIdproductomedida()
     {
 
-        return $this->idtemporada;
+        return $this->idproductomedida;
     }
 
     /**
-     * Get the [temporada_nombre] column value.
+     * Get the [idproducto] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getTemporadaNombre()
+    public function getIdproducto()
     {
 
-        return $this->temporada_nombre;
+        return $this->idproducto;
     }
 
     /**
-     * Set the value of [idtemporada] column.
+     * Get the [idmedida] column value.
+     *
+     * @return int
+     */
+    public function getIdmedida()
+    {
+
+        return $this->idmedida;
+    }
+
+    /**
+     * Set the value of [idproductomedida] column.
      *
      * @param  int $v new value
-     * @return Temporada The current object (for fluent API support)
+     * @return Productomedida The current object (for fluent API support)
      */
-    public function setIdtemporada($v)
+    public function setIdproductomedida($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idtemporada !== $v) {
-            $this->idtemporada = $v;
-            $this->modifiedColumns[] = TemporadaPeer::IDTEMPORADA;
+        if ($this->idproductomedida !== $v) {
+            $this->idproductomedida = $v;
+            $this->modifiedColumns[] = ProductomedidaPeer::IDPRODUCTOMEDIDA;
         }
 
 
         return $this;
-    } // setIdtemporada()
+    } // setIdproductomedida()
 
     /**
-     * Set the value of [temporada_nombre] column.
+     * Set the value of [idproducto] column.
      *
-     * @param  string $v new value
-     * @return Temporada The current object (for fluent API support)
+     * @param  int $v new value
+     * @return Productomedida The current object (for fluent API support)
      */
-    public function setTemporadaNombre($v)
+    public function setIdproducto($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
         }
 
-        if ($this->temporada_nombre !== $v) {
-            $this->temporada_nombre = $v;
-            $this->modifiedColumns[] = TemporadaPeer::TEMPORADA_NOMBRE;
+        if ($this->idproducto !== $v) {
+            $this->idproducto = $v;
+            $this->modifiedColumns[] = ProductomedidaPeer::IDPRODUCTO;
+        }
+
+        if ($this->aProducto !== null && $this->aProducto->getIdproducto() !== $v) {
+            $this->aProducto = null;
         }
 
 
         return $this;
-    } // setTemporadaNombre()
+    } // setIdproducto()
+
+    /**
+     * Set the value of [idmedida] column.
+     *
+     * @param  int $v new value
+     * @return Productomedida The current object (for fluent API support)
+     */
+    public function setIdmedida($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idmedida !== $v) {
+            $this->idmedida = $v;
+            $this->modifiedColumns[] = ProductomedidaPeer::IDMEDIDA;
+        }
+
+        if ($this->aMedida !== null && $this->aMedida->getIdmedida() !== $v) {
+            $this->aMedida = null;
+        }
+
+
+        return $this;
+    } // setIdmedida()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -169,8 +213,9 @@ abstract class BaseTemporada extends BaseObject implements Persistent
     {
         try {
 
-            $this->idtemporada = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->temporada_nombre = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->idproductomedida = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->idproducto = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->idmedida = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -180,10 +225,10 @@ abstract class BaseTemporada extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 2; // 2 = TemporadaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = ProductomedidaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Temporada object", $e);
+            throw new PropelException("Error populating Productomedida object", $e);
         }
     }
 
@@ -203,6 +248,12 @@ abstract class BaseTemporada extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aProducto !== null && $this->idproducto !== $this->aProducto->getIdproducto()) {
+            $this->aProducto = null;
+        }
+        if ($this->aMedida !== null && $this->idmedida !== $this->aMedida->getIdmedida()) {
+            $this->aMedida = null;
+        }
     } // ensureConsistency
 
     /**
@@ -226,13 +277,13 @@ abstract class BaseTemporada extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(TemporadaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ProductomedidaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = TemporadaPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = ProductomedidaPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -242,8 +293,8 @@ abstract class BaseTemporada extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collProductos = null;
-
+            $this->aMedida = null;
+            $this->aProducto = null;
         } // if (deep)
     }
 
@@ -264,12 +315,12 @@ abstract class BaseTemporada extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(TemporadaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ProductomedidaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = TemporadaQuery::create()
+            $deleteQuery = ProductomedidaQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -307,7 +358,7 @@ abstract class BaseTemporada extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(TemporadaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ProductomedidaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -327,7 +378,7 @@ abstract class BaseTemporada extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                TemporadaPeer::addInstanceToPool($this);
+                ProductomedidaPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -357,6 +408,25 @@ abstract class BaseTemporada extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aMedida !== null) {
+                if ($this->aMedida->isModified() || $this->aMedida->isNew()) {
+                    $affectedRows += $this->aMedida->save($con);
+                }
+                $this->setMedida($this->aMedida);
+            }
+
+            if ($this->aProducto !== null) {
+                if ($this->aProducto->isModified() || $this->aProducto->isNew()) {
+                    $affectedRows += $this->aProducto->save($con);
+                }
+                $this->setProducto($this->aProducto);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -366,23 +436,6 @@ abstract class BaseTemporada extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->productosScheduledForDeletion !== null) {
-                if (!$this->productosScheduledForDeletion->isEmpty()) {
-                    ProductoQuery::create()
-                        ->filterByPrimaryKeys($this->productosScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->productosScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collProductos !== null) {
-                foreach ($this->collProductos as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -405,21 +458,24 @@ abstract class BaseTemporada extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = TemporadaPeer::IDTEMPORADA;
-        if (null !== $this->idtemporada) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . TemporadaPeer::IDTEMPORADA . ')');
+        $this->modifiedColumns[] = ProductomedidaPeer::IDPRODUCTOMEDIDA;
+        if (null !== $this->idproductomedida) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ProductomedidaPeer::IDPRODUCTOMEDIDA . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(TemporadaPeer::IDTEMPORADA)) {
-            $modifiedColumns[':p' . $index++]  = '`idtemporada`';
+        if ($this->isColumnModified(ProductomedidaPeer::IDPRODUCTOMEDIDA)) {
+            $modifiedColumns[':p' . $index++]  = '`idproductomedida`';
         }
-        if ($this->isColumnModified(TemporadaPeer::TEMPORADA_NOMBRE)) {
-            $modifiedColumns[':p' . $index++]  = '`temporada_nombre`';
+        if ($this->isColumnModified(ProductomedidaPeer::IDPRODUCTO)) {
+            $modifiedColumns[':p' . $index++]  = '`idproducto`';
+        }
+        if ($this->isColumnModified(ProductomedidaPeer::IDMEDIDA)) {
+            $modifiedColumns[':p' . $index++]  = '`idmedida`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `temporada` (%s) VALUES (%s)',
+            'INSERT INTO `productomedida` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -428,11 +484,14 @@ abstract class BaseTemporada extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`idtemporada`':
-                        $stmt->bindValue($identifier, $this->idtemporada, PDO::PARAM_INT);
+                    case '`idproductomedida`':
+                        $stmt->bindValue($identifier, $this->idproductomedida, PDO::PARAM_INT);
                         break;
-                    case '`temporada_nombre`':
-                        $stmt->bindValue($identifier, $this->temporada_nombre, PDO::PARAM_STR);
+                    case '`idproducto`':
+                        $stmt->bindValue($identifier, $this->idproducto, PDO::PARAM_INT);
+                        break;
+                    case '`idmedida`':
+                        $stmt->bindValue($identifier, $this->idmedida, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -447,7 +506,7 @@ abstract class BaseTemporada extends BaseObject implements Persistent
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
-        $this->setIdtemporada($pk);
+        $this->setIdproductomedida($pk);
 
         $this->setNew(false);
     }
@@ -528,18 +587,28 @@ abstract class BaseTemporada extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = TemporadaPeer::doValidate($this, $columns)) !== true) {
-                $failureMap = array_merge($failureMap, $retval);
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aMedida !== null) {
+                if (!$this->aMedida->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aMedida->getValidationFailures());
+                }
+            }
+
+            if ($this->aProducto !== null) {
+                if (!$this->aProducto->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProducto->getValidationFailures());
+                }
             }
 
 
-                if ($this->collProductos !== null) {
-                    foreach ($this->collProductos as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
+            if (($retval = ProductomedidaPeer::doValidate($this, $columns)) !== true) {
+                $failureMap = array_merge($failureMap, $retval);
+            }
+
 
 
             $this->alreadyInValidation = false;
@@ -560,7 +629,7 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = TemporadaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = ProductomedidaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -577,10 +646,13 @@ abstract class BaseTemporada extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getIdtemporada();
+                return $this->getIdproductomedida();
                 break;
             case 1:
-                return $this->getTemporadaNombre();
+                return $this->getIdproducto();
+                break;
+            case 2:
+                return $this->getIdmedida();
                 break;
             default:
                 return null;
@@ -605,14 +677,15 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Temporada'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Productomedida'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Temporada'][$this->getPrimaryKey()] = true;
-        $keys = TemporadaPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Productomedida'][$this->getPrimaryKey()] = true;
+        $keys = ProductomedidaPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getIdtemporada(),
-            $keys[1] => $this->getTemporadaNombre(),
+            $keys[0] => $this->getIdproductomedida(),
+            $keys[1] => $this->getIdproducto(),
+            $keys[2] => $this->getIdmedida(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -620,8 +693,11 @@ abstract class BaseTemporada extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collProductos) {
-                $result['Productos'] = $this->collProductos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->aMedida) {
+                $result['Medida'] = $this->aMedida->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aProducto) {
+                $result['Producto'] = $this->aProducto->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -641,7 +717,7 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = TemporadaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = ProductomedidaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -658,10 +734,13 @@ abstract class BaseTemporada extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setIdtemporada($value);
+                $this->setIdproductomedida($value);
                 break;
             case 1:
-                $this->setTemporadaNombre($value);
+                $this->setIdproducto($value);
+                break;
+            case 2:
+                $this->setIdmedida($value);
                 break;
         } // switch()
     }
@@ -685,10 +764,11 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = TemporadaPeer::getFieldNames($keyType);
+        $keys = ProductomedidaPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setIdtemporada($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setTemporadaNombre($arr[$keys[1]]);
+        if (array_key_exists($keys[0], $arr)) $this->setIdproductomedida($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setIdproducto($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setIdmedida($arr[$keys[2]]);
     }
 
     /**
@@ -698,10 +778,11 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(TemporadaPeer::DATABASE_NAME);
+        $criteria = new Criteria(ProductomedidaPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(TemporadaPeer::IDTEMPORADA)) $criteria->add(TemporadaPeer::IDTEMPORADA, $this->idtemporada);
-        if ($this->isColumnModified(TemporadaPeer::TEMPORADA_NOMBRE)) $criteria->add(TemporadaPeer::TEMPORADA_NOMBRE, $this->temporada_nombre);
+        if ($this->isColumnModified(ProductomedidaPeer::IDPRODUCTOMEDIDA)) $criteria->add(ProductomedidaPeer::IDPRODUCTOMEDIDA, $this->idproductomedida);
+        if ($this->isColumnModified(ProductomedidaPeer::IDPRODUCTO)) $criteria->add(ProductomedidaPeer::IDPRODUCTO, $this->idproducto);
+        if ($this->isColumnModified(ProductomedidaPeer::IDMEDIDA)) $criteria->add(ProductomedidaPeer::IDMEDIDA, $this->idmedida);
 
         return $criteria;
     }
@@ -716,8 +797,8 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(TemporadaPeer::DATABASE_NAME);
-        $criteria->add(TemporadaPeer::IDTEMPORADA, $this->idtemporada);
+        $criteria = new Criteria(ProductomedidaPeer::DATABASE_NAME);
+        $criteria->add(ProductomedidaPeer::IDPRODUCTOMEDIDA, $this->idproductomedida);
 
         return $criteria;
     }
@@ -728,18 +809,18 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      */
     public function getPrimaryKey()
     {
-        return $this->getIdtemporada();
+        return $this->getIdproductomedida();
     }
 
     /**
-     * Generic method to set the primary key (idtemporada column).
+     * Generic method to set the primary key (idproductomedida column).
      *
      * @param  int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setIdtemporada($key);
+        $this->setIdproductomedida($key);
     }
 
     /**
@@ -749,7 +830,7 @@ abstract class BaseTemporada extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getIdtemporada();
+        return null === $this->getIdproductomedida();
     }
 
     /**
@@ -758,14 +839,15 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Temporada (or compatible) type.
+     * @param object $copyObj An object of Productomedida (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTemporadaNombre($this->getTemporadaNombre());
+        $copyObj->setIdproducto($this->getIdproducto());
+        $copyObj->setIdmedida($this->getIdmedida());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -774,19 +856,13 @@ abstract class BaseTemporada extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getProductos() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addProducto($relObj->copy($deepCopy));
-                }
-            }
-
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
 
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setIdtemporada(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setIdproductomedida(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -799,7 +875,7 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Temporada Clone of current object.
+     * @return Productomedida Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -819,331 +895,119 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return TemporadaPeer
+     * @return ProductomedidaPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new TemporadaPeer();
+            self::$peer = new ProductomedidaPeer();
         }
 
         return self::$peer;
     }
 
-
     /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
+     * Declares an association between this object and a Medida object.
      *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Producto' == $relationName) {
-            $this->initProductos();
-        }
-    }
-
-    /**
-     * Clears out the collProductos collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Temporada The current object (for fluent API support)
-     * @see        addProductos()
-     */
-    public function clearProductos()
-    {
-        $this->collProductos = null; // important to set this to null since that means it is uninitialized
-        $this->collProductosPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collProductos collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialProductos($v = true)
-    {
-        $this->collProductosPartial = $v;
-    }
-
-    /**
-     * Initializes the collProductos collection.
-     *
-     * By default this just sets the collProductos collection to an empty array (like clearcollProductos());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initProductos($overrideExisting = true)
-    {
-        if (null !== $this->collProductos && !$overrideExisting) {
-            return;
-        }
-        $this->collProductos = new PropelObjectCollection();
-        $this->collProductos->setModel('Producto');
-    }
-
-    /**
-     * Gets an array of Producto objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Temporada is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Producto[] List of Producto objects
+     * @param                  Medida $v
+     * @return Productomedida The current object (for fluent API support)
      * @throws PropelException
      */
-    public function getProductos($criteria = null, PropelPDO $con = null)
+    public function setMedida(Medida $v = null)
     {
-        $partial = $this->collProductosPartial && !$this->isNew();
-        if (null === $this->collProductos || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collProductos) {
-                // return empty collection
-                $this->initProductos();
-            } else {
-                $collProductos = ProductoQuery::create(null, $criteria)
-                    ->filterByTemporada($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collProductosPartial && count($collProductos)) {
-                      $this->initProductos(false);
-
-                      foreach ($collProductos as $obj) {
-                        if (false == $this->collProductos->contains($obj)) {
-                          $this->collProductos->append($obj);
-                        }
-                      }
-
-                      $this->collProductosPartial = true;
-                    }
-
-                    $collProductos->getInternalIterator()->rewind();
-
-                    return $collProductos;
-                }
-
-                if ($partial && $this->collProductos) {
-                    foreach ($this->collProductos as $obj) {
-                        if ($obj->isNew()) {
-                            $collProductos[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collProductos = $collProductos;
-                $this->collProductosPartial = false;
-            }
+        if ($v === null) {
+            $this->setIdmedida(NULL);
+        } else {
+            $this->setIdmedida($v->getIdmedida());
         }
 
-        return $this->collProductos;
-    }
+        $this->aMedida = $v;
 
-    /**
-     * Sets a collection of Producto objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $productos A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Temporada The current object (for fluent API support)
-     */
-    public function setProductos(PropelCollection $productos, PropelPDO $con = null)
-    {
-        $productosToDelete = $this->getProductos(new Criteria(), $con)->diff($productos);
-
-
-        $this->productosScheduledForDeletion = $productosToDelete;
-
-        foreach ($productosToDelete as $productoRemoved) {
-            $productoRemoved->setTemporada(null);
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Medida object, it will not be re-added.
+        if ($v !== null) {
+            $v->addProductomedida($this);
         }
 
-        $this->collProductos = null;
-        foreach ($productos as $producto) {
-            $this->addProducto($producto);
-        }
-
-        $this->collProductos = $productos;
-        $this->collProductosPartial = false;
 
         return $this;
     }
 
+
     /**
-     * Returns the number of related Producto objects.
+     * Get the associated Medida object
      *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Producto objects.
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Medida The associated Medida object.
      * @throws PropelException
      */
-    public function countProductos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function getMedida(PropelPDO $con = null, $doQuery = true)
     {
-        $partial = $this->collProductosPartial && !$this->isNew();
-        if (null === $this->collProductos || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collProductos) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getProductos());
-            }
-            $query = ProductoQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByTemporada($this)
-                ->count($con);
+        if ($this->aMedida === null && ($this->idmedida !== null) && $doQuery) {
+            $this->aMedida = MedidaQuery::create()->findPk($this->idmedida, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aMedida->addProductomedidas($this);
+             */
         }
 
-        return count($this->collProductos);
+        return $this->aMedida;
     }
 
     /**
-     * Method called to associate a Producto object to this object
-     * through the Producto foreign key attribute.
+     * Declares an association between this object and a Producto object.
      *
-     * @param    Producto $l Producto
-     * @return Temporada The current object (for fluent API support)
+     * @param                  Producto $v
+     * @return Productomedida The current object (for fluent API support)
+     * @throws PropelException
      */
-    public function addProducto(Producto $l)
+    public function setProducto(Producto $v = null)
     {
-        if ($this->collProductos === null) {
-            $this->initProductos();
-            $this->collProductosPartial = true;
+        if ($v === null) {
+            $this->setIdproducto(NULL);
+        } else {
+            $this->setIdproducto($v->getIdproducto());
         }
 
-        if (!in_array($l, $this->collProductos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddProducto($l);
+        $this->aProducto = $v;
 
-            if ($this->productosScheduledForDeletion and $this->productosScheduledForDeletion->contains($l)) {
-                $this->productosScheduledForDeletion->remove($this->productosScheduledForDeletion->search($l));
-            }
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Producto object, it will not be re-added.
+        if ($v !== null) {
+            $v->addProductomedida($this);
         }
 
-        return $this;
-    }
-
-    /**
-     * @param	Producto $producto The producto object to add.
-     */
-    protected function doAddProducto($producto)
-    {
-        $this->collProductos[]= $producto;
-        $producto->setTemporada($this);
-    }
-
-    /**
-     * @param	Producto $producto The producto object to remove.
-     * @return Temporada The current object (for fluent API support)
-     */
-    public function removeProducto($producto)
-    {
-        if ($this->getProductos()->contains($producto)) {
-            $this->collProductos->remove($this->collProductos->search($producto));
-            if (null === $this->productosScheduledForDeletion) {
-                $this->productosScheduledForDeletion = clone $this->collProductos;
-                $this->productosScheduledForDeletion->clear();
-            }
-            $this->productosScheduledForDeletion[]= clone $producto;
-            $producto->setTemporada(null);
-        }
 
         return $this;
     }
 
 
     /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Temporada is new, it will return
-     * an empty collection; or if this Temporada has previously
-     * been saved, it will retrieve related Productos from storage.
+     * Get the associated Producto object
      *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Temporada.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Producto[] List of Producto objects
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Producto The associated Producto object.
+     * @throws PropelException
      */
-    public function getProductosJoinMarca($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getProducto(PropelPDO $con = null, $doQuery = true)
     {
-        $query = ProductoQuery::create(null, $criteria);
-        $query->joinWith('Marca', $join_behavior);
+        if ($this->aProducto === null && ($this->idproducto !== null) && $doQuery) {
+            $this->aProducto = ProductoQuery::create()->findPk($this->idproducto, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProducto->addProductomedidas($this);
+             */
+        }
 
-        return $this->getProductos($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Temporada is new, it will return
-     * an empty collection; or if this Temporada has previously
-     * been saved, it will retrieve related Productos from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Temporada.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Producto[] List of Producto objects
-     */
-    public function getProductosJoinProveedor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ProductoQuery::create(null, $criteria);
-        $query->joinWith('Proveedor', $join_behavior);
-
-        return $this->getProductos($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Temporada is new, it will return
-     * an empty collection; or if this Temporada has previously
-     * been saved, it will retrieve related Productos from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Temporada.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Producto[] List of Producto objects
-     */
-    public function getProductosJoinTipocalzado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ProductoQuery::create(null, $criteria);
-        $query->joinWith('Tipocalzado', $join_behavior);
-
-        return $this->getProductos($query, $con);
+        return $this->aProducto;
     }
 
     /**
@@ -1151,8 +1015,9 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      */
     public function clear()
     {
-        $this->idtemporada = null;
-        $this->temporada_nombre = null;
+        $this->idproductomedida = null;
+        $this->idproducto = null;
+        $this->idmedida = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1175,19 +1040,18 @@ abstract class BaseTemporada extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collProductos) {
-                foreach ($this->collProductos as $o) {
-                    $o->clearAllReferences($deep);
-                }
+            if ($this->aMedida instanceof Persistent) {
+              $this->aMedida->clearAllReferences($deep);
+            }
+            if ($this->aProducto instanceof Persistent) {
+              $this->aProducto->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collProductos instanceof PropelCollection) {
-            $this->collProductos->clearIterator();
-        }
-        $this->collProductos = null;
+        $this->aMedida = null;
+        $this->aProducto = null;
     }
 
     /**
@@ -1197,7 +1061,7 @@ abstract class BaseTemporada extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(TemporadaPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(ProductomedidaPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
