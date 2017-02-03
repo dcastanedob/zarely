@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.empleados= function(data){
+    $.fn.productos= function(data){
         var _this = $(this);
-        var plugin = _this.data('empleados');
+        var plugin = _this.data('productos');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.empleados(this, data);
+            plugin = new $.productos(this, data);
             
-            _this.data('empleados', plugin);
+            _this.data('productos', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.empleados = function(container, options){
+    $.productos = function(container, options){
         
         var plugin = this;
        
@@ -61,7 +61,7 @@
 
                     ajax:{
                         method: 'POST',
-                        url:'/catalogo/empleados/serverside',
+                        url:'/catalogo/productos/serverside',
                     },
                     columns:[
                         {"data":"idempleado","name":"idempleado","orderable":true},
@@ -86,7 +86,7 @@
                                           '<span class="sr-only">Close</span>',
                                         '</button>',
                                       '</div>',
-                                      '<form action="/catalogo/empleados/eliminar/'+id+'" method="POST">',
+                                      '<form action="/catalogo/productos/eliminar/'+id+'" method="POST">',
                                      ' <div class="modal-body">',
                                         '<div class="text-center">',
                                          ' <span class="text-primary icon icon-times-circle icon-5x"></span>',
@@ -112,6 +112,75 @@
 
 
         }
+        plugin.initForm = function(){
+            
+            $container.find('select[name*=idtallaje]').multipleSelect({
+                filter:true,
+                selectAllText: 'Seleccionar Todos',
+                width: '100%',
+                allSelected: 'Todos seleccionados',
+                countSelected: '# de % Seleccionados',
+                //multiple: true,
+                //multipleWidth: 100
+            });
+
+            $container.find('select[name*=idmaterial]').multipleSelect({
+                filter:true,
+                selectAllText: 'Seleccionar Todos',
+                width: '100%',
+                allSelected: 'Todos seleccionados',
+                countSelected: '# de % Seleccionados',
+                //multiple: true,
+                //multipleWidth: 100
+            });
+
+            $container.find('select[name*=idcolor]').multipleSelect({
+                filter:true,
+                selectAllText: 'Seleccionar Todos',
+                width: '100%',
+                allSelected: 'Todos seleccionados',
+                countSelected: '# de % Seleccionados',
+                //multiple: true,
+                //multipleWidth: 100
+            });
+            
+            $('button[type=submit]').on('click',function(e){
+                e.preventDefault();
+                var cajeros = $container.find('select[name*=idempleadovendedor]').multipleSelect("getSelects");
+                cajeros.forEach(function(value){
+                    var $input = $('<input type="hidden" name="empleados_array[]">');
+                    $input.val(value);
+                    $container.find('form').append($input);
+                });
+
+                var vendedores = $container.find('select[name*=idempleadocajero]').multipleSelect("getSelects");
+                vendedores.forEach(function(value){
+                    var $input = $('<input type="hidden" name="empleados_array[]">');
+                    $input.val(value);
+                    $container.find('form').append($input);
+                });
+
+                $container.find('form').submit();
+                
+            });
+            
+            var idsucursal = $('input[name=idsucursal]').val();
+            
+            $.ajax({
+                url:'/catalogo/sucursales/get',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    name: 'empleados',
+                    data: {
+                        idsucursal:idsucursal,
+                    },
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $container.find('select[name*=idempleado]').multipleSelect("setSelects", data);
+                }
+            });
+        };
 
         /*
         * Plugin initializing

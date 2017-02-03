@@ -127,12 +127,20 @@
             
             $('button[type=submit]').on('click',function(e){
                 e.preventDefault();
-                var empleados = $container.find('select[name*=idempleado]').multipleSelect("getSelects");
-                empleados.forEach(function(value){
+                var cajeros = $container.find('select[name*=idempleadovendedor]').multipleSelect("getSelects");
+                cajeros.forEach(function(value){
                     var $input = $('<input type="hidden" name="empleados_array[]">');
                     $input.val(value);
                     $container.find('form').append($input);
                 });
+
+                var vendedores = $container.find('select[name*=idempleadocajero]').multipleSelect("getSelects");
+                vendedores.forEach(function(value){
+                    var $input = $('<input type="hidden" name="empleados_array[]">');
+                    $input.val(value);
+                    $container.find('form').append($input);
+                });
+
                 $container.find('form').submit();
                 
             });
