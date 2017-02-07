@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.tallajes= function(data){
+    $.fn.medidas= function(data){
         var _this = $(this);
-        var plugin = _this.data('tallajes');
+        var plugin = _this.data('medidas');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.tallajes(this, data);
+            plugin = new $.medidas(this, data);
             
-            _this.data('tallajes', plugin);
+            _this.data('medidas', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.tallajes = function(container, options){
+    $.medidas = function(container, options){
         
         var plugin = this;
        
@@ -61,12 +61,12 @@
 
                     ajax:{
                         method: 'POST',
-                        url:'/catalogo/tallajes/serverside',
+                        url:'/catalogo/medidas/serverside',
                     },
                     columns:[
-                        {"data":"idtallaje","name":"idtallaje","orderable":true},
-                        {"data":"tallaje_nombre","name":"tallaje_nombre","orderable":true},
-                        {"data":"tallajerango","name":"tallajerango","orderable":true},
+                        {"data":"idmedida","name":"idmedida","orderable":true},
+                        {"data":"medida_nombre","name":"medida_nombre","orderable":true},
+                        {"data":"medidasrango","name":"medidasrango","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},
                     ],
                     proccesing: true,
@@ -84,7 +84,7 @@
                                           '<span class="sr-only">Close</span>',
                                         '</button>',
                                       '</div>',
-                                      '<form action="/catalogo/tallajes/eliminar/'+id+'" method="POST">',
+                                      '<form action="/catalogo/medidas/eliminar/'+id+'" method="POST">',
                                      ' <div class="modal-body">',
                                         '<div class="text-center">',
                                          ' <span class="text-primary icon icon-times-circle icon-5x"></span>',

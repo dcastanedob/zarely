@@ -111,6 +111,7 @@
     <column name="medida_xl" phpName="MedidaXl" type="BOOLEAN" size="1" required="false"/>
     <column name="medida_xxl" phpName="MedidaXxl" type="BOOLEAN" size="1" required="false"/>
     <column name="medida_unitalla" phpName="MedidaUnitalla" type="BOOLEAN" size="1" required="false"/>
+    <column name="medidasrango" phpName="Medidasrango" type="VARCHAR" size="45" required="false"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

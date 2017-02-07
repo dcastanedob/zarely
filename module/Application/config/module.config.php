@@ -21,6 +21,17 @@ return array(
                 ),
             ),
 
+            'login' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/login[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Login',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'empleados' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -219,6 +230,8 @@ return array(
             'Application\Catalogo\Controller\Proveedores' => 'Application\Catalogo\Controller\ProveedoresController',
             'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController',
             'Application\Catalogo\Controller\Medidas' => 'Application\Catalogo\Controller\MedidasController'
+            ,
+            'Application\Controller\Login' => 'Application\Controller\LoginController'
         ),
     ),
 

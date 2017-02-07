@@ -16,9 +16,9 @@ class MedidasController extends AbstractActionController
 {
 
     public $column_map = array(
-        0 => 'Idtallaje',
-        1 => 'TallajeNombre',
-        2 => 'Tallajerango',
+        0 => 'Idmedida',
+        1 => 'MedidaNombre',
+        2 => 'Medidasrango',
     );
 
     public function serversideAction()
@@ -27,7 +27,7 @@ class MedidasController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
            
-            $query = new \TallajeQuery();
+            $query = new \MedidaQuery();
             
              /*JOIN
             $query->useCategoriaRelatedByIdcategoriaQuery('a')->endUse();
@@ -73,10 +73,10 @@ class MedidasController extends AbstractActionController
                 }
                 $c = new \Criteria();
                
-                $c1= $c->getNewCriterion('tallaje.idtallaje', '%'.$search_value.'%', \Criteria::LIKE);
-                $c2= $c->getNewCriterion('tallaje.tallaje_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1= $c->getNewCriterion('medida.idmedida', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('medida.medida_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('talaje.tallajerango', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c3= $c->getNewCriterion('medida.medidarango', '%'.$search_value.'%', \Criteria::LIKE);
 
 
           
@@ -113,10 +113,10 @@ class MedidasController extends AbstractActionController
             
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
 
-                $tmp['DT_RowId'] = $value['idtallaje'];
-                $tmp['idtallaje'] = $value['idtallaje'];
-                $tmp['tallaje_nombre'] = $value['tallaje_nombre'];
-                $tmp['tallajerango'] = $value['tallajerango'];
+                $tmp['DT_RowId'] = $value['idmedida'];
+                $tmp['idmedida'] = $value['idmedida'];
+                $tmp['medida_nombre'] = $value['medida_nombre'];
+                $tmp['medidasrango'] = $value['medidasrango'];
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
                     <span class="icon icon-gear icon-lg icon-fw"></span>
@@ -125,7 +125,7 @@ class MedidasController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/catalogo/tallajes/ver/' . $value['idtallaje'] . '">
+                      <a href="/catalogo/medidas/ver/' . $value['idmedida'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -191,14 +191,29 @@ class MedidasController extends AbstractActionController
         {
             $post_data = $request->getPost();
             $entity = new \Medida();
+            $inicio =null;
+            $fin =null;
+            $inicioEncontrado = false;
 
             foreach ($post_data as $key => $value) {
                 if(\MedidaPeer::getTableMap()->hasColumn($key))
                 {
-                    
+                    if(!$inicioEncontrado && $value == 1 ){
+                        $inicio = $key;
+                        $inicioEncontrado = true;
+                    }
+                    if($inicioEncontrado && $value == 1)
+                    {
+                        $fin = $key;
+                    }
+
                     $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                 }
             }
+            $inicio = str_replace("medida_", "", $inicio);
+            $fin = str_replace("medida_", "", $fin);
+            $rango = $inicio ." - ". $fin;
+            $entity->setByName("medidasrango",$rango,\BasePeer::TYPE_FIELDNAME);
 
             $entity->save();
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
@@ -224,11 +239,11 @@ class MedidasController extends AbstractActionController
 
         $id = $this->params()->fromRoute('id');
 
-        $exists = \TallajeQuery::create()->filterByIdtallaje($id)->exists();
+        $exists = \MedidaQuery::create()->filterByIdmedida($id)->exists();
 
         if($exists)
         {
-            $entity = \TallajeQuery::create()->findPk($id);
+            $entity = \MedidaQuery::create()->findPk($id);
 
             if($request->isPost())
             {
@@ -238,7 +253,7 @@ class MedidasController extends AbstractActionController
                 $inicioEncontrado = false;
 
                 foreach ($post_data as $key => $value) {
-                    if(\TallajePeer::getTableMap()->hasColumn($key))
+                    if(\MedidaPeer::getTableMap()->hasColumn($key))
                     {
                         if(!$inicioEncontrado && $value == 1 ){
                             $inicio = $key;
@@ -252,25 +267,25 @@ class MedidasController extends AbstractActionController
                         $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                     }
                 }
-                $inicio = str_replace("talla_", "", $inicio);
-                $inicio = (int)$inicio/10;
-                $fin = str_replace("talla_", "", $fin);
-                $fin = (int)$fin/10;
+                $inicio = str_replace("medida_", "", $inicio);
+                
+                $fin = str_replace("medida_", "", $fin);
+                
                 $rango = $inicio ." - ". $fin;
-                $entity->setByName("tallajerango",$rango,\BasePeer::TYPE_FIELDNAME);
+                $entity->setByName("medidasrango",$rango,\BasePeer::TYPE_FIELDNAME);
                 $entity->save();
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-                return $this->redirect()->toUrl('/catalogo/tallajes');
+                return $this->redirect()->toUrl('/catalogo/medidas');
             }
 
-            $form = new \Application\Catalogo\Form\TallajesForm();
+            $form = new \Application\Catalogo\Form\MedidasForm();
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
 
 
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/catalogo/tallajes/ver');
+            $view_model->setTemplate('application/catalogo/medidas/ver');
 
             $view_model->setVariables(array(
                 'form' => $form,
@@ -281,7 +296,7 @@ class MedidasController extends AbstractActionController
         }else
         {
             $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/tallajes');   
+            return $this->redirect()->toUrl('/catalogo/medidas');   
         }
     }
 
@@ -291,7 +306,7 @@ class MedidasController extends AbstractActionController
         if($request->isPost())
         {
             $id = $this->params()->fromRoute('id');
-            $entity = \TallajeQuery::create()->findPk($id);
+            $entity = \MedidaQuery::create()->findPk($id);
             $entity->delete();
 
             if($entity->isDeleted()){
@@ -301,7 +316,7 @@ class MedidasController extends AbstractActionController
             }
         }
 
-        return $this->redirect()->toUrl('/catalogo/tallajes');
+        return $this->redirect()->toUrl('/catalogo/medidas');
     }
 
 

@@ -168,6 +168,7 @@ CREATE TABLE `medida`
     `medida_xl` TINYINT(1),
     `medida_xxl` TINYINT(1),
     `medida_unitalla` TINYINT(1),
+    `medidasrango` VARCHAR(45),
     PRIMARY KEY (`idmedida`)
 ) ENGINE=InnoDB;
 

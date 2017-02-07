@@ -47,6 +47,30 @@ class ProductosController extends AbstractActionController
         };
     }
 
+
+    public function getMedidas($data){
+        $medidas = \ProductomedidaQuery::create()->select('idmedida')->filterByIdproducto($data['idproducto'])->find()->toArray();
+        return $medidas;
+
+    }
+
+    public function getMedidasAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+            if($post_data['name'] == 'medidas'){
+                    
+                $response = $this->getMedidas($post_data['data']);
+
+                return $this->getResponse()->setContent(json_encode($response));
+                
+            }
+            
+        };
+    }
+
     public function getMateriales($data){
         $materiales = \ProductomaterialQuery::create()->select('idmaterial')->filterByIdproducto($data['idproducto'])->find()->toArray();
         return $materiales;
@@ -296,6 +320,13 @@ class ProductosController extends AbstractActionController
                              ->save();
             }
 
+            foreach ($post_data['medida'] as $value){
+                $productomedida = new \Productomedida();
+                $productomedida->setIdproducto($entity->getIdproducto())
+                             ->setIdmedida($value)
+                             ->save();
+            }
+
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
             return $this->redirect()->toUrl('/catalogo/productos');
@@ -345,6 +376,14 @@ class ProductosController extends AbstractActionController
             $tallajes_array[$value->getIdtallaje()] = $value->getTallajeNombre()." (".$value->getTallajerango().")";
         }
 
+        //traer las medidas
+        $medidas = \MedidaQuery::create()->find();
+        $medidas_array = array();
+        $value = new \Medida();
+        foreach ($medidas as $value){
+            $medidas_array[$value->getIdmedida()] = $value->getMedidaNombre()." (".$value->getMedidasrango().")";
+        }
+
 
         //traer los materiales
         $materiales = \MaterialQuery::create()->find();
@@ -374,8 +413,7 @@ class ProductosController extends AbstractActionController
         }
 
 
-
-        $form = new \Application\Catalogo\Form\ProductosForm($calzados_array,$provedorees_array,$marcas_array,$temporadas_array,$tallajes_array,$materiales_array,$colores_array);
+        $form = new \Application\Catalogo\Form\ProductosForm($calzados_array,$provedorees_array,$marcas_array,$temporadas_array,$tallajes_array,$materiales_array,$colores_array,$medidas_array);
         
         $view_model = new ViewModel();
         $view_model->setTemplate('application/catalogo/productos/nuevo');
@@ -430,6 +468,14 @@ class ProductosController extends AbstractActionController
                                  ->setIdcolor($value)
                                  ->save();
                 }
+
+                foreach ($post_data['medida'] as $value){
+                    $productomedida = new \Productomedida();
+                    $productomedida->setIdproducto($entity->getIdproducto())
+                                 ->setIdmedida($value)
+                                 ->save();
+                }
+
                 $entity->save();
 
 
@@ -480,6 +526,13 @@ class ProductosController extends AbstractActionController
                 $tallajes_array[$value->getIdtallaje()] = $value->getTallajeNombre()." (".$value->getTallajerango().")";
             }
 
+            //traer las medidas
+            $medidas = \MedidaQuery::create()->find();
+            $medidas_array = array();
+            $value = new \Medida();
+            foreach ($medidas as $value){
+                $medidas_array[$value->getIdmedida()] = $value->getMedidaNombre()." (".$value->getMedidasrango().")";
+            }
 
             //traer los materiales
             $materiales = \MaterialQuery::create()->find();
@@ -511,7 +564,7 @@ class ProductosController extends AbstractActionController
 
         
 
-            $form = new \Application\Catalogo\Form\ProductosForm($calzados_array,$provedorees_array,$marcas_array,$temporadas_array,$tallajes_array,$materiales_array,$colores_array);
+            $form = new \Application\Catalogo\Form\ProductosForm($calzados_array,$provedorees_array,$marcas_array,$temporadas_array,$tallajes_array,$materiales_array,$colores_array,$medidas_array);
             
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
             

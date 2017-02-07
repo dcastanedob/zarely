@@ -113,6 +113,10 @@
 
 
         }
+
+       
+
+
         plugin.initForm = function(){
             
             $container.find('select[name*=idtallaje]').multipleSelect({
@@ -144,6 +148,18 @@
                 //multiple: true,
                 //multipleWidth: 100
             });
+
+            $container.find('select[name*=idmedida]').multipleSelect({
+                filter:true,
+                selectAllText: 'Seleccionar Todos',
+                width: '100%',
+                allSelected: 'Todos seleccionados',
+                countSelected: '# de % Seleccionados',
+                //multiple: true,
+                //multipleWidth: 100
+            });
+
+            
             
             
             var idproducto = $('input[name=idproducto]').val();
@@ -160,6 +176,32 @@
                 },
                 success: function (data, textStatus, jqXHR) {
                     $container.find('select[name*=idtallaje]').multipleSelect("setSelects", data);
+
+                    $container.find('#btn_add_tallaje').trigger('click');
+                    tallajes_added = data;
+
+                    
+                }
+            });
+
+
+            $.ajax({
+                url:'/catalogo/productos/getMedidas',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    name: 'medidas',
+                    data: {
+                        idproducto:idproducto,
+                    },
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $container.find('select[name*=idmedida]').multipleSelect("setSelects", data);
+
+                    $container.find('#btn_add_medida').trigger('click');
+                    medidas_added = data;
+
+                    
                 }
             });
 
@@ -174,8 +216,13 @@
                         idproducto:idproducto,
                     },
                 },
-                success: function (data, textStatus, jqXHR) {
-                    $container.find('select[name*=idmaterial]').multipleSelect("setSelects", data);
+                  success: function (data, textStatus, jqXHR) {
+                      $container.find('select[name*=idmaterial]').multipleSelect("setSelects", data);
+                    
+                  $container.find('#btn_add_material').trigger('click');
+                      materiales_added = data;
+
+                   
                 }
             });
 
@@ -192,15 +239,22 @@
                 },
                 success: function (data, textStatus, jqXHR) {
                     $container.find('select[name*=idcolor]').multipleSelect("setSelects", data);
+
+                    $container.find('#btn_add_color').trigger('click');
+                    colores_added = data;
                 }
             });
 
             var tallajes_added = [];
             var materiales_added = [];
             var colores_added = [];
+            var medidas_added = [];
+
+
             $container.find('#btn_add_tallaje').on('click',function(){
                  
              var tallajes = $container.find('select[name*=idtallaje]').multipleSelect("getSelects");
+
              var tallajes_text =  $container.find('select[name*=idtallaje]').multipleSelect("getSelects", "text");
              
               tallajes_text.forEach(function(value,index){
@@ -241,10 +295,54 @@
   
             });
 
+            $container.find('#btn_add_medida').on('click',function(){
+                 
+             var medidas = $container.find('select[name*=idmedida]').multipleSelect("getSelects");
+
+             var medidas_text =  $container.find('select[name*=idmedida]').multipleSelect("getSelects", "text");
+             
+              medidas_text.forEach(function(value,index){
+                 
+
+
+                 var id =  medidas[index];
+
+                 if($.inArray(id,medidas_added) < 0){
+                 
+                   var $tr = $('<tr>');
+                   
+                   $tr.append('<td><input type="hidden" name="medida[]" value="'+id+'">'+value+'</td>');
+                   $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+                   
+                   $tr.find('a').on('click',function(){
+                       $tr.remove();
+                       
+                       var index = medidas.indexOf(id);
+                       if (index > -1) {
+                          medidas.splice(index, 1);
+                       }
+                       var index =medidas_added.indexOf(id);
+                       if(index> -1)
+                       {
+                        medidas_added.splice(index,1);
+                       }
+                       $container.find('select[name*=idmedida]') .multipleSelect("setSelects", medidas);
+                   });
+                   
+                   $container.find('#tabla_medida tbody').append($tr);
+                   
+                   medidas_added.push(id);
+                }
+                 
+                 
+              });
+            
+            });
 
             $container.find('#btn_add_material').on('click',function(){
                  
              var materiales = $container.find('select[name*=idmaterial]').multipleSelect("getSelects");
+
              var materiales_text =  $container.find('select[name*=idmaterial]').multipleSelect("getSelects", "text");
              
               materiales_text.forEach(function(value,index){
@@ -283,6 +381,8 @@
                  
               });  
             });
+
+
 
 
             $container.find('#btn_add_color').on('click',function(){
@@ -325,16 +425,40 @@
                  
                  
               });
-                 
+
+                  
                  
                  
                  
             });
-            
+
+
+            $container.find('#medidas').on('click',function(){
+               var tallajesDisable = $container.find('div[id*=tallajesInformation]').addClass('ocultar');
+               var medidasAvailable = $container.find('div[id*=medidasInformation]').removeClass('ocultar');
+
+
+            });
+
+            $container.find('#numerico').on('click',function(){
+               var tallajesAvailable = $container.find('div[id*=tallajesInformation]').removeClass('ocultar');
+               var medidasDisable = $container.find('div[id*=medidasInformation]').addClass('ocultar');
+              
+
+            });
+
+            $container.find('#ninguno').on('click',function(){
+               var tallajesDisable = $container.find('div[id*=tallajesInformation]').addClass('ocultar');
+               var medidasDisable = $container.find('div[id*=medidasInformation]').addClass('ocultar');
+
+               
+              
+
+            });
         };
         
         
-        
+      
 
         /*
         * Plugin initializing

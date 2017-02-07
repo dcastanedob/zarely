@@ -47,6 +47,7 @@ class MedidaTableMap extends TableMap
         $this->addColumn('medida_xl', 'MedidaXl', 'BOOLEAN', false, 1, null);
         $this->addColumn('medida_xxl', 'MedidaXxl', 'BOOLEAN', false, 1, null);
         $this->addColumn('medida_unitalla', 'MedidaUnitalla', 'BOOLEAN', false, 1, null);
+        $this->addColumn('medidasrango', 'Medidasrango', 'VARCHAR', false, 45, null);
         // validators
     } // initialize()
 

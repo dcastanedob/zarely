@@ -24,13 +24,13 @@ abstract class BaseMedidaPeer
     const TM_CLASS = 'MedidaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the idmedida field */
     const IDMEDIDA = 'medida.idmedida';
@@ -59,6 +59,9 @@ abstract class BaseMedidaPeer
     /** the column name for the medida_unitalla field */
     const MEDIDA_UNITALLA = 'medida.medida_unitalla';
 
+    /** the column name for the medidasrango field */
+    const MEDIDASRANGO = 'medida.medidasrango';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -78,12 +81,12 @@ abstract class BaseMedidaPeer
      * e.g. MedidaPeer::$fieldNames[MedidaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmedida', 'MedidaNombre', 'MedidaXs', 'MedidaS', 'MedidaM', 'MedidaL', 'MedidaXl', 'MedidaXxl', 'MedidaUnitalla', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmedida', 'medidaNombre', 'medidaXs', 'medidaS', 'medidaM', 'medidaL', 'medidaXl', 'medidaXxl', 'medidaUnitalla', ),
-        BasePeer::TYPE_COLNAME => array (MedidaPeer::IDMEDIDA, MedidaPeer::MEDIDA_NOMBRE, MedidaPeer::MEDIDA_XS, MedidaPeer::MEDIDA_S, MedidaPeer::MEDIDA_M, MedidaPeer::MEDIDA_L, MedidaPeer::MEDIDA_XL, MedidaPeer::MEDIDA_XXL, MedidaPeer::MEDIDA_UNITALLA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMEDIDA', 'MEDIDA_NOMBRE', 'MEDIDA_XS', 'MEDIDA_S', 'MEDIDA_M', 'MEDIDA_L', 'MEDIDA_XL', 'MEDIDA_XXL', 'MEDIDA_UNITALLA', ),
-        BasePeer::TYPE_FIELDNAME => array ('idmedida', 'medida_nombre', 'medida_xs', 'medida_s', 'medida_m', 'medida_l', 'medida_xl', 'medida_xxl', 'medida_unitalla', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idmedida', 'MedidaNombre', 'MedidaXs', 'MedidaS', 'MedidaM', 'MedidaL', 'MedidaXl', 'MedidaXxl', 'MedidaUnitalla', 'Medidasrango', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmedida', 'medidaNombre', 'medidaXs', 'medidaS', 'medidaM', 'medidaL', 'medidaXl', 'medidaXxl', 'medidaUnitalla', 'medidasrango', ),
+        BasePeer::TYPE_COLNAME => array (MedidaPeer::IDMEDIDA, MedidaPeer::MEDIDA_NOMBRE, MedidaPeer::MEDIDA_XS, MedidaPeer::MEDIDA_S, MedidaPeer::MEDIDA_M, MedidaPeer::MEDIDA_L, MedidaPeer::MEDIDA_XL, MedidaPeer::MEDIDA_XXL, MedidaPeer::MEDIDA_UNITALLA, MedidaPeer::MEDIDASRANGO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMEDIDA', 'MEDIDA_NOMBRE', 'MEDIDA_XS', 'MEDIDA_S', 'MEDIDA_M', 'MEDIDA_L', 'MEDIDA_XL', 'MEDIDA_XXL', 'MEDIDA_UNITALLA', 'MEDIDASRANGO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idmedida', 'medida_nombre', 'medida_xs', 'medida_s', 'medida_m', 'medida_l', 'medida_xl', 'medida_xxl', 'medida_unitalla', 'medidasrango', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -93,12 +96,12 @@ abstract class BaseMedidaPeer
      * e.g. MedidaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idmedida' => 0, 'MedidaNombre' => 1, 'MedidaXs' => 2, 'MedidaS' => 3, 'MedidaM' => 4, 'MedidaL' => 5, 'MedidaXl' => 6, 'MedidaXxl' => 7, 'MedidaUnitalla' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idmedida' => 0, 'medidaNombre' => 1, 'medidaXs' => 2, 'medidaS' => 3, 'medidaM' => 4, 'medidaL' => 5, 'medidaXl' => 6, 'medidaXxl' => 7, 'medidaUnitalla' => 8, ),
-        BasePeer::TYPE_COLNAME => array (MedidaPeer::IDMEDIDA => 0, MedidaPeer::MEDIDA_NOMBRE => 1, MedidaPeer::MEDIDA_XS => 2, MedidaPeer::MEDIDA_S => 3, MedidaPeer::MEDIDA_M => 4, MedidaPeer::MEDIDA_L => 5, MedidaPeer::MEDIDA_XL => 6, MedidaPeer::MEDIDA_XXL => 7, MedidaPeer::MEDIDA_UNITALLA => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDMEDIDA' => 0, 'MEDIDA_NOMBRE' => 1, 'MEDIDA_XS' => 2, 'MEDIDA_S' => 3, 'MEDIDA_M' => 4, 'MEDIDA_L' => 5, 'MEDIDA_XL' => 6, 'MEDIDA_XXL' => 7, 'MEDIDA_UNITALLA' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('idmedida' => 0, 'medida_nombre' => 1, 'medida_xs' => 2, 'medida_s' => 3, 'medida_m' => 4, 'medida_l' => 5, 'medida_xl' => 6, 'medida_xxl' => 7, 'medida_unitalla' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idmedida' => 0, 'MedidaNombre' => 1, 'MedidaXs' => 2, 'MedidaS' => 3, 'MedidaM' => 4, 'MedidaL' => 5, 'MedidaXl' => 6, 'MedidaXxl' => 7, 'MedidaUnitalla' => 8, 'Medidasrango' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idmedida' => 0, 'medidaNombre' => 1, 'medidaXs' => 2, 'medidaS' => 3, 'medidaM' => 4, 'medidaL' => 5, 'medidaXl' => 6, 'medidaXxl' => 7, 'medidaUnitalla' => 8, 'medidasrango' => 9, ),
+        BasePeer::TYPE_COLNAME => array (MedidaPeer::IDMEDIDA => 0, MedidaPeer::MEDIDA_NOMBRE => 1, MedidaPeer::MEDIDA_XS => 2, MedidaPeer::MEDIDA_S => 3, MedidaPeer::MEDIDA_M => 4, MedidaPeer::MEDIDA_L => 5, MedidaPeer::MEDIDA_XL => 6, MedidaPeer::MEDIDA_XXL => 7, MedidaPeer::MEDIDA_UNITALLA => 8, MedidaPeer::MEDIDASRANGO => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDMEDIDA' => 0, 'MEDIDA_NOMBRE' => 1, 'MEDIDA_XS' => 2, 'MEDIDA_S' => 3, 'MEDIDA_M' => 4, 'MEDIDA_L' => 5, 'MEDIDA_XL' => 6, 'MEDIDA_XXL' => 7, 'MEDIDA_UNITALLA' => 8, 'MEDIDASRANGO' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idmedida' => 0, 'medida_nombre' => 1, 'medida_xs' => 2, 'medida_s' => 3, 'medida_m' => 4, 'medida_l' => 5, 'medida_xl' => 6, 'medida_xxl' => 7, 'medida_unitalla' => 8, 'medidasrango' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -181,6 +184,7 @@ abstract class BaseMedidaPeer
             $criteria->addSelectColumn(MedidaPeer::MEDIDA_XL);
             $criteria->addSelectColumn(MedidaPeer::MEDIDA_XXL);
             $criteria->addSelectColumn(MedidaPeer::MEDIDA_UNITALLA);
+            $criteria->addSelectColumn(MedidaPeer::MEDIDASRANGO);
         } else {
             $criteria->addSelectColumn($alias . '.idmedida');
             $criteria->addSelectColumn($alias . '.medida_nombre');
@@ -191,6 +195,7 @@ abstract class BaseMedidaPeer
             $criteria->addSelectColumn($alias . '.medida_xl');
             $criteria->addSelectColumn($alias . '.medida_xxl');
             $criteria->addSelectColumn($alias . '.medida_unitalla');
+            $criteria->addSelectColumn($alias . '.medidasrango');
         }
     }
 

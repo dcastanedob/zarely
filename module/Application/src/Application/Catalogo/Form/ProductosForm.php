@@ -8,7 +8,7 @@ class ProductosForm extends Form
 {
     public function __construct
     (
-        $calzados_array = array(), $proveedores_array = array(),$marcas_array = array(), $temporadas_array = array(), $tallajes_array = array(), $materiales_array = array(), $colores_array = array()
+        $calzados_array = array(), $proveedores_array = array(),$marcas_array = array(), $temporadas_array = array(), $tallajes_array = array(), $materiales_array = array(), $colores_array = array(),$medidas_array = array()
     )
     {
         // we want to ignore the name passed
@@ -163,6 +163,21 @@ class ProductosForm extends Form
             'options' => array(
               
             'value_options' => $tallajes_array,   
+            ),
+            'attributes' => array(
+                'required' => true,
+                'class' => '',
+               
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'idmedida[]',
+            'type' => 'Select',
+            'options' => array(
+              
+            'value_options' => $medidas_array,   
             ),
             'attributes' => array(
                 'required' => true,
