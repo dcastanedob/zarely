@@ -1,131 +1,242 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title"><?php echo $entity->getEmpleadoNombre() ?></h1>
+	    <h1 class="title-bar-title"><?php echo $entity->getProductomodelo() ?></h1>
 	</div>
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
     		<div class="demo-form-wrapper">
-    			<form class="form form-horizontal" action="/catalogo/empleados/ver/<?php echo $entity->getIdempleado()?>" method="POST">
-	    			<div class="col-xs-5">
-		       			<div class="form-group">
-			           		<label  for="Nombre">Nombre</label>
-			                <?php echo $this->formText($form->get('empleado_nombre')) ?>
-		        		</div>
+    			<form class="form form-horizontal" action="/catalogo/productos/ver/<?php echo $entity->getIdproducto() ?>" method="POST">
+    				<div class="row">
+		    			<div class="col-md-5">
+			       			<div class="form-group">
+				           		<label  for="Modelo">Modelo </label>
+				                <?php echo $this->formText($form->get('producto_modelo')) ?>
+			        		</div>
+			        		<input type="hidden" name="idproducto" value="<?php echo $entity->getIdproducto()?>">
 
-		        		<div class="form-group">
-			           		<label  for="Paterno">Apellido paterno</label>
-			                <?php echo $this->formText($form->get('empleado_apaterno')) ?>
-		        		</div>
+			        		<div class="form-group">
+				           		<label  for="dirigido"> Dirigido a:</label>
+				                <?php echo $this->formSelect($form->get('producto_dirigidoa')) ?>
+			        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="RFC">RFC</label>
-			                <?php echo $this->formText($form->get('empleado_rfc')) ?>
-		        		</div>
+			        		<div class="form-group">
+				           		<label  for="tipo">Tipo de calzado</label>
+				                <?php echo $this->formSelect($form->get('idtipocalzado')) ?>
+			        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="CURP">CURP</label>
-			                <?php echo $this->formText($form->get('empleado_curp')) ?>
-		        		</div>
+			        		<div class="form-group">
+				           		<label  for="venta">Precio de venta</label>
+				                <?php echo $this->formText($form->get('producto_precioventa')) ?>
+			        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Email">Email</label>
-			                <?php echo $this->formText($form->get('empleado_email')) ?>
-		        		</div>
+			        		<div class="form-group">
+				           		<label  for="minimo">Mínimo</label>
+				                <?php echo $this->formText($form->get('producto_minimo')) ?>
+			        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Username">Username</label>
-			                <?php echo $this->formText($form->get('empleado_username')) ?>
-		        		</div>
+			        		<div class="form-group">
+				           		<label  for="comisionable">Comisionable</label>
+				                <?php echo $this->formSelect($form->get('producto_comisionable')) ?>
+			        		</div>
+			        		
+			        	</div>
+			        	<div class="col-md-1"></div>
+		        		<div class="col-md-5">
+			       			<div class="form-group">
+				           		<label  for="Proveedor">Proveedor </label>
+				                <?php echo $this->formSelect($form->get('idproveedor')) ?>
+			        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Fecha de entrada">Fecha de entrada</label>
-			                <?php echo $this->formDate($form->get('empleado_fechaentrada')) ?>
-		        		</div>
+			        		<div class="form-group">
+				           		<label  for="marca"> Marca</label>
+				                <?php echo $this->formSelect($form->get('idmarca')) ?>
+			        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Estado">Estado</label>
-			                <?php echo $this->formDate($form->get('empleado_estado')) ?>
-		        		</div>
+			        		<div class="form-group">
+				           		<label  for="Temporada">Temporada</label>
+				                <?php echo $this->formSelect($form->get('idtemporada')) ?>
+			        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Colonia">Colonia</label>
-			                <?php echo $this->formDate($form->get('empleado_colonia')) ?>
-		        		</div>
+			        		<div class="form-group">
+				           		<label  for="mayoreo">Precio mayoreo</label>
+				                <?php echo $this->formText($form->get('producto_preciomayoreo')) ?>
+			        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Calle">Calle</label>
-			                <?php echo $this->formText($form->get('empleado_calle')) ?>
-		        		</div>
+			        		<div class="form-group">
+				           		<label  for="reorden">Reorden</label>
+				                <?php echo $this->formText($form->get('producto_reorden')) ?>
+			        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Número exterior">Número exterior</label>
-			                <?php echo $this->formText($form->get('empleado_numexterno')) ?>
-		        		</div>
+			        		
+			        	</div>
+		        	
+ 					</div> <!--end class row-->
 
-		        	</div>
-		        	<div class="col-xs-1"></div>
-	        		<div class="col-xs-5">
-		       			<div class="form-group">
-			           		<label  for="Telefono">Teléfono</label>
-			                <?php echo $this->formText($form->get('empleado_telefono')) ?>
-		        		</div>
+	 					<div class="row">
+			        		
+	    					<div class="col-md-5 alineamiento" >
+	    						
+								<div class="form-group" >
+									<label for="tallaje">Tallaje</label>
+									
+									<input type="radio" id="numerico" name="validar" checked><label class="alinearTexto">Numérico</label>
+									<input type="radio" id="medidas" name="validar"><label class="alinearTexto">Medidas</label>
+									<input type="radio" id="ninguno" name="validar"><label class="alinearTexto">Ninguno</label>
+								</div>
+	    						<div id="tallajesInformation">
+			        				<div class="col-md-9">
+					                    <div class="form-group">
+							           		
+							                <?php echo $this->formSelect($form->get('idtallaje[]')) ?>
+						        		</div>
+			        				</div>
+			        				<div class="col-md-1"></div>
 
-		        		<div class="form-group">
-			           		<label  for="Materno">Apellido materno</label>
-			                <?php echo $this->formText($form->get('empleado_amaterno')) ?>
-		        		</div>
+					        		<div class="col-md-2">		
+					        			<div class="form-group" style="margin-top: -23px">
+							           		<label  for="guardar"></label>
+		                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_tallaje">			Agregar
+		                                    </a>
+						        		</div>
+						        	</div>
 
-		        		<div class="form-group">
-			           		<label  for="NSS">NSS</label>
-			                <?php echo $this->formText($form->get('empleado_nss')) ?>
-		        		</div>
+		                            <table class="table table-bordered" id="tabla_tallaje">
+			        				    <thead>
+			        				      <tr>
+			        				        <th>Nombre</th>
+			        				        <th>Opciones</th>
+			        				      </tr>
+			        				    </thead>
+			        				    <tbody>
 
-		        		<div class="form-group">
-			           		<label  for="ESTATUS">Estatus</label>
-			                <?php echo $this->formSelect($form->get('empleado_estatus')) ?>
-		        		</div>
+			        				    </tbody>
+			        				</table>
+		        				</div>
 
-		        		<div class="form-group">
-			           		<label  for="Comision">Comision</label>
-			                <?php echo $this->formSelect($form->get('empleado_comision')) ?>
-		        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Password">Password</label>
-			                <?php echo $this->formPassword($form->get('empleado_password')) ?>
-		        		</div>
+		        				<div class="ocultar" id="medidasInformation">
+			        				<div class="col-md-9 ">
+					                    <div class="form-group">
+							                <?php echo $this->formSelect($form->get('idmedida[]')) ?>
+						        		</div>
+			        				</div>
+			        				<div class="col-md-1 "></div>
 
-		        		<div class="form-group">
-			           		<label  for="Fecha de nacimiento">Fecha de nacimiento</label>
-			                <?php echo $this->formDate($form->get('empleado_fechanacimiento')) ?>
-		        		</div>
+					        		<div class="col-md-2 ">		
+					        			<div class="form-group" style="margin-top: -23px">
+							           		<label  for="guardar"></label>
+		                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_medida">			Agregar
+		                                    </a>
+						        		</div>
+						        	</div>
 
-		        		<div class="form-group">
-			           		<label  for="Ciudad">Ciudad</label>
-			                <?php echo $this->formDate($form->get('empleado_ciudad')) ?>
-		        		</div>
+		                            <table class="table table-bordered " id="tabla_medida">
+			        				    <thead>
+			        				      <tr>
+			        				        <th>Nombre</th>
+			        				        <th>Opciones</th>
+			        				      </tr>
+			        				    </thead>
+			        				    <tbody>
+			        
+			        				    </tbody>
+			        				</table>
+		        				</div>
 
-		        		<div class="form-group">
-			           		<label  for="Código postal">Código postal</label>
-			                <?php echo $this->formDate($form->get('empleado_codigopostal')) ?>
-		        		</div>
+		        				
+			        			<div class="col-md-9">
+				                    <div class="form-group">
+						           		<label for="tallaje">Materiales</label>
+						                <?php echo $this->formSelect($form->get('idmaterial[]')) ?>
+					        		</div>
+		        				</div>
+		        				<div class="col-md-1"></div>
 
-		        		<div class="form-group">
-			           		<label  for="Número interior">Número interior</label>
-			                <?php echo $this->formText($form->get('empleado_numinterno')) ?>
-		        		</div>
+				        		<div class="col-md-2">		
+				        			<div class="form-group">
+						           		<label  for="guardar"></label>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_material">			Agregar
+	                                    </a>
+					        		</div>
+					        	</div>
 
-		        	</div>
+	                            <table class="table table-bordered" id="tabla_material">
+		        				    <thead>
+		        				      <tr>
+		        				        <th>Nombre</th>
+		        				        <th>Opciones</th>
+		        				      </tr>
+		        				    </thead>
+		        				    <tbody>
 
-		     
+		        				    </tbody>
+		        				</table>
+		        				
+
+
+		        			</div>	
+		        			<div class="col-md-1"></div>
+		        			<div class="col-md-5 alineamiento" >
+		        				<div class="col-md-9">
+				                    <div class="form-group">
+						           		<label for="tallaje">Colores</label>
+						                <?php echo $this->formSelect($form->get('idcolor[]')) ?>
+					        		</div>
+		        				</div>
+		        				<div class="col-md-1"></div>
+
+				        		<div class="col-md-2">		
+				        			<div class="form-group">
+						           		<label  for="guardar"></label>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_color">			Agregar
+	                                    </a>
+					        		</div>
+					        	</div>
+
+	                            <table class="table table-bordered" id="tabla_color">
+		        				    <thead>
+		        				      <tr>
+		        				        <th>Nombre</th>
+		        				        <th>Opciones</th>
+		        				      </tr>
+		        				    </thead>
+		        				    <tbody>
+
+		        				    </tbody>
+		        				</table>
+			        				
+
+		        			</div>
+
+			        	</div>
+
 
 		        	<div class="form-group">
 		           		<label  for="guardar"></label>
-		                <button class="btn btn-primary btn-block btn-next" type="submit">Guardar</button>
+	                    <button class="btn btn-primary btn-block btn-next" type="submit">
+                         	Guardar
+                        </button>
 	        		</div>
  
     			</form>
     		</div>
     	</div>
 	</div>
+
+
+	
+
+   
+
 </div>
+
+
+<script src="/js/catalogo/productos.js"></script>
+<script>
+	var productos = $('.body_container').productos();
+	productos.initForm();
+
+	productos.initTables();
+</script>
+
+

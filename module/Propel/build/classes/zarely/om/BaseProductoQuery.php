@@ -10,7 +10,6 @@
  * @method ProductoQuery orderByProductoModelo($order = Criteria::ASC) Order by the producto_modelo column
  * @method ProductoQuery orderByIdmarca($order = Criteria::ASC) Order by the idmarca column
  * @method ProductoQuery orderByIdtemporada($order = Criteria::ASC) Order by the idtemporada column
- * @method ProductoQuery orderByIdtallaje($order = Criteria::ASC) Order by the idtallaje column
  * @method ProductoQuery orderByProductoComisionable($order = Criteria::ASC) Order by the producto_comisionable column
  * @method ProductoQuery orderByIdproveedor($order = Criteria::ASC) Order by the idproveedor column
  * @method ProductoQuery orderByProductoDirigidoa($order = Criteria::ASC) Order by the producto_dirigidoa column
@@ -26,7 +25,6 @@
  * @method ProductoQuery groupByProductoModelo() Group by the producto_modelo column
  * @method ProductoQuery groupByIdmarca() Group by the idmarca column
  * @method ProductoQuery groupByIdtemporada() Group by the idtemporada column
- * @method ProductoQuery groupByIdtallaje() Group by the idtallaje column
  * @method ProductoQuery groupByProductoComisionable() Group by the producto_comisionable column
  * @method ProductoQuery groupByIdproveedor() Group by the idproveedor column
  * @method ProductoQuery groupByProductoDirigidoa() Group by the producto_dirigidoa column
@@ -50,10 +48,6 @@
  * @method ProductoQuery rightJoinProveedor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Proveedor relation
  * @method ProductoQuery innerJoinProveedor($relationAlias = null) Adds a INNER JOIN clause to the query using the Proveedor relation
  *
- * @method ProductoQuery leftJoinTallaje($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tallaje relation
- * @method ProductoQuery rightJoinTallaje($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tallaje relation
- * @method ProductoQuery innerJoinTallaje($relationAlias = null) Adds a INNER JOIN clause to the query using the Tallaje relation
- *
  * @method ProductoQuery leftJoinTemporada($relationAlias = null) Adds a LEFT JOIN clause to the query using the Temporada relation
  * @method ProductoQuery rightJoinTemporada($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Temporada relation
  * @method ProductoQuery innerJoinTemporada($relationAlias = null) Adds a INNER JOIN clause to the query using the Temporada relation
@@ -70,13 +64,20 @@
  * @method ProductoQuery rightJoinProductomaterial($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productomaterial relation
  * @method ProductoQuery innerJoinProductomaterial($relationAlias = null) Adds a INNER JOIN clause to the query using the Productomaterial relation
  *
+ * @method ProductoQuery leftJoinProductomedida($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productomedida relation
+ * @method ProductoQuery rightJoinProductomedida($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productomedida relation
+ * @method ProductoQuery innerJoinProductomedida($relationAlias = null) Adds a INNER JOIN clause to the query using the Productomedida relation
+ *
+ * @method ProductoQuery leftJoinProductotallaje($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productotallaje relation
+ * @method ProductoQuery rightJoinProductotallaje($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productotallaje relation
+ * @method ProductoQuery innerJoinProductotallaje($relationAlias = null) Adds a INNER JOIN clause to the query using the Productotallaje relation
+ *
  * @method Producto findOne(PropelPDO $con = null) Return the first Producto matching the query
  * @method Producto findOneOrCreate(PropelPDO $con = null) Return the first Producto matching the query, or a new Producto object populated from the query conditions when no match is found
  *
  * @method Producto findOneByProductoModelo(string $producto_modelo) Return the first Producto filtered by the producto_modelo column
  * @method Producto findOneByIdmarca(int $idmarca) Return the first Producto filtered by the idmarca column
  * @method Producto findOneByIdtemporada(int $idtemporada) Return the first Producto filtered by the idtemporada column
- * @method Producto findOneByIdtallaje(int $idtallaje) Return the first Producto filtered by the idtallaje column
  * @method Producto findOneByProductoComisionable(int $producto_comisionable) Return the first Producto filtered by the producto_comisionable column
  * @method Producto findOneByIdproveedor(int $idproveedor) Return the first Producto filtered by the idproveedor column
  * @method Producto findOneByProductoDirigidoa(string $producto_dirigidoa) Return the first Producto filtered by the producto_dirigidoa column
@@ -92,7 +93,6 @@
  * @method array findByProductoModelo(string $producto_modelo) Return Producto objects filtered by the producto_modelo column
  * @method array findByIdmarca(int $idmarca) Return Producto objects filtered by the idmarca column
  * @method array findByIdtemporada(int $idtemporada) Return Producto objects filtered by the idtemporada column
- * @method array findByIdtallaje(int $idtallaje) Return Producto objects filtered by the idtallaje column
  * @method array findByProductoComisionable(int $producto_comisionable) Return Producto objects filtered by the producto_comisionable column
  * @method array findByIdproveedor(int $idproveedor) Return Producto objects filtered by the idproveedor column
  * @method array findByProductoDirigidoa(string $producto_dirigidoa) Return Producto objects filtered by the producto_dirigidoa column
@@ -210,7 +210,7 @@ abstract class BaseProductoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproducto`, `producto_modelo`, `idmarca`, `idtemporada`, `idtallaje`, `producto_comisionable`, `idproveedor`, `producto_dirigidoa`, `producto_precioventa`, `producto_preciomayoreo`, `producto_minimo`, `producto_reorden`, `producto_maximo`, `idtipocalzado`, `producto_descripcion` FROM `producto` WHERE `idproducto` = :p0';
+        $sql = 'SELECT `idproducto`, `producto_modelo`, `idmarca`, `idtemporada`, `producto_comisionable`, `idproveedor`, `producto_dirigidoa`, `producto_precioventa`, `producto_preciomayoreo`, `producto_minimo`, `producto_reorden`, `producto_maximo`, `idtipocalzado`, `producto_descripcion` FROM `producto` WHERE `idproducto` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -456,50 +456,6 @@ abstract class BaseProductoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductoPeer::IDTEMPORADA, $idtemporada, $comparison);
-    }
-
-    /**
-     * Filter the query on the idtallaje column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByIdtallaje(1234); // WHERE idtallaje = 1234
-     * $query->filterByIdtallaje(array(12, 34)); // WHERE idtallaje IN (12, 34)
-     * $query->filterByIdtallaje(array('min' => 12)); // WHERE idtallaje >= 12
-     * $query->filterByIdtallaje(array('max' => 12)); // WHERE idtallaje <= 12
-     * </code>
-     *
-     * @see       filterByTallaje()
-     *
-     * @param     mixed $idtallaje The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ProductoQuery The current query, for fluid interface
-     */
-    public function filterByIdtallaje($idtallaje = null, $comparison = null)
-    {
-        if (is_array($idtallaje)) {
-            $useMinMax = false;
-            if (isset($idtallaje['min'])) {
-                $this->addUsingAlias(ProductoPeer::IDTALLAJE, $idtallaje['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($idtallaje['max'])) {
-                $this->addUsingAlias(ProductoPeer::IDTALLAJE, $idtallaje['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ProductoPeer::IDTALLAJE, $idtallaje, $comparison);
     }
 
     /**
@@ -1053,82 +1009,6 @@ abstract class BaseProductoQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Tallaje object
-     *
-     * @param   Tallaje|PropelObjectCollection $tallaje The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 ProductoQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByTallaje($tallaje, $comparison = null)
-    {
-        if ($tallaje instanceof Tallaje) {
-            return $this
-                ->addUsingAlias(ProductoPeer::IDTALLAJE, $tallaje->getIdtallaje(), $comparison);
-        } elseif ($tallaje instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(ProductoPeer::IDTALLAJE, $tallaje->toKeyValue('PrimaryKey', 'Idtallaje'), $comparison);
-        } else {
-            throw new PropelException('filterByTallaje() only accepts arguments of type Tallaje or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Tallaje relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ProductoQuery The current query, for fluid interface
-     */
-    public function joinTallaje($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Tallaje');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Tallaje');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Tallaje relation Tallaje object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   TallajeQuery A secondary query class using the current class as primary query
-     */
-    public function useTallajeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinTallaje($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Tallaje', 'TallajeQuery');
-    }
-
-    /**
      * Filter the query by a related Temporada object
      *
      * @param   Temporada|PropelObjectCollection $temporada The related object(s) to use as filter
@@ -1426,6 +1306,154 @@ abstract class BaseProductoQuery extends ModelCriteria
         return $this
             ->joinProductomaterial($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Productomaterial', 'ProductomaterialQuery');
+    }
+
+    /**
+     * Filter the query by a related Productomedida object
+     *
+     * @param   Productomedida|PropelObjectCollection $productomedida  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByProductomedida($productomedida, $comparison = null)
+    {
+        if ($productomedida instanceof Productomedida) {
+            return $this
+                ->addUsingAlias(ProductoPeer::IDPRODUCTO, $productomedida->getIdproducto(), $comparison);
+        } elseif ($productomedida instanceof PropelObjectCollection) {
+            return $this
+                ->useProductomedidaQuery()
+                ->filterByPrimaryKeys($productomedida->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByProductomedida() only accepts arguments of type Productomedida or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Productomedida relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductoQuery The current query, for fluid interface
+     */
+    public function joinProductomedida($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Productomedida');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Productomedida');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Productomedida relation Productomedida object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ProductomedidaQuery A secondary query class using the current class as primary query
+     */
+    public function useProductomedidaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinProductomedida($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Productomedida', 'ProductomedidaQuery');
+    }
+
+    /**
+     * Filter the query by a related Productotallaje object
+     *
+     * @param   Productotallaje|PropelObjectCollection $productotallaje  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByProductotallaje($productotallaje, $comparison = null)
+    {
+        if ($productotallaje instanceof Productotallaje) {
+            return $this
+                ->addUsingAlias(ProductoPeer::IDPRODUCTO, $productotallaje->getIdproducto(), $comparison);
+        } elseif ($productotallaje instanceof PropelObjectCollection) {
+            return $this
+                ->useProductotallajeQuery()
+                ->filterByPrimaryKeys($productotallaje->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByProductotallaje() only accepts arguments of type Productotallaje or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Productotallaje relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductoQuery The current query, for fluid interface
+     */
+    public function joinProductotallaje($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Productotallaje');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Productotallaje');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Productotallaje relation Productotallaje object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ProductotallajeQuery A secondary query class using the current class as primary query
+     */
+    public function useProductotallajeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinProductotallaje($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Productotallaje', 'ProductotallajeQuery');
     }
 
     /**

@@ -21,6 +21,17 @@ return array(
                 ),
             ),
 
+            'login' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/login[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Login',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'empleados' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -38,6 +49,17 @@ return array(
                     'route'    => '/catalogo/temporadas[/:action][/:id]',
                     'defaults' => array(
                         'controller' => 'Application\Catalogo\Controller\Temporadas',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'medidas' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/medidas[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Medidas',
                         'action'     => 'index',
                     ),
                 ),
@@ -206,7 +228,10 @@ return array(
             'Application\Catalogo\Controller\Sucursales' => 'Application\Catalogo\Controller\SucursalesController',
             'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController',
             'Application\Catalogo\Controller\Proveedores' => 'Application\Catalogo\Controller\ProveedoresController',
-            'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController'
+            'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController',
+            'Application\Catalogo\Controller\Medidas' => 'Application\Catalogo\Controller\MedidasController'
+            ,
+            'Application\Controller\Login' => 'Application\Controller\LoginController'
         ),
     ),
 

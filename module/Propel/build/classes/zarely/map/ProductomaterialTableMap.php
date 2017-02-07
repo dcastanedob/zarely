@@ -36,7 +36,7 @@ class ProductomaterialTableMap extends TableMap
         $this->setPhpName('Productomaterial');
         $this->setClassname('Productomaterial');
         $this->setPackage('zarely');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idproductomaterial', 'Idproductomaterial', 'INTEGER', true, null, null);
         $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', true, null, null);

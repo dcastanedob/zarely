@@ -16,14 +16,106 @@ class ProductosController extends AbstractActionController
 {
 
     public $column_map = array(
-        0 => 'Idempleado',
-        1 => 'EmpleadoNombre',
-        2 => 'EmpleadoApaterno',
-        3 => 'EmpleadoAmaterno',
-        4 => 'EmpleadoTelefono',
-        5=> 'EmpleadoEmail',
-        6 => 'EmpleadoAEstatus',
+        0 => 'Idproducto',
+        1 => 'Productomodelo',
+        2 => 'Idmarca',
+        3 => 'Idtemporada',
+        4 => 'Productoprecioventa',
+        5=> 'Productopreciomayoreo',
     );
+
+    public function getTallajes($data){
+        $tallajes = \ProductotallajeQuery::create()->select('idtallaje')->filterByIdproducto($data['idproducto'])->find()->toArray();
+        return $tallajes;
+
+    }
+
+    public function getTallajesAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+            if($post_data['name'] == 'tallajes'){
+                    
+                $response = $this->getTallajes($post_data['data']);
+
+                return $this->getResponse()->setContent(json_encode($response));
+                
+            }
+            
+        };
+    }
+
+
+    public function getMedidas($data){
+        $medidas = \ProductomedidaQuery::create()->select('idmedida')->filterByIdproducto($data['idproducto'])->find()->toArray();
+        return $medidas;
+
+    }
+
+    public function getMedidasAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+            if($post_data['name'] == 'medidas'){
+                    
+                $response = $this->getMedidas($post_data['data']);
+
+                return $this->getResponse()->setContent(json_encode($response));
+                
+            }
+            
+        };
+    }
+
+    public function getMateriales($data){
+        $materiales = \ProductomaterialQuery::create()->select('idmaterial')->filterByIdproducto($data['idproducto'])->find()->toArray();
+        return $materiales;
+
+    }
+
+    public function getMaterialesAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+            if($post_data['name'] == 'materiales'){
+                    
+                $response = $this->getMateriales($post_data['data']);
+
+                return $this->getResponse()->setContent(json_encode($response));
+                
+            }
+            
+        };
+    }
+
+    public function getColores($data){
+        $colores = \ProductocolorQuery::create()->select('idcolor')->filterByIdproducto($data['idproducto'])->find()->toArray();
+        return $colores;
+
+    }
+
+    public function getColoresAction(){
+        
+        $request = $this->getRequest();
+        if($request->isPost()){
+            
+            $post_data = $request->getPost();
+            if($post_data['name'] == 'colores'){
+                    
+                $response = $this->getColores($post_data['data']);
+
+                return $this->getResponse()->setContent(json_encode($response));
+                
+            }
+            
+        };
+    }
 
     public function serversideAction()
     {
@@ -31,16 +123,16 @@ class ProductosController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
            
-            $query = new \EmpleadoQuery();
+            $query = new \ProductoQuery();
             
-             /*JOIN
-            $query->useCategoriaRelatedByIdcategoriaQuery('a')->endUse();
-            $query->useCategoriaRelatedByIdsubcategoriaQuery('b')->endUse();
-            $query->useUnidadmedidaQuery('c')->endUse();
-            $query->withColumn('a.CategoriaNombre', 'categoria_nombre')
-                  ->withColumn('b.CategoriaNombre', 'subcategoria_nombre')
-                  ->withColumn('c.UnidadmedidaNombre', 'unidadmedida_nombre');
-            */
+             //JOIN
+            $query->useMarcaQuery('a')->endUse();
+            $query->useTemporadaQuery('b')->endUse();
+      
+            $query->withColumn('a.MarcaNombre', 'marca_nombre')
+                  ->withColumn('b.TemporadaNombre', 'temporada_nombre');
+
+            
 
 
             $records_filtered = $query->count();
@@ -77,20 +169,13 @@ class ProductosController extends AbstractActionController
                 }
                 $c = new \Criteria();
                
-                $c1= $c->getNewCriterion('empleado.idempleado', '%'.$search_value.'%', \Criteria::LIKE);
-                $c2= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1= $c->getNewCriterion('producto.idproducto', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('empleado.empleado_telefono', '%'.$search_value.'%', \Criteria::LIKE);
-
-                 $c4= $c->getNewCriterion('empleado.empleado_email', '%'.$search_value.'%', \Criteria::LIKE);
-
-                 $c5= $c->getNewCriterion('empleado.empleado_estatus', '%'.$search_value.'%', \Criteria::LIKE);
-
-          
-                $c1->addOr($c2)->addOr($c3)->addOr($c4)->addOr($c5);
+                $c1->addOr($c2);
 
                 $query->addAnd($c1);
-                $query->groupByIdempleado();
+                $query->groupByIdproducto();
                 
                 $records_filtered = $query->count();
                 
@@ -119,17 +204,16 @@ class ProductosController extends AbstractActionController
            
             
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                // var_dump($value);exit();
+                
+                $tmp['DT_RowId'] = $value['idproducto'];
+                $tmp['idproducto'] = $value['idproducto'];
+                $tmp['producto_modelo'] = $value['producto_modelo'];
+                $tmp['idmarca'] = $value['marca_nombre'];
+                $tmp['idtemporada'] = $value['temporada_nombre'];
+                $tmp['producto_precioventa'] = $value['producto_precioventa'];
+                $tmp['producto_preciomayoreo'] = $value['producto_preciomayoreo'];
 
-                if($value['empleado_estatus']){
-                    $tmp['empleado_estatus'] = "Activo";
-                }else{
-                    $tmp['empleado_estatus'] = "Inactivo";
-                }
-                $tmp['DT_RowId'] = $value['idempleado'];
-                $tmp['idempleado'] = $value['idempleado'];
-                $tmp['empleado_nombre'] = $value['empleado_nombre'];
-                $tmp['empleado_telefono'] = $value['empleado_telefono'];
-                $tmp['empleado_email'] = $value['empleado_email'];
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
                     <span class="icon icon-gear icon-lg icon-fw"></span>
@@ -138,7 +222,7 @@ class ProductosController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/catalogo/empleados/ver/' . $value['idempleado'] . '">
+                      <a href="/catalogo/productos/ver/' . $value['idproducto'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -202,7 +286,7 @@ class ProductosController extends AbstractActionController
         
         if($request->isPost()){
             $post_data = $request->getPost();
-            echo '<pre>';var_dump($post_data);echo '</pre>';exit();
+            
 
             $entity = new \Producto();
 
@@ -211,8 +295,38 @@ class ProductosController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
-            
+
             $entity->save();
+            
+            
+            foreach ($post_data['tallaje'] as $value){
+                $productotallaje = new \Productotallaje();
+                $productotallaje->setIdproducto($entity->getIdproducto())
+                             ->setIdtallaje($value)
+                             ->save();
+            }
+
+            foreach ($post_data['material'] as $value){
+                $productomaterial = new \Productomaterial();
+                $productomaterial->setIdproducto($entity->getIdproducto())
+                             ->setIdmaterial($value)
+                             ->save();
+            }
+
+            foreach ($post_data['color'] as $value){
+                $productocolor = new \Productocolor();
+                $productocolor->setIdproducto($entity->getIdproducto())
+                             ->setIdcolor($value)
+                             ->save();
+            }
+
+            foreach ($post_data['medida'] as $value){
+                $productomedida = new \Productomedida();
+                $productomedida->setIdproducto($entity->getIdproducto())
+                             ->setIdmedida($value)
+                             ->save();
+            }
+
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
             return $this->redirect()->toUrl('/catalogo/productos');
@@ -262,6 +376,14 @@ class ProductosController extends AbstractActionController
             $tallajes_array[$value->getIdtallaje()] = $value->getTallajeNombre()." (".$value->getTallajerango().")";
         }
 
+        //traer las medidas
+        $medidas = \MedidaQuery::create()->find();
+        $medidas_array = array();
+        $value = new \Medida();
+        foreach ($medidas as $value){
+            $medidas_array[$value->getIdmedida()] = $value->getMedidaNombre()." (".$value->getMedidasrango().")";
+        }
+
 
         //traer los materiales
         $materiales = \MaterialQuery::create()->find();
@@ -291,8 +413,7 @@ class ProductosController extends AbstractActionController
         }
 
 
-
-        $form = new \Application\Catalogo\Form\ProductosForm($calzados_array,$provedorees_array,$marcas_array,$temporadas_array,$tallajes_array,$materiales_array,$colores_array);
+        $form = new \Application\Catalogo\Form\ProductosForm($calzados_array,$provedorees_array,$marcas_array,$temporadas_array,$tallajes_array,$materiales_array,$colores_array,$medidas_array);
         
         $view_model = new ViewModel();
         $view_model->setTemplate('application/catalogo/productos/nuevo');
@@ -305,52 +426,162 @@ class ProductosController extends AbstractActionController
 
     public function verAction()
     {
-
-        $request = $this->getRequest();
-
+        $reqest = $this->getRequest();
+        
         $id = $this->params()->fromRoute('id');
-
-        $exists = \EmpleadoQuery::create()->filterByIdempleado($id)->exists();
-
-        if($exists)
-        {
-            $entity = \EmpleadoQuery::create()->findPk($id);
-
-            if($request->isPost())
-            {
-                $post_data = $request->getPost();
-
-                foreach ($post_data as $key => $value) {
-                    if(\EmpleadoPeer::getTableMap()->hasColumn($key))
-                    {
-                        $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
+        
+        $exist = \ProductoQuery::create()->filterByIdproducto($id)->exists();
+        
+        if($exist){
+            
+            $entity = \ProductoQuery::create()->findPk($id);
+            
+            if($reqest->isPost()){
+                $post_data = $reqest->getPost();
+                foreach ($post_data as $key => $value){
+                    if(\ProductoPeer::getTableMap()->hasColumn($key)){
+                        $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
                 }
-                $entity->save();
-                $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-                return $this->redirect()->toUrl('/catalogo/empleados');
+                $entity->getProductotallajes()->delete();
+                $entity->getProductocolors()->delete();
+                $entity->getProductomaterials()->delete();
+
+                foreach ($post_data['tallaje'] as $value){
+                    $productotallaje = new \Productotallaje();
+                    $productotallaje->setIdproducto($entity->getIdproducto())
+                                 ->setIdtallaje($value)
+                                 ->save();
+                }
+
+                foreach ($post_data['material'] as $value){
+                    $productomaterial = new \Productomaterial();
+                    $productomaterial->setIdproducto($entity->getIdproducto())
+                                 ->setIdmaterial($value)
+                                 ->save();
+                }
+
+                foreach ($post_data['color'] as $value){
+                    $productocolor = new \Productocolor();
+                    $productocolor->setIdproducto($entity->getIdproducto())
+                                 ->setIdcolor($value)
+                                 ->save();
+                }
+
+                foreach ($post_data['medida'] as $value){
+                    $productomedida = new \Productomedida();
+                    $productomedida->setIdproducto($entity->getIdproducto())
+                                 ->setIdmedida($value)
+                                 ->save();
+                }
+
+                $entity->save();
+
+
+                $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
+                return $this->redirect()->toUrl('/catalogo/productos');
+            }
+            
+                
+            //traer los tipos de calzado
+            $calzados = \TipocalzadoQuery::create()->find();
+            $calzados_array = array();
+            $value = new \Tipocalzado();
+            foreach ($calzados as $value){
+                $calzados_array[$value->getIdtipocalzado()] = $value->getTipocalzadoNombre();
             }
 
-            $form = new \Application\Catalogo\Form\EmpleadosForm();
+            //traer los proveedores
+            $provedorees = \ProveedorQuery::create()->find();
+            $provedorees_array = array();
+            $value = new \Proveedor();
+            foreach ($provedorees as $value){
+                $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
+            }
 
+            //traer las marcas
+            $marcas = \MarcaQuery::create()->find();
+            $marcas_array = array();
+            $value = new \Marca();
+            foreach ($marcas as $value){
+                $marcas_array[$value->getIdMarca()] = $value->getMarcaNombre();
+            }
+
+            //traer las temporadas
+            $temporadas = \TemporadaQuery::create()->find();
+
+            $temporadas_array = array();
+            $value = new \Temporada();
+            foreach ($temporadas as $value){
+                $temporadas_array[$value->getIdtemporada()] = $value->getTemporadaNombre();
+            }
+
+
+            //traer los tallajes
+            $tallajes = \TallajeQuery::create()->find();
+            $tallajes_array = array();
+            $value = new \Tallaje();
+            foreach ($tallajes as $value){
+                $tallajes_array[$value->getIdtallaje()] = $value->getTallajeNombre()." (".$value->getTallajerango().")";
+            }
+
+            //traer las medidas
+            $medidas = \MedidaQuery::create()->find();
+            $medidas_array = array();
+            $value = new \Medida();
+            foreach ($medidas as $value){
+                $medidas_array[$value->getIdmedida()] = $value->getMedidaNombre()." (".$value->getMedidasrango().")";
+            }
+
+            //traer los materiales
+            $materiales = \MaterialQuery::create()->find();
+            $materiales_array = array();
+            $value = new \Material();
+            foreach ($materiales as $value){
+                $materiales_array[$value->getIdmaterial()] = $value->getMaterialNombre();
+            }
+
+            //traer los colores
+            $colores = \ColorQuery::create()->find();
+            $colores_array = array();
+            $value = new \Color();
+            foreach ($colores as $value){
+                $colores_array[$value->getIdcolor()] = $value->getColorNombre();
+            }
+
+
+
+            //traer las temporadas
+            $temporadas = \TemporadaQuery::create()->find();
+
+            $temporadas_array = array();
+            $value = new \Temporada();
+            foreach ($temporadas as $value){
+                $temporadas_array[$value->getIdtemporada()] = $value->getTemporadaNombre();
+            }
+
+
+        
+
+            $form = new \Application\Catalogo\Form\ProductosForm($calzados_array,$provedorees_array,$marcas_array,$temporadas_array,$tallajes_array,$materiales_array,$colores_array,$medidas_array);
+            
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-
-
+            
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/catalogo/empleados/ver');
-
+            $view_model->setTemplate('application/catalogo/productos/ver'); 
             $view_model->setVariables(array(
                 'form' => $form,
-                'entity' =>$entity
+                'entity' => $entity,
             ));
-
             return $view_model;
-        }else
-        {
-            $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/empleados');   
+            
+            
+        }else{
+            $this->flashMessenger()->addErrorMessage('Id Invalido.');
+            return $this->redirect()->toUrl('/catalogo/productos');
         }
+        return $view_model;
     }
 
     public function eliminarAction(){
@@ -359,7 +590,7 @@ class ProductosController extends AbstractActionController
         if($request->isPost())
         {
             $id = $this->params()->fromRoute('id');
-            $entity = \EmpleadoQuery::Create()->findPk($id);
+            $entity = \ProductoQuery::Create()->findPk($id);
             $entity->delete();
 
             if($entity->isDeleted()){
@@ -369,7 +600,7 @@ class ProductosController extends AbstractActionController
             }
         }
 
-        return $this->redirect()->toUrl('/catalogo/empleados');
+        return $this->redirect()->toUrl('/catalogo/productos');
     }
 
 

@@ -653,9 +653,9 @@ abstract class BaseTallajePeer
         // Invalidate objects in MarcatallajePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         MarcatallajePeer::clearInstancePool();
-        // Invalidate objects in ProductoPeer instance pool,
+        // Invalidate objects in ProductotallajePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ProductoPeer::clearInstancePool();
+        ProductotallajePeer::clearInstancePool();
     }
 
     /**
@@ -996,11 +996,11 @@ abstract class BaseTallajePeer
             $criteria->add(MarcatallajePeer::IDTALLAJE, $obj->getIdtallaje());
             $affectedRows += MarcatallajePeer::doDelete($criteria, $con);
 
-            // delete related Producto objects
-            $criteria = new Criteria(ProductoPeer::DATABASE_NAME);
+            // delete related Productotallaje objects
+            $criteria = new Criteria(ProductotallajePeer::DATABASE_NAME);
 
-            $criteria->add(ProductoPeer::IDTALLAJE, $obj->getIdtallaje());
-            $affectedRows += ProductoPeer::doDelete($criteria, $con);
+            $criteria->add(ProductotallajePeer::IDTALLAJE, $obj->getIdtallaje());
+            $affectedRows += ProductotallajePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

@@ -396,10 +396,10 @@ abstract class BaseTallaje extends BaseObject implements Persistent
     protected $collMarcatallajesPartial;
 
     /**
-     * @var        PropelObjectCollection|Producto[] Collection to store aggregation of Producto objects.
+     * @var        PropelObjectCollection|Productotallaje[] Collection to store aggregation of Productotallaje objects.
      */
-    protected $collProductos;
-    protected $collProductosPartial;
+    protected $collProductotallajes;
+    protected $collProductotallajesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -431,7 +431,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $productosScheduledForDeletion = null;
+    protected $productotallajesScheduledForDeletion = null;
 
     /**
      * Get the [idtallaje] column value.
@@ -2974,7 +2974,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
 
             $this->collMarcatallajes = null;
 
-            $this->collProductos = null;
+            $this->collProductotallajes = null;
 
         } // if (deep)
     }
@@ -3117,17 +3117,17 @@ abstract class BaseTallaje extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->productosScheduledForDeletion !== null) {
-                if (!$this->productosScheduledForDeletion->isEmpty()) {
-                    ProductoQuery::create()
-                        ->filterByPrimaryKeys($this->productosScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->productotallajesScheduledForDeletion !== null) {
+                if (!$this->productotallajesScheduledForDeletion->isEmpty()) {
+                    ProductotallajeQuery::create()
+                        ->filterByPrimaryKeys($this->productotallajesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->productosScheduledForDeletion = null;
+                    $this->productotallajesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collProductos !== null) {
-                foreach ($this->collProductos as $referrerFK) {
+            if ($this->collProductotallajes !== null) {
+                foreach ($this->collProductotallajes as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -3638,8 +3638,8 @@ abstract class BaseTallaje extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collProductos !== null) {
-                    foreach ($this->collProductos as $referrerFK) {
+                if ($this->collProductotallajes !== null) {
+                    foreach ($this->collProductotallajes as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -3960,8 +3960,8 @@ abstract class BaseTallaje extends BaseObject implements Persistent
             if (null !== $this->collMarcatallajes) {
                 $result['Marcatallajes'] = $this->collMarcatallajes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collProductos) {
-                $result['Productos'] = $this->collProductos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collProductotallajes) {
+                $result['Productotallajes'] = $this->collProductotallajes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -4468,9 +4468,9 @@ abstract class BaseTallaje extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getProductos() as $relObj) {
+            foreach ($this->getProductotallajes() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addProducto($relObj->copy($deepCopy));
+                    $copyObj->addProductotallaje($relObj->copy($deepCopy));
                 }
             }
 
@@ -4538,8 +4538,8 @@ abstract class BaseTallaje extends BaseObject implements Persistent
         if ('Marcatallaje' == $relationName) {
             $this->initMarcatallajes();
         }
-        if ('Producto' == $relationName) {
-            $this->initProductos();
+        if ('Productotallaje' == $relationName) {
+            $this->initProductotallajes();
         }
     }
 
@@ -4794,36 +4794,36 @@ abstract class BaseTallaje extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collProductos collection
+     * Clears out the collProductotallajes collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return Tallaje The current object (for fluent API support)
-     * @see        addProductos()
+     * @see        addProductotallajes()
      */
-    public function clearProductos()
+    public function clearProductotallajes()
     {
-        $this->collProductos = null; // important to set this to null since that means it is uninitialized
-        $this->collProductosPartial = null;
+        $this->collProductotallajes = null; // important to set this to null since that means it is uninitialized
+        $this->collProductotallajesPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collProductos collection loaded partially
+     * reset is the collProductotallajes collection loaded partially
      *
      * @return void
      */
-    public function resetPartialProductos($v = true)
+    public function resetPartialProductotallajes($v = true)
     {
-        $this->collProductosPartial = $v;
+        $this->collProductotallajesPartial = $v;
     }
 
     /**
-     * Initializes the collProductos collection.
+     * Initializes the collProductotallajes collection.
      *
-     * By default this just sets the collProductos collection to an empty array (like clearcollProductos());
+     * By default this just sets the collProductotallajes collection to an empty array (like clearcollProductotallajes());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -4832,17 +4832,17 @@ abstract class BaseTallaje extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initProductos($overrideExisting = true)
+    public function initProductotallajes($overrideExisting = true)
     {
-        if (null !== $this->collProductos && !$overrideExisting) {
+        if (null !== $this->collProductotallajes && !$overrideExisting) {
             return;
         }
-        $this->collProductos = new PropelObjectCollection();
-        $this->collProductos->setModel('Producto');
+        $this->collProductotallajes = new PropelObjectCollection();
+        $this->collProductotallajes->setModel('Productotallaje');
     }
 
     /**
-     * Gets an array of Producto objects which contain a foreign key that references this object.
+     * Gets an array of Productotallaje objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -4852,107 +4852,107 @@ abstract class BaseTallaje extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Producto[] List of Producto objects
+     * @return PropelObjectCollection|Productotallaje[] List of Productotallaje objects
      * @throws PropelException
      */
-    public function getProductos($criteria = null, PropelPDO $con = null)
+    public function getProductotallajes($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collProductosPartial && !$this->isNew();
-        if (null === $this->collProductos || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collProductos) {
+        $partial = $this->collProductotallajesPartial && !$this->isNew();
+        if (null === $this->collProductotallajes || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collProductotallajes) {
                 // return empty collection
-                $this->initProductos();
+                $this->initProductotallajes();
             } else {
-                $collProductos = ProductoQuery::create(null, $criteria)
+                $collProductotallajes = ProductotallajeQuery::create(null, $criteria)
                     ->filterByTallaje($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collProductosPartial && count($collProductos)) {
-                      $this->initProductos(false);
+                    if (false !== $this->collProductotallajesPartial && count($collProductotallajes)) {
+                      $this->initProductotallajes(false);
 
-                      foreach ($collProductos as $obj) {
-                        if (false == $this->collProductos->contains($obj)) {
-                          $this->collProductos->append($obj);
+                      foreach ($collProductotallajes as $obj) {
+                        if (false == $this->collProductotallajes->contains($obj)) {
+                          $this->collProductotallajes->append($obj);
                         }
                       }
 
-                      $this->collProductosPartial = true;
+                      $this->collProductotallajesPartial = true;
                     }
 
-                    $collProductos->getInternalIterator()->rewind();
+                    $collProductotallajes->getInternalIterator()->rewind();
 
-                    return $collProductos;
+                    return $collProductotallajes;
                 }
 
-                if ($partial && $this->collProductos) {
-                    foreach ($this->collProductos as $obj) {
+                if ($partial && $this->collProductotallajes) {
+                    foreach ($this->collProductotallajes as $obj) {
                         if ($obj->isNew()) {
-                            $collProductos[] = $obj;
+                            $collProductotallajes[] = $obj;
                         }
                     }
                 }
 
-                $this->collProductos = $collProductos;
-                $this->collProductosPartial = false;
+                $this->collProductotallajes = $collProductotallajes;
+                $this->collProductotallajesPartial = false;
             }
         }
 
-        return $this->collProductos;
+        return $this->collProductotallajes;
     }
 
     /**
-     * Sets a collection of Producto objects related by a one-to-many relationship
+     * Sets a collection of Productotallaje objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $productos A Propel collection.
+     * @param PropelCollection $productotallajes A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return Tallaje The current object (for fluent API support)
      */
-    public function setProductos(PropelCollection $productos, PropelPDO $con = null)
+    public function setProductotallajes(PropelCollection $productotallajes, PropelPDO $con = null)
     {
-        $productosToDelete = $this->getProductos(new Criteria(), $con)->diff($productos);
+        $productotallajesToDelete = $this->getProductotallajes(new Criteria(), $con)->diff($productotallajes);
 
 
-        $this->productosScheduledForDeletion = $productosToDelete;
+        $this->productotallajesScheduledForDeletion = $productotallajesToDelete;
 
-        foreach ($productosToDelete as $productoRemoved) {
-            $productoRemoved->setTallaje(null);
+        foreach ($productotallajesToDelete as $productotallajeRemoved) {
+            $productotallajeRemoved->setTallaje(null);
         }
 
-        $this->collProductos = null;
-        foreach ($productos as $producto) {
-            $this->addProducto($producto);
+        $this->collProductotallajes = null;
+        foreach ($productotallajes as $productotallaje) {
+            $this->addProductotallaje($productotallaje);
         }
 
-        $this->collProductos = $productos;
-        $this->collProductosPartial = false;
+        $this->collProductotallajes = $productotallajes;
+        $this->collProductotallajesPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related Producto objects.
+     * Returns the number of related Productotallaje objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related Producto objects.
+     * @return int             Count of related Productotallaje objects.
      * @throws PropelException
      */
-    public function countProductos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countProductotallajes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collProductosPartial && !$this->isNew();
-        if (null === $this->collProductos || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collProductos) {
+        $partial = $this->collProductotallajesPartial && !$this->isNew();
+        if (null === $this->collProductotallajes || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collProductotallajes) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getProductos());
+                return count($this->getProductotallajes());
             }
-            $query = ProductoQuery::create(null, $criteria);
+            $query = ProductotallajeQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
@@ -4962,28 +4962,28 @@ abstract class BaseTallaje extends BaseObject implements Persistent
                 ->count($con);
         }
 
-        return count($this->collProductos);
+        return count($this->collProductotallajes);
     }
 
     /**
-     * Method called to associate a Producto object to this object
-     * through the Producto foreign key attribute.
+     * Method called to associate a Productotallaje object to this object
+     * through the Productotallaje foreign key attribute.
      *
-     * @param    Producto $l Producto
+     * @param    Productotallaje $l Productotallaje
      * @return Tallaje The current object (for fluent API support)
      */
-    public function addProducto(Producto $l)
+    public function addProductotallaje(Productotallaje $l)
     {
-        if ($this->collProductos === null) {
-            $this->initProductos();
-            $this->collProductosPartial = true;
+        if ($this->collProductotallajes === null) {
+            $this->initProductotallajes();
+            $this->collProductotallajesPartial = true;
         }
 
-        if (!in_array($l, $this->collProductos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddProducto($l);
+        if (!in_array($l, $this->collProductotallajes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddProductotallaje($l);
 
-            if ($this->productosScheduledForDeletion and $this->productosScheduledForDeletion->contains($l)) {
-                $this->productosScheduledForDeletion->remove($this->productosScheduledForDeletion->search($l));
+            if ($this->productotallajesScheduledForDeletion and $this->productotallajesScheduledForDeletion->contains($l)) {
+                $this->productotallajesScheduledForDeletion->remove($this->productotallajesScheduledForDeletion->search($l));
             }
         }
 
@@ -4991,28 +4991,28 @@ abstract class BaseTallaje extends BaseObject implements Persistent
     }
 
     /**
-     * @param	Producto $producto The producto object to add.
+     * @param	Productotallaje $productotallaje The productotallaje object to add.
      */
-    protected function doAddProducto($producto)
+    protected function doAddProductotallaje($productotallaje)
     {
-        $this->collProductos[]= $producto;
-        $producto->setTallaje($this);
+        $this->collProductotallajes[]= $productotallaje;
+        $productotallaje->setTallaje($this);
     }
 
     /**
-     * @param	Producto $producto The producto object to remove.
+     * @param	Productotallaje $productotallaje The productotallaje object to remove.
      * @return Tallaje The current object (for fluent API support)
      */
-    public function removeProducto($producto)
+    public function removeProductotallaje($productotallaje)
     {
-        if ($this->getProductos()->contains($producto)) {
-            $this->collProductos->remove($this->collProductos->search($producto));
-            if (null === $this->productosScheduledForDeletion) {
-                $this->productosScheduledForDeletion = clone $this->collProductos;
-                $this->productosScheduledForDeletion->clear();
+        if ($this->getProductotallajes()->contains($productotallaje)) {
+            $this->collProductotallajes->remove($this->collProductotallajes->search($productotallaje));
+            if (null === $this->productotallajesScheduledForDeletion) {
+                $this->productotallajesScheduledForDeletion = clone $this->collProductotallajes;
+                $this->productotallajesScheduledForDeletion->clear();
             }
-            $this->productosScheduledForDeletion[]= clone $producto;
-            $producto->setTallaje(null);
+            $this->productotallajesScheduledForDeletion[]= clone $productotallaje;
+            $productotallaje->setTallaje(null);
         }
 
         return $this;
@@ -5024,7 +5024,7 @@ abstract class BaseTallaje extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this Tallaje is new, it will return
      * an empty collection; or if this Tallaje has previously
-     * been saved, it will retrieve related Productos from storage.
+     * been saved, it will retrieve related Productotallajes from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -5033,89 +5033,14 @@ abstract class BaseTallaje extends BaseObject implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Producto[] List of Producto objects
+     * @return PropelObjectCollection|Productotallaje[] List of Productotallaje objects
      */
-    public function getProductosJoinMarca($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getProductotallajesJoinProducto($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = ProductoQuery::create(null, $criteria);
-        $query->joinWith('Marca', $join_behavior);
+        $query = ProductotallajeQuery::create(null, $criteria);
+        $query->joinWith('Producto', $join_behavior);
 
-        return $this->getProductos($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Tallaje is new, it will return
-     * an empty collection; or if this Tallaje has previously
-     * been saved, it will retrieve related Productos from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Tallaje.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Producto[] List of Producto objects
-     */
-    public function getProductosJoinProveedor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ProductoQuery::create(null, $criteria);
-        $query->joinWith('Proveedor', $join_behavior);
-
-        return $this->getProductos($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Tallaje is new, it will return
-     * an empty collection; or if this Tallaje has previously
-     * been saved, it will retrieve related Productos from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Tallaje.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Producto[] List of Producto objects
-     */
-    public function getProductosJoinTemporada($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ProductoQuery::create(null, $criteria);
-        $query->joinWith('Temporada', $join_behavior);
-
-        return $this->getProductos($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Tallaje is new, it will return
-     * an empty collection; or if this Tallaje has previously
-     * been saved, it will retrieve related Productos from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Tallaje.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Producto[] List of Producto objects
-     */
-    public function getProductosJoinTipocalzado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ProductoQuery::create(null, $criteria);
-        $query->joinWith('Tipocalzado', $join_behavior);
-
-        return $this->getProductos($query, $con);
+        return $this->getProductotallajes($query, $con);
     }
 
     /**
@@ -5210,8 +5135,8 @@ abstract class BaseTallaje extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collProductos) {
-                foreach ($this->collProductos as $o) {
+            if ($this->collProductotallajes) {
+                foreach ($this->collProductotallajes as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -5223,10 +5148,10 @@ abstract class BaseTallaje extends BaseObject implements Persistent
             $this->collMarcatallajes->clearIterator();
         }
         $this->collMarcatallajes = null;
-        if ($this->collProductos instanceof PropelCollection) {
-            $this->collProductos->clearIterator();
+        if ($this->collProductotallajes instanceof PropelCollection) {
+            $this->collProductotallajes->clearIterator();
         }
-        $this->collProductos = null;
+        $this->collProductotallajes = null;
     }
 
     /**

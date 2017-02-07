@@ -54,12 +54,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
     protected $idtemporada;
 
     /**
-     * The value for the idtallaje field.
-     * @var        int
-     */
-    protected $idtallaje;
-
-    /**
      * The value for the producto_comisionable field.
      * @var        int
      */
@@ -130,11 +124,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
     protected $aProveedor;
 
     /**
-     * @var        Tallaje
-     */
-    protected $aTallaje;
-
-    /**
      * @var        Temporada
      */
     protected $aTemporada;
@@ -155,6 +144,18 @@ abstract class BaseProducto extends BaseObject implements Persistent
      */
     protected $collProductomaterials;
     protected $collProductomaterialsPartial;
+
+    /**
+     * @var        PropelObjectCollection|Productomedida[] Collection to store aggregation of Productomedida objects.
+     */
+    protected $collProductomedidas;
+    protected $collProductomedidasPartial;
+
+    /**
+     * @var        PropelObjectCollection|Productotallaje[] Collection to store aggregation of Productotallaje objects.
+     */
+    protected $collProductotallajes;
+    protected $collProductotallajesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -187,6 +188,18 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $productomaterialsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $productomedidasScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $productotallajesScheduledForDeletion = null;
 
     /**
      * Get the [idproducto] column value.
@@ -230,17 +243,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
     {
 
         return $this->idtemporada;
-    }
-
-    /**
-     * Get the [idtallaje] column value.
-     *
-     * @return int
-     */
-    public function getIdtallaje()
-    {
-
-        return $this->idtallaje;
     }
 
     /**
@@ -444,31 +446,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
 
         return $this;
     } // setIdtemporada()
-
-    /**
-     * Set the value of [idtallaje] column.
-     *
-     * @param  int $v new value
-     * @return Producto The current object (for fluent API support)
-     */
-    public function setIdtallaje($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->idtallaje !== $v) {
-            $this->idtallaje = $v;
-            $this->modifiedColumns[] = ProductoPeer::IDTALLAJE;
-        }
-
-        if ($this->aTallaje !== null && $this->aTallaje->getIdtallaje() !== $v) {
-            $this->aTallaje = null;
-        }
-
-
-        return $this;
-    } // setIdtallaje()
 
     /**
      * Set the value of [producto_comisionable] column.
@@ -724,17 +701,16 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->producto_modelo = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->idmarca = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->idtemporada = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->idtallaje = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->producto_comisionable = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->idproveedor = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->producto_dirigidoa = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->producto_precioventa = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->producto_preciomayoreo = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->producto_minimo = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->producto_reorden = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-            $this->producto_maximo = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
-            $this->idtipocalzado = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
-            $this->producto_descripcion = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->producto_comisionable = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->idproveedor = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->producto_dirigidoa = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->producto_precioventa = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->producto_preciomayoreo = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->producto_minimo = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->producto_reorden = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+            $this->producto_maximo = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+            $this->idtipocalzado = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
+            $this->producto_descripcion = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -744,7 +720,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 15; // 15 = ProductoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = ProductoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Producto object", $e);
@@ -772,9 +748,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
         }
         if ($this->aTemporada !== null && $this->idtemporada !== $this->aTemporada->getIdtemporada()) {
             $this->aTemporada = null;
-        }
-        if ($this->aTallaje !== null && $this->idtallaje !== $this->aTallaje->getIdtallaje()) {
-            $this->aTallaje = null;
         }
         if ($this->aProveedor !== null && $this->idproveedor !== $this->aProveedor->getIdproveedor()) {
             $this->aProveedor = null;
@@ -823,12 +796,15 @@ abstract class BaseProducto extends BaseObject implements Persistent
 
             $this->aMarca = null;
             $this->aProveedor = null;
-            $this->aTallaje = null;
             $this->aTemporada = null;
             $this->aTipocalzado = null;
             $this->collProductocolors = null;
 
             $this->collProductomaterials = null;
+
+            $this->collProductomedidas = null;
+
+            $this->collProductotallajes = null;
 
         } // if (deep)
     }
@@ -962,13 +938,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 $this->setProveedor($this->aProveedor);
             }
 
-            if ($this->aTallaje !== null) {
-                if ($this->aTallaje->isModified() || $this->aTallaje->isNew()) {
-                    $affectedRows += $this->aTallaje->save($con);
-                }
-                $this->setTallaje($this->aTallaje);
-            }
-
             if ($this->aTemporada !== null) {
                 if ($this->aTemporada->isModified() || $this->aTemporada->isNew()) {
                     $affectedRows += $this->aTemporada->save($con);
@@ -1028,6 +997,40 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->productomedidasScheduledForDeletion !== null) {
+                if (!$this->productomedidasScheduledForDeletion->isEmpty()) {
+                    ProductomedidaQuery::create()
+                        ->filterByPrimaryKeys($this->productomedidasScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->productomedidasScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collProductomedidas !== null) {
+                foreach ($this->collProductomedidas as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->productotallajesScheduledForDeletion !== null) {
+                if (!$this->productotallajesScheduledForDeletion->isEmpty()) {
+                    ProductotallajeQuery::create()
+                        ->filterByPrimaryKeys($this->productotallajesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->productotallajesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collProductotallajes !== null) {
+                foreach ($this->collProductotallajes as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -1065,9 +1068,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(ProductoPeer::IDTEMPORADA)) {
             $modifiedColumns[':p' . $index++]  = '`idtemporada`';
-        }
-        if ($this->isColumnModified(ProductoPeer::IDTALLAJE)) {
-            $modifiedColumns[':p' . $index++]  = '`idtallaje`';
         }
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_COMISIONABLE)) {
             $modifiedColumns[':p' . $index++]  = '`producto_comisionable`';
@@ -1121,9 +1121,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
                         break;
                     case '`idtemporada`':
                         $stmt->bindValue($identifier, $this->idtemporada, PDO::PARAM_INT);
-                        break;
-                    case '`idtallaje`':
-                        $stmt->bindValue($identifier, $this->idtallaje, PDO::PARAM_INT);
                         break;
                     case '`producto_comisionable`':
                         $stmt->bindValue($identifier, $this->producto_comisionable, PDO::PARAM_INT);
@@ -1266,12 +1263,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->aTallaje !== null) {
-                if (!$this->aTallaje->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aTallaje->getValidationFailures());
-                }
-            }
-
             if ($this->aTemporada !== null) {
                 if (!$this->aTemporada->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aTemporada->getValidationFailures());
@@ -1300,6 +1291,22 @@ abstract class BaseProducto extends BaseObject implements Persistent
 
                 if ($this->collProductomaterials !== null) {
                     foreach ($this->collProductomaterials as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collProductomedidas !== null) {
+                    foreach ($this->collProductomedidas as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collProductotallajes !== null) {
+                    foreach ($this->collProductotallajes as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1354,36 +1361,33 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 return $this->getIdtemporada();
                 break;
             case 4:
-                return $this->getIdtallaje();
-                break;
-            case 5:
                 return $this->getProductoComisionable();
                 break;
-            case 6:
+            case 5:
                 return $this->getIdproveedor();
                 break;
-            case 7:
+            case 6:
                 return $this->getProductoDirigidoa();
                 break;
-            case 8:
+            case 7:
                 return $this->getProductoPrecioventa();
                 break;
-            case 9:
+            case 8:
                 return $this->getProductoPreciomayoreo();
                 break;
-            case 10:
+            case 9:
                 return $this->getProductoMinimo();
                 break;
-            case 11:
+            case 10:
                 return $this->getProductoReorden();
                 break;
-            case 12:
+            case 11:
                 return $this->getProductoMaximo();
                 break;
-            case 13:
+            case 12:
                 return $this->getIdtipocalzado();
                 break;
-            case 14:
+            case 13:
                 return $this->getProductoDescripcion();
                 break;
             default:
@@ -1419,17 +1423,16 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $keys[1] => $this->getProductoModelo(),
             $keys[2] => $this->getIdmarca(),
             $keys[3] => $this->getIdtemporada(),
-            $keys[4] => $this->getIdtallaje(),
-            $keys[5] => $this->getProductoComisionable(),
-            $keys[6] => $this->getIdproveedor(),
-            $keys[7] => $this->getProductoDirigidoa(),
-            $keys[8] => $this->getProductoPrecioventa(),
-            $keys[9] => $this->getProductoPreciomayoreo(),
-            $keys[10] => $this->getProductoMinimo(),
-            $keys[11] => $this->getProductoReorden(),
-            $keys[12] => $this->getProductoMaximo(),
-            $keys[13] => $this->getIdtipocalzado(),
-            $keys[14] => $this->getProductoDescripcion(),
+            $keys[4] => $this->getProductoComisionable(),
+            $keys[5] => $this->getIdproveedor(),
+            $keys[6] => $this->getProductoDirigidoa(),
+            $keys[7] => $this->getProductoPrecioventa(),
+            $keys[8] => $this->getProductoPreciomayoreo(),
+            $keys[9] => $this->getProductoMinimo(),
+            $keys[10] => $this->getProductoReorden(),
+            $keys[11] => $this->getProductoMaximo(),
+            $keys[12] => $this->getIdtipocalzado(),
+            $keys[13] => $this->getProductoDescripcion(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1443,9 +1446,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
             if (null !== $this->aProveedor) {
                 $result['Proveedor'] = $this->aProveedor->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aTallaje) {
-                $result['Tallaje'] = $this->aTallaje->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->aTemporada) {
                 $result['Temporada'] = $this->aTemporada->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1457,6 +1457,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
             if (null !== $this->collProductomaterials) {
                 $result['Productomaterials'] = $this->collProductomaterials->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collProductomedidas) {
+                $result['Productomedidas'] = $this->collProductomedidas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collProductotallajes) {
+                $result['Productotallajes'] = $this->collProductotallajes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1505,36 +1511,33 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 $this->setIdtemporada($value);
                 break;
             case 4:
-                $this->setIdtallaje($value);
-                break;
-            case 5:
                 $this->setProductoComisionable($value);
                 break;
-            case 6:
+            case 5:
                 $this->setIdproveedor($value);
                 break;
-            case 7:
+            case 6:
                 $this->setProductoDirigidoa($value);
                 break;
-            case 8:
+            case 7:
                 $this->setProductoPrecioventa($value);
                 break;
-            case 9:
+            case 8:
                 $this->setProductoPreciomayoreo($value);
                 break;
-            case 10:
+            case 9:
                 $this->setProductoMinimo($value);
                 break;
-            case 11:
+            case 10:
                 $this->setProductoReorden($value);
                 break;
-            case 12:
+            case 11:
                 $this->setProductoMaximo($value);
                 break;
-            case 13:
+            case 12:
                 $this->setIdtipocalzado($value);
                 break;
-            case 14:
+            case 13:
                 $this->setProductoDescripcion($value);
                 break;
         } // switch()
@@ -1565,17 +1568,16 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setProductoModelo($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setIdmarca($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setIdtemporada($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setIdtallaje($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setProductoComisionable($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setIdproveedor($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setProductoDirigidoa($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setProductoPrecioventa($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setProductoPreciomayoreo($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setProductoMinimo($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setProductoReorden($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setProductoMaximo($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setIdtipocalzado($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setProductoDescripcion($arr[$keys[14]]);
+        if (array_key_exists($keys[4], $arr)) $this->setProductoComisionable($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setIdproveedor($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setProductoDirigidoa($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setProductoPrecioventa($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setProductoPreciomayoreo($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setProductoMinimo($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setProductoReorden($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setProductoMaximo($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setIdtipocalzado($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setProductoDescripcion($arr[$keys[13]]);
     }
 
     /**
@@ -1591,7 +1593,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_MODELO)) $criteria->add(ProductoPeer::PRODUCTO_MODELO, $this->producto_modelo);
         if ($this->isColumnModified(ProductoPeer::IDMARCA)) $criteria->add(ProductoPeer::IDMARCA, $this->idmarca);
         if ($this->isColumnModified(ProductoPeer::IDTEMPORADA)) $criteria->add(ProductoPeer::IDTEMPORADA, $this->idtemporada);
-        if ($this->isColumnModified(ProductoPeer::IDTALLAJE)) $criteria->add(ProductoPeer::IDTALLAJE, $this->idtallaje);
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_COMISIONABLE)) $criteria->add(ProductoPeer::PRODUCTO_COMISIONABLE, $this->producto_comisionable);
         if ($this->isColumnModified(ProductoPeer::IDPROVEEDOR)) $criteria->add(ProductoPeer::IDPROVEEDOR, $this->idproveedor);
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_DIRIGIDOA)) $criteria->add(ProductoPeer::PRODUCTO_DIRIGIDOA, $this->producto_dirigidoa);
@@ -1668,7 +1669,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $copyObj->setProductoModelo($this->getProductoModelo());
         $copyObj->setIdmarca($this->getIdmarca());
         $copyObj->setIdtemporada($this->getIdtemporada());
-        $copyObj->setIdtallaje($this->getIdtallaje());
         $copyObj->setProductoComisionable($this->getProductoComisionable());
         $copyObj->setIdproveedor($this->getIdproveedor());
         $copyObj->setProductoDirigidoa($this->getProductoDirigidoa());
@@ -1696,6 +1696,18 @@ abstract class BaseProducto extends BaseObject implements Persistent
             foreach ($this->getProductomaterials() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addProductomaterial($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getProductomedidas() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addProductomedida($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getProductotallajes() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addProductotallaje($relObj->copy($deepCopy));
                 }
             }
 
@@ -1854,58 +1866,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
     }
 
     /**
-     * Declares an association between this object and a Tallaje object.
-     *
-     * @param                  Tallaje $v
-     * @return Producto The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setTallaje(Tallaje $v = null)
-    {
-        if ($v === null) {
-            $this->setIdtallaje(NULL);
-        } else {
-            $this->setIdtallaje($v->getIdtallaje());
-        }
-
-        $this->aTallaje = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Tallaje object, it will not be re-added.
-        if ($v !== null) {
-            $v->addProducto($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Tallaje object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Tallaje The associated Tallaje object.
-     * @throws PropelException
-     */
-    public function getTallaje(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aTallaje === null && ($this->idtallaje !== null) && $doQuery) {
-            $this->aTallaje = TallajeQuery::create()->findPk($this->idtallaje, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aTallaje->addProductos($this);
-             */
-        }
-
-        return $this->aTallaje;
-    }
-
-    /**
      * Declares an association between this object and a Temporada object.
      *
      * @param                  Temporada $v
@@ -2025,6 +1985,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
         }
         if ('Productomaterial' == $relationName) {
             $this->initProductomaterials();
+        }
+        if ('Productomedida' == $relationName) {
+            $this->initProductomedidas();
+        }
+        if ('Productotallaje' == $relationName) {
+            $this->initProductotallajes();
         }
     }
 
@@ -2529,6 +2495,506 @@ abstract class BaseProducto extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collProductomedidas collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Producto The current object (for fluent API support)
+     * @see        addProductomedidas()
+     */
+    public function clearProductomedidas()
+    {
+        $this->collProductomedidas = null; // important to set this to null since that means it is uninitialized
+        $this->collProductomedidasPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collProductomedidas collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialProductomedidas($v = true)
+    {
+        $this->collProductomedidasPartial = $v;
+    }
+
+    /**
+     * Initializes the collProductomedidas collection.
+     *
+     * By default this just sets the collProductomedidas collection to an empty array (like clearcollProductomedidas());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initProductomedidas($overrideExisting = true)
+    {
+        if (null !== $this->collProductomedidas && !$overrideExisting) {
+            return;
+        }
+        $this->collProductomedidas = new PropelObjectCollection();
+        $this->collProductomedidas->setModel('Productomedida');
+    }
+
+    /**
+     * Gets an array of Productomedida objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Producto is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Productomedida[] List of Productomedida objects
+     * @throws PropelException
+     */
+    public function getProductomedidas($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collProductomedidasPartial && !$this->isNew();
+        if (null === $this->collProductomedidas || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collProductomedidas) {
+                // return empty collection
+                $this->initProductomedidas();
+            } else {
+                $collProductomedidas = ProductomedidaQuery::create(null, $criteria)
+                    ->filterByProducto($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collProductomedidasPartial && count($collProductomedidas)) {
+                      $this->initProductomedidas(false);
+
+                      foreach ($collProductomedidas as $obj) {
+                        if (false == $this->collProductomedidas->contains($obj)) {
+                          $this->collProductomedidas->append($obj);
+                        }
+                      }
+
+                      $this->collProductomedidasPartial = true;
+                    }
+
+                    $collProductomedidas->getInternalIterator()->rewind();
+
+                    return $collProductomedidas;
+                }
+
+                if ($partial && $this->collProductomedidas) {
+                    foreach ($this->collProductomedidas as $obj) {
+                        if ($obj->isNew()) {
+                            $collProductomedidas[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collProductomedidas = $collProductomedidas;
+                $this->collProductomedidasPartial = false;
+            }
+        }
+
+        return $this->collProductomedidas;
+    }
+
+    /**
+     * Sets a collection of Productomedida objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $productomedidas A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Producto The current object (for fluent API support)
+     */
+    public function setProductomedidas(PropelCollection $productomedidas, PropelPDO $con = null)
+    {
+        $productomedidasToDelete = $this->getProductomedidas(new Criteria(), $con)->diff($productomedidas);
+
+
+        $this->productomedidasScheduledForDeletion = $productomedidasToDelete;
+
+        foreach ($productomedidasToDelete as $productomedidaRemoved) {
+            $productomedidaRemoved->setProducto(null);
+        }
+
+        $this->collProductomedidas = null;
+        foreach ($productomedidas as $productomedida) {
+            $this->addProductomedida($productomedida);
+        }
+
+        $this->collProductomedidas = $productomedidas;
+        $this->collProductomedidasPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Productomedida objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Productomedida objects.
+     * @throws PropelException
+     */
+    public function countProductomedidas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collProductomedidasPartial && !$this->isNew();
+        if (null === $this->collProductomedidas || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collProductomedidas) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getProductomedidas());
+            }
+            $query = ProductomedidaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProducto($this)
+                ->count($con);
+        }
+
+        return count($this->collProductomedidas);
+    }
+
+    /**
+     * Method called to associate a Productomedida object to this object
+     * through the Productomedida foreign key attribute.
+     *
+     * @param    Productomedida $l Productomedida
+     * @return Producto The current object (for fluent API support)
+     */
+    public function addProductomedida(Productomedida $l)
+    {
+        if ($this->collProductomedidas === null) {
+            $this->initProductomedidas();
+            $this->collProductomedidasPartial = true;
+        }
+
+        if (!in_array($l, $this->collProductomedidas->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddProductomedida($l);
+
+            if ($this->productomedidasScheduledForDeletion and $this->productomedidasScheduledForDeletion->contains($l)) {
+                $this->productomedidasScheduledForDeletion->remove($this->productomedidasScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Productomedida $productomedida The productomedida object to add.
+     */
+    protected function doAddProductomedida($productomedida)
+    {
+        $this->collProductomedidas[]= $productomedida;
+        $productomedida->setProducto($this);
+    }
+
+    /**
+     * @param	Productomedida $productomedida The productomedida object to remove.
+     * @return Producto The current object (for fluent API support)
+     */
+    public function removeProductomedida($productomedida)
+    {
+        if ($this->getProductomedidas()->contains($productomedida)) {
+            $this->collProductomedidas->remove($this->collProductomedidas->search($productomedida));
+            if (null === $this->productomedidasScheduledForDeletion) {
+                $this->productomedidasScheduledForDeletion = clone $this->collProductomedidas;
+                $this->productomedidasScheduledForDeletion->clear();
+            }
+            $this->productomedidasScheduledForDeletion[]= clone $productomedida;
+            $productomedida->setProducto(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Producto is new, it will return
+     * an empty collection; or if this Producto has previously
+     * been saved, it will retrieve related Productomedidas from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Producto.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Productomedida[] List of Productomedida objects
+     */
+    public function getProductomedidasJoinMedida($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ProductomedidaQuery::create(null, $criteria);
+        $query->joinWith('Medida', $join_behavior);
+
+        return $this->getProductomedidas($query, $con);
+    }
+
+    /**
+     * Clears out the collProductotallajes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Producto The current object (for fluent API support)
+     * @see        addProductotallajes()
+     */
+    public function clearProductotallajes()
+    {
+        $this->collProductotallajes = null; // important to set this to null since that means it is uninitialized
+        $this->collProductotallajesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collProductotallajes collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialProductotallajes($v = true)
+    {
+        $this->collProductotallajesPartial = $v;
+    }
+
+    /**
+     * Initializes the collProductotallajes collection.
+     *
+     * By default this just sets the collProductotallajes collection to an empty array (like clearcollProductotallajes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initProductotallajes($overrideExisting = true)
+    {
+        if (null !== $this->collProductotallajes && !$overrideExisting) {
+            return;
+        }
+        $this->collProductotallajes = new PropelObjectCollection();
+        $this->collProductotallajes->setModel('Productotallaje');
+    }
+
+    /**
+     * Gets an array of Productotallaje objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Producto is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Productotallaje[] List of Productotallaje objects
+     * @throws PropelException
+     */
+    public function getProductotallajes($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collProductotallajesPartial && !$this->isNew();
+        if (null === $this->collProductotallajes || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collProductotallajes) {
+                // return empty collection
+                $this->initProductotallajes();
+            } else {
+                $collProductotallajes = ProductotallajeQuery::create(null, $criteria)
+                    ->filterByProducto($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collProductotallajesPartial && count($collProductotallajes)) {
+                      $this->initProductotallajes(false);
+
+                      foreach ($collProductotallajes as $obj) {
+                        if (false == $this->collProductotallajes->contains($obj)) {
+                          $this->collProductotallajes->append($obj);
+                        }
+                      }
+
+                      $this->collProductotallajesPartial = true;
+                    }
+
+                    $collProductotallajes->getInternalIterator()->rewind();
+
+                    return $collProductotallajes;
+                }
+
+                if ($partial && $this->collProductotallajes) {
+                    foreach ($this->collProductotallajes as $obj) {
+                        if ($obj->isNew()) {
+                            $collProductotallajes[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collProductotallajes = $collProductotallajes;
+                $this->collProductotallajesPartial = false;
+            }
+        }
+
+        return $this->collProductotallajes;
+    }
+
+    /**
+     * Sets a collection of Productotallaje objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $productotallajes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Producto The current object (for fluent API support)
+     */
+    public function setProductotallajes(PropelCollection $productotallajes, PropelPDO $con = null)
+    {
+        $productotallajesToDelete = $this->getProductotallajes(new Criteria(), $con)->diff($productotallajes);
+
+
+        $this->productotallajesScheduledForDeletion = $productotallajesToDelete;
+
+        foreach ($productotallajesToDelete as $productotallajeRemoved) {
+            $productotallajeRemoved->setProducto(null);
+        }
+
+        $this->collProductotallajes = null;
+        foreach ($productotallajes as $productotallaje) {
+            $this->addProductotallaje($productotallaje);
+        }
+
+        $this->collProductotallajes = $productotallajes;
+        $this->collProductotallajesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Productotallaje objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Productotallaje objects.
+     * @throws PropelException
+     */
+    public function countProductotallajes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collProductotallajesPartial && !$this->isNew();
+        if (null === $this->collProductotallajes || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collProductotallajes) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getProductotallajes());
+            }
+            $query = ProductotallajeQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProducto($this)
+                ->count($con);
+        }
+
+        return count($this->collProductotallajes);
+    }
+
+    /**
+     * Method called to associate a Productotallaje object to this object
+     * through the Productotallaje foreign key attribute.
+     *
+     * @param    Productotallaje $l Productotallaje
+     * @return Producto The current object (for fluent API support)
+     */
+    public function addProductotallaje(Productotallaje $l)
+    {
+        if ($this->collProductotallajes === null) {
+            $this->initProductotallajes();
+            $this->collProductotallajesPartial = true;
+        }
+
+        if (!in_array($l, $this->collProductotallajes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddProductotallaje($l);
+
+            if ($this->productotallajesScheduledForDeletion and $this->productotallajesScheduledForDeletion->contains($l)) {
+                $this->productotallajesScheduledForDeletion->remove($this->productotallajesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Productotallaje $productotallaje The productotallaje object to add.
+     */
+    protected function doAddProductotallaje($productotallaje)
+    {
+        $this->collProductotallajes[]= $productotallaje;
+        $productotallaje->setProducto($this);
+    }
+
+    /**
+     * @param	Productotallaje $productotallaje The productotallaje object to remove.
+     * @return Producto The current object (for fluent API support)
+     */
+    public function removeProductotallaje($productotallaje)
+    {
+        if ($this->getProductotallajes()->contains($productotallaje)) {
+            $this->collProductotallajes->remove($this->collProductotallajes->search($productotallaje));
+            if (null === $this->productotallajesScheduledForDeletion) {
+                $this->productotallajesScheduledForDeletion = clone $this->collProductotallajes;
+                $this->productotallajesScheduledForDeletion->clear();
+            }
+            $this->productotallajesScheduledForDeletion[]= clone $productotallaje;
+            $productotallaje->setProducto(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Producto is new, it will return
+     * an empty collection; or if this Producto has previously
+     * been saved, it will retrieve related Productotallajes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Producto.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Productotallaje[] List of Productotallaje objects
+     */
+    public function getProductotallajesJoinTallaje($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ProductotallajeQuery::create(null, $criteria);
+        $query->joinWith('Tallaje', $join_behavior);
+
+        return $this->getProductotallajes($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -2537,7 +3003,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $this->producto_modelo = null;
         $this->idmarca = null;
         $this->idtemporada = null;
-        $this->idtallaje = null;
         $this->producto_comisionable = null;
         $this->idproveedor = null;
         $this->producto_dirigidoa = null;
@@ -2580,14 +3045,21 @@ abstract class BaseProducto extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collProductomedidas) {
+                foreach ($this->collProductomedidas as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collProductotallajes) {
+                foreach ($this->collProductotallajes as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aMarca instanceof Persistent) {
               $this->aMarca->clearAllReferences($deep);
             }
             if ($this->aProveedor instanceof Persistent) {
               $this->aProveedor->clearAllReferences($deep);
-            }
-            if ($this->aTallaje instanceof Persistent) {
-              $this->aTallaje->clearAllReferences($deep);
             }
             if ($this->aTemporada instanceof Persistent) {
               $this->aTemporada->clearAllReferences($deep);
@@ -2607,9 +3079,16 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->collProductomaterials->clearIterator();
         }
         $this->collProductomaterials = null;
+        if ($this->collProductomedidas instanceof PropelCollection) {
+            $this->collProductomedidas->clearIterator();
+        }
+        $this->collProductomedidas = null;
+        if ($this->collProductotallajes instanceof PropelCollection) {
+            $this->collProductotallajes->clearIterator();
+        }
+        $this->collProductotallajes = null;
         $this->aMarca = null;
         $this->aProveedor = null;
-        $this->aTallaje = null;
         $this->aTemporada = null;
         $this->aTipocalzado = null;
     }

@@ -61,7 +61,7 @@
 				                <?php echo $this->formText($form->get('producto_preciomayoreo')) ?>
 			        		</div>
 
-			        		<div class="form-group">
+			        		<div class="form-group" >
 				           		<label  for="reorden">Reorden</label>
 				                <?php echo $this->formText($form->get('producto_reorden')) ?>
 			        		</div>
@@ -74,50 +74,92 @@
  					<div class="row">
 		        		
     					<div class="col-md-5 alineamiento" >
-
+    						
+							<div class="form-group" >
+								<label for="tallaje">Tallaje</label>
+								
+								<input type="radio" id="numerico" name="validar" checked><label class="alinearTexto">Numérico</label>
+								<input type="radio" id="medidas" name="validar"><label class="alinearTexto">Medidas</label>
+								<input type="radio" id="ninguno" name="validar"><label class="alinearTexto">Ninguno</label>
+							</div>
+    						<div id="tallajesInformation">
 		        				<div class="col-md-9">
 				                    <div class="form-group">
-						           		<label for="tallaje">Tallaje</label>
+						           		
 						                <?php echo $this->formSelect($form->get('idtallaje[]')) ?>
 					        		</div>
 		        				</div>
 		        				<div class="col-md-1"></div>
+
 				        		<div class="col-md-2">		
-				        			<div class="form-group">
+				        			<div class="form-group" style="margin-top: -23px">
 						           		<label  for="guardar"></label>
-                                                                        <a class="btn btn-primary btn-block btn-next" id="btn_add_tallaje">Agregar</a>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_tallaje">			Agregar
+	                                    </a>
 					        		</div>
 					        	</div>
 
-                                                        <table class="table table-bordered" id="tabla_tallaje">
-	        				    <thead>
-	        				      <tr>
-	        				        <th>Nombre</th>
-	        				        <th>Opciones</th>
-	        				      </tr>
-	        				    </thead>
-	        				    <tbody>
- 
-	        				    </tbody>
-	        				  </table>
-	        				
+	                            <table class="table table-bordered" id="tabla_tallaje">
+		        				    <thead>
+		        				      <tr>
+		        				        <th>Nombre</th>
+		        				        <th>Opciones</th>
+		        				      </tr>
+		        				    </thead>
+		        				    <tbody>
 
-	        				
-		        				<div class="col-md-9">
+		        				    </tbody>
+		        				</table>
+	        				</div>
+
+
+	        				<div class="ocultar" id="medidasInformation">
+		        				<div class="col-md-9 ">
 				                    <div class="form-group">
-						           		<label for="tallaje">Materiales</label>
-						                <?php echo $this->formSelect($form->get('idmaterial[]')) ?>
+						                <?php echo $this->formSelect($form->get('idmedida[]')) ?>
 					        		</div>
 		        				</div>
-		        				<div class="col-md-1"></div>
-				        		<div class="col-md-2">		
-				        			<div class="form-group">
+		        				<div class="col-md-1 "></div>
+
+				        		<div class="col-md-2 ">		
+				        			<div class="form-group" style="margin-top: -23px">
 						           		<label  for="guardar"></label>
-						                <button class="btn btn-primary btn-block btn-next" type="submit">Agregar</button>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_medida">			Agregar
+	                                    </a>
 					        		</div>
 					        	</div>
 
-					        	<table class="table table-bordered">
+	                            <table class="table table-bordered " id="tabla_medida">
+		        				    <thead>
+		        				      <tr>
+		        				        <th>Nombre</th>
+		        				        <th>Opciones</th>
+		        				      </tr>
+		        				    </thead>
+		        				    <tbody>
+		        
+		        				    </tbody>
+		        				</table>
+	        				</div>
+
+	        				
+		        			<div class="col-md-9">
+			                    <div class="form-group">
+					           		<label for="tallaje">Materiales</label>
+					                <?php echo $this->formSelect($form->get('idmaterial[]')) ?>
+				        		</div>
+	        				</div>
+	        				<div class="col-md-1"></div>
+
+			        		<div class="col-md-2">		
+			        			<div class="form-group">
+					           		<label  for="guardar"></label>
+                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_material">			Agregar
+                                    </a>
+				        		</div>
+				        	</div>
+
+                            <table class="table table-bordered" id="tabla_material">
 	        				    <thead>
 	        				      <tr>
 	        				        <th>Nombre</th>
@@ -125,35 +167,32 @@
 	        				      </tr>
 	        				    </thead>
 	        				    <tbody>
-	        				      <tr>
-	        				        <td>Cuero</td>
-	        				        <td>Eliminar</td>
-	        				      </tr>
-	        				      
+
 	        				    </tbody>
-	        				  </table>
+	        				</table>
 	        				
 
 
 	        			</div>	
 	        			<div class="col-md-1"></div>
 	        			<div class="col-md-5 alineamiento" >
-	        				
-		        				<div class="col-md-9">
-				                    <div class="form-group">
-						           		<label for="tallaje">Colores</label>
-						                <?php echo $this->formSelect($form->get('idcolor[]')) ?>
-					        		</div>
-		        				</div>
-		        				<div class="col-md-1"></div>
-				        		<div class="col-md-2">		
-				        			<div class="form-group">
-						           		<label  for="guardar"></label>
-						                <button class="btn btn-primary btn-block btn-next" type="submit">Agregar</button>
-					        		</div>
-					        	</div>
+	        				<div class="col-md-9">
+			                    <div class="form-group">
+					           		<label for="tallaje">Colores</label>
+					                <?php echo $this->formSelect($form->get('idcolor[]')) ?>
+				        		</div>
+	        				</div>
+	        				<div class="col-md-1"></div>
 
-					        	<table class="table table-bordered">
+			        		<div class="col-md-2">		
+			        			<div class="form-group">
+					           		<label  for="guardar"></label>
+                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_color">			Agregar
+                                    </a>
+				        		</div>
+				        	</div>
+
+                            <table class="table table-bordered" id="tabla_color">
 	        				    <thead>
 	        				      <tr>
 	        				        <th>Nombre</th>
@@ -161,14 +200,10 @@
 	        				      </tr>
 	        				    </thead>
 	        				    <tbody>
-	        				      <tr>
-	        				        <td>Negro</td>
-	        				        <td>Eliminar</td>
-	        				      </tr>
-	        				      
+
 	        				    </tbody>
-	        				  </table>
-	        				
+	        				</table>
+		        				
 
 	        			</div>
 
@@ -177,7 +212,9 @@
 
 		        	<div class="form-group">
 		           		<label  for="guardar"></label>
-                                        <button class="btn btn-primary btn-block btn-next" type="submit">Guardar</button>
+	                    <button class="btn btn-primary btn-block btn-next" type="submit">
+                         	Guardar
+                        </button>
 	        		</div>
  
     			</form>
@@ -198,3 +235,4 @@
 	var productos = $('.body_container').productos();
 	productos.initForm();
 </script>
+
