@@ -30,19 +30,21 @@ class LoginController extends AbstractActionController
     	{
     		$post_data = $request->getPost();
 
-
-    	
     		$is_valid = \EmpleadoQuery::create()->filterByEmpleadoUsername($post_data['username'])->filterByEmpleadoPassword(md5($post_data['password']))->exists();
-
-    		
 
     		if($is_valid)
     		{
     			$empleado = \EmpleadoQuery::create()->filterByEmpleadoUsername($post_data['username'])->filterByEmpleadoPassword(md5($post_data['password']))->findOne();
-
-    			$session = new AouthSession();
-
-    			$session->Create($empleado->toArray(\BasePeer::TYPE_FIELDNAME));
+                        
+                        
+                        $session = new AouthSession();
+                        $session->Create($empleado->toArray(\BasePeer::TYPE_FIELDNAME));
+                            
+                            
+                        if($empleado->getRol()->getRolNombre() == 'Caja'){
+                            return $this->redirect()->toUrl('/login/select');
+                        }
+    			
 
     			return $this->redirect()->toUrl('/');
     		}else
@@ -62,5 +64,27 @@ class LoginController extends AbstractActionController
     	$session->Close();
 
     	return $this->redirect()->toUrl('/login');
+    }
+    
+    public function selectAction(){
+        
+        $session = new AouthSession();
+
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+            $post_data = $request->getPost();
+            $session->setSucursal($post_data['idsucursal']);
+            return $this->redirect()->toUrl('/');
+        }
+        
+        $session = $session->getData();
+        $sucursales = \SucursalempleadoQuery::create()->select('idsucursal','sucursal_nombrecomercial')->filterByIdempleado($session['idempleado'])->useSucursalQuery('a')->endUse()->withColumn('a.SucursalNombrecomercial','sucursal_nombrecomercial')->find()->toKeyValue('idsucursal','sucursal_nombrecomercial');
+      
+
+        $this->layout('/layout/layout_login');
+        return new ViewModel(array(
+            'sucursales' => $sucursales,
+        ));
     }
 }
