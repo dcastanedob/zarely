@@ -23,9 +23,12 @@
     <script src="/plugins/DatePicker/bootstrap-datepicker.es.js"></script>
   </head>
   <body class="layout">
+    <?php $session = new \Application\Session\AouthSession();
+      $session = $session->getData();
+    ?>
     <div class="layout-header">
-      <div class="navbar navbar-default">
-        <div class="navbar-header">
+      <div class="navbar navbar-default" >
+        <div class="navbar-header" style="background-color: #0288d1;">
           <a class="navbar-brand navbar-brand-center" href="/">ZARELY</a>
           <button class="navbar-toggler collapsed visible-xs-block" type="button" data-toggle="collapse" data-target="#sidenav">
             <span class="sr-only">Toggle navigation</span>
@@ -39,18 +42,18 @@
               <span class="bar-line bar-line-5"></span>
             </span>
           </button>
-          <button class="navbar-toggler collapsed visible-xs-block" type="button" data-toggle="collapse" data-target="#navbar">
+          <button class="navbar-toggler collapsed visible-xs-block " type="button" data-toggle="collapse" data-target="#navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="arrow-up"></span>
             <span class="ellipsis ellipsis-vertical"></span>
           </button>
         </div>
         <div class="navbar-toggleable">
-          <nav id="navbar" class="navbar-collapse collapse">
-            <button class="sidenav-toggler hidden-xs" title="Collapse sidenav ( [ )" type="button">
+          <nav id="navbar" class="navbar-collapse collapse" style="background-color: #0288d1;">
+            <button class="sidenav-toggler hidden-xs" style="background-color: #0288d1;"   title="Collapse sidenav ( [ )" type="button">
               <span class="sr-only">Toggle navigation</span>
               <span class="bars">
-                <span class="bar-line bar-line-1 out"></span>
+                <span class="bar-line bar-line-1 out" ></span>
                 <span class="bar-line bar-line-2 out"></span>
                 <span class="bar-line bar-line-3 out"></span>
                 <span class="bar-line bar-line-4 in"></span>
@@ -59,31 +62,32 @@
               </span>
             </button>
             <ul class="nav navbar-nav navbar-right">
-              <li class="visible-xs-block">
+              <li class="visible-xs-block " >
                 <h4 class="navbar-text text-center">Hi, Username</h4>
               </li>
-              <li class="hidden-xs hidden-sm">
+              <li class="hidden-xs hidden-sm " style="border-left-width: 0px">
                 <form class="navbar-search navbar-search-collapsed">
                   <div class="navbar-search-group">
                     <input class="navbar-search-input" type="text" placeholder="Search for people, companies, and more…">
-                    <button class="navbar-search-toggler" title="Expand search form ( S )" type="button">
+                    <button class="navbar-search-toggler" title="Expand search form ( S )" type="button" style="background-color: #0288d1;" style="color:#fff">
                       <span class="icon icon-search icon-lg"></span>
                     </button>
                     <button class="navbar-search-adv-btn" type="button">Advanced</button>
                   </div>
                 </form>
               </li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
+              <li style="border-left-width: 0px;"><a href="#" style="color:#fff" >Link</a></li>
+              <li style="border-left-width: 0px;"><a href="/" style="color:#fff"><?php echo $session["empleado_nombre"]?></a>
+              </li>
+              <li style="border-left-width: 0px;"> <a href="/login/out" style="color:#fff">Cerrar sesión</a></li>
             </ul>
           </nav>
         </div>
       </div>
     </div>
-    <div class="layout-main">
-      <div class="layout-sidebar">
-        <div class="layout-sidebar-backdrop"></div>
+    <div class="layout-main" >
+      <div class="layout-sidebar" >
+        <div class="layout-sidebar-backdrop" style="background-color: #fff; border-right-width: 2px;border-right-style: solid; border-right-color:  #eee;"></div>
         <div class="layout-sidebar-body">
           <nav id="sidenav" class="sidenav-collapse collapse">
             <ul class="sidenav">
@@ -95,20 +99,20 @@
                   </a>
                   <ul class="sidenav-subnav collapse" aria-expanded="false">
                     <li class="sidenav-subheading">Catalogos</li>
-                    <li><a href="/catalogo/empleados"><span class="icon icon-user"></span>Empleados</a></li>
-                    <li><a href="/catalogo/proveedores">Proveedores</a></li>
-                    <li><a href="/catalogo/sucursales">Sucursales</a></li>  
-                    <li><a href="/catalogo/productos">Productos</a></li>
-                    <li><a href="/catalogo/temporadas">Temporadas</a></li>
-                    <li><a href="/catalogo/colores">Colores</a></li>
-                    <li><a href="/catalogo/materiales">Materiales</a></li>
-                    <li><a href="/catalogo/marcas">Marcas</a></li>
-                    <li><a href="/catalogo/tipocalzados">Tipo de calzado o línea</a></li>
-                    <li><a href="/catalogo/tallajes">Tallajes</a></li>
-                    <li><a href="/catalogo/medidas">Medidas</a></li>
+                    <li><a href="/catalogo/empleados" style="border-left-width: 0px;"><span class="icon icon-user" style="border-left-width: 0px;"></span>Empleados</a></li>
+                    <li><a href="/catalogo/proveedores" style="border-left-width: 0px;">Proveedores</a></li>
+                    <li><a href="/catalogo/sucursales" style="border-left-width: 0px;">Sucursales</a></li>  
+                    <li><a href="/catalogo/productos" style="border-left-width: 0px;">Productos</a></li>
+                    <li><a href="/catalogo/temporadas" style="border-left-width: 0px;">Temporadas</a></li>
+                    <li><a href="/catalogo/colores" style="border-left-width: 0px;">Colores</a></li>
+                    <li><a href="/catalogo/materiales" style="border-left-width: 0px;">Materiales</a></li>
+                    <li><a href="/catalogo/marcas" style="border-left-width: 0px;">Marcas</a></li>
+                    <li><a href="/catalogo/tipocalzados" style="border-left-width: 0px;">Tipo de calzado o línea</a></li>
+                    <li><a href="/catalogo/tallajes" style="border-left-width: 0px;">Tallajes</a></li>
+                    <li><a href="/catalogo/medidas" style="border-left-width: 0px;">Medidas</a></li>
 
 
-                    <li><a href="/catalogo/gastos"><span class="icon icon-money"></span>Gastos</a></li>
+                    <li><a href="/catalogo/gastos" style="border-left-width: 0px;"><span class="icon icon-money"></span>Gastos</a></li>
                   </ul>
                 </li>
             </ul>
@@ -116,7 +120,7 @@
         </div>
       </div>
       <div class="layout-content">
-        <div class="layout-content-body">
+        <div class="layout-content-body" >
           <?php echo $this->content?>
         </div>
       </div>
