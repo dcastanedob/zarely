@@ -11,6 +11,7 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Application\Listener\AuthListener;
 
 class Module
 {
@@ -21,6 +22,9 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+
+        $authListener = new AuthListener();
+        $authListener->attach($eventManager);
     }
 
     public function getConfig()
