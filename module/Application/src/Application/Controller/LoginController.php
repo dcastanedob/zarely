@@ -29,12 +29,16 @@ class LoginController extends AbstractActionController
     	if($request->isPost())
     	{
     		$post_data = $request->getPost();
+
+
     	
-    		$is_valid = \EmpleadoQuery::create()->filterByEmpleadoUsername($post_data['username'])->filterByEmpleadoPassword($post_data['password'])->exists();
+    		$is_valid = \EmpleadoQuery::create()->filterByEmpleadoUsername($post_data['username'])->filterByEmpleadoPassword(md5($post_data['password']))->exists();
+
     		
+
     		if($is_valid)
     		{
-    			$empleado = \EmpleadoQuery::create()->filterByEmpleadoUsername($post_data['username'])->filterByEmpleadoPassword($post_data['password'])->findOne();
+    			$empleado = \EmpleadoQuery::create()->filterByEmpleadoUsername($post_data['username'])->filterByEmpleadoPassword(md5($post_data['password']))->findOne();
 
     			$session = new AouthSession();
 

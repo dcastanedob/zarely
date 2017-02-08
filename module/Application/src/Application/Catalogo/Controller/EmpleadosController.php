@@ -209,6 +209,8 @@ class EmpleadosController extends AbstractActionController
             
             $post_data['empleado_fechaentrada'] = date_create_from_format('d/m/Y', $post_data['empleado_fechaentrada']);
             $post_data['empleado_fechanacimiento'] = date_create_from_format('d/m/Y', $post_data['empleado_fechanacimiento']);
+
+            $post_data['empleado_password'] = md5($post_data['empleado_password']);
              
             foreach ($post_data as $key => $value) {
                 if(\EmpleadoPeer::getTableMap()->hasColumn($key))
@@ -257,6 +259,9 @@ class EmpleadosController extends AbstractActionController
                 $post_data = $request->getPost();
                 $post_data['empleado_fechaentrada'] = date_create_from_format('d/m/Y', $post_data['empleado_fechaentrada']);
                 $post_data['empleado_fechanacimiento'] = date_create_from_format('d/m/Y', $post_data['empleado_fechanacimiento']);
+
+                $post_data['empleado_password'] = md5($post_data['empleado_password']);
+                
                 foreach ($post_data as $key => $value) {
                     if(\EmpleadoPeer::getTableMap()->hasColumn($key))
                     {
