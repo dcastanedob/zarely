@@ -22,3 +22,54 @@
 {
 	margin-left: 5px;
 }
+
+.navbar-default .navbar-nav > li > a:hover {
+    color: #fff;
+    background-color: #0294e3;
+}
+
+.navbar-default .navbar-search-toggler {
+    color: #fff;
+}
+
+
+.navbar-default .sidenav-toggler .bar-line.in {
+    background-color: #fff;
+}
+
+.sidenav > li.hover > a, .sidenav > li:hover > a {
+    background-color: #eee;
+    color: #a6a6a6;
+}
+
+
+.sidenav > li.open > a {
+    background-color: #eee;
+    color: #a6a6a6;
+}
+
+
+.sidenav-subnav > li > a {
+    background-color: #eee;
+    color: #a6a6a6;
+    display: block;
+    font-size: 13px;
+    line-height: 18px;
+    padding: 8px 15px 8px 42px;
+    position: relative;
+    text-decoration: none;
+}
+
+
+.sidenav-collapsed .sidenav-subheading {
+    background-color: #eee;
+    color: #a6a6a6;
+    cursor: default;
+    display: block;
+    font-size: 13px;
+    line-height: 45px;
+    overflow: hidden;
+    padding: 0 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

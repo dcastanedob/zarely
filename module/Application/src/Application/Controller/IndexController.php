@@ -18,8 +18,9 @@ class IndexController extends AbstractActionController
     {
         $session = new \Application\Session\AouthSession();
         $session = $session->getData();
-        echo '<pre>';var_dump($session);echo '</pre>';exit();
 
-        return new ViewModel();
+        return new ViewModel(array(
+            'session' => $session,
+        ));
     }
 }
