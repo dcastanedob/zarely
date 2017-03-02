@@ -20,7 +20,16 @@ return array(
                     ),
                 ),
             ),
-
+            'json' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/json[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'login' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -163,6 +172,30 @@ return array(
                     ),
                 ),
             ),
+
+            'precios' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/precios[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\PrecioProducto',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'reordenes' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/reordenes[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\ReordenProducto',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -231,7 +264,13 @@ return array(
             'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController',
             'Application\Catalogo\Controller\Medidas' => 'Application\Catalogo\Controller\MedidasController'
             ,
-            'Application\Controller\Login' => 'Application\Controller\LoginController'
+            'Application\Controller\Login' => 'Application\Controller\LoginController',
+
+            'Application\Producto\Controller\PrecioProducto' => 'Application\Producto\Controller\PrecioProductoController'
+            ,
+
+            'Application\Producto\Controller\ReordenProducto' => 'Application\Producto\Controller\ReordenProductoController'
+            ,
         ),
     ),
 

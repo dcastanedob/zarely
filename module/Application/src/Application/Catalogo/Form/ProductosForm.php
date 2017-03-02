@@ -165,7 +165,7 @@ class ProductosForm extends Form
             'value_options' => $tallajes_array,   
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => '',
                
             ),
@@ -180,7 +180,7 @@ class ProductosForm extends Form
             'value_options' => $medidas_array,   
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => '',
                
             ),

@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'sucursal' table.
+ * Base class that represents a row from the 'productovariante' table.
  *
  *
  *
  * @package    propel.generator.zarely.om
  */
-abstract class BaseSucursal extends BaseObject implements Persistent
+abstract class BaseProductovariante extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'SucursalPeer';
+    const PEER = 'ProductovariantePeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        SucursalPeer
+     * @var        ProductovariantePeer
      */
     protected static $peer;
 
@@ -30,76 +30,74 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
-     * The value for the idsucursal field.
+     * The value for the idproductovariante field.
      * @var        int
      */
-    protected $idsucursal;
+    protected $idproductovariante;
 
     /**
-     * The value for the sucursal_nombrecomercial field.
-     * @var        string
+     * The value for the idproducto field.
+     * @var        int
      */
-    protected $sucursal_nombrecomercial;
+    protected $idproducto;
 
     /**
-     * The value for the sucursal_razonsocial field.
-     * @var        string
+     * The value for the idproductocolor field.
+     * @var        int
      */
-    protected $sucursal_razonsocial;
+    protected $idproductocolor;
 
     /**
-     * The value for the sucursal_calle field.
-     * @var        string
+     * The value for the idproductomaterial field.
+     * @var        int
      */
-    protected $sucursal_calle;
+    protected $idproductomaterial;
 
     /**
-     * The value for the sucursal_numexterno field.
+     * The value for the productovariante_codigobarras field.
      * @var        string
      */
-    protected $sucursal_numexterno;
+    protected $productovariante_codigobarras;
 
     /**
-     * The value for the sucursal_numinterior field.
+     * The value for the productovariante_talla field.
      * @var        string
      */
-    protected $sucursal_numinterior;
+    protected $productovariante_talla;
 
     /**
-     * The value for the sucursal_colonia field.
+     * The value for the productovariante_tallatipo field.
      * @var        string
      */
-    protected $sucursal_colonia;
+    protected $productovariante_tallatipo;
 
     /**
-     * The value for the sucursal_codigopostal field.
-     * @var        string
+     * The value for the productovariante_estatus field.
+     * Note: this column has a database default value of: true
+     * @var        boolean
      */
-    protected $sucursal_codigopostal;
+    protected $productovariante_estatus;
 
     /**
-     * The value for the sucursal_ciudad field.
-     * @var        string
+     * @var        Producto
      */
-    protected $sucursal_ciudad;
+    protected $aProducto;
 
     /**
-     * The value for the sucursal_estado field.
-     * @var        string
+     * @var        Productocolor
      */
-    protected $sucursal_estado;
+    protected $aProductocolor;
+
+    /**
+     * @var        Productomaterial
+     */
+    protected $aProductomaterial;
 
     /**
      * @var        PropelObjectCollection|Productosucursal[] Collection to store aggregation of Productosucursal objects.
      */
     protected $collProductosucursals;
     protected $collProductosucursalsPartial;
-
-    /**
-     * @var        PropelObjectCollection|Sucursalempleado[] Collection to store aggregation of Sucursalempleado objects.
-     */
-    protected $collSucursalempleados;
-    protected $collSucursalempleadosPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -128,330 +126,301 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     protected $productosucursalsScheduledForDeletion = null;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
      */
-    protected $sucursalempleadosScheduledForDeletion = null;
+    public function applyDefaultValues()
+    {
+        $this->productovariante_estatus = true;
+    }
 
     /**
-     * Get the [idsucursal] column value.
+     * Initializes internal state of BaseProductovariante object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
+
+    /**
+     * Get the [idproductovariante] column value.
      *
      * @return int
      */
-    public function getIdsucursal()
+    public function getIdproductovariante()
     {
 
-        return $this->idsucursal;
+        return $this->idproductovariante;
     }
 
     /**
-     * Get the [sucursal_nombrecomercial] column value.
+     * Get the [idproducto] column value.
+     *
+     * @return int
+     */
+    public function getIdproducto()
+    {
+
+        return $this->idproducto;
+    }
+
+    /**
+     * Get the [idproductocolor] column value.
+     *
+     * @return int
+     */
+    public function getIdproductocolor()
+    {
+
+        return $this->idproductocolor;
+    }
+
+    /**
+     * Get the [idproductomaterial] column value.
+     *
+     * @return int
+     */
+    public function getIdproductomaterial()
+    {
+
+        return $this->idproductomaterial;
+    }
+
+    /**
+     * Get the [productovariante_codigobarras] column value.
      *
      * @return string
      */
-    public function getSucursalNombrecomercial()
+    public function getProductovarianteCodigobarras()
     {
 
-        return $this->sucursal_nombrecomercial;
+        return $this->productovariante_codigobarras;
     }
 
     /**
-     * Get the [sucursal_razonsocial] column value.
+     * Get the [productovariante_talla] column value.
      *
      * @return string
      */
-    public function getSucursalRazonsocial()
+    public function getProductovarianteTalla()
     {
 
-        return $this->sucursal_razonsocial;
+        return $this->productovariante_talla;
     }
 
     /**
-     * Get the [sucursal_calle] column value.
+     * Get the [productovariante_tallatipo] column value.
      *
      * @return string
      */
-    public function getSucursalCalle()
+    public function getProductovarianteTallatipo()
     {
 
-        return $this->sucursal_calle;
+        return $this->productovariante_tallatipo;
     }
 
     /**
-     * Get the [sucursal_numexterno] column value.
+     * Get the [productovariante_estatus] column value.
      *
-     * @return string
+     * @return boolean
      */
-    public function getSucursalNumexterno()
+    public function getProductovarianteEstatus()
     {
 
-        return $this->sucursal_numexterno;
+        return $this->productovariante_estatus;
     }
 
     /**
-     * Get the [sucursal_numinterior] column value.
-     *
-     * @return string
-     */
-    public function getSucursalNuminterior()
-    {
-
-        return $this->sucursal_numinterior;
-    }
-
-    /**
-     * Get the [sucursal_colonia] column value.
-     *
-     * @return string
-     */
-    public function getSucursalColonia()
-    {
-
-        return $this->sucursal_colonia;
-    }
-
-    /**
-     * Get the [sucursal_codigopostal] column value.
-     *
-     * @return string
-     */
-    public function getSucursalCodigopostal()
-    {
-
-        return $this->sucursal_codigopostal;
-    }
-
-    /**
-     * Get the [sucursal_ciudad] column value.
-     *
-     * @return string
-     */
-    public function getSucursalCiudad()
-    {
-
-        return $this->sucursal_ciudad;
-    }
-
-    /**
-     * Get the [sucursal_estado] column value.
-     *
-     * @return string
-     */
-    public function getSucursalEstado()
-    {
-
-        return $this->sucursal_estado;
-    }
-
-    /**
-     * Set the value of [idsucursal] column.
+     * Set the value of [idproductovariante] column.
      *
      * @param  int $v new value
-     * @return Sucursal The current object (for fluent API support)
+     * @return Productovariante The current object (for fluent API support)
      */
-    public function setIdsucursal($v)
+    public function setIdproductovariante($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idsucursal !== $v) {
-            $this->idsucursal = $v;
-            $this->modifiedColumns[] = SucursalPeer::IDSUCURSAL;
+        if ($this->idproductovariante !== $v) {
+            $this->idproductovariante = $v;
+            $this->modifiedColumns[] = ProductovariantePeer::IDPRODUCTOVARIANTE;
         }
 
 
         return $this;
-    } // setIdsucursal()
+    } // setIdproductovariante()
 
     /**
-     * Set the value of [sucursal_nombrecomercial] column.
+     * Set the value of [idproducto] column.
+     *
+     * @param  int $v new value
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function setIdproducto($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idproducto !== $v) {
+            $this->idproducto = $v;
+            $this->modifiedColumns[] = ProductovariantePeer::IDPRODUCTO;
+        }
+
+        if ($this->aProducto !== null && $this->aProducto->getIdproducto() !== $v) {
+            $this->aProducto = null;
+        }
+
+
+        return $this;
+    } // setIdproducto()
+
+    /**
+     * Set the value of [idproductocolor] column.
+     *
+     * @param  int $v new value
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function setIdproductocolor($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idproductocolor !== $v) {
+            $this->idproductocolor = $v;
+            $this->modifiedColumns[] = ProductovariantePeer::IDPRODUCTOCOLOR;
+        }
+
+        if ($this->aProductocolor !== null && $this->aProductocolor->getIdproductocolor() !== $v) {
+            $this->aProductocolor = null;
+        }
+
+
+        return $this;
+    } // setIdproductocolor()
+
+    /**
+     * Set the value of [idproductomaterial] column.
+     *
+     * @param  int $v new value
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function setIdproductomaterial($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idproductomaterial !== $v) {
+            $this->idproductomaterial = $v;
+            $this->modifiedColumns[] = ProductovariantePeer::IDPRODUCTOMATERIAL;
+        }
+
+        if ($this->aProductomaterial !== null && $this->aProductomaterial->getIdproductomaterial() !== $v) {
+            $this->aProductomaterial = null;
+        }
+
+
+        return $this;
+    } // setIdproductomaterial()
+
+    /**
+     * Set the value of [productovariante_codigobarras] column.
      *
      * @param  string $v new value
-     * @return Sucursal The current object (for fluent API support)
+     * @return Productovariante The current object (for fluent API support)
      */
-    public function setSucursalNombrecomercial($v)
+    public function setProductovarianteCodigobarras($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->sucursal_nombrecomercial !== $v) {
-            $this->sucursal_nombrecomercial = $v;
-            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_NOMBRECOMERCIAL;
+        if ($this->productovariante_codigobarras !== $v) {
+            $this->productovariante_codigobarras = $v;
+            $this->modifiedColumns[] = ProductovariantePeer::PRODUCTOVARIANTE_CODIGOBARRAS;
         }
 
 
         return $this;
-    } // setSucursalNombrecomercial()
+    } // setProductovarianteCodigobarras()
 
     /**
-     * Set the value of [sucursal_razonsocial] column.
+     * Set the value of [productovariante_talla] column.
      *
      * @param  string $v new value
-     * @return Sucursal The current object (for fluent API support)
+     * @return Productovariante The current object (for fluent API support)
      */
-    public function setSucursalRazonsocial($v)
+    public function setProductovarianteTalla($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->sucursal_razonsocial !== $v) {
-            $this->sucursal_razonsocial = $v;
-            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_RAZONSOCIAL;
+        if ($this->productovariante_talla !== $v) {
+            $this->productovariante_talla = $v;
+            $this->modifiedColumns[] = ProductovariantePeer::PRODUCTOVARIANTE_TALLA;
         }
 
 
         return $this;
-    } // setSucursalRazonsocial()
+    } // setProductovarianteTalla()
 
     /**
-     * Set the value of [sucursal_calle] column.
+     * Set the value of [productovariante_tallatipo] column.
      *
      * @param  string $v new value
-     * @return Sucursal The current object (for fluent API support)
+     * @return Productovariante The current object (for fluent API support)
      */
-    public function setSucursalCalle($v)
+    public function setProductovarianteTallatipo($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->sucursal_calle !== $v) {
-            $this->sucursal_calle = $v;
-            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_CALLE;
+        if ($this->productovariante_tallatipo !== $v) {
+            $this->productovariante_tallatipo = $v;
+            $this->modifiedColumns[] = ProductovariantePeer::PRODUCTOVARIANTE_TALLATIPO;
         }
 
 
         return $this;
-    } // setSucursalCalle()
+    } // setProductovarianteTallatipo()
 
     /**
-     * Set the value of [sucursal_numexterno] column.
+     * Sets the value of the [productovariante_estatus] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      *
-     * @param  string $v new value
-     * @return Sucursal The current object (for fluent API support)
+     * @param boolean|integer|string $v The new value
+     * @return Productovariante The current object (for fluent API support)
      */
-    public function setSucursalNumexterno($v)
+    public function setProductovarianteEstatus($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
         }
 
-        if ($this->sucursal_numexterno !== $v) {
-            $this->sucursal_numexterno = $v;
-            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_NUMEXTERNO;
+        if ($this->productovariante_estatus !== $v) {
+            $this->productovariante_estatus = $v;
+            $this->modifiedColumns[] = ProductovariantePeer::PRODUCTOVARIANTE_ESTATUS;
         }
 
 
         return $this;
-    } // setSucursalNumexterno()
-
-    /**
-     * Set the value of [sucursal_numinterior] column.
-     *
-     * @param  string $v new value
-     * @return Sucursal The current object (for fluent API support)
-     */
-    public function setSucursalNuminterior($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->sucursal_numinterior !== $v) {
-            $this->sucursal_numinterior = $v;
-            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_NUMINTERIOR;
-        }
-
-
-        return $this;
-    } // setSucursalNuminterior()
-
-    /**
-     * Set the value of [sucursal_colonia] column.
-     *
-     * @param  string $v new value
-     * @return Sucursal The current object (for fluent API support)
-     */
-    public function setSucursalColonia($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->sucursal_colonia !== $v) {
-            $this->sucursal_colonia = $v;
-            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_COLONIA;
-        }
-
-
-        return $this;
-    } // setSucursalColonia()
-
-    /**
-     * Set the value of [sucursal_codigopostal] column.
-     *
-     * @param  string $v new value
-     * @return Sucursal The current object (for fluent API support)
-     */
-    public function setSucursalCodigopostal($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->sucursal_codigopostal !== $v) {
-            $this->sucursal_codigopostal = $v;
-            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_CODIGOPOSTAL;
-        }
-
-
-        return $this;
-    } // setSucursalCodigopostal()
-
-    /**
-     * Set the value of [sucursal_ciudad] column.
-     *
-     * @param  string $v new value
-     * @return Sucursal The current object (for fluent API support)
-     */
-    public function setSucursalCiudad($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->sucursal_ciudad !== $v) {
-            $this->sucursal_ciudad = $v;
-            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_CIUDAD;
-        }
-
-
-        return $this;
-    } // setSucursalCiudad()
-
-    /**
-     * Set the value of [sucursal_estado] column.
-     *
-     * @param  string $v new value
-     * @return Sucursal The current object (for fluent API support)
-     */
-    public function setSucursalEstado($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->sucursal_estado !== $v) {
-            $this->sucursal_estado = $v;
-            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_ESTADO;
-        }
-
-
-        return $this;
-    } // setSucursalEstado()
+    } // setProductovarianteEstatus()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -463,6 +432,10 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->productovariante_estatus !== true) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -485,16 +458,14 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     {
         try {
 
-            $this->idsucursal = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->sucursal_nombrecomercial = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->sucursal_razonsocial = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->sucursal_calle = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->sucursal_numexterno = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->sucursal_numinterior = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->sucursal_colonia = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->sucursal_codigopostal = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->sucursal_ciudad = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->sucursal_estado = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->idproductovariante = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->idproducto = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->idproductocolor = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->idproductomaterial = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->productovariante_codigobarras = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->productovariante_talla = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->productovariante_tallatipo = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->productovariante_estatus = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -504,10 +475,10 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 10; // 10 = SucursalPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = ProductovariantePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Sucursal object", $e);
+            throw new PropelException("Error populating Productovariante object", $e);
         }
     }
 
@@ -527,6 +498,15 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aProducto !== null && $this->idproducto !== $this->aProducto->getIdproducto()) {
+            $this->aProducto = null;
+        }
+        if ($this->aProductocolor !== null && $this->idproductocolor !== $this->aProductocolor->getIdproductocolor()) {
+            $this->aProductocolor = null;
+        }
+        if ($this->aProductomaterial !== null && $this->idproductomaterial !== $this->aProductomaterial->getIdproductomaterial()) {
+            $this->aProductomaterial = null;
+        }
     } // ensureConsistency
 
     /**
@@ -550,13 +530,13 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(SucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ProductovariantePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = SucursalPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = ProductovariantePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -566,9 +546,10 @@ abstract class BaseSucursal extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aProducto = null;
+            $this->aProductocolor = null;
+            $this->aProductomaterial = null;
             $this->collProductosucursals = null;
-
-            $this->collSucursalempleados = null;
 
         } // if (deep)
     }
@@ -590,12 +571,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(SucursalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ProductovariantePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = SucursalQuery::create()
+            $deleteQuery = ProductovarianteQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -633,7 +614,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(SucursalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ProductovariantePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -653,7 +634,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                SucursalPeer::addInstanceToPool($this);
+                ProductovariantePeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -683,6 +664,32 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aProducto !== null) {
+                if ($this->aProducto->isModified() || $this->aProducto->isNew()) {
+                    $affectedRows += $this->aProducto->save($con);
+                }
+                $this->setProducto($this->aProducto);
+            }
+
+            if ($this->aProductocolor !== null) {
+                if ($this->aProductocolor->isModified() || $this->aProductocolor->isNew()) {
+                    $affectedRows += $this->aProductocolor->save($con);
+                }
+                $this->setProductocolor($this->aProductocolor);
+            }
+
+            if ($this->aProductomaterial !== null) {
+                if ($this->aProductomaterial->isModified() || $this->aProductomaterial->isNew()) {
+                    $affectedRows += $this->aProductomaterial->save($con);
+                }
+                $this->setProductomaterial($this->aProductomaterial);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -711,23 +718,6 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->sucursalempleadosScheduledForDeletion !== null) {
-                if (!$this->sucursalempleadosScheduledForDeletion->isEmpty()) {
-                    SucursalempleadoQuery::create()
-                        ->filterByPrimaryKeys($this->sucursalempleadosScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->sucursalempleadosScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collSucursalempleados !== null) {
-                foreach ($this->collSucursalempleados as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -748,45 +738,39 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = SucursalPeer::IDSUCURSAL;
-        if (null !== $this->idsucursal) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . SucursalPeer::IDSUCURSAL . ')');
+        $this->modifiedColumns[] = ProductovariantePeer::IDPRODUCTOVARIANTE;
+        if (null !== $this->idproductovariante) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ProductovariantePeer::IDPRODUCTOVARIANTE . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(SucursalPeer::IDSUCURSAL)) {
-            $modifiedColumns[':p' . $index++]  = '`idsucursal`';
+        if ($this->isColumnModified(ProductovariantePeer::IDPRODUCTOVARIANTE)) {
+            $modifiedColumns[':p' . $index++]  = '`idproductovariante`';
         }
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_NOMBRECOMERCIAL)) {
-            $modifiedColumns[':p' . $index++]  = '`sucursal_nombrecomercial`';
+        if ($this->isColumnModified(ProductovariantePeer::IDPRODUCTO)) {
+            $modifiedColumns[':p' . $index++]  = '`idproducto`';
         }
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_RAZONSOCIAL)) {
-            $modifiedColumns[':p' . $index++]  = '`sucursal_razonsocial`';
+        if ($this->isColumnModified(ProductovariantePeer::IDPRODUCTOCOLOR)) {
+            $modifiedColumns[':p' . $index++]  = '`idproductocolor`';
         }
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_CALLE)) {
-            $modifiedColumns[':p' . $index++]  = '`sucursal_calle`';
+        if ($this->isColumnModified(ProductovariantePeer::IDPRODUCTOMATERIAL)) {
+            $modifiedColumns[':p' . $index++]  = '`idproductomaterial`';
         }
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_NUMEXTERNO)) {
-            $modifiedColumns[':p' . $index++]  = '`sucursal_numexterno`';
+        if ($this->isColumnModified(ProductovariantePeer::PRODUCTOVARIANTE_CODIGOBARRAS)) {
+            $modifiedColumns[':p' . $index++]  = '`productovariante_codigobarras`';
         }
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_NUMINTERIOR)) {
-            $modifiedColumns[':p' . $index++]  = '`sucursal_numinterior`';
+        if ($this->isColumnModified(ProductovariantePeer::PRODUCTOVARIANTE_TALLA)) {
+            $modifiedColumns[':p' . $index++]  = '`productovariante_talla`';
         }
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_COLONIA)) {
-            $modifiedColumns[':p' . $index++]  = '`sucursal_colonia`';
+        if ($this->isColumnModified(ProductovariantePeer::PRODUCTOVARIANTE_TALLATIPO)) {
+            $modifiedColumns[':p' . $index++]  = '`productovariante_tallatipo`';
         }
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_CODIGOPOSTAL)) {
-            $modifiedColumns[':p' . $index++]  = '`sucursal_codigopostal`';
-        }
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_CIUDAD)) {
-            $modifiedColumns[':p' . $index++]  = '`sucursal_ciudad`';
-        }
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_ESTADO)) {
-            $modifiedColumns[':p' . $index++]  = '`sucursal_estado`';
+        if ($this->isColumnModified(ProductovariantePeer::PRODUCTOVARIANTE_ESTATUS)) {
+            $modifiedColumns[':p' . $index++]  = '`productovariante_estatus`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `sucursal` (%s) VALUES (%s)',
+            'INSERT INTO `productovariante` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -795,35 +779,29 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`idsucursal`':
-                        $stmt->bindValue($identifier, $this->idsucursal, PDO::PARAM_INT);
+                    case '`idproductovariante`':
+                        $stmt->bindValue($identifier, $this->idproductovariante, PDO::PARAM_INT);
                         break;
-                    case '`sucursal_nombrecomercial`':
-                        $stmt->bindValue($identifier, $this->sucursal_nombrecomercial, PDO::PARAM_STR);
+                    case '`idproducto`':
+                        $stmt->bindValue($identifier, $this->idproducto, PDO::PARAM_INT);
                         break;
-                    case '`sucursal_razonsocial`':
-                        $stmt->bindValue($identifier, $this->sucursal_razonsocial, PDO::PARAM_STR);
+                    case '`idproductocolor`':
+                        $stmt->bindValue($identifier, $this->idproductocolor, PDO::PARAM_INT);
                         break;
-                    case '`sucursal_calle`':
-                        $stmt->bindValue($identifier, $this->sucursal_calle, PDO::PARAM_STR);
+                    case '`idproductomaterial`':
+                        $stmt->bindValue($identifier, $this->idproductomaterial, PDO::PARAM_INT);
                         break;
-                    case '`sucursal_numexterno`':
-                        $stmt->bindValue($identifier, $this->sucursal_numexterno, PDO::PARAM_STR);
+                    case '`productovariante_codigobarras`':
+                        $stmt->bindValue($identifier, $this->productovariante_codigobarras, PDO::PARAM_STR);
                         break;
-                    case '`sucursal_numinterior`':
-                        $stmt->bindValue($identifier, $this->sucursal_numinterior, PDO::PARAM_STR);
+                    case '`productovariante_talla`':
+                        $stmt->bindValue($identifier, $this->productovariante_talla, PDO::PARAM_STR);
                         break;
-                    case '`sucursal_colonia`':
-                        $stmt->bindValue($identifier, $this->sucursal_colonia, PDO::PARAM_STR);
+                    case '`productovariante_tallatipo`':
+                        $stmt->bindValue($identifier, $this->productovariante_tallatipo, PDO::PARAM_STR);
                         break;
-                    case '`sucursal_codigopostal`':
-                        $stmt->bindValue($identifier, $this->sucursal_codigopostal, PDO::PARAM_STR);
-                        break;
-                    case '`sucursal_ciudad`':
-                        $stmt->bindValue($identifier, $this->sucursal_ciudad, PDO::PARAM_STR);
-                        break;
-                    case '`sucursal_estado`':
-                        $stmt->bindValue($identifier, $this->sucursal_estado, PDO::PARAM_STR);
+                    case '`productovariante_estatus`':
+                        $stmt->bindValue($identifier, (int) $this->productovariante_estatus, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -838,7 +816,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
-        $this->setIdsucursal($pk);
+        $this->setIdproductovariante($pk);
 
         $this->setNew(false);
     }
@@ -919,21 +897,37 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = SucursalPeer::doValidate($this, $columns)) !== true) {
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aProducto !== null) {
+                if (!$this->aProducto->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProducto->getValidationFailures());
+                }
+            }
+
+            if ($this->aProductocolor !== null) {
+                if (!$this->aProductocolor->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProductocolor->getValidationFailures());
+                }
+            }
+
+            if ($this->aProductomaterial !== null) {
+                if (!$this->aProductomaterial->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProductomaterial->getValidationFailures());
+                }
+            }
+
+
+            if (($retval = ProductovariantePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
 
                 if ($this->collProductosucursals !== null) {
                     foreach ($this->collProductosucursals as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collSucursalempleados !== null) {
-                    foreach ($this->collSucursalempleados as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -959,7 +953,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = SucursalPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = ProductovariantePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -976,34 +970,28 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getIdsucursal();
+                return $this->getIdproductovariante();
                 break;
             case 1:
-                return $this->getSucursalNombrecomercial();
+                return $this->getIdproducto();
                 break;
             case 2:
-                return $this->getSucursalRazonsocial();
+                return $this->getIdproductocolor();
                 break;
             case 3:
-                return $this->getSucursalCalle();
+                return $this->getIdproductomaterial();
                 break;
             case 4:
-                return $this->getSucursalNumexterno();
+                return $this->getProductovarianteCodigobarras();
                 break;
             case 5:
-                return $this->getSucursalNuminterior();
+                return $this->getProductovarianteTalla();
                 break;
             case 6:
-                return $this->getSucursalColonia();
+                return $this->getProductovarianteTallatipo();
                 break;
             case 7:
-                return $this->getSucursalCodigopostal();
-                break;
-            case 8:
-                return $this->getSucursalCiudad();
-                break;
-            case 9:
-                return $this->getSucursalEstado();
+                return $this->getProductovarianteEstatus();
                 break;
             default:
                 return null;
@@ -1028,22 +1016,20 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Sucursal'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Productovariante'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Sucursal'][$this->getPrimaryKey()] = true;
-        $keys = SucursalPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Productovariante'][$this->getPrimaryKey()] = true;
+        $keys = ProductovariantePeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getIdsucursal(),
-            $keys[1] => $this->getSucursalNombrecomercial(),
-            $keys[2] => $this->getSucursalRazonsocial(),
-            $keys[3] => $this->getSucursalCalle(),
-            $keys[4] => $this->getSucursalNumexterno(),
-            $keys[5] => $this->getSucursalNuminterior(),
-            $keys[6] => $this->getSucursalColonia(),
-            $keys[7] => $this->getSucursalCodigopostal(),
-            $keys[8] => $this->getSucursalCiudad(),
-            $keys[9] => $this->getSucursalEstado(),
+            $keys[0] => $this->getIdproductovariante(),
+            $keys[1] => $this->getIdproducto(),
+            $keys[2] => $this->getIdproductocolor(),
+            $keys[3] => $this->getIdproductomaterial(),
+            $keys[4] => $this->getProductovarianteCodigobarras(),
+            $keys[5] => $this->getProductovarianteTalla(),
+            $keys[6] => $this->getProductovarianteTallatipo(),
+            $keys[7] => $this->getProductovarianteEstatus(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1051,11 +1037,17 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aProducto) {
+                $result['Producto'] = $this->aProducto->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aProductocolor) {
+                $result['Productocolor'] = $this->aProductocolor->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aProductomaterial) {
+                $result['Productomaterial'] = $this->aProductomaterial->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collProductosucursals) {
                 $result['Productosucursals'] = $this->collProductosucursals->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collSucursalempleados) {
-                $result['Sucursalempleados'] = $this->collSucursalempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1075,7 +1067,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = SucursalPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = ProductovariantePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -1092,34 +1084,28 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setIdsucursal($value);
+                $this->setIdproductovariante($value);
                 break;
             case 1:
-                $this->setSucursalNombrecomercial($value);
+                $this->setIdproducto($value);
                 break;
             case 2:
-                $this->setSucursalRazonsocial($value);
+                $this->setIdproductocolor($value);
                 break;
             case 3:
-                $this->setSucursalCalle($value);
+                $this->setIdproductomaterial($value);
                 break;
             case 4:
-                $this->setSucursalNumexterno($value);
+                $this->setProductovarianteCodigobarras($value);
                 break;
             case 5:
-                $this->setSucursalNuminterior($value);
+                $this->setProductovarianteTalla($value);
                 break;
             case 6:
-                $this->setSucursalColonia($value);
+                $this->setProductovarianteTallatipo($value);
                 break;
             case 7:
-                $this->setSucursalCodigopostal($value);
-                break;
-            case 8:
-                $this->setSucursalCiudad($value);
-                break;
-            case 9:
-                $this->setSucursalEstado($value);
+                $this->setProductovarianteEstatus($value);
                 break;
         } // switch()
     }
@@ -1143,18 +1129,16 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = SucursalPeer::getFieldNames($keyType);
+        $keys = ProductovariantePeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setIdsucursal($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setSucursalNombrecomercial($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setSucursalRazonsocial($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setSucursalCalle($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setSucursalNumexterno($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setSucursalNuminterior($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setSucursalColonia($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setSucursalCodigopostal($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setSucursalCiudad($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setSucursalEstado($arr[$keys[9]]);
+        if (array_key_exists($keys[0], $arr)) $this->setIdproductovariante($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setIdproducto($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setIdproductocolor($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setIdproductomaterial($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setProductovarianteCodigobarras($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setProductovarianteTalla($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setProductovarianteTallatipo($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setProductovarianteEstatus($arr[$keys[7]]);
     }
 
     /**
@@ -1164,18 +1148,16 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(SucursalPeer::DATABASE_NAME);
+        $criteria = new Criteria(ProductovariantePeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(SucursalPeer::IDSUCURSAL)) $criteria->add(SucursalPeer::IDSUCURSAL, $this->idsucursal);
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_NOMBRECOMERCIAL)) $criteria->add(SucursalPeer::SUCURSAL_NOMBRECOMERCIAL, $this->sucursal_nombrecomercial);
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_RAZONSOCIAL)) $criteria->add(SucursalPeer::SUCURSAL_RAZONSOCIAL, $this->sucursal_razonsocial);
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_CALLE)) $criteria->add(SucursalPeer::SUCURSAL_CALLE, $this->sucursal_calle);
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_NUMEXTERNO)) $criteria->add(SucursalPeer::SUCURSAL_NUMEXTERNO, $this->sucursal_numexterno);
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_NUMINTERIOR)) $criteria->add(SucursalPeer::SUCURSAL_NUMINTERIOR, $this->sucursal_numinterior);
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_COLONIA)) $criteria->add(SucursalPeer::SUCURSAL_COLONIA, $this->sucursal_colonia);
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_CODIGOPOSTAL)) $criteria->add(SucursalPeer::SUCURSAL_CODIGOPOSTAL, $this->sucursal_codigopostal);
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_CIUDAD)) $criteria->add(SucursalPeer::SUCURSAL_CIUDAD, $this->sucursal_ciudad);
-        if ($this->isColumnModified(SucursalPeer::SUCURSAL_ESTADO)) $criteria->add(SucursalPeer::SUCURSAL_ESTADO, $this->sucursal_estado);
+        if ($this->isColumnModified(ProductovariantePeer::IDPRODUCTOVARIANTE)) $criteria->add(ProductovariantePeer::IDPRODUCTOVARIANTE, $this->idproductovariante);
+        if ($this->isColumnModified(ProductovariantePeer::IDPRODUCTO)) $criteria->add(ProductovariantePeer::IDPRODUCTO, $this->idproducto);
+        if ($this->isColumnModified(ProductovariantePeer::IDPRODUCTOCOLOR)) $criteria->add(ProductovariantePeer::IDPRODUCTOCOLOR, $this->idproductocolor);
+        if ($this->isColumnModified(ProductovariantePeer::IDPRODUCTOMATERIAL)) $criteria->add(ProductovariantePeer::IDPRODUCTOMATERIAL, $this->idproductomaterial);
+        if ($this->isColumnModified(ProductovariantePeer::PRODUCTOVARIANTE_CODIGOBARRAS)) $criteria->add(ProductovariantePeer::PRODUCTOVARIANTE_CODIGOBARRAS, $this->productovariante_codigobarras);
+        if ($this->isColumnModified(ProductovariantePeer::PRODUCTOVARIANTE_TALLA)) $criteria->add(ProductovariantePeer::PRODUCTOVARIANTE_TALLA, $this->productovariante_talla);
+        if ($this->isColumnModified(ProductovariantePeer::PRODUCTOVARIANTE_TALLATIPO)) $criteria->add(ProductovariantePeer::PRODUCTOVARIANTE_TALLATIPO, $this->productovariante_tallatipo);
+        if ($this->isColumnModified(ProductovariantePeer::PRODUCTOVARIANTE_ESTATUS)) $criteria->add(ProductovariantePeer::PRODUCTOVARIANTE_ESTATUS, $this->productovariante_estatus);
 
         return $criteria;
     }
@@ -1190,8 +1172,8 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(SucursalPeer::DATABASE_NAME);
-        $criteria->add(SucursalPeer::IDSUCURSAL, $this->idsucursal);
+        $criteria = new Criteria(ProductovariantePeer::DATABASE_NAME);
+        $criteria->add(ProductovariantePeer::IDPRODUCTOVARIANTE, $this->idproductovariante);
 
         return $criteria;
     }
@@ -1202,18 +1184,18 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function getPrimaryKey()
     {
-        return $this->getIdsucursal();
+        return $this->getIdproductovariante();
     }
 
     /**
-     * Generic method to set the primary key (idsucursal column).
+     * Generic method to set the primary key (idproductovariante column).
      *
      * @param  int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setIdsucursal($key);
+        $this->setIdproductovariante($key);
     }
 
     /**
@@ -1223,7 +1205,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getIdsucursal();
+        return null === $this->getIdproductovariante();
     }
 
     /**
@@ -1232,22 +1214,20 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Sucursal (or compatible) type.
+     * @param object $copyObj An object of Productovariante (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setSucursalNombrecomercial($this->getSucursalNombrecomercial());
-        $copyObj->setSucursalRazonsocial($this->getSucursalRazonsocial());
-        $copyObj->setSucursalCalle($this->getSucursalCalle());
-        $copyObj->setSucursalNumexterno($this->getSucursalNumexterno());
-        $copyObj->setSucursalNuminterior($this->getSucursalNuminterior());
-        $copyObj->setSucursalColonia($this->getSucursalColonia());
-        $copyObj->setSucursalCodigopostal($this->getSucursalCodigopostal());
-        $copyObj->setSucursalCiudad($this->getSucursalCiudad());
-        $copyObj->setSucursalEstado($this->getSucursalEstado());
+        $copyObj->setIdproducto($this->getIdproducto());
+        $copyObj->setIdproductocolor($this->getIdproductocolor());
+        $copyObj->setIdproductomaterial($this->getIdproductomaterial());
+        $copyObj->setProductovarianteCodigobarras($this->getProductovarianteCodigobarras());
+        $copyObj->setProductovarianteTalla($this->getProductovarianteTalla());
+        $copyObj->setProductovarianteTallatipo($this->getProductovarianteTallatipo());
+        $copyObj->setProductovarianteEstatus($this->getProductovarianteEstatus());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1262,19 +1242,13 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getSucursalempleados() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addSucursalempleado($relObj->copy($deepCopy));
-                }
-            }
-
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
 
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setIdsucursal(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setIdproductovariante(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1287,7 +1261,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Sucursal Clone of current object.
+     * @return Productovariante Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1307,15 +1281,171 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return SucursalPeer
+     * @return ProductovariantePeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new SucursalPeer();
+            self::$peer = new ProductovariantePeer();
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a Producto object.
+     *
+     * @param                  Producto $v
+     * @return Productovariante The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setProducto(Producto $v = null)
+    {
+        if ($v === null) {
+            $this->setIdproducto(NULL);
+        } else {
+            $this->setIdproducto($v->getIdproducto());
+        }
+
+        $this->aProducto = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Producto object, it will not be re-added.
+        if ($v !== null) {
+            $v->addProductovariante($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Producto object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Producto The associated Producto object.
+     * @throws PropelException
+     */
+    public function getProducto(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aProducto === null && ($this->idproducto !== null) && $doQuery) {
+            $this->aProducto = ProductoQuery::create()->findPk($this->idproducto, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProducto->addProductovariantes($this);
+             */
+        }
+
+        return $this->aProducto;
+    }
+
+    /**
+     * Declares an association between this object and a Productocolor object.
+     *
+     * @param                  Productocolor $v
+     * @return Productovariante The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setProductocolor(Productocolor $v = null)
+    {
+        if ($v === null) {
+            $this->setIdproductocolor(NULL);
+        } else {
+            $this->setIdproductocolor($v->getIdproductocolor());
+        }
+
+        $this->aProductocolor = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Productocolor object, it will not be re-added.
+        if ($v !== null) {
+            $v->addProductovariante($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Productocolor object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Productocolor The associated Productocolor object.
+     * @throws PropelException
+     */
+    public function getProductocolor(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aProductocolor === null && ($this->idproductocolor !== null) && $doQuery) {
+            $this->aProductocolor = ProductocolorQuery::create()->findPk($this->idproductocolor, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProductocolor->addProductovariantes($this);
+             */
+        }
+
+        return $this->aProductocolor;
+    }
+
+    /**
+     * Declares an association between this object and a Productomaterial object.
+     *
+     * @param                  Productomaterial $v
+     * @return Productovariante The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setProductomaterial(Productomaterial $v = null)
+    {
+        if ($v === null) {
+            $this->setIdproductomaterial(NULL);
+        } else {
+            $this->setIdproductomaterial($v->getIdproductomaterial());
+        }
+
+        $this->aProductomaterial = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Productomaterial object, it will not be re-added.
+        if ($v !== null) {
+            $v->addProductovariante($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Productomaterial object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Productomaterial The associated Productomaterial object.
+     * @throws PropelException
+     */
+    public function getProductomaterial(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aProductomaterial === null && ($this->idproductomaterial !== null) && $doQuery) {
+            $this->aProductomaterial = ProductomaterialQuery::create()->findPk($this->idproductomaterial, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProductomaterial->addProductovariantes($this);
+             */
+        }
+
+        return $this->aProductomaterial;
     }
 
 
@@ -1332,9 +1462,6 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         if ('Productosucursal' == $relationName) {
             $this->initProductosucursals();
         }
-        if ('Sucursalempleado' == $relationName) {
-            $this->initSucursalempleados();
-        }
     }
 
     /**
@@ -1343,7 +1470,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return Sucursal The current object (for fluent API support)
+     * @return Productovariante The current object (for fluent API support)
      * @see        addProductosucursals()
      */
     public function clearProductosucursals()
@@ -1391,7 +1518,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Sucursal is new, it will return
+     * If this Productovariante is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
@@ -1408,7 +1535,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                 $this->initProductosucursals();
             } else {
                 $collProductosucursals = ProductosucursalQuery::create(null, $criteria)
-                    ->filterBySucursal($this)
+                    ->filterByProductovariante($this)
                     ->find($con);
                 if (null !== $criteria) {
                     if (false !== $this->collProductosucursalsPartial && count($collProductosucursals)) {
@@ -1452,7 +1579,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      *
      * @param PropelCollection $productosucursals A Propel collection.
      * @param PropelPDO $con Optional connection object
-     * @return Sucursal The current object (for fluent API support)
+     * @return Productovariante The current object (for fluent API support)
      */
     public function setProductosucursals(PropelCollection $productosucursals, PropelPDO $con = null)
     {
@@ -1462,7 +1589,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         $this->productosucursalsScheduledForDeletion = $productosucursalsToDelete;
 
         foreach ($productosucursalsToDelete as $productosucursalRemoved) {
-            $productosucursalRemoved->setSucursal(null);
+            $productosucursalRemoved->setProductovariante(null);
         }
 
         $this->collProductosucursals = null;
@@ -1502,7 +1629,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterBySucursal($this)
+                ->filterByProductovariante($this)
                 ->count($con);
         }
 
@@ -1514,7 +1641,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * through the Productosucursal foreign key attribute.
      *
      * @param    Productosucursal $l Productosucursal
-     * @return Sucursal The current object (for fluent API support)
+     * @return Productovariante The current object (for fluent API support)
      */
     public function addProductosucursal(Productosucursal $l)
     {
@@ -1540,12 +1667,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     protected function doAddProductosucursal($productosucursal)
     {
         $this->collProductosucursals[]= $productosucursal;
-        $productosucursal->setSucursal($this);
+        $productosucursal->setProductovariante($this);
     }
 
     /**
      * @param	Productosucursal $productosucursal The productosucursal object to remove.
-     * @return Sucursal The current object (for fluent API support)
+     * @return Productovariante The current object (for fluent API support)
      */
     public function removeProductosucursal($productosucursal)
     {
@@ -1556,7 +1683,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                 $this->productosucursalsScheduledForDeletion->clear();
             }
             $this->productosucursalsScheduledForDeletion[]= clone $productosucursal;
-            $productosucursal->setSucursal(null);
+            $productosucursal->setProductovariante(null);
         }
 
         return $this;
@@ -1566,275 +1693,25 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     /**
      * If this collection has already been initialized with
      * an identical criteria, it returns the collection.
-     * Otherwise if this Sucursal is new, it will return
-     * an empty collection; or if this Sucursal has previously
+     * Otherwise if this Productovariante is new, it will return
+     * an empty collection; or if this Productovariante has previously
      * been saved, it will retrieve related Productosucursals from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
-     * actually need in Sucursal.
+     * actually need in Productovariante.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Productosucursal[] List of Productosucursal objects
      */
-    public function getProductosucursalsJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getProductosucursalsJoinSucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = ProductosucursalQuery::create(null, $criteria);
-        $query->joinWith('Productovariante', $join_behavior);
+        $query->joinWith('Sucursal', $join_behavior);
 
         return $this->getProductosucursals($query, $con);
-    }
-
-    /**
-     * Clears out the collSucursalempleados collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Sucursal The current object (for fluent API support)
-     * @see        addSucursalempleados()
-     */
-    public function clearSucursalempleados()
-    {
-        $this->collSucursalempleados = null; // important to set this to null since that means it is uninitialized
-        $this->collSucursalempleadosPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collSucursalempleados collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialSucursalempleados($v = true)
-    {
-        $this->collSucursalempleadosPartial = $v;
-    }
-
-    /**
-     * Initializes the collSucursalempleados collection.
-     *
-     * By default this just sets the collSucursalempleados collection to an empty array (like clearcollSucursalempleados());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initSucursalempleados($overrideExisting = true)
-    {
-        if (null !== $this->collSucursalempleados && !$overrideExisting) {
-            return;
-        }
-        $this->collSucursalempleados = new PropelObjectCollection();
-        $this->collSucursalempleados->setModel('Sucursalempleado');
-    }
-
-    /**
-     * Gets an array of Sucursalempleado objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Sucursal is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Sucursalempleado[] List of Sucursalempleado objects
-     * @throws PropelException
-     */
-    public function getSucursalempleados($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collSucursalempleadosPartial && !$this->isNew();
-        if (null === $this->collSucursalempleados || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collSucursalempleados) {
-                // return empty collection
-                $this->initSucursalempleados();
-            } else {
-                $collSucursalempleados = SucursalempleadoQuery::create(null, $criteria)
-                    ->filterBySucursal($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collSucursalempleadosPartial && count($collSucursalempleados)) {
-                      $this->initSucursalempleados(false);
-
-                      foreach ($collSucursalempleados as $obj) {
-                        if (false == $this->collSucursalempleados->contains($obj)) {
-                          $this->collSucursalempleados->append($obj);
-                        }
-                      }
-
-                      $this->collSucursalempleadosPartial = true;
-                    }
-
-                    $collSucursalempleados->getInternalIterator()->rewind();
-
-                    return $collSucursalempleados;
-                }
-
-                if ($partial && $this->collSucursalempleados) {
-                    foreach ($this->collSucursalempleados as $obj) {
-                        if ($obj->isNew()) {
-                            $collSucursalempleados[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collSucursalempleados = $collSucursalempleados;
-                $this->collSucursalempleadosPartial = false;
-            }
-        }
-
-        return $this->collSucursalempleados;
-    }
-
-    /**
-     * Sets a collection of Sucursalempleado objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $sucursalempleados A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Sucursal The current object (for fluent API support)
-     */
-    public function setSucursalempleados(PropelCollection $sucursalempleados, PropelPDO $con = null)
-    {
-        $sucursalempleadosToDelete = $this->getSucursalempleados(new Criteria(), $con)->diff($sucursalempleados);
-
-
-        $this->sucursalempleadosScheduledForDeletion = $sucursalempleadosToDelete;
-
-        foreach ($sucursalempleadosToDelete as $sucursalempleadoRemoved) {
-            $sucursalempleadoRemoved->setSucursal(null);
-        }
-
-        $this->collSucursalempleados = null;
-        foreach ($sucursalempleados as $sucursalempleado) {
-            $this->addSucursalempleado($sucursalempleado);
-        }
-
-        $this->collSucursalempleados = $sucursalempleados;
-        $this->collSucursalempleadosPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Sucursalempleado objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Sucursalempleado objects.
-     * @throws PropelException
-     */
-    public function countSucursalempleados(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collSucursalempleadosPartial && !$this->isNew();
-        if (null === $this->collSucursalempleados || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collSucursalempleados) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getSucursalempleados());
-            }
-            $query = SucursalempleadoQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterBySucursal($this)
-                ->count($con);
-        }
-
-        return count($this->collSucursalempleados);
-    }
-
-    /**
-     * Method called to associate a Sucursalempleado object to this object
-     * through the Sucursalempleado foreign key attribute.
-     *
-     * @param    Sucursalempleado $l Sucursalempleado
-     * @return Sucursal The current object (for fluent API support)
-     */
-    public function addSucursalempleado(Sucursalempleado $l)
-    {
-        if ($this->collSucursalempleados === null) {
-            $this->initSucursalempleados();
-            $this->collSucursalempleadosPartial = true;
-        }
-
-        if (!in_array($l, $this->collSucursalempleados->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddSucursalempleado($l);
-
-            if ($this->sucursalempleadosScheduledForDeletion and $this->sucursalempleadosScheduledForDeletion->contains($l)) {
-                $this->sucursalempleadosScheduledForDeletion->remove($this->sucursalempleadosScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Sucursalempleado $sucursalempleado The sucursalempleado object to add.
-     */
-    protected function doAddSucursalempleado($sucursalempleado)
-    {
-        $this->collSucursalempleados[]= $sucursalempleado;
-        $sucursalempleado->setSucursal($this);
-    }
-
-    /**
-     * @param	Sucursalempleado $sucursalempleado The sucursalempleado object to remove.
-     * @return Sucursal The current object (for fluent API support)
-     */
-    public function removeSucursalempleado($sucursalempleado)
-    {
-        if ($this->getSucursalempleados()->contains($sucursalempleado)) {
-            $this->collSucursalempleados->remove($this->collSucursalempleados->search($sucursalempleado));
-            if (null === $this->sucursalempleadosScheduledForDeletion) {
-                $this->sucursalempleadosScheduledForDeletion = clone $this->collSucursalempleados;
-                $this->sucursalempleadosScheduledForDeletion->clear();
-            }
-            $this->sucursalempleadosScheduledForDeletion[]= clone $sucursalempleado;
-            $sucursalempleado->setSucursal(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Sucursal is new, it will return
-     * an empty collection; or if this Sucursal has previously
-     * been saved, it will retrieve related Sucursalempleados from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Sucursal.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Sucursalempleado[] List of Sucursalempleado objects
-     */
-    public function getSucursalempleadosJoinEmpleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = SucursalempleadoQuery::create(null, $criteria);
-        $query->joinWith('Empleado', $join_behavior);
-
-        return $this->getSucursalempleados($query, $con);
     }
 
     /**
@@ -1842,20 +1719,19 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function clear()
     {
-        $this->idsucursal = null;
-        $this->sucursal_nombrecomercial = null;
-        $this->sucursal_razonsocial = null;
-        $this->sucursal_calle = null;
-        $this->sucursal_numexterno = null;
-        $this->sucursal_numinterior = null;
-        $this->sucursal_colonia = null;
-        $this->sucursal_codigopostal = null;
-        $this->sucursal_ciudad = null;
-        $this->sucursal_estado = null;
+        $this->idproductovariante = null;
+        $this->idproducto = null;
+        $this->idproductocolor = null;
+        $this->idproductomaterial = null;
+        $this->productovariante_codigobarras = null;
+        $this->productovariante_talla = null;
+        $this->productovariante_tallatipo = null;
+        $this->productovariante_estatus = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1879,10 +1755,14 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collSucursalempleados) {
-                foreach ($this->collSucursalempleados as $o) {
-                    $o->clearAllReferences($deep);
-                }
+            if ($this->aProducto instanceof Persistent) {
+              $this->aProducto->clearAllReferences($deep);
+            }
+            if ($this->aProductocolor instanceof Persistent) {
+              $this->aProductocolor->clearAllReferences($deep);
+            }
+            if ($this->aProductomaterial instanceof Persistent) {
+              $this->aProductomaterial->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
@@ -1892,10 +1772,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $this->collProductosucursals->clearIterator();
         }
         $this->collProductosucursals = null;
-        if ($this->collSucursalempleados instanceof PropelCollection) {
-            $this->collSucursalempleados->clearIterator();
-        }
-        $this->collSucursalempleados = null;
+        $this->aProducto = null;
+        $this->aProductocolor = null;
+        $this->aProductomaterial = null;
     }
 
     /**
@@ -1905,7 +1784,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(SucursalPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(ProductovariantePeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

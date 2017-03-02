@@ -492,6 +492,9 @@ abstract class BaseProductoPeer
         // Invalidate objects in ProductotallajePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductotallajePeer::clearInstancePool();
+        // Invalidate objects in ProductovariantePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ProductovariantePeer::clearInstancePool();
     }
 
     /**
@@ -2218,6 +2221,12 @@ abstract class BaseProductoPeer
 
             $criteria->add(ProductotallajePeer::IDPRODUCTO, $obj->getIdproducto());
             $affectedRows += ProductotallajePeer::doDelete($criteria, $con);
+
+            // delete related Productovariante objects
+            $criteria = new Criteria(ProductovariantePeer::DATABASE_NAME);
+
+            $criteria->add(ProductovariantePeer::IDPRODUCTO, $obj->getIdproducto());
+            $affectedRows += ProductovariantePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;
