@@ -173,6 +173,43 @@ CREATE TABLE `medida`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- pedido
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pedido`;
+
+CREATE TABLE `pedido`
+(
+    `idpedido` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `pedido_fecha` DATE NOT NULL,
+    `idproducto` INTEGER NOT NULL,
+    `pedido_cantidad` INTEGER NOT NULL,
+    `idproductovariante` INTEGER NOT NULL,
+    `pedido_nota` TEXT,
+    `pedido_estatus` enum('pendiente','solicitado','transito','completado') DEFAULT 'pendiente' NOT NULL,
+    PRIMARY KEY (`idpedido`),
+    INDEX `idsucursal` (`idsucursal`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    INDEX `idproducto` (`idproducto`),
+    CONSTRAINT `idproducto_pedido`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductovariante_pedido`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursal_pedido`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- producto
 -- ---------------------------------------------------------------------
 
@@ -232,6 +269,7 @@ CREATE TABLE `productocolor`
     `idproductocolor` INTEGER NOT NULL AUTO_INCREMENT,
     `idproducto` INTEGER NOT NULL,
     `idcolor` INTEGER NOT NULL,
+    `productocolor_foto` TEXT,
     PRIMARY KEY (`idproductocolor`),
     INDEX `idproducto` (`idproducto`),
     INDEX `idcolor` (`idcolor`),
@@ -298,6 +336,38 @@ CREATE TABLE `productomedida`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- productosucursal
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `productosucursal`;
+
+CREATE TABLE `productosucursal`
+(
+    `idproductosucursal` INTEGER NOT NULL AUTO_INCREMENT,
+    `idproductovariante` INTEGER NOT NULL,
+    `idsucursal` INTEGER NOT NULL,
+    `productosucursal_existencia` INTEGER DEFAULT 0 NOT NULL,
+    `productosucursal_minimo` INTEGER NOT NULL,
+    `productosucursal_reorden` INTEGER NOT NULL,
+    `productosucursal_precioventa` DECIMAL(10,5) NOT NULL,
+    `productosucursal_preciomayoreo` DECIMAL(10,5) NOT NULL,
+    `productosucursal_estatus` TINYINT(1) DEFAULT 1 NOT NULL,
+    PRIMARY KEY (`idproductosucursal`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    INDEX `idsucursal` (`idsucursal`),
+    CONSTRAINT `idproductovariante_productosucursal`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursal_productosucursal`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- productotallaje
 -- ---------------------------------------------------------------------
 
@@ -319,6 +389,43 @@ CREATE TABLE `productotallaje`
     CONSTRAINT `idtallaje_productotallaje`
         FOREIGN KEY (`idtallaje`)
         REFERENCES `tallaje` (`idtallaje`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- productovariante
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `productovariante`;
+
+CREATE TABLE `productovariante`
+(
+    `idproductovariante` INTEGER NOT NULL AUTO_INCREMENT,
+    `idproducto` INTEGER NOT NULL,
+    `idproductocolor` INTEGER NOT NULL,
+    `idproductomaterial` INTEGER NOT NULL,
+    `productovariante_codigobarras` VARCHAR(45),
+    `productovariante_talla` VARCHAR(45) NOT NULL,
+    `productovariante_tallatipo` enum('medida','numero','ninguno'),
+    `productovariante_estatus` TINYINT(1) DEFAULT 1 NOT NULL,
+    PRIMARY KEY (`idproductovariante`),
+    INDEX `idproductocolor` (`idproductocolor`),
+    INDEX `idproductomaterial` (`idproductomaterial`),
+    INDEX `idproducto_productovariante_idx` (`idproducto`),
+    CONSTRAINT `idproducto_productovariante`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductocolor_productovariante`
+        FOREIGN KEY (`idproductocolor`)
+        REFERENCES `productocolor` (`idproductocolor`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductomaterial_productomaterial`
+        FOREIGN KEY (`idproductomaterial`)
+        REFERENCES `productomaterial` (`idproductomaterial`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;

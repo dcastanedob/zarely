@@ -56,6 +56,10 @@
  * @method ProductoQuery rightJoinTipocalzado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tipocalzado relation
  * @method ProductoQuery innerJoinTipocalzado($relationAlias = null) Adds a INNER JOIN clause to the query using the Tipocalzado relation
  *
+ * @method ProductoQuery leftJoinPedido($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedido relation
+ * @method ProductoQuery rightJoinPedido($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedido relation
+ * @method ProductoQuery innerJoinPedido($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedido relation
+ *
  * @method ProductoQuery leftJoinProductocolor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productocolor relation
  * @method ProductoQuery rightJoinProductocolor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productocolor relation
  * @method ProductoQuery innerJoinProductocolor($relationAlias = null) Adds a INNER JOIN clause to the query using the Productocolor relation
@@ -71,6 +75,10 @@
  * @method ProductoQuery leftJoinProductotallaje($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productotallaje relation
  * @method ProductoQuery rightJoinProductotallaje($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productotallaje relation
  * @method ProductoQuery innerJoinProductotallaje($relationAlias = null) Adds a INNER JOIN clause to the query using the Productotallaje relation
+ *
+ * @method ProductoQuery leftJoinProductovariante($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productovariante relation
+ * @method ProductoQuery rightJoinProductovariante($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productovariante relation
+ * @method ProductoQuery innerJoinProductovariante($relationAlias = null) Adds a INNER JOIN clause to the query using the Productovariante relation
  *
  * @method Producto findOne(PropelPDO $con = null) Return the first Producto matching the query
  * @method Producto findOneOrCreate(PropelPDO $con = null) Return the first Producto matching the query, or a new Producto object populated from the query conditions when no match is found
@@ -1161,6 +1169,80 @@ abstract class BaseProductoQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related Pedido object
+     *
+     * @param   Pedido|PropelObjectCollection $pedido  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPedido($pedido, $comparison = null)
+    {
+        if ($pedido instanceof Pedido) {
+            return $this
+                ->addUsingAlias(ProductoPeer::IDPRODUCTO, $pedido->getIdproducto(), $comparison);
+        } elseif ($pedido instanceof PropelObjectCollection) {
+            return $this
+                ->usePedidoQuery()
+                ->filterByPrimaryKeys($pedido->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPedido() only accepts arguments of type Pedido or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Pedido relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductoQuery The current query, for fluid interface
+     */
+    public function joinPedido($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Pedido');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Pedido');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Pedido relation Pedido object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PedidoQuery A secondary query class using the current class as primary query
+     */
+    public function usePedidoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPedido($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Pedido', 'PedidoQuery');
+    }
+
+    /**
      * Filter the query by a related Productocolor object
      *
      * @param   Productocolor|PropelObjectCollection $productocolor  the related object to use as filter
@@ -1454,6 +1536,80 @@ abstract class BaseProductoQuery extends ModelCriteria
         return $this
             ->joinProductotallaje($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Productotallaje', 'ProductotallajeQuery');
+    }
+
+    /**
+     * Filter the query by a related Productovariante object
+     *
+     * @param   Productovariante|PropelObjectCollection $productovariante  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByProductovariante($productovariante, $comparison = null)
+    {
+        if ($productovariante instanceof Productovariante) {
+            return $this
+                ->addUsingAlias(ProductoPeer::IDPRODUCTO, $productovariante->getIdproducto(), $comparison);
+        } elseif ($productovariante instanceof PropelObjectCollection) {
+            return $this
+                ->useProductovarianteQuery()
+                ->filterByPrimaryKeys($productovariante->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByProductovariante() only accepts arguments of type Productovariante or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Productovariante relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductoQuery The current query, for fluid interface
+     */
+    public function joinProductovariante($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Productovariante');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Productovariante');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Productovariante relation Productovariante object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ProductovarianteQuery A secondary query class using the current class as primary query
+     */
+    public function useProductovarianteQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinProductovariante($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Productovariante', 'ProductovarianteQuery');
     }
 
     /**

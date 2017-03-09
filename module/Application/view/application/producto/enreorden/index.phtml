@@ -1,0 +1,54 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title">Productos</h1>
+	    
+	</div>
+
+	<?php foreach ($messages->getSuccessMessages() as $message):?>
+	        <div class="alert alert-success alert-dismissable">
+	            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+	            <strong>Éxito!</strong>
+	            <?php echo $message?>
+	        </div>
+	<?php endforeach;?>
+
+	<?php foreach ($messages->geterrorMessages() as $message):?>
+	        <div class="alert alert-danger alert-dismissable">
+	            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+	            <strong>Error!</strong>
+	            <?php echo $message?>
+	        </div>
+	<?php endforeach;?>
+
+
+	<div class="row">
+		<div class="card-body">
+		    <table id="" class="table table-striped table-nowrap dataTable" cellspacing="0" width="100%">
+		        <thead>
+		            <tr>
+		                <th>ID</th>
+		                <th>Modelo</th>
+		                <th>Opciones</th>
+		            </tr>
+		        </thead>
+		        <tfoot>
+		            <tr>
+		                <th>ID</th>
+		                <th>Modelo</th>
+		                <th>Opciones</th>
+		            </tr>
+		        </tfoot>
+		        <tbody>
+		            
+		        </tbody>
+		    </table>
+		</div>
+	</div>
+
+</div>
+<script src="/js/producto/enreorden.js"></script>
+
+<script>
+	var enreorden = $('.body_container').enreorden();
+	enreorden.list();
+</script>

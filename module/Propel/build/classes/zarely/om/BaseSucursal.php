@@ -90,6 +90,18 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     protected $sucursal_estado;
 
     /**
+     * @var        PropelObjectCollection|Pedido[] Collection to store aggregation of Pedido objects.
+     */
+    protected $collPedidos;
+    protected $collPedidosPartial;
+
+    /**
+     * @var        PropelObjectCollection|Productosucursal[] Collection to store aggregation of Productosucursal objects.
+     */
+    protected $collProductosucursals;
+    protected $collProductosucursalsPartial;
+
+    /**
      * @var        PropelObjectCollection|Sucursalempleado[] Collection to store aggregation of Sucursalempleado objects.
      */
     protected $collSucursalempleados;
@@ -114,6 +126,18 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pedidosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $productosucursalsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -554,6 +578,10 @@ abstract class BaseSucursal extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collPedidos = null;
+
+            $this->collProductosucursals = null;
+
             $this->collSucursalempleados = null;
 
         } // if (deep)
@@ -678,6 +706,40 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->pedidosScheduledForDeletion !== null) {
+                if (!$this->pedidosScheduledForDeletion->isEmpty()) {
+                    PedidoQuery::create()
+                        ->filterByPrimaryKeys($this->pedidosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pedidosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPedidos !== null) {
+                foreach ($this->collPedidos as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->productosucursalsScheduledForDeletion !== null) {
+                if (!$this->productosucursalsScheduledForDeletion->isEmpty()) {
+                    ProductosucursalQuery::create()
+                        ->filterByPrimaryKeys($this->productosucursalsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->productosucursalsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collProductosucursals !== null) {
+                foreach ($this->collProductosucursals as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->sucursalempleadosScheduledForDeletion !== null) {
@@ -893,6 +955,22 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             }
 
 
+                if ($this->collPedidos !== null) {
+                    foreach ($this->collPedidos as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collProductosucursals !== null) {
+                    foreach ($this->collProductosucursals as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collSucursalempleados !== null) {
                     foreach ($this->collSucursalempleados as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1012,6 +1090,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collPedidos) {
+                $result['Pedidos'] = $this->collPedidos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collProductosucursals) {
+                $result['Productosucursals'] = $this->collProductosucursals->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collSucursalempleados) {
                 $result['Sucursalempleados'] = $this->collSucursalempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1214,6 +1298,18 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getPedidos() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPedido($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getProductosucursals() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addProductosucursal($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getSucursalempleados() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addSucursalempleado($relObj->copy($deepCopy));
@@ -1281,9 +1377,540 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('Pedido' == $relationName) {
+            $this->initPedidos();
+        }
+        if ('Productosucursal' == $relationName) {
+            $this->initProductosucursals();
+        }
         if ('Sucursalempleado' == $relationName) {
             $this->initSucursalempleados();
         }
+    }
+
+    /**
+     * Clears out the collPedidos collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Sucursal The current object (for fluent API support)
+     * @see        addPedidos()
+     */
+    public function clearPedidos()
+    {
+        $this->collPedidos = null; // important to set this to null since that means it is uninitialized
+        $this->collPedidosPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPedidos collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPedidos($v = true)
+    {
+        $this->collPedidosPartial = $v;
+    }
+
+    /**
+     * Initializes the collPedidos collection.
+     *
+     * By default this just sets the collPedidos collection to an empty array (like clearcollPedidos());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPedidos($overrideExisting = true)
+    {
+        if (null !== $this->collPedidos && !$overrideExisting) {
+            return;
+        }
+        $this->collPedidos = new PropelObjectCollection();
+        $this->collPedidos->setModel('Pedido');
+    }
+
+    /**
+     * Gets an array of Pedido objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Sucursal is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Pedido[] List of Pedido objects
+     * @throws PropelException
+     */
+    public function getPedidos($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidosPartial && !$this->isNew();
+        if (null === $this->collPedidos || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPedidos) {
+                // return empty collection
+                $this->initPedidos();
+            } else {
+                $collPedidos = PedidoQuery::create(null, $criteria)
+                    ->filterBySucursal($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPedidosPartial && count($collPedidos)) {
+                      $this->initPedidos(false);
+
+                      foreach ($collPedidos as $obj) {
+                        if (false == $this->collPedidos->contains($obj)) {
+                          $this->collPedidos->append($obj);
+                        }
+                      }
+
+                      $this->collPedidosPartial = true;
+                    }
+
+                    $collPedidos->getInternalIterator()->rewind();
+
+                    return $collPedidos;
+                }
+
+                if ($partial && $this->collPedidos) {
+                    foreach ($this->collPedidos as $obj) {
+                        if ($obj->isNew()) {
+                            $collPedidos[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPedidos = $collPedidos;
+                $this->collPedidosPartial = false;
+            }
+        }
+
+        return $this->collPedidos;
+    }
+
+    /**
+     * Sets a collection of Pedido objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pedidos A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function setPedidos(PropelCollection $pedidos, PropelPDO $con = null)
+    {
+        $pedidosToDelete = $this->getPedidos(new Criteria(), $con)->diff($pedidos);
+
+
+        $this->pedidosScheduledForDeletion = $pedidosToDelete;
+
+        foreach ($pedidosToDelete as $pedidoRemoved) {
+            $pedidoRemoved->setSucursal(null);
+        }
+
+        $this->collPedidos = null;
+        foreach ($pedidos as $pedido) {
+            $this->addPedido($pedido);
+        }
+
+        $this->collPedidos = $pedidos;
+        $this->collPedidosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Pedido objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Pedido objects.
+     * @throws PropelException
+     */
+    public function countPedidos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidosPartial && !$this->isNew();
+        if (null === $this->collPedidos || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPedidos) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPedidos());
+            }
+            $query = PedidoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySucursal($this)
+                ->count($con);
+        }
+
+        return count($this->collPedidos);
+    }
+
+    /**
+     * Method called to associate a Pedido object to this object
+     * through the Pedido foreign key attribute.
+     *
+     * @param    Pedido $l Pedido
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function addPedido(Pedido $l)
+    {
+        if ($this->collPedidos === null) {
+            $this->initPedidos();
+            $this->collPedidosPartial = true;
+        }
+
+        if (!in_array($l, $this->collPedidos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPedido($l);
+
+            if ($this->pedidosScheduledForDeletion and $this->pedidosScheduledForDeletion->contains($l)) {
+                $this->pedidosScheduledForDeletion->remove($this->pedidosScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Pedido $pedido The pedido object to add.
+     */
+    protected function doAddPedido($pedido)
+    {
+        $this->collPedidos[]= $pedido;
+        $pedido->setSucursal($this);
+    }
+
+    /**
+     * @param	Pedido $pedido The pedido object to remove.
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function removePedido($pedido)
+    {
+        if ($this->getPedidos()->contains($pedido)) {
+            $this->collPedidos->remove($this->collPedidos->search($pedido));
+            if (null === $this->pedidosScheduledForDeletion) {
+                $this->pedidosScheduledForDeletion = clone $this->collPedidos;
+                $this->pedidosScheduledForDeletion->clear();
+            }
+            $this->pedidosScheduledForDeletion[]= clone $pedido;
+            $pedido->setSucursal(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related Pedidos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pedido[] List of Pedido objects
+     */
+    public function getPedidosJoinProducto($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PedidoQuery::create(null, $criteria);
+        $query->joinWith('Producto', $join_behavior);
+
+        return $this->getPedidos($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related Pedidos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pedido[] List of Pedido objects
+     */
+    public function getPedidosJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PedidoQuery::create(null, $criteria);
+        $query->joinWith('Productovariante', $join_behavior);
+
+        return $this->getPedidos($query, $con);
+    }
+
+    /**
+     * Clears out the collProductosucursals collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Sucursal The current object (for fluent API support)
+     * @see        addProductosucursals()
+     */
+    public function clearProductosucursals()
+    {
+        $this->collProductosucursals = null; // important to set this to null since that means it is uninitialized
+        $this->collProductosucursalsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collProductosucursals collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialProductosucursals($v = true)
+    {
+        $this->collProductosucursalsPartial = $v;
+    }
+
+    /**
+     * Initializes the collProductosucursals collection.
+     *
+     * By default this just sets the collProductosucursals collection to an empty array (like clearcollProductosucursals());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initProductosucursals($overrideExisting = true)
+    {
+        if (null !== $this->collProductosucursals && !$overrideExisting) {
+            return;
+        }
+        $this->collProductosucursals = new PropelObjectCollection();
+        $this->collProductosucursals->setModel('Productosucursal');
+    }
+
+    /**
+     * Gets an array of Productosucursal objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Sucursal is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Productosucursal[] List of Productosucursal objects
+     * @throws PropelException
+     */
+    public function getProductosucursals($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collProductosucursalsPartial && !$this->isNew();
+        if (null === $this->collProductosucursals || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collProductosucursals) {
+                // return empty collection
+                $this->initProductosucursals();
+            } else {
+                $collProductosucursals = ProductosucursalQuery::create(null, $criteria)
+                    ->filterBySucursal($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collProductosucursalsPartial && count($collProductosucursals)) {
+                      $this->initProductosucursals(false);
+
+                      foreach ($collProductosucursals as $obj) {
+                        if (false == $this->collProductosucursals->contains($obj)) {
+                          $this->collProductosucursals->append($obj);
+                        }
+                      }
+
+                      $this->collProductosucursalsPartial = true;
+                    }
+
+                    $collProductosucursals->getInternalIterator()->rewind();
+
+                    return $collProductosucursals;
+                }
+
+                if ($partial && $this->collProductosucursals) {
+                    foreach ($this->collProductosucursals as $obj) {
+                        if ($obj->isNew()) {
+                            $collProductosucursals[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collProductosucursals = $collProductosucursals;
+                $this->collProductosucursalsPartial = false;
+            }
+        }
+
+        return $this->collProductosucursals;
+    }
+
+    /**
+     * Sets a collection of Productosucursal objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $productosucursals A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function setProductosucursals(PropelCollection $productosucursals, PropelPDO $con = null)
+    {
+        $productosucursalsToDelete = $this->getProductosucursals(new Criteria(), $con)->diff($productosucursals);
+
+
+        $this->productosucursalsScheduledForDeletion = $productosucursalsToDelete;
+
+        foreach ($productosucursalsToDelete as $productosucursalRemoved) {
+            $productosucursalRemoved->setSucursal(null);
+        }
+
+        $this->collProductosucursals = null;
+        foreach ($productosucursals as $productosucursal) {
+            $this->addProductosucursal($productosucursal);
+        }
+
+        $this->collProductosucursals = $productosucursals;
+        $this->collProductosucursalsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Productosucursal objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Productosucursal objects.
+     * @throws PropelException
+     */
+    public function countProductosucursals(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collProductosucursalsPartial && !$this->isNew();
+        if (null === $this->collProductosucursals || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collProductosucursals) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getProductosucursals());
+            }
+            $query = ProductosucursalQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySucursal($this)
+                ->count($con);
+        }
+
+        return count($this->collProductosucursals);
+    }
+
+    /**
+     * Method called to associate a Productosucursal object to this object
+     * through the Productosucursal foreign key attribute.
+     *
+     * @param    Productosucursal $l Productosucursal
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function addProductosucursal(Productosucursal $l)
+    {
+        if ($this->collProductosucursals === null) {
+            $this->initProductosucursals();
+            $this->collProductosucursalsPartial = true;
+        }
+
+        if (!in_array($l, $this->collProductosucursals->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddProductosucursal($l);
+
+            if ($this->productosucursalsScheduledForDeletion and $this->productosucursalsScheduledForDeletion->contains($l)) {
+                $this->productosucursalsScheduledForDeletion->remove($this->productosucursalsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Productosucursal $productosucursal The productosucursal object to add.
+     */
+    protected function doAddProductosucursal($productosucursal)
+    {
+        $this->collProductosucursals[]= $productosucursal;
+        $productosucursal->setSucursal($this);
+    }
+
+    /**
+     * @param	Productosucursal $productosucursal The productosucursal object to remove.
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function removeProductosucursal($productosucursal)
+    {
+        if ($this->getProductosucursals()->contains($productosucursal)) {
+            $this->collProductosucursals->remove($this->collProductosucursals->search($productosucursal));
+            if (null === $this->productosucursalsScheduledForDeletion) {
+                $this->productosucursalsScheduledForDeletion = clone $this->collProductosucursals;
+                $this->productosucursalsScheduledForDeletion->clear();
+            }
+            $this->productosucursalsScheduledForDeletion[]= clone $productosucursal;
+            $productosucursal->setSucursal(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related Productosucursals from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Productosucursal[] List of Productosucursal objects
+     */
+    public function getProductosucursalsJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ProductosucursalQuery::create(null, $criteria);
+        $query->joinWith('Productovariante', $join_behavior);
+
+        return $this->getProductosucursals($query, $con);
     }
 
     /**
@@ -1573,6 +2200,16 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPedidos) {
+                foreach ($this->collPedidos as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collProductosucursals) {
+                foreach ($this->collProductosucursals as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collSucursalempleados) {
                 foreach ($this->collSucursalempleados as $o) {
                     $o->clearAllReferences($deep);
@@ -1582,6 +2219,14 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collPedidos instanceof PropelCollection) {
+            $this->collPedidos->clearIterator();
+        }
+        $this->collPedidos = null;
+        if ($this->collProductosucursals instanceof PropelCollection) {
+            $this->collProductosucursals->clearIterator();
+        }
+        $this->collProductosucursals = null;
         if ($this->collSucursalempleados instanceof PropelCollection) {
             $this->collSucursalempleados->clearIterator();
         }

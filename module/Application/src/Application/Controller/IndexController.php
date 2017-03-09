@@ -23,4 +23,12 @@ class IndexController extends AbstractActionController
             'session' => $session,
         ));
     }
+
+    public function getsucursalesAction(){
+
+    	 $sucursales = \SucursalQuery::create()->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
+
+    	return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $sucursales)));
+
+    }
 }

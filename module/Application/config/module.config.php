@@ -20,7 +20,16 @@ return array(
                     ),
                 ),
             ),
-
+            'json' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/json[/:action]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'login' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -163,6 +172,96 @@ return array(
                     ),
                 ),
             ),
+
+            'precios' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/precios[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\PrecioProducto',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'reordenes' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/reordenes[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\ReordenProducto',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'existencias' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/existencias[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\ExistenciaProducto',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'enreorden' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/enreorden[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\EnReordenProducto',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'pendientes' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/pendientes[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoPendiente',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'solicitados' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/solicitados[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoSolicitado',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'transitos' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/transitos[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoTransito',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'completados' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/completados[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoCompletado',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -229,9 +328,26 @@ return array(
             'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController',
             'Application\Catalogo\Controller\Proveedores' => 'Application\Catalogo\Controller\ProveedoresController',
             'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController',
-            'Application\Catalogo\Controller\Medidas' => 'Application\Catalogo\Controller\MedidasController'
-            ,
-            'Application\Controller\Login' => 'Application\Controller\LoginController'
+            'Application\Catalogo\Controller\Medidas' => 'Application\Catalogo\Controller\MedidasController',
+            'Application\Controller\Login' => 'Application\Controller\LoginController',
+
+            'Application\Producto\Controller\PrecioProducto' => 'Application\Producto\Controller\PrecioProductoController',
+
+            'Application\Producto\Controller\ReordenProducto' => 'Application\Producto\Controller\ReordenProductoController',
+
+            'Application\Producto\Controller\ExistenciaProducto' => 'Application\Producto\Controller\ExistenciaProductoController',
+
+            'Application\Producto\Controller\EnReordenProducto' => 'Application\Producto\Controller\EnReordenProductoController',
+
+            'Application\Pedido\Controller\PedidoPendiente' => 'Application\Pedido\Controller\PedidoPendienteController',
+
+            'Application\Pedido\Controller\PedidoSolicitado' => 'Application\Pedido\Controller\PedidoSolicitadoController',
+
+            'Application\Pedido\Controller\PedidoTransito' => 'Application\Pedido\Controller\PedidoTransitoController',
+
+            'Application\Pedido\Controller\PedidoCompletado' => 'Application\Pedido\Controller\PedidoCompletadoController',
+
+
         ),
     ),
 

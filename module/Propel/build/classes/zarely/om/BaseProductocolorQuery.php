@@ -9,10 +9,12 @@
  * @method ProductocolorQuery orderByIdproductocolor($order = Criteria::ASC) Order by the idproductocolor column
  * @method ProductocolorQuery orderByIdproducto($order = Criteria::ASC) Order by the idproducto column
  * @method ProductocolorQuery orderByIdcolor($order = Criteria::ASC) Order by the idcolor column
+ * @method ProductocolorQuery orderByProductocolorFoto($order = Criteria::ASC) Order by the productocolor_foto column
  *
  * @method ProductocolorQuery groupByIdproductocolor() Group by the idproductocolor column
  * @method ProductocolorQuery groupByIdproducto() Group by the idproducto column
  * @method ProductocolorQuery groupByIdcolor() Group by the idcolor column
+ * @method ProductocolorQuery groupByProductocolorFoto() Group by the productocolor_foto column
  *
  * @method ProductocolorQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProductocolorQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -26,15 +28,21 @@
  * @method ProductocolorQuery rightJoinProducto($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Producto relation
  * @method ProductocolorQuery innerJoinProducto($relationAlias = null) Adds a INNER JOIN clause to the query using the Producto relation
  *
+ * @method ProductocolorQuery leftJoinProductovariante($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productovariante relation
+ * @method ProductocolorQuery rightJoinProductovariante($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productovariante relation
+ * @method ProductocolorQuery innerJoinProductovariante($relationAlias = null) Adds a INNER JOIN clause to the query using the Productovariante relation
+ *
  * @method Productocolor findOne(PropelPDO $con = null) Return the first Productocolor matching the query
  * @method Productocolor findOneOrCreate(PropelPDO $con = null) Return the first Productocolor matching the query, or a new Productocolor object populated from the query conditions when no match is found
  *
  * @method Productocolor findOneByIdproducto(int $idproducto) Return the first Productocolor filtered by the idproducto column
  * @method Productocolor findOneByIdcolor(int $idcolor) Return the first Productocolor filtered by the idcolor column
+ * @method Productocolor findOneByProductocolorFoto(string $productocolor_foto) Return the first Productocolor filtered by the productocolor_foto column
  *
  * @method array findByIdproductocolor(int $idproductocolor) Return Productocolor objects filtered by the idproductocolor column
  * @method array findByIdproducto(int $idproducto) Return Productocolor objects filtered by the idproducto column
  * @method array findByIdcolor(int $idcolor) Return Productocolor objects filtered by the idcolor column
+ * @method array findByProductocolorFoto(string $productocolor_foto) Return Productocolor objects filtered by the productocolor_foto column
  *
  * @package    propel.generator.zarely.om
  */
@@ -142,7 +150,7 @@ abstract class BaseProductocolorQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproductocolor`, `idproducto`, `idcolor` FROM `productocolor` WHERE `idproductocolor` = :p0';
+        $sql = 'SELECT `idproductocolor`, `idproducto`, `idcolor`, `productocolor_foto` FROM `productocolor` WHERE `idproductocolor` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -362,6 +370,35 @@ abstract class BaseProductocolorQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the productocolor_foto column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProductocolorFoto('fooValue');   // WHERE productocolor_foto = 'fooValue'
+     * $query->filterByProductocolorFoto('%fooValue%'); // WHERE productocolor_foto LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $productocolorFoto The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProductocolorQuery The current query, for fluid interface
+     */
+    public function filterByProductocolorFoto($productocolorFoto = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($productocolorFoto)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $productocolorFoto)) {
+                $productocolorFoto = str_replace('*', '%', $productocolorFoto);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProductocolorPeer::PRODUCTOCOLOR_FOTO, $productocolorFoto, $comparison);
+    }
+
+    /**
      * Filter the query by a related Color object
      *
      * @param   Color|PropelObjectCollection $color The related object(s) to use as filter
@@ -511,6 +548,80 @@ abstract class BaseProductocolorQuery extends ModelCriteria
         return $this
             ->joinProducto($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Producto', 'ProductoQuery');
+    }
+
+    /**
+     * Filter the query by a related Productovariante object
+     *
+     * @param   Productovariante|PropelObjectCollection $productovariante  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductocolorQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByProductovariante($productovariante, $comparison = null)
+    {
+        if ($productovariante instanceof Productovariante) {
+            return $this
+                ->addUsingAlias(ProductocolorPeer::IDPRODUCTOCOLOR, $productovariante->getIdproductocolor(), $comparison);
+        } elseif ($productovariante instanceof PropelObjectCollection) {
+            return $this
+                ->useProductovarianteQuery()
+                ->filterByPrimaryKeys($productovariante->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByProductovariante() only accepts arguments of type Productovariante or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Productovariante relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductocolorQuery The current query, for fluid interface
+     */
+    public function joinProductovariante($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Productovariante');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Productovariante');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Productovariante relation Productovariante object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ProductovarianteQuery A secondary query class using the current class as primary query
+     */
+    public function useProductovarianteQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinProductovariante($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Productovariante', 'ProductovarianteQuery');
     }
 
     /**

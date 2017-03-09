@@ -41,6 +41,7 @@ class ProductocolorTableMap extends TableMap
         $this->addPrimaryKey('idproductocolor', 'Idproductocolor', 'INTEGER', true, null, null);
         $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', true, null, null);
         $this->addForeignKey('idcolor', 'Idcolor', 'INTEGER', 'color', 'idcolor', true, null, null);
+        $this->addColumn('productocolor_foto', 'ProductocolorFoto', 'LONGVARCHAR', false, null, null);
         // validators
     } // initialize()
 
@@ -51,6 +52,7 @@ class ProductocolorTableMap extends TableMap
     {
         $this->addRelation('Color', 'Color', RelationMap::MANY_TO_ONE, array('idcolor' => 'idcolor', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idproducto' => 'idproducto', ), null, null);
+        $this->addRelation('Productovariante', 'Productovariante', RelationMap::ONE_TO_MANY, array('idproductocolor' => 'idproductocolor', ), 'CASCADE', 'CASCADE', 'Productovariantes');
     } // buildRelations()
 
 } // ProductocolorTableMap

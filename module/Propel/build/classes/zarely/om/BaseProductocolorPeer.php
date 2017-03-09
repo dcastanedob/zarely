@@ -24,13 +24,13 @@ abstract class BaseProductocolorPeer
     const TM_CLASS = 'ProductocolorTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the idproductocolor field */
     const IDPRODUCTOCOLOR = 'productocolor.idproductocolor';
@@ -40,6 +40,9 @@ abstract class BaseProductocolorPeer
 
     /** the column name for the idcolor field */
     const IDCOLOR = 'productocolor.idcolor';
+
+    /** the column name for the productocolor_foto field */
+    const PRODUCTOCOLOR_FOTO = 'productocolor.productocolor_foto';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -60,12 +63,12 @@ abstract class BaseProductocolorPeer
      * e.g. ProductocolorPeer::$fieldNames[ProductocolorPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductocolor', 'Idproducto', 'Idcolor', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductocolor', 'idproducto', 'idcolor', ),
-        BasePeer::TYPE_COLNAME => array (ProductocolorPeer::IDPRODUCTOCOLOR, ProductocolorPeer::IDPRODUCTO, ProductocolorPeer::IDCOLOR, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCOLOR', 'IDPRODUCTO', 'IDCOLOR', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductocolor', 'idproducto', 'idcolor', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Idproductocolor', 'Idproducto', 'Idcolor', 'ProductocolorFoto', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductocolor', 'idproducto', 'idcolor', 'productocolorFoto', ),
+        BasePeer::TYPE_COLNAME => array (ProductocolorPeer::IDPRODUCTOCOLOR, ProductocolorPeer::IDPRODUCTO, ProductocolorPeer::IDCOLOR, ProductocolorPeer::PRODUCTOCOLOR_FOTO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCOLOR', 'IDPRODUCTO', 'IDCOLOR', 'PRODUCTOCOLOR_FOTO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductocolor', 'idproducto', 'idcolor', 'productocolor_foto', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -75,12 +78,12 @@ abstract class BaseProductocolorPeer
      * e.g. ProductocolorPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductocolor' => 0, 'Idproducto' => 1, 'Idcolor' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductocolor' => 0, 'idproducto' => 1, 'idcolor' => 2, ),
-        BasePeer::TYPE_COLNAME => array (ProductocolorPeer::IDPRODUCTOCOLOR => 0, ProductocolorPeer::IDPRODUCTO => 1, ProductocolorPeer::IDCOLOR => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCOLOR' => 0, 'IDPRODUCTO' => 1, 'IDCOLOR' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductocolor' => 0, 'idproducto' => 1, 'idcolor' => 2, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Idproductocolor' => 0, 'Idproducto' => 1, 'Idcolor' => 2, 'ProductocolorFoto' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductocolor' => 0, 'idproducto' => 1, 'idcolor' => 2, 'productocolorFoto' => 3, ),
+        BasePeer::TYPE_COLNAME => array (ProductocolorPeer::IDPRODUCTOCOLOR => 0, ProductocolorPeer::IDPRODUCTO => 1, ProductocolorPeer::IDCOLOR => 2, ProductocolorPeer::PRODUCTOCOLOR_FOTO => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCOLOR' => 0, 'IDPRODUCTO' => 1, 'IDCOLOR' => 2, 'PRODUCTOCOLOR_FOTO' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductocolor' => 0, 'idproducto' => 1, 'idcolor' => 2, 'productocolor_foto' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -157,10 +160,12 @@ abstract class BaseProductocolorPeer
             $criteria->addSelectColumn(ProductocolorPeer::IDPRODUCTOCOLOR);
             $criteria->addSelectColumn(ProductocolorPeer::IDPRODUCTO);
             $criteria->addSelectColumn(ProductocolorPeer::IDCOLOR);
+            $criteria->addSelectColumn(ProductocolorPeer::PRODUCTOCOLOR_FOTO);
         } else {
             $criteria->addSelectColumn($alias . '.idproductocolor');
             $criteria->addSelectColumn($alias . '.idproducto');
             $criteria->addSelectColumn($alias . '.idcolor');
+            $criteria->addSelectColumn($alias . '.productocolor_foto');
         }
     }
 
@@ -365,6 +370,9 @@ abstract class BaseProductocolorPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in ProductovariantePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ProductovariantePeer::clearInstancePool();
     }
 
     /**
@@ -1225,6 +1233,7 @@ abstract class BaseProductocolorPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
+            $affectedRows += ProductocolorPeer::doOnDeleteCascade(new Criteria(ProductocolorPeer::DATABASE_NAME), $con);
             $affectedRows += BasePeer::doDeleteAll(ProductocolorPeer::TABLE_NAME, $con, ProductocolorPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
@@ -1258,24 +1267,14 @@ abstract class BaseProductocolorPeer
         }
 
         if ($values instanceof Criteria) {
-            // invalidate the cache for all objects of this type, since we have no
-            // way of knowing (without running a query) what objects should be invalidated
-            // from the cache based on this Criteria.
-            ProductocolorPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
         } elseif ($values instanceof Productocolor) { // it's a model object
-            // invalidate the cache for this single object
-            ProductocolorPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(ProductocolorPeer::DATABASE_NAME);
             $criteria->add(ProductocolorPeer::IDPRODUCTOCOLOR, (array) $values, Criteria::IN);
-            // invalidate the cache for this object(s)
-            foreach ((array) $values as $singleval) {
-                ProductocolorPeer::removeInstanceFromPool($singleval);
-            }
         }
 
         // Set the correct dbName
@@ -1288,6 +1287,23 @@ abstract class BaseProductocolorPeer
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
 
+            // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
+            $c = clone $criteria;
+            $affectedRows += ProductocolorPeer::doOnDeleteCascade($c, $con);
+
+            // Because this db requires some delete cascade/set null emulation, we have to
+            // clear the cached instance *after* the emulation has happened (since
+            // instances get re-added by the select statement contained therein).
+            if ($values instanceof Criteria) {
+                ProductocolorPeer::clearInstancePool();
+            } elseif ($values instanceof Productocolor) { // it's a model object
+                ProductocolorPeer::removeInstanceFromPool($values);
+            } else { // it's a primary key, or an array of pks
+                foreach ((array) $values as $singleval) {
+                    ProductocolorPeer::removeInstanceFromPool($singleval);
+                }
+            }
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             ProductocolorPeer::clearRelatedInstancePool();
             $con->commit();
@@ -1297,6 +1313,39 @@ abstract class BaseProductocolorPeer
             $con->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
+     * feature (like MySQL or SQLite).
+     *
+     * This method is not very speedy because it must perform a query first to get
+     * the implicated records and then perform the deletes by calling those Peer classes.
+     *
+     * This method should be used within a transaction if possible.
+     *
+     * @param      Criteria $criteria
+     * @param      PropelPDO $con
+     * @return int The number of affected rows (if supported by underlying database driver).
+     */
+    protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
+    {
+        // initialize var to track total num of affected rows
+        $affectedRows = 0;
+
+        // first find the objects that are implicated by the $criteria
+        $objects = ProductocolorPeer::doSelect($criteria, $con);
+        foreach ($objects as $obj) {
+
+
+            // delete related Productovariante objects
+            $criteria = new Criteria(ProductovariantePeer::DATABASE_NAME);
+
+            $criteria->add(ProductovariantePeer::IDPRODUCTOCOLOR, $obj->getIdproductocolor());
+            $affectedRows += ProductovariantePeer::doDelete($criteria, $con);
+        }
+
+        return $affectedRows;
     }
 
     /**

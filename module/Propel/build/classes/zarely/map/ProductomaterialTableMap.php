@@ -51,6 +51,7 @@ class ProductomaterialTableMap extends TableMap
     {
         $this->addRelation('Material', 'Material', RelationMap::MANY_TO_ONE, array('idmaterial' => 'idmaterial', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Productovariante', 'Productovariante', RelationMap::ONE_TO_MANY, array('idproductomaterial' => 'idproductomaterial', ), 'CASCADE', 'CASCADE', 'Productovariantes');
     } // buildRelations()
 
 } // ProductomaterialTableMap

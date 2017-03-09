@@ -401,6 +401,7 @@
                    var $tr = $('<tr>');
                    
                    $tr.append('<td><input type="hidden" name="color[]" value="'+id+'">'+value+'</td>');
+                   $tr.append('<td><input name="uploadedfile' +id+ '"type="file" /></td>');
                    $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
                    
                    $tr.find('a').on('click',function(){
@@ -426,8 +427,7 @@
                  
               });
 
-                  
-                 
+                   
                  
                  
             });

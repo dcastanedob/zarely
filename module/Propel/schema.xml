@@ -116,6 +116,37 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="pedido" phpName="Pedido" idMethod="native">
+    <column name="idpedido" phpName="Idpedido" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idsucursal" phpName="Idsucursal" type="INTEGER" required="true"/>
+    <column name="pedido_fecha" phpName="PedidoFecha" type="DATE" required="true"/>
+    <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
+    <column name="pedido_cantidad" phpName="PedidoCantidad" type="INTEGER" required="true"/>
+    <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
+    <column name="pedido_nota" phpName="PedidoNota" type="LONGVARCHAR" required="false"/>
+    <column name="pedido_estatus" phpName="PedidoEstatus" type="CHAR" sqlType="enum('pendiente','solicitado','transito','completado')" required="true" defaultValue="pendiente"/>
+    <foreign-key foreignTable="producto" name="idproducto_pedido" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproducto" foreign="idproducto"/>
+    </foreign-key>
+    <foreign-key foreignTable="productovariante" name="idproductovariante_pedido" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductovariante" foreign="idproductovariante"/>
+    </foreign-key>
+    <foreign-key foreignTable="sucursal" name="idsucursal_pedido" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idsucursal" foreign="idsucursal"/>
+    </foreign-key>
+    <index name="idsucursal">
+      <index-column name="idsucursal"/>
+    </index>
+    <index name="idproductovariante">
+      <index-column name="idproductovariante"/>
+    </index>
+    <index name="idproducto">
+      <index-column name="idproducto"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="producto" phpName="Producto" idMethod="native">
     <column name="idproducto" phpName="Idproducto" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="producto_modelo" phpName="ProductoModelo" type="VARCHAR" size="100" required="true"/>
@@ -163,6 +194,7 @@
     <column name="idproductocolor" phpName="Idproductocolor" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
     <column name="idcolor" phpName="Idcolor" type="INTEGER" required="true"/>
+    <column name="productocolor_foto" phpName="ProductocolorFoto" type="LONGVARCHAR" required="false"/>
     <foreign-key foreignTable="color" name="idcolor_productocolor" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idcolor" foreign="idcolor"/>
     </foreign-key>
@@ -219,6 +251,32 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="productosucursal" phpName="Productosucursal" idMethod="native">
+    <column name="idproductosucursal" phpName="Idproductosucursal" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
+    <column name="idsucursal" phpName="Idsucursal" type="INTEGER" required="true"/>
+    <column name="productosucursal_existencia" phpName="ProductosucursalExistencia" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="productosucursal_minimo" phpName="ProductosucursalMinimo" type="INTEGER" required="true"/>
+    <column name="productosucursal_reorden" phpName="ProductosucursalReorden" type="INTEGER" required="true"/>
+    <column name="productosucursal_precioventa" phpName="ProductosucursalPrecioventa" type="DECIMAL" size="10" scale="5" required="true"/>
+    <column name="productosucursal_preciomayoreo" phpName="ProductosucursalPreciomayoreo" type="DECIMAL" size="10" scale="5" required="true"/>
+    <column name="productosucursal_estatus" phpName="ProductosucursalEstatus" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
+    <foreign-key foreignTable="productovariante" name="idproductovariante_productosucursal" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductovariante" foreign="idproductovariante"/>
+    </foreign-key>
+    <foreign-key foreignTable="sucursal" name="idsucursal_productosucursal" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idsucursal" foreign="idsucursal"/>
+    </foreign-key>
+    <index name="idproductovariante">
+      <index-column name="idproductovariante"/>
+    </index>
+    <index name="idsucursal">
+      <index-column name="idsucursal"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="productotallaje" phpName="Productotallaje" idMethod="native">
     <column name="idproductotallaje" phpName="Idproductotallaje" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
@@ -234,6 +292,37 @@
     </index>
     <index name="idtallaje">
       <index-column name="idtallaje"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="productovariante" phpName="Productovariante" idMethod="native">
+    <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
+    <column name="idproductocolor" phpName="Idproductocolor" type="INTEGER" required="true"/>
+    <column name="idproductomaterial" phpName="Idproductomaterial" type="INTEGER" required="true"/>
+    <column name="productovariante_codigobarras" phpName="ProductovarianteCodigobarras" type="VARCHAR" size="45" required="false"/>
+    <column name="productovariante_talla" phpName="ProductovarianteTalla" type="VARCHAR" size="45" required="true"/>
+    <column name="productovariante_tallatipo" phpName="ProductovarianteTallatipo" type="CHAR" sqlType="enum('medida','numero','ninguno')" required="false"/>
+    <column name="productovariante_estatus" phpName="ProductovarianteEstatus" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
+    <foreign-key foreignTable="producto" name="idproducto_productovariante" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproducto" foreign="idproducto"/>
+    </foreign-key>
+    <foreign-key foreignTable="productocolor" name="idproductocolor_productovariante" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductocolor" foreign="idproductocolor"/>
+    </foreign-key>
+    <foreign-key foreignTable="productomaterial" name="idproductomaterial_productomaterial" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductomaterial" foreign="idproductomaterial"/>
+    </foreign-key>
+    <index name="idproductocolor">
+      <index-column name="idproductocolor"/>
+    </index>
+    <index name="idproductomaterial">
+      <index-column name="idproductomaterial"/>
+    </index>
+    <index name="idproducto_productovariante_idx">
+      <index-column name="idproducto"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>

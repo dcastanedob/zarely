@@ -32,6 +32,14 @@
  * @method SucursalQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method SucursalQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method SucursalQuery leftJoinPedido($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedido relation
+ * @method SucursalQuery rightJoinPedido($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedido relation
+ * @method SucursalQuery innerJoinPedido($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedido relation
+ *
+ * @method SucursalQuery leftJoinProductosucursal($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productosucursal relation
+ * @method SucursalQuery rightJoinProductosucursal($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productosucursal relation
+ * @method SucursalQuery innerJoinProductosucursal($relationAlias = null) Adds a INNER JOIN clause to the query using the Productosucursal relation
+ *
  * @method SucursalQuery leftJoinSucursalempleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Sucursalempleado relation
  * @method SucursalQuery rightJoinSucursalempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Sucursalempleado relation
  * @method SucursalQuery innerJoinSucursalempleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Sucursalempleado relation
@@ -556,6 +564,154 @@ abstract class BaseSucursalQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SucursalPeer::SUCURSAL_ESTADO, $sucursalEstado, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Pedido object
+     *
+     * @param   Pedido|PropelObjectCollection $pedido  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 SucursalQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPedido($pedido, $comparison = null)
+    {
+        if ($pedido instanceof Pedido) {
+            return $this
+                ->addUsingAlias(SucursalPeer::IDSUCURSAL, $pedido->getIdsucursal(), $comparison);
+        } elseif ($pedido instanceof PropelObjectCollection) {
+            return $this
+                ->usePedidoQuery()
+                ->filterByPrimaryKeys($pedido->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPedido() only accepts arguments of type Pedido or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Pedido relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return SucursalQuery The current query, for fluid interface
+     */
+    public function joinPedido($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Pedido');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Pedido');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Pedido relation Pedido object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PedidoQuery A secondary query class using the current class as primary query
+     */
+    public function usePedidoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPedido($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Pedido', 'PedidoQuery');
+    }
+
+    /**
+     * Filter the query by a related Productosucursal object
+     *
+     * @param   Productosucursal|PropelObjectCollection $productosucursal  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 SucursalQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByProductosucursal($productosucursal, $comparison = null)
+    {
+        if ($productosucursal instanceof Productosucursal) {
+            return $this
+                ->addUsingAlias(SucursalPeer::IDSUCURSAL, $productosucursal->getIdsucursal(), $comparison);
+        } elseif ($productosucursal instanceof PropelObjectCollection) {
+            return $this
+                ->useProductosucursalQuery()
+                ->filterByPrimaryKeys($productosucursal->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByProductosucursal() only accepts arguments of type Productosucursal or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Productosucursal relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return SucursalQuery The current query, for fluid interface
+     */
+    public function joinProductosucursal($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Productosucursal');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Productosucursal');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Productosucursal relation Productosucursal object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ProductosucursalQuery A secondary query class using the current class as primary query
+     */
+    public function useProductosucursalQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinProductosucursal($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Productosucursal', 'ProductosucursalQuery');
     }
 
     /**

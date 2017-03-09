@@ -58,6 +58,12 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     protected $aProducto;
 
     /**
+     * @var        PropelObjectCollection|Productovariante[] Collection to store aggregation of Productovariante objects.
+     */
+    protected $collProductovariantes;
+    protected $collProductovariantesPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -76,6 +82,12 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $productovariantesScheduledForDeletion = null;
 
     /**
      * Get the [idproductomaterial] column value.
@@ -295,6 +307,8 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
 
             $this->aMaterial = null;
             $this->aProducto = null;
+            $this->collProductovariantes = null;
+
         } // if (deep)
     }
 
@@ -436,6 +450,23 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->productovariantesScheduledForDeletion !== null) {
+                if (!$this->productovariantesScheduledForDeletion->isEmpty()) {
+                    ProductovarianteQuery::create()
+                        ->filterByPrimaryKeys($this->productovariantesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->productovariantesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collProductovariantes !== null) {
+                foreach ($this->collProductovariantes as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -610,6 +641,14 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             }
 
 
+                if ($this->collProductovariantes !== null) {
+                    foreach ($this->collProductovariantes as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -698,6 +737,9 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             }
             if (null !== $this->aProducto) {
                 $result['Producto'] = $this->aProducto->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collProductovariantes) {
+                $result['Productovariantes'] = $this->collProductovariantes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -856,6 +898,12 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getProductovariantes() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addProductovariante($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1010,6 +1058,297 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         return $this->aProducto;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Productovariante' == $relationName) {
+            $this->initProductovariantes();
+        }
+    }
+
+    /**
+     * Clears out the collProductovariantes collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Productomaterial The current object (for fluent API support)
+     * @see        addProductovariantes()
+     */
+    public function clearProductovariantes()
+    {
+        $this->collProductovariantes = null; // important to set this to null since that means it is uninitialized
+        $this->collProductovariantesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collProductovariantes collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialProductovariantes($v = true)
+    {
+        $this->collProductovariantesPartial = $v;
+    }
+
+    /**
+     * Initializes the collProductovariantes collection.
+     *
+     * By default this just sets the collProductovariantes collection to an empty array (like clearcollProductovariantes());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initProductovariantes($overrideExisting = true)
+    {
+        if (null !== $this->collProductovariantes && !$overrideExisting) {
+            return;
+        }
+        $this->collProductovariantes = new PropelObjectCollection();
+        $this->collProductovariantes->setModel('Productovariante');
+    }
+
+    /**
+     * Gets an array of Productovariante objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Productomaterial is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Productovariante[] List of Productovariante objects
+     * @throws PropelException
+     */
+    public function getProductovariantes($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collProductovariantesPartial && !$this->isNew();
+        if (null === $this->collProductovariantes || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collProductovariantes) {
+                // return empty collection
+                $this->initProductovariantes();
+            } else {
+                $collProductovariantes = ProductovarianteQuery::create(null, $criteria)
+                    ->filterByProductomaterial($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collProductovariantesPartial && count($collProductovariantes)) {
+                      $this->initProductovariantes(false);
+
+                      foreach ($collProductovariantes as $obj) {
+                        if (false == $this->collProductovariantes->contains($obj)) {
+                          $this->collProductovariantes->append($obj);
+                        }
+                      }
+
+                      $this->collProductovariantesPartial = true;
+                    }
+
+                    $collProductovariantes->getInternalIterator()->rewind();
+
+                    return $collProductovariantes;
+                }
+
+                if ($partial && $this->collProductovariantes) {
+                    foreach ($this->collProductovariantes as $obj) {
+                        if ($obj->isNew()) {
+                            $collProductovariantes[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collProductovariantes = $collProductovariantes;
+                $this->collProductovariantesPartial = false;
+            }
+        }
+
+        return $this->collProductovariantes;
+    }
+
+    /**
+     * Sets a collection of Productovariante objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $productovariantes A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Productomaterial The current object (for fluent API support)
+     */
+    public function setProductovariantes(PropelCollection $productovariantes, PropelPDO $con = null)
+    {
+        $productovariantesToDelete = $this->getProductovariantes(new Criteria(), $con)->diff($productovariantes);
+
+
+        $this->productovariantesScheduledForDeletion = $productovariantesToDelete;
+
+        foreach ($productovariantesToDelete as $productovarianteRemoved) {
+            $productovarianteRemoved->setProductomaterial(null);
+        }
+
+        $this->collProductovariantes = null;
+        foreach ($productovariantes as $productovariante) {
+            $this->addProductovariante($productovariante);
+        }
+
+        $this->collProductovariantes = $productovariantes;
+        $this->collProductovariantesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Productovariante objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Productovariante objects.
+     * @throws PropelException
+     */
+    public function countProductovariantes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collProductovariantesPartial && !$this->isNew();
+        if (null === $this->collProductovariantes || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collProductovariantes) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getProductovariantes());
+            }
+            $query = ProductovarianteQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProductomaterial($this)
+                ->count($con);
+        }
+
+        return count($this->collProductovariantes);
+    }
+
+    /**
+     * Method called to associate a Productovariante object to this object
+     * through the Productovariante foreign key attribute.
+     *
+     * @param    Productovariante $l Productovariante
+     * @return Productomaterial The current object (for fluent API support)
+     */
+    public function addProductovariante(Productovariante $l)
+    {
+        if ($this->collProductovariantes === null) {
+            $this->initProductovariantes();
+            $this->collProductovariantesPartial = true;
+        }
+
+        if (!in_array($l, $this->collProductovariantes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddProductovariante($l);
+
+            if ($this->productovariantesScheduledForDeletion and $this->productovariantesScheduledForDeletion->contains($l)) {
+                $this->productovariantesScheduledForDeletion->remove($this->productovariantesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Productovariante $productovariante The productovariante object to add.
+     */
+    protected function doAddProductovariante($productovariante)
+    {
+        $this->collProductovariantes[]= $productovariante;
+        $productovariante->setProductomaterial($this);
+    }
+
+    /**
+     * @param	Productovariante $productovariante The productovariante object to remove.
+     * @return Productomaterial The current object (for fluent API support)
+     */
+    public function removeProductovariante($productovariante)
+    {
+        if ($this->getProductovariantes()->contains($productovariante)) {
+            $this->collProductovariantes->remove($this->collProductovariantes->search($productovariante));
+            if (null === $this->productovariantesScheduledForDeletion) {
+                $this->productovariantesScheduledForDeletion = clone $this->collProductovariantes;
+                $this->productovariantesScheduledForDeletion->clear();
+            }
+            $this->productovariantesScheduledForDeletion[]= clone $productovariante;
+            $productovariante->setProductomaterial(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Productomaterial is new, it will return
+     * an empty collection; or if this Productomaterial has previously
+     * been saved, it will retrieve related Productovariantes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Productomaterial.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Productovariante[] List of Productovariante objects
+     */
+    public function getProductovariantesJoinProducto($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ProductovarianteQuery::create(null, $criteria);
+        $query->joinWith('Producto', $join_behavior);
+
+        return $this->getProductovariantes($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Productomaterial is new, it will return
+     * an empty collection; or if this Productomaterial has previously
+     * been saved, it will retrieve related Productovariantes from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Productomaterial.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Productovariante[] List of Productovariante objects
+     */
+    public function getProductovariantesJoinProductocolor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ProductovarianteQuery::create(null, $criteria);
+        $query->joinWith('Productocolor', $join_behavior);
+
+        return $this->getProductovariantes($query, $con);
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -1040,6 +1379,11 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collProductovariantes) {
+                foreach ($this->collProductovariantes as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aMaterial instanceof Persistent) {
               $this->aMaterial->clearAllReferences($deep);
             }
@@ -1050,6 +1394,10 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collProductovariantes instanceof PropelCollection) {
+            $this->collProductovariantes->clearIterator();
+        }
+        $this->collProductovariantes = null;
         $this->aMaterial = null;
         $this->aProducto = null;
     }
