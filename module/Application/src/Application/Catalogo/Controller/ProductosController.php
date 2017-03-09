@@ -359,13 +359,21 @@ class ProductosController extends AbstractActionController
         return $productoMarcaRango;
     }
 
+    function get_extension($file) {
+         $extension = end(explode(".", $file));
+         return $extension ? $extension : false;
+    }
+
     public function nuevoAction(){
         
         $request = $this->getRequest();
         
         if($request->isPost()){
             $post_data = $request->getPost();
+            $post_files = $request->getFiles();
+
             
+
 
             $entity = new \Producto();
 
@@ -397,6 +405,16 @@ class ProductosController extends AbstractActionController
                 $productocolor->setIdproducto($entity->getIdproducto())
                              ->setIdcolor($value)
                              ->save();
+
+                if(isset($post_files['uploadedfile'.$value])){
+
+                    $file_type = $this->get_extension($post_files['uploadedfile'.$value]['name']);
+
+                    move_uploaded_file($post_files['uploadedfile'.$value]['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/img/productocolor/'.$productocolor->getIdproductocolor().'.'.$file_type);
+
+
+                    $productocolor->setProductocolorFoto('/img/productocolor/'.$productocolor->getIdproductocolor().'.'.$file_type)->save();
+                }
 
                 array_push($productoColorId, $productocolor->getIdproductocolor());
             }

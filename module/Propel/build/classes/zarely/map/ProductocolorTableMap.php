@@ -41,6 +41,7 @@ class ProductocolorTableMap extends TableMap
         $this->addPrimaryKey('idproductocolor', 'Idproductocolor', 'INTEGER', true, null, null);
         $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', true, null, null);
         $this->addForeignKey('idcolor', 'Idcolor', 'INTEGER', 'color', 'idcolor', true, null, null);
+        $this->addColumn('productocolor_foto', 'ProductocolorFoto', 'LONGVARCHAR', false, null, null);
         // validators
     } // initialize()
 

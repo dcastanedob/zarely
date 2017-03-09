@@ -400,6 +400,9 @@ abstract class BaseSucursalPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in PedidoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PedidoPeer::clearInstancePool();
         // Invalidate objects in ProductosucursalPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductosucursalPeer::clearInstancePool();
@@ -739,6 +742,12 @@ abstract class BaseSucursalPeer
         $objects = SucursalPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
+
+            // delete related Pedido objects
+            $criteria = new Criteria(PedidoPeer::DATABASE_NAME);
+
+            $criteria->add(PedidoPeer::IDSUCURSAL, $obj->getIdsucursal());
+            $affectedRows += PedidoPeer::doDelete($criteria, $con);
 
             // delete related Productosucursal objects
             $criteria = new Criteria(ProductosucursalPeer::DATABASE_NAME);

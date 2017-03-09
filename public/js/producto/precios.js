@@ -134,7 +134,7 @@
                               data:result,
                               success: function(data){
                                 if(data.response){
-                                  swal("Éxito","Precios actualizados!!!  ","success");
+                                  swal("Éxito","Pedidos actualizados!!!  ","success");
                                 }
                                 
                               },

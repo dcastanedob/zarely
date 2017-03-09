@@ -173,6 +173,43 @@ CREATE TABLE `medida`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- pedido
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pedido`;
+
+CREATE TABLE `pedido`
+(
+    `idpedido` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `pedido_fecha` DATE NOT NULL,
+    `idproducto` INTEGER NOT NULL,
+    `pedido_cantidad` INTEGER NOT NULL,
+    `idproductovariante` INTEGER NOT NULL,
+    `pedido_nota` TEXT,
+    `pedido_estatus` enum('pendiente','solicitado','transito','completado') DEFAULT 'pendiente' NOT NULL,
+    PRIMARY KEY (`idpedido`),
+    INDEX `idsucursal` (`idsucursal`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    INDEX `idproducto` (`idproducto`),
+    CONSTRAINT `idproducto_pedido`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductovariante_pedido`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursal_pedido`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- producto
 -- ---------------------------------------------------------------------
 
@@ -232,6 +269,7 @@ CREATE TABLE `productocolor`
     `idproductocolor` INTEGER NOT NULL AUTO_INCREMENT,
     `idproducto` INTEGER NOT NULL,
     `idcolor` INTEGER NOT NULL,
+    `productocolor_foto` TEXT,
     PRIMARY KEY (`idproductocolor`),
     INDEX `idproducto` (`idproducto`),
     INDEX `idcolor` (`idcolor`),
