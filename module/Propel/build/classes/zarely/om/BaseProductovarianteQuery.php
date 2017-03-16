@@ -40,6 +40,10 @@
  * @method ProductovarianteQuery rightJoinProductomaterial($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productomaterial relation
  * @method ProductovarianteQuery innerJoinProductomaterial($relationAlias = null) Adds a INNER JOIN clause to the query using the Productomaterial relation
  *
+ * @method ProductovarianteQuery leftJoinCompradetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Compradetalle relation
+ * @method ProductovarianteQuery rightJoinCompradetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Compradetalle relation
+ * @method ProductovarianteQuery innerJoinCompradetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Compradetalle relation
+ *
  * @method ProductovarianteQuery leftJoinPedido($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedido relation
  * @method ProductovarianteQuery rightJoinPedido($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedido relation
  * @method ProductovarianteQuery innerJoinPedido($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedido relation
@@ -777,6 +781,80 @@ abstract class BaseProductovarianteQuery extends ModelCriteria
         return $this
             ->joinProductomaterial($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Productomaterial', 'ProductomaterialQuery');
+    }
+
+    /**
+     * Filter the query by a related Compradetalle object
+     *
+     * @param   Compradetalle|PropelObjectCollection $compradetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductovarianteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByCompradetalle($compradetalle, $comparison = null)
+    {
+        if ($compradetalle instanceof Compradetalle) {
+            return $this
+                ->addUsingAlias(ProductovariantePeer::IDPRODUCTOVARIANTE, $compradetalle->getIdproductovariante(), $comparison);
+        } elseif ($compradetalle instanceof PropelObjectCollection) {
+            return $this
+                ->useCompradetalleQuery()
+                ->filterByPrimaryKeys($compradetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCompradetalle() only accepts arguments of type Compradetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Compradetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductovarianteQuery The current query, for fluid interface
+     */
+    public function joinCompradetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Compradetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Compradetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Compradetalle relation Compradetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   CompradetalleQuery A secondary query class using the current class as primary query
+     */
+    public function useCompradetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCompradetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Compradetalle', 'CompradetalleQuery');
     }
 
     /**

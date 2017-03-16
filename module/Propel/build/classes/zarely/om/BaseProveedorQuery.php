@@ -24,6 +24,10 @@
  * @method ProveedorQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method ProveedorQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method ProveedorQuery leftJoinCompra($relationAlias = null) Adds a LEFT JOIN clause to the query using the Compra relation
+ * @method ProveedorQuery rightJoinCompra($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Compra relation
+ * @method ProveedorQuery innerJoinCompra($relationAlias = null) Adds a INNER JOIN clause to the query using the Compra relation
+ *
  * @method ProveedorQuery leftJoinProducto($relationAlias = null) Adds a LEFT JOIN clause to the query using the Producto relation
  * @method ProveedorQuery rightJoinProducto($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Producto relation
  * @method ProveedorQuery innerJoinProducto($relationAlias = null) Adds a INNER JOIN clause to the query using the Producto relation
@@ -442,6 +446,80 @@ abstract class BaseProveedorQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_EMAIL, $proveedorEmail, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Compra object
+     *
+     * @param   Compra|PropelObjectCollection $compra  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProveedorQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByCompra($compra, $comparison = null)
+    {
+        if ($compra instanceof Compra) {
+            return $this
+                ->addUsingAlias(ProveedorPeer::IDPROVEEDOR, $compra->getIdproveedor(), $comparison);
+        } elseif ($compra instanceof PropelObjectCollection) {
+            return $this
+                ->useCompraQuery()
+                ->filterByPrimaryKeys($compra->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCompra() only accepts arguments of type Compra or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Compra relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function joinCompra($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Compra');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Compra');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Compra relation Compra object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   CompraQuery A secondary query class using the current class as primary query
+     */
+    public function useCompraQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCompra($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Compra', 'CompraQuery');
     }
 
     /**

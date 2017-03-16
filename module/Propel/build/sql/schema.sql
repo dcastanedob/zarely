@@ -33,6 +33,63 @@ CREATE TABLE `color`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- compra
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `compra`;
+
+CREATE TABLE `compra`
+(
+    `idcompra` INTEGER NOT NULL AUTO_INCREMENT,
+    `idproveedor` INTEGER NOT NULL,
+    `compra_fechacreacion` DATE NOT NULL,
+    `compra_fechacompra` DATE NOT NULL,
+    `compra_total` DECIMAL(10,5) NOT NULL,
+    `compra_estatuspago` TINYINT(1) NOT NULL,
+    `compra_estatus` enum('pendiente','enviada','procesando','en transito','recibido','revisado') NOT NULL,
+    `compra_nota` VARCHAR(45),
+    `compra_comprobante` VARCHAR(45),
+    `compra_fechaentrega` DATE,
+    PRIMARY KEY (`idcompra`),
+    INDEX `idproveedor` (`compra_fechacreacion`),
+    INDEX `idproveedor_compra_idx` (`idproveedor`),
+    CONSTRAINT `idproveedor_compra`
+        FOREIGN KEY (`idproveedor`)
+        REFERENCES `proveedor` (`idproveedor`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- compradetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `compradetalle`;
+
+CREATE TABLE `compradetalle`
+(
+    `idcompradetalle` INTEGER NOT NULL,
+    `idcompra` INTEGER NOT NULL,
+    `idproductovariante` INTEGER NOT NULL,
+    `compradetalle_cantidad` DECIMAL(10,2) NOT NULL,
+    `compradetalle_preciounitario` DECIMAL(10,2),
+    `compradetalle_subtotal` DECIMAL(10,2),
+    PRIMARY KEY (`idcompradetalle`),
+    INDEX `idcompra` (`idcompra`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    CONSTRAINT `idcompra_compradetalle`
+        FOREIGN KEY (`idcompra`)
+        REFERENCES `compra` (`idcompra`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductovariante_compradetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- configuracion
 -- ---------------------------------------------------------------------
 

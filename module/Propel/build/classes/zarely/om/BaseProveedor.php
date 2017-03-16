@@ -66,6 +66,12 @@ abstract class BaseProveedor extends BaseObject implements Persistent
     protected $proveedor_email;
 
     /**
+     * @var        PropelObjectCollection|Compra[] Collection to store aggregation of Compra objects.
+     */
+    protected $collCompras;
+    protected $collComprasPartial;
+
+    /**
      * @var        PropelObjectCollection|Producto[] Collection to store aggregation of Producto objects.
      */
     protected $collProductos;
@@ -96,6 +102,12 @@ abstract class BaseProveedor extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $comprasScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -441,6 +453,8 @@ abstract class BaseProveedor extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collCompras = null;
+
             $this->collProductos = null;
 
             $this->collProveedormarcas = null;
@@ -567,6 +581,23 @@ abstract class BaseProveedor extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->comprasScheduledForDeletion !== null) {
+                if (!$this->comprasScheduledForDeletion->isEmpty()) {
+                    CompraQuery::create()
+                        ->filterByPrimaryKeys($this->comprasScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->comprasScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCompras !== null) {
+                foreach ($this->collCompras as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->productosScheduledForDeletion !== null) {
@@ -775,6 +806,14 @@ abstract class BaseProveedor extends BaseObject implements Persistent
             }
 
 
+                if ($this->collCompras !== null) {
+                    foreach ($this->collCompras as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collProductos !== null) {
                     foreach ($this->collProductos as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -886,6 +925,9 @@ abstract class BaseProveedor extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collCompras) {
+                $result['Compras'] = $this->collCompras->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collProductos) {
                 $result['Productos'] = $this->collProductos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1067,6 +1109,12 @@ abstract class BaseProveedor extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getCompras() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCompra($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getProductos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addProducto($relObj->copy($deepCopy));
@@ -1140,12 +1188,240 @@ abstract class BaseProveedor extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('Compra' == $relationName) {
+            $this->initCompras();
+        }
         if ('Producto' == $relationName) {
             $this->initProductos();
         }
         if ('Proveedormarca' == $relationName) {
             $this->initProveedormarcas();
         }
+    }
+
+    /**
+     * Clears out the collCompras collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Proveedor The current object (for fluent API support)
+     * @see        addCompras()
+     */
+    public function clearCompras()
+    {
+        $this->collCompras = null; // important to set this to null since that means it is uninitialized
+        $this->collComprasPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collCompras collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialCompras($v = true)
+    {
+        $this->collComprasPartial = $v;
+    }
+
+    /**
+     * Initializes the collCompras collection.
+     *
+     * By default this just sets the collCompras collection to an empty array (like clearcollCompras());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCompras($overrideExisting = true)
+    {
+        if (null !== $this->collCompras && !$overrideExisting) {
+            return;
+        }
+        $this->collCompras = new PropelObjectCollection();
+        $this->collCompras->setModel('Compra');
+    }
+
+    /**
+     * Gets an array of Compra objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Proveedor is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Compra[] List of Compra objects
+     * @throws PropelException
+     */
+    public function getCompras($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collComprasPartial && !$this->isNew();
+        if (null === $this->collCompras || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCompras) {
+                // return empty collection
+                $this->initCompras();
+            } else {
+                $collCompras = CompraQuery::create(null, $criteria)
+                    ->filterByProveedor($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collComprasPartial && count($collCompras)) {
+                      $this->initCompras(false);
+
+                      foreach ($collCompras as $obj) {
+                        if (false == $this->collCompras->contains($obj)) {
+                          $this->collCompras->append($obj);
+                        }
+                      }
+
+                      $this->collComprasPartial = true;
+                    }
+
+                    $collCompras->getInternalIterator()->rewind();
+
+                    return $collCompras;
+                }
+
+                if ($partial && $this->collCompras) {
+                    foreach ($this->collCompras as $obj) {
+                        if ($obj->isNew()) {
+                            $collCompras[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCompras = $collCompras;
+                $this->collComprasPartial = false;
+            }
+        }
+
+        return $this->collCompras;
+    }
+
+    /**
+     * Sets a collection of Compra objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $compras A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setCompras(PropelCollection $compras, PropelPDO $con = null)
+    {
+        $comprasToDelete = $this->getCompras(new Criteria(), $con)->diff($compras);
+
+
+        $this->comprasScheduledForDeletion = $comprasToDelete;
+
+        foreach ($comprasToDelete as $compraRemoved) {
+            $compraRemoved->setProveedor(null);
+        }
+
+        $this->collCompras = null;
+        foreach ($compras as $compra) {
+            $this->addCompra($compra);
+        }
+
+        $this->collCompras = $compras;
+        $this->collComprasPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Compra objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Compra objects.
+     * @throws PropelException
+     */
+    public function countCompras(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collComprasPartial && !$this->isNew();
+        if (null === $this->collCompras || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCompras) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCompras());
+            }
+            $query = CompraQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProveedor($this)
+                ->count($con);
+        }
+
+        return count($this->collCompras);
+    }
+
+    /**
+     * Method called to associate a Compra object to this object
+     * through the Compra foreign key attribute.
+     *
+     * @param    Compra $l Compra
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function addCompra(Compra $l)
+    {
+        if ($this->collCompras === null) {
+            $this->initCompras();
+            $this->collComprasPartial = true;
+        }
+
+        if (!in_array($l, $this->collCompras->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddCompra($l);
+
+            if ($this->comprasScheduledForDeletion and $this->comprasScheduledForDeletion->contains($l)) {
+                $this->comprasScheduledForDeletion->remove($this->comprasScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Compra $compra The compra object to add.
+     */
+    protected function doAddCompra($compra)
+    {
+        $this->collCompras[]= $compra;
+        $compra->setProveedor($this);
+    }
+
+    /**
+     * @param	Compra $compra The compra object to remove.
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function removeCompra($compra)
+    {
+        if ($this->getCompras()->contains($compra)) {
+            $this->collCompras->remove($this->collCompras->search($compra));
+            if (null === $this->comprasScheduledForDeletion) {
+                $this->comprasScheduledForDeletion = clone $this->collCompras;
+                $this->comprasScheduledForDeletion->clear();
+            }
+            $this->comprasScheduledForDeletion[]= clone $compra;
+            $compra->setProveedor(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -1731,6 +2007,11 @@ abstract class BaseProveedor extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collCompras) {
+                foreach ($this->collCompras as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collProductos) {
                 foreach ($this->collProductos as $o) {
                     $o->clearAllReferences($deep);
@@ -1745,6 +2026,10 @@ abstract class BaseProveedor extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collCompras instanceof PropelCollection) {
+            $this->collCompras->clearIterator();
+        }
+        $this->collCompras = null;
         if ($this->collProductos instanceof PropelCollection) {
             $this->collProductos->clearIterator();
         }
