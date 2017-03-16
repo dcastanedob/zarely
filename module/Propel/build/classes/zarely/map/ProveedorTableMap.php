@@ -52,6 +52,7 @@ class ProveedorTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Compra', 'Compra', RelationMap::ONE_TO_MANY, array('idproveedor' => 'idproveedor', ), 'CASCADE', 'CASCADE', 'Compras');
         $this->addRelation('Producto', 'Producto', RelationMap::ONE_TO_MANY, array('idproveedor' => 'idproveedor', ), 'CASCADE', 'CASCADE', 'Productos');
         $this->addRelation('Proveedormarca', 'Proveedormarca', RelationMap::ONE_TO_MANY, array('idproveedor' => 'idproveedor', ), 'CASCADE', 'CASCADE', 'Proveedormarcas');
     } // buildRelations()

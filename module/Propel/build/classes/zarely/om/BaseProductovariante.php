@@ -94,6 +94,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     protected $aProductomaterial;
 
     /**
+     * @var        PropelObjectCollection|Compradetalle[] Collection to store aggregation of Compradetalle objects.
+     */
+    protected $collCompradetalles;
+    protected $collCompradetallesPartial;
+
+    /**
      * @var        PropelObjectCollection|Pedido[] Collection to store aggregation of Pedido objects.
      */
     protected $collPedidos;
@@ -124,6 +130,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $compradetallesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -561,6 +573,8 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             $this->aProducto = null;
             $this->aProductocolor = null;
             $this->aProductomaterial = null;
+            $this->collCompradetalles = null;
+
             $this->collPedidos = null;
 
             $this->collProductosucursals = null;
@@ -713,6 +727,23 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->compradetallesScheduledForDeletion !== null) {
+                if (!$this->compradetallesScheduledForDeletion->isEmpty()) {
+                    CompradetalleQuery::create()
+                        ->filterByPrimaryKeys($this->compradetallesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->compradetallesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCompradetalles !== null) {
+                foreach ($this->collCompradetalles as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->pedidosScheduledForDeletion !== null) {
@@ -957,6 +988,14 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             }
 
 
+                if ($this->collCompradetalles !== null) {
+                    foreach ($this->collCompradetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPedidos !== null) {
                     foreach ($this->collPedidos as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1084,6 +1123,9 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             }
             if (null !== $this->aProductomaterial) {
                 $result['Productomaterial'] = $this->aProductomaterial->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collCompradetalles) {
+                $result['Compradetalles'] = $this->collCompradetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPedidos) {
                 $result['Pedidos'] = $this->collPedidos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1277,6 +1319,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
+
+            foreach ($this->getCompradetalles() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCompradetalle($relObj->copy($deepCopy));
+                }
+            }
 
             foreach ($this->getPedidos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1507,12 +1555,265 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('Compradetalle' == $relationName) {
+            $this->initCompradetalles();
+        }
         if ('Pedido' == $relationName) {
             $this->initPedidos();
         }
         if ('Productosucursal' == $relationName) {
             $this->initProductosucursals();
         }
+    }
+
+    /**
+     * Clears out the collCompradetalles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Productovariante The current object (for fluent API support)
+     * @see        addCompradetalles()
+     */
+    public function clearCompradetalles()
+    {
+        $this->collCompradetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collCompradetallesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collCompradetalles collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialCompradetalles($v = true)
+    {
+        $this->collCompradetallesPartial = $v;
+    }
+
+    /**
+     * Initializes the collCompradetalles collection.
+     *
+     * By default this just sets the collCompradetalles collection to an empty array (like clearcollCompradetalles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCompradetalles($overrideExisting = true)
+    {
+        if (null !== $this->collCompradetalles && !$overrideExisting) {
+            return;
+        }
+        $this->collCompradetalles = new PropelObjectCollection();
+        $this->collCompradetalles->setModel('Compradetalle');
+    }
+
+    /**
+     * Gets an array of Compradetalle objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Productovariante is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Compradetalle[] List of Compradetalle objects
+     * @throws PropelException
+     */
+    public function getCompradetalles($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collCompradetallesPartial && !$this->isNew();
+        if (null === $this->collCompradetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCompradetalles) {
+                // return empty collection
+                $this->initCompradetalles();
+            } else {
+                $collCompradetalles = CompradetalleQuery::create(null, $criteria)
+                    ->filterByProductovariante($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collCompradetallesPartial && count($collCompradetalles)) {
+                      $this->initCompradetalles(false);
+
+                      foreach ($collCompradetalles as $obj) {
+                        if (false == $this->collCompradetalles->contains($obj)) {
+                          $this->collCompradetalles->append($obj);
+                        }
+                      }
+
+                      $this->collCompradetallesPartial = true;
+                    }
+
+                    $collCompradetalles->getInternalIterator()->rewind();
+
+                    return $collCompradetalles;
+                }
+
+                if ($partial && $this->collCompradetalles) {
+                    foreach ($this->collCompradetalles as $obj) {
+                        if ($obj->isNew()) {
+                            $collCompradetalles[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCompradetalles = $collCompradetalles;
+                $this->collCompradetallesPartial = false;
+            }
+        }
+
+        return $this->collCompradetalles;
+    }
+
+    /**
+     * Sets a collection of Compradetalle objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $compradetalles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function setCompradetalles(PropelCollection $compradetalles, PropelPDO $con = null)
+    {
+        $compradetallesToDelete = $this->getCompradetalles(new Criteria(), $con)->diff($compradetalles);
+
+
+        $this->compradetallesScheduledForDeletion = $compradetallesToDelete;
+
+        foreach ($compradetallesToDelete as $compradetalleRemoved) {
+            $compradetalleRemoved->setProductovariante(null);
+        }
+
+        $this->collCompradetalles = null;
+        foreach ($compradetalles as $compradetalle) {
+            $this->addCompradetalle($compradetalle);
+        }
+
+        $this->collCompradetalles = $compradetalles;
+        $this->collCompradetallesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Compradetalle objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Compradetalle objects.
+     * @throws PropelException
+     */
+    public function countCompradetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collCompradetallesPartial && !$this->isNew();
+        if (null === $this->collCompradetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCompradetalles) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCompradetalles());
+            }
+            $query = CompradetalleQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProductovariante($this)
+                ->count($con);
+        }
+
+        return count($this->collCompradetalles);
+    }
+
+    /**
+     * Method called to associate a Compradetalle object to this object
+     * through the Compradetalle foreign key attribute.
+     *
+     * @param    Compradetalle $l Compradetalle
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function addCompradetalle(Compradetalle $l)
+    {
+        if ($this->collCompradetalles === null) {
+            $this->initCompradetalles();
+            $this->collCompradetallesPartial = true;
+        }
+
+        if (!in_array($l, $this->collCompradetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddCompradetalle($l);
+
+            if ($this->compradetallesScheduledForDeletion and $this->compradetallesScheduledForDeletion->contains($l)) {
+                $this->compradetallesScheduledForDeletion->remove($this->compradetallesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Compradetalle $compradetalle The compradetalle object to add.
+     */
+    protected function doAddCompradetalle($compradetalle)
+    {
+        $this->collCompradetalles[]= $compradetalle;
+        $compradetalle->setProductovariante($this);
+    }
+
+    /**
+     * @param	Compradetalle $compradetalle The compradetalle object to remove.
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function removeCompradetalle($compradetalle)
+    {
+        if ($this->getCompradetalles()->contains($compradetalle)) {
+            $this->collCompradetalles->remove($this->collCompradetalles->search($compradetalle));
+            if (null === $this->compradetallesScheduledForDeletion) {
+                $this->compradetallesScheduledForDeletion = clone $this->collCompradetalles;
+                $this->compradetallesScheduledForDeletion->clear();
+            }
+            $this->compradetallesScheduledForDeletion[]= clone $compradetalle;
+            $compradetalle->setProductovariante(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Productovariante is new, it will return
+     * an empty collection; or if this Productovariante has previously
+     * been saved, it will retrieve related Compradetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Productovariante.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Compradetalle[] List of Compradetalle objects
+     */
+    public function getCompradetallesJoinCompra($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = CompradetalleQuery::create(null, $criteria);
+        $query->joinWith('Compra', $join_behavior);
+
+        return $this->getCompradetalles($query, $con);
     }
 
     /**
@@ -2076,6 +2377,11 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collCompradetalles) {
+                foreach ($this->collCompradetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPedidos) {
                 foreach ($this->collPedidos as $o) {
                     $o->clearAllReferences($deep);
@@ -2099,6 +2405,10 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collCompradetalles instanceof PropelCollection) {
+            $this->collCompradetalles->clearIterator();
+        }
+        $this->collCompradetalles = null;
         if ($this->collPedidos instanceof PropelCollection) {
             $this->collPedidos->clearIterator();
         }

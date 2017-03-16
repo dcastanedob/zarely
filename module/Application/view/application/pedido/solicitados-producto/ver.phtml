@@ -1,6 +1,6 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title">Pedidos solicitados</h1>
+	    <h1 class="title-bar-title">Pedidos solicitados por producto</h1>
 	    
 	</div>
 
@@ -21,6 +21,8 @@
 	<?php endforeach;?>
 
 
+
+
 	<!--<div class="row">
 		<div class="col-md-12">
 			<a class="btn btn-bg btn-success btn-labeled pull-right" href="/catalogo/medidas/nuevo">
@@ -38,7 +40,6 @@
 		    <table id="" class="table table-bordered table-nowrap dataTable" cellspacing="0" width="100%">
 		        <thead>
 		            <tr>
-		                <th>Sucursal</th>
 		                <th>Variante</th>
 		                <th>Fotografía</th>
 		                <th>7.0</th>
@@ -103,7 +104,6 @@
 		        </thead>
 		        <tfoot>
 		            <tr>
-		                <th>Sucursal</th>
 		                <th>Variante</th>
 		                <th>Fotografía</th>
 		                <th>7.0</th>
@@ -178,9 +178,9 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.4.2/sweetalert2.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/sweetalert2/6.4.2/sweetalert2.min.css">
 
-<script src="/js/pedido/pedidos_solicitados.js"></script>
+<script src="/js/pedido/pedidos_solicitados_producto.js"></script>
 
 <script>
-	var pedidos_solicitados = $('.body_container').pedidos_solicitados();
-	pedidos_solicitados.list(<?php echo $id ?>);
+	var pedidos_solicitados_producto = $('.body_container').pedidos_solicitados_producto();
+	pedidos_solicitados_producto.list(<?php echo $id ?>);
 </script>

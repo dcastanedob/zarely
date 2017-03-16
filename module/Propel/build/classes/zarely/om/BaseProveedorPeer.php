@@ -380,6 +380,9 @@ abstract class BaseProveedorPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in CompraPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        CompraPeer::clearInstancePool();
         // Invalidate objects in ProductoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductoPeer::clearInstancePool();
@@ -719,6 +722,12 @@ abstract class BaseProveedorPeer
         $objects = ProveedorPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
+
+            // delete related Compra objects
+            $criteria = new Criteria(CompraPeer::DATABASE_NAME);
+
+            $criteria->add(CompraPeer::IDPROVEEDOR, $obj->getIdproveedor());
+            $affectedRows += CompraPeer::doDelete($criteria, $con);
 
             // delete related Producto objects
             $criteria = new Criteria(ProductoPeer::DATABASE_NAME);
