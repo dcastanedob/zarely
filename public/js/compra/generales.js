@@ -73,6 +73,14 @@
 
 
         plugin.initForm = function(){
+
+            $container.find('input[name=compra_fechaentrega]').datepicker({
+                language:'es',
+            });
+
+            $container.find('input[name=compra_fechacompra]').datepicker({
+                language:'es',
+            });
             
             $container.find('select[name*=idproductovariante]').multipleSelect({
                 filter:true,

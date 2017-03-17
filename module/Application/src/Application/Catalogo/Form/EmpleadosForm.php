@@ -23,6 +23,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 1,
             ),
         ));
 
@@ -32,6 +33,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 3,
             ),
         ));
 
@@ -41,6 +43,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 4,
             ),
         ));
 
@@ -50,6 +53,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 5,
             ),
         ));
 
@@ -60,6 +64,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 6,
             ),
         ));
 
@@ -70,6 +75,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 7,
             ),
         ));
 
@@ -80,6 +86,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 2,
             ),
         ));
 
@@ -90,6 +97,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 9,
             ),
         ));
 
@@ -107,6 +115,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 8,
             ),
         ));
 
@@ -116,6 +125,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 11,
             ),
         ));
 
@@ -133,6 +143,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 10,
             ),
         ));
 
@@ -142,6 +153,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 12,
             ),
         ));
 
@@ -152,6 +164,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 13,
             ),
         ));
 
@@ -161,6 +174,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 14,
             ),
         ));
 
@@ -171,6 +185,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 15,
             ),
         ));
 
@@ -180,6 +195,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 17,
             ),
         ));
         
@@ -189,6 +205,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 16,
             ),
         ));
 
@@ -198,6 +215,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 18,
             ),
         ));
 
@@ -208,6 +226,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 19,
             ),
         ));
 
@@ -217,6 +236,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 20,
             ),
         ));
 
@@ -226,6 +246,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 21,
             ),
         ));
 
@@ -239,6 +260,7 @@ class EmpleadosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 22,
                
             ),
         ));

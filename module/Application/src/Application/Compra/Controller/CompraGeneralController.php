@@ -163,6 +163,10 @@ class CompraGeneralController extends AbstractActionController
             
             $entity = new \Compra();
 
+            $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
+
+            $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
+
             foreach ($post_data as $key => $value){
                 if(\CompraPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
@@ -262,6 +266,10 @@ class CompraGeneralController extends AbstractActionController
             if($request->isPost()){
                 $post_data = $request->getPost();
 
+                $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
+
+                $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
+                
                 foreach ($post_data as $key => $value){
                     if(\CompraPeer::getTableMap()->hasColumn($key)){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
