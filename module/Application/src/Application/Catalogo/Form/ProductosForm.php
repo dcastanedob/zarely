@@ -26,6 +26,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 1,
             ),
         ));
 
@@ -46,6 +47,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 3,
             ),
         ));
 
@@ -60,6 +62,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 5,
             ),
         ));
 
@@ -69,6 +72,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 7,
             ),
         ));
 
@@ -78,6 +82,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 9,
             ),
         ));
 
@@ -95,6 +100,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 11,
             ),
         ));
 
@@ -109,6 +115,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 2,
             ),
         ));
 
@@ -123,6 +130,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 4,
             ),
         ));
 
@@ -136,6 +144,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 6,
             ),
         ));
 
@@ -145,6 +154,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 8,
             ),
         ));
 
@@ -154,6 +164,7 @@ class ProductosForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 10,
             ),
         ));
 

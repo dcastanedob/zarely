@@ -648,32 +648,142 @@ class ProductosController extends AbstractActionController
                 $entity->getProductocolors()->delete();
                 $entity->getProductomaterials()->delete();
 
-                foreach ($post_data['tallaje'] as $value){
-                    $productotallaje = new \Productotallaje();
-                    $productotallaje->setIdproducto($entity->getIdproducto())
-                                 ->setIdtallaje($value)
-                                 ->save();
-                }
-
+                $productoMaterialId = [];
                 foreach ($post_data['material'] as $value){
                     $productomaterial = new \Productomaterial();
                     $productomaterial->setIdproducto($entity->getIdproducto())
                                  ->setIdmaterial($value)
                                  ->save();
+
+                    array_push($productoMaterialId, $productomaterial->getIdproductomaterial());
                 }
 
+                $productoColorId = [];
                 foreach ($post_data['color'] as $value){
                     $productocolor = new \Productocolor();
                     $productocolor->setIdproducto($entity->getIdproducto())
                                  ->setIdcolor($value)
                                  ->save();
+
+                    if(isset($post_files['uploadedfile'.$value])){
+
+                        $file_type = $this->get_extension($post_files['uploadedfile'.$value]['name']);
+
+                        move_uploaded_file($post_files['uploadedfile'.$value]['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/img/productocolor/'.$productocolor->getIdproductocolor().'.'.$file_type);
+
+
+                        $productocolor->setProductocolorFoto('/img/productocolor/'.$productocolor->getIdproductocolor().'.'.$file_type)->save();
+                    }
+
+                    array_push($productoColorId, $productocolor->getIdproductocolor());
                 }
 
-                foreach ($post_data['medida'] as $value){
-                    $productomedida = new \Productomedida();
-                    $productomedida->setIdproducto($entity->getIdproducto())
-                                 ->setIdmedida($value)
-                                 ->save();
+                $productoVarianteId = [];
+                if($post_data['tallaje'] != null)
+                {
+                    $productoTallajeNombre = [];
+                    foreach ($post_data['tallaje'] as $value){
+                        $productotallaje = new \Productotallaje();
+                        $productotallaje->setIdproducto($entity->getIdproducto())
+                                     ->setIdtallaje($value)
+                                     ->save();
+
+                        array_push($productoTallajeNombre, $productotallaje->getTallaje()->getTallajerango());
+                    }
+
+                    
+
+                    foreach ($productoTallajeNombre as $tallaje) {
+                        $tallaje = $this->getTallajesRango($tallaje);
+                        foreach ($tallaje as $numero) {
+                            foreach ($productoMaterialId as $material) {
+                                foreach ($productoColorId as $color) {
+                                    $productovariante = new \Productovariante();
+                                    $productovariante->setIdproducto($entity->getIdproducto())
+                                                    ->setIdproductocolor($color)
+                                                    ->setIdproductomaterial($material)
+                                                    ->setProductovarianteTalla($numero)
+                                                    ->setProductovarianteEstatus(1)
+                                                    ->setProductovarianteTallatipo('numero')
+                                                    ->save();
+                                    array_push($productoVarianteId, $productovariante->getIdproductovariante());
+
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                if($post_data['medida'] != null)
+                {
+                    $productoMedidaNombre = [];
+                    foreach ($post_data['medida'] as $value){
+                        $productomedida = new \Productomedida();
+                        $productomedida->setIdproducto($entity->getIdproducto())
+                                     ->setIdmedida($value)
+                                     ->save();
+                        array_push($productoMedidaNombre, $productomedida->getMedida()->getMedidasrango());
+                    }
+
+                    foreach ($productoMedidaNombre as $medida) {
+                        $medida = $this->getMedidasrango($medida);
+
+                        foreach ($medida as $numero) {
+
+                            foreach ($productoMaterialId as $material) {
+                                foreach ($productoColorId as $color) {
+                                    $productovariante = new \Productovariante();
+                                    $productovariante->setIdproducto($entity->getIdproducto())
+                                                    ->setIdproductocolor($color)
+                                                    ->setIdproductomaterial($material)
+                                                    ->setProductovarianteTalla($numero)
+                                                    ->setProductovarianteEstatus(1)
+                                                    ->setProductovarianteTallatipo("medida")
+                                                    ->save();
+                                    array_push($productoVarianteId, $productovariante->getIdproductovariante());
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if($post_data['medida'] == null && $post_data['tallaje'] == null)
+                {
+       
+                    foreach ($productoMaterialId as $material) {
+                        foreach ($productoColorId as $color) {
+                            $productovariante = new \Productovariante();
+                            $productovariante->setIdproducto($entity->getIdproducto())
+                                            ->setIdproductocolor($color)
+                                            ->setIdproductomaterial($material)
+                                            ->setProductovarianteMedida("")
+                                            ->setProductovarianteEstatus(1)
+                                            ->setProductovarianteTallatipo("ninguno")
+                                            ->save();
+                                array_push($productoVarianteId, $productovariante->getIdproductovariante());
+                        }
+                    }
+                    
+                }
+
+                $sucursales = \SucursalQuery::create()->find();
+
+                foreach ($sucursales as $sucursal) {
+                    foreach ($productoVarianteId as $variante) {
+                        $productosucursal = new \Productosucursal();
+                        $productosucursal->setIdproductovariante($variante)
+                                        ->setIdsucursal($sucursal->getIdsucursal())
+                                        ->setProductosucursalExistencia(0)
+                                        ->setProductosucursalMinimo($entity->getProductoMinimo())
+                                        ->setProductosucursalReorden($entity->getProductoReorden())
+                                        ->setProductosucursalMinimo($entity->getProductoMinimo())
+                                        ->setProductosucursalPrecioventa($entity->getProductoPrecioventa())
+                                        ->setProductosucursalMinimo($entity->getProductoMinimo())
+                                        ->setProductosucursalPreciomayoreo($entity->getProductoPreciomayoreo())
+                                        ->setProductosucursalEstatus(1)
+                                        ->save();
+                    }
                 }
 
                 $entity->save();

@@ -18,9 +18,11 @@ class IndexController extends AbstractActionController
     {
         $session = new \Application\Session\AouthSession();
         $session = $session->getData();
+        $sucursal = \SucursalQuery::create()->findPK($session['idsucursal']);
 
         return new ViewModel(array(
             'session' => $session,
+            'sucursal' => $sucursal,
         ));
     }
 

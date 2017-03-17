@@ -24,29 +24,34 @@ class CompraGeneralForm extends Form
         
         $this->add(array(
             'name' => 'compra_fechacompra',
-            'type' => 'Text',
+            'type' => 'Date',
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' =>1
             ),
         ));
 
         $this->add(array(
             'name' => 'compra_comprobante',
-            'type' => 'Text',
+            'type' => 'File',
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' =>4,
+
             ),
         ));
 
 
         $this->add(array(
             'name' => 'compra_fechaentrega',
-            'type' => 'Text',
+            'type' => 'Date',
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' =>3,
+
             ),
         ));
 
@@ -57,6 +62,7 @@ class CompraGeneralForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => 7
             ),
         ));
 
@@ -80,6 +86,8 @@ class CompraGeneralForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' =>5,
+
             ),
         ));
 
@@ -94,6 +102,7 @@ class CompraGeneralForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' =>2,
             ),
         ));
 
@@ -114,6 +123,8 @@ class CompraGeneralForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' =>6,
+
             ),
         ));
 
@@ -128,6 +139,8 @@ class CompraGeneralForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => '',
+                
+
                
             ),
         ));
@@ -142,6 +155,8 @@ class CompraGeneralForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+
+
                
             ),
         ));
