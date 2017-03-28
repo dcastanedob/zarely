@@ -5,8 +5,26 @@
     <column name="idcliente" phpName="Idcliente" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="cliente_nombre" phpName="ClienteNombre" type="VARCHAR" size="45" required="true"/>
     <column name="cliente_apaterno" phpName="ClienteApaterno" type="VARCHAR" size="45" required="true"/>
-    <column name="cliente_amaterno" phpName="ClienteAmaterno" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_amaterno" phpName="ClienteAmaterno" type="VARCHAR" size="45" required="true"/>
     <column name="cliente_rfc" phpName="ClienteRfc" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_razonsocial" phpName="ClienteRazonsocial" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_callefiscal" phpName="ClienteCallefiscal" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_numerofiscal" phpName="ClienteNumerofiscal" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_interiorfiscal" phpName="ClienteInteriorfiscal" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_coloniafiscal" phpName="ClienteColoniafiscal" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_ciudadfiscal" phpName="ClienteCiudadfiscal" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_cpfiscal" phpName="ClienteCpfiscal" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_estadofiscal" phpName="ClienteEstadofiscal" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_calle" phpName="ClienteCalle" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_numero" phpName="ClienteNumero" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_interior" phpName="ClienteInterior" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_colonia" phpName="ClienteColonia" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_cp" phpName="ClienteCp" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_ciudad" phpName="ClienteCiudad" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_estado" phpName="ClienteEstado" type="VARCHAR" size="45" required="false"/>
+    <column name="cliente_tipo" phpName="ClienteTipo" type="CHAR" sqlType="enum('mayorista','general')" required="true"/>
+    <column name="cliente_fecharegistro" phpName="ClienteFecharegistro" type="DATE" required="true"/>
+    <column name="cliente_estatus" phpName="ClienteEstatus" type="BOOLEAN" size="1" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -43,7 +61,7 @@
     </vendor>
   </table>
   <table name="compradetalle" phpName="Compradetalle" idMethod="native">
-    <column name="idcompradetalle" phpName="Idcompradetalle" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="idcompradetalle" phpName="Idcompradetalle" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idcompra" phpName="Idcompra" type="INTEGER" required="true"/>
     <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
     <column name="compradetalle_cantidad" phpName="CompradetalleCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
@@ -189,6 +207,53 @@
     </index>
     <index name="idproducto">
       <index-column name="idproducto"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="pedidomayorista" phpName="Pedidomayorista" idMethod="native">
+    <column name="idpedidomayorista" phpName="Idpedidomayorista" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idcliente" phpName="Idcliente" type="INTEGER" required="true"/>
+    <column name="pedidomayorista_fechasolicitud" phpName="PedidomayoristaFechasolicitud" type="DATE" required="true"/>
+    <column name="pedidomayorista_estatus" phpName="PedidomayoristaEstatus" type="CHAR" sqlType="enum('pendiente','solicitado','transito','completado')" required="true"/>
+    <column name="pedidomayorista_fechaentrega" phpName="PedidomayoristaFechaentrega" type="DATE" required="true"/>
+    <column name="pedidomayorista_nota" phpName="PedidomayoristaNota" type="LONGVARCHAR" required="false"/>
+    <foreign-key foreignTable="cliente" name="idcliente_pedidomayorista" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idcliente" foreign="idcliente"/>
+    </foreign-key>
+    <index name="idcliente">
+      <index-column name="idcliente"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="pedidomayoristadetalle" phpName="Pedidomayoristadetalle" idMethod="native">
+    <column name="idpedidomayoristadetalle" phpName="Idpedidomayoristadetalle" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idpedidomayorista" phpName="Idpedidomayorista" type="INTEGER" required="true"/>
+    <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
+    <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
+    <column name="pedidomayoristadetalle_cantidad" phpName="PedidomayoristadetalleCantidad" type="INTEGER" required="true"/>
+    <column name="pedidomayoristadetalle_estatus" phpName="PedidomayoristadetalleEstatus" type="CHAR" sqlType="enum('pendiente','solicitado','transito','completado')" required="true"/>
+    <column name="pedidomayoristadetalle_fecha" phpName="PedidomayoristadetalleFecha" type="DATE" required="true"/>
+    <foreign-key foreignTable="pedidomayorista" name="idpedidomayorista_pedidomayoristadetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idpedidomayorista" foreign="idpedidomayorista"/>
+    </foreign-key>
+    <foreign-key foreignTable="producto" name="idproducto_pedidomayoristadetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproducto" foreign="idproducto"/>
+    </foreign-key>
+    <foreign-key foreignTable="productovariante" name="idproductovariante_pedidomayoristadetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductovariante" foreign="idproductovariante"/>
+    </foreign-key>
+    <index name="idpedidomayorista">
+      <index-column name="idpedidomayorista"/>
+    </index>
+    <index name="idproducto_pedidomayoristadetalle_idx">
+      <index-column name="idproducto"/>
+    </index>
+    <index name="idproductovariante_pedidomayoristadetalle_idx">
+      <index-column name="idproductovariante"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>

@@ -36,8 +36,8 @@ class CompraGeneralForm extends Form
             'name' => 'compra_comprobante',
             'type' => 'File',
             'attributes' => array(
-                'required' => true,
-                'class' => 'form-control infput-thick',
+                'required' => false,
+                'class' => 'infput-thick',
                 'tabindex' =>4,
 
             ),

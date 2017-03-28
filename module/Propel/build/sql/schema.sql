@@ -14,8 +14,26 @@ CREATE TABLE `cliente`
     `idcliente` INTEGER NOT NULL AUTO_INCREMENT,
     `cliente_nombre` VARCHAR(45) NOT NULL,
     `cliente_apaterno` VARCHAR(45) NOT NULL,
-    `cliente_amaterno` VARCHAR(45),
+    `cliente_amaterno` VARCHAR(45) NOT NULL,
     `cliente_rfc` VARCHAR(45),
+    `cliente_razonsocial` VARCHAR(45),
+    `cliente_callefiscal` VARCHAR(45),
+    `cliente_numerofiscal` VARCHAR(45),
+    `cliente_interiorfiscal` VARCHAR(45),
+    `cliente_coloniafiscal` VARCHAR(45),
+    `cliente_ciudadfiscal` VARCHAR(45),
+    `cliente_cpfiscal` VARCHAR(45),
+    `cliente_estadofiscal` VARCHAR(45),
+    `cliente_calle` VARCHAR(45),
+    `cliente_numero` VARCHAR(45),
+    `cliente_interior` VARCHAR(45),
+    `cliente_colonia` VARCHAR(45),
+    `cliente_cp` VARCHAR(45),
+    `cliente_ciudad` VARCHAR(45),
+    `cliente_estado` VARCHAR(45),
+    `cliente_tipo` enum('mayorista','general') NOT NULL,
+    `cliente_fecharegistro` DATE NOT NULL,
+    `cliente_estatus` TINYINT(1) NOT NULL,
     PRIMARY KEY (`idcliente`)
 ) ENGINE=InnoDB;
 
@@ -68,7 +86,7 @@ DROP TABLE IF EXISTS `compradetalle`;
 
 CREATE TABLE `compradetalle`
 (
-    `idcompradetalle` INTEGER NOT NULL,
+    `idcompradetalle` INTEGER NOT NULL AUTO_INCREMENT,
     `idcompra` INTEGER NOT NULL,
     `idproductovariante` INTEGER NOT NULL,
     `compradetalle_cantidad` DECIMAL(10,2) NOT NULL,
@@ -262,6 +280,65 @@ CREATE TABLE `pedido`
     CONSTRAINT `idsucursal_pedido`
         FOREIGN KEY (`idsucursal`)
         REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- pedidomayorista
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pedidomayorista`;
+
+CREATE TABLE `pedidomayorista`
+(
+    `idpedidomayorista` INTEGER NOT NULL AUTO_INCREMENT,
+    `idcliente` INTEGER NOT NULL,
+    `pedidomayorista_fechasolicitud` DATE NOT NULL,
+    `pedidomayorista_estatus` enum('pendiente','solicitado','transito','completado') NOT NULL,
+    `pedidomayorista_fechaentrega` DATE NOT NULL,
+    `pedidomayorista_nota` TEXT,
+    PRIMARY KEY (`idpedidomayorista`),
+    INDEX `idcliente` (`idcliente`),
+    CONSTRAINT `idcliente_pedidomayorista`
+        FOREIGN KEY (`idcliente`)
+        REFERENCES `cliente` (`idcliente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- pedidomayoristadetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pedidomayoristadetalle`;
+
+CREATE TABLE `pedidomayoristadetalle`
+(
+    `idpedidomayoristadetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idpedidomayorista` INTEGER NOT NULL,
+    `idproductovariante` INTEGER NOT NULL,
+    `idproducto` INTEGER NOT NULL,
+    `pedidomayoristadetalle_cantidad` INTEGER NOT NULL,
+    `pedidomayoristadetalle_estatus` enum('pendiente','solicitado','transito','completado') NOT NULL,
+    `pedidomayoristadetalle_fecha` DATE NOT NULL,
+    PRIMARY KEY (`idpedidomayoristadetalle`),
+    INDEX `idpedidomayorista` (`idpedidomayorista`),
+    INDEX `idproducto_pedidomayoristadetalle_idx` (`idproducto`),
+    INDEX `idproductovariante_pedidomayoristadetalle_idx` (`idproductovariante`),
+    CONSTRAINT `idpedidomayorista_pedidomayoristadetalle`
+        FOREIGN KEY (`idpedidomayorista`)
+        REFERENCES `pedidomayorista` (`idpedidomayorista`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproducto_pedidomayoristadetalle`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductovariante_pedidomayoristadetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;

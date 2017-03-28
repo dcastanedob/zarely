@@ -48,6 +48,10 @@
  * @method ProductovarianteQuery rightJoinPedido($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedido relation
  * @method ProductovarianteQuery innerJoinPedido($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedido relation
  *
+ * @method ProductovarianteQuery leftJoinPedidomayoristadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedidomayoristadetalle relation
+ * @method ProductovarianteQuery rightJoinPedidomayoristadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedidomayoristadetalle relation
+ * @method ProductovarianteQuery innerJoinPedidomayoristadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedidomayoristadetalle relation
+ *
  * @method ProductovarianteQuery leftJoinProductosucursal($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productosucursal relation
  * @method ProductovarianteQuery rightJoinProductosucursal($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productosucursal relation
  * @method ProductovarianteQuery innerJoinProductosucursal($relationAlias = null) Adds a INNER JOIN clause to the query using the Productosucursal relation
@@ -929,6 +933,80 @@ abstract class BaseProductovarianteQuery extends ModelCriteria
         return $this
             ->joinPedido($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Pedido', 'PedidoQuery');
+    }
+
+    /**
+     * Filter the query by a related Pedidomayoristadetalle object
+     *
+     * @param   Pedidomayoristadetalle|PropelObjectCollection $pedidomayoristadetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductovarianteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPedidomayoristadetalle($pedidomayoristadetalle, $comparison = null)
+    {
+        if ($pedidomayoristadetalle instanceof Pedidomayoristadetalle) {
+            return $this
+                ->addUsingAlias(ProductovariantePeer::IDPRODUCTOVARIANTE, $pedidomayoristadetalle->getIdproductovariante(), $comparison);
+        } elseif ($pedidomayoristadetalle instanceof PropelObjectCollection) {
+            return $this
+                ->usePedidomayoristadetalleQuery()
+                ->filterByPrimaryKeys($pedidomayoristadetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPedidomayoristadetalle() only accepts arguments of type Pedidomayoristadetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Pedidomayoristadetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductovarianteQuery The current query, for fluid interface
+     */
+    public function joinPedidomayoristadetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Pedidomayoristadetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Pedidomayoristadetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Pedidomayoristadetalle relation Pedidomayoristadetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PedidomayoristadetalleQuery A secondary query class using the current class as primary query
+     */
+    public function usePedidomayoristadetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPedidomayoristadetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Pedidomayoristadetalle', 'PedidomayoristadetalleQuery');
     }
 
     /**

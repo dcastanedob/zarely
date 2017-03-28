@@ -196,11 +196,12 @@ class PedidoSolicitadoController extends AbstractActionController
 
 
 
-
+            $product_array = array();
             foreach ($query->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME) as $value) {
 
                 $tmp['DT_RowId'] = $value['idproducto'];
                 $tmp['idproducto'] = $value['idproducto'];
+                $product_array[] = $value['idproducto'];
                 $tmp['producto_modelo'] = $value['producto_modelo'];
                 $tmp['producto_marca'] = $value['producto_marca'];
                 $tmp['producto_proveedor'] = $value['producto_proveedor'];
@@ -216,13 +217,48 @@ class PedidoSolicitadoController extends AbstractActionController
                 $data[] = $tmp;
             }
 
+            $query2 = \PedidomayoristadetalleQuery::create()->filterByPedidomayoristadetalleEstatus('solicitado')->filterByIdproducto($product_array, \Criteria::NOT_EQUAL);
+
+            //var_dump($product_array);exit();
+
+            $query2->useProductoQuery('a')->useMarcaQuery('m')->endUse()->endUse();
+            $query2->useProductoQuery('a')->useProveedorQuery('p')->endUse()->endUse();
+            $query2->withColumn('a.ProductoModelo', 'producto_modelo')
+                  ->withColumn('m.MarcaNombre','producto_marca')
+                  ->withColumn('p.ProveedorNombrecomercial','producto_proveedor');
+
+            $query2->groupByIdproducto();
+
+            $data2 = array();
+
+            foreach ($query2->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME) as $value) {
+
+                $tmp['DT_RowId'] = $value['idproducto'];
+                $tmp['idproducto'] = $value['idproducto'];
+                $tmp['producto_modelo'] = $value['producto_modelo'];
+                $tmp['producto_marca'] = $value['producto_marca'];
+                $tmp['producto_proveedor'] = $value['producto_proveedor'];
+
+                $tmp['options'] = '
+                <a href="/pedidos/solicitados/ver/' . $value['idproducto'] . '">
+                <button class="btn btn-info dropdown-toggle" aria-expanded="false" style="padding: 2px 6px;">
+                    <span class="icon icon-eye icon-lg icon-fw"></span>
+                    Ver 
+                  </button></a>';
+
+
+                $data2[] = $tmp;
+            }
+
+            $data_final = array_merge($data,$data2);
+
             //El arreglo que regresamos
             $json_data = array(
                 'order' => $order_column,
                 "draw" => (int) $post_data['draw'],
                 //"recordsTotal"    => 100,
                 "recordsFiltered" => $records_filtered,
-                "data" => $data
+                "data" => $data_final
             );
 
 

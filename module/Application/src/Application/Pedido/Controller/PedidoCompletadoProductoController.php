@@ -21,12 +21,11 @@ class PedidoCompletadoProductoController extends AbstractActionController
         //Verificamos que la peticion sea post
         if($request->isPost()){
 
-            //creamos un objeto pedido con los datos que se mandaron
+            //obtenemos todos los pedidos del request que se mandó
             $post_data = $request->getPost();
-            $pedido = \PedidoQuery::create()->findPK($post_data['idpedido']);
 
             //filtramos por estatus completado y por la variante
-            $details = \PedidoQuery::create()->filterByPedidoEstatus('completado')->filterByIdproductovariante($pedido->getIdproductovariante())->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
+            $details = \PedidoQuery::create()->filterByPedidoEstatus('completado')->filterByIdproductovariante($post_data['idvariante'])->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
 
             //iteramos para obtener el nombre de la sucursal
             for ($pedido = 0; $pedido<count($details); $pedido++) {
@@ -36,6 +35,7 @@ class PedidoCompletadoProductoController extends AbstractActionController
                 if($sucursal != null)
                     $details[$pedido]['idsucursal'] = $sucursal->getSucursalNombrecomercial();
             }
+
 
             //regresamos la respuesta
             return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
@@ -207,11 +207,12 @@ class PedidoCompletadoProductoController extends AbstractActionController
 
 
 
-
+            $product_array = array();
             foreach ($query->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME) as $value) {
 
                 $tmp['DT_RowId'] = $value['idproducto'];
                 $tmp['idproducto'] = $value['idproducto'];
+                $product_array[] = $value['idproducto'];
                 $tmp['producto_modelo'] = $value['producto_modelo'];
                 $tmp['producto_marca'] = $value['producto_marca'];
                 $tmp['producto_proveedor'] = $value['producto_proveedor'];
@@ -227,13 +228,48 @@ class PedidoCompletadoProductoController extends AbstractActionController
                 $data[] = $tmp;
             }
 
+            $query2 = \PedidomayoristadetalleQuery::create()->filterByPedidomayoristadetalleEstatus('completado')->filterByIdproducto($product_array, \Criteria::NOT_EQUAL);
+
+            //var_dump($product_array);exit();
+
+            $query2->useProductoQuery('a')->useMarcaQuery('m')->endUse()->endUse();
+            $query2->useProductoQuery('a')->useProveedorQuery('p')->endUse()->endUse();
+            $query2->withColumn('a.ProductoModelo', 'producto_modelo')
+                  ->withColumn('m.MarcaNombre','producto_marca')
+                  ->withColumn('p.ProveedorNombrecomercial','producto_proveedor');
+
+            $query2->groupByIdproducto();
+
+            $data2 = array();
+
+            foreach ($query2->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME) as $value) {
+
+                $tmp['DT_RowId'] = $value['idproducto'];
+                $tmp['idproducto'] = $value['idproducto'];
+                $tmp['producto_modelo'] = $value['producto_modelo'];
+                $tmp['producto_marca'] = $value['producto_marca'];
+                $tmp['producto_proveedor'] = $value['producto_proveedor'];
+
+                $tmp['options'] = '
+                <a href="/pedidos/completados-producto/ver/' . $value['idproducto'] . '">
+                <button class="btn btn-info dropdown-toggle" aria-expanded="false" style="padding: 2px 6px;">
+                    <span class="icon icon-eye icon-lg icon-fw"></span>
+                    Ver 
+                  </button></a>';
+
+
+                $data2[] = $tmp;
+            }
+
+            $data_final = array_merge($data,$data2);
+
             //El arreglo que regresamos
             $json_data = array(
                 'order' => $order_column,
                 "draw" => (int) $post_data['draw'],
                 //"recordsTotal"    => 100,
                 "recordsFiltered" => $records_filtered,
-                "data" => $data
+                "data" => $data_final
             );
 
 
@@ -444,6 +480,140 @@ class PedidoCompletadoProductoController extends AbstractActionController
             
         }
     }
+
+
+    public function initializetableAction(){
+
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+
+            $pedidos = \PedidoQuery::create()->filterByIdproducto($post_data['idproductogeneral'])->filterByPedidoEstatus('completado')->find();
+
+            $details = [];
+
+
+            //iteramos sobre todas als variantes
+            foreach ($pedidos as $pedido) {
+                
+                $variante = $pedido->getProductovariante();
+                $productocolor = $variante->getProductocolor();
+
+                $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
+
+
+                
+                //verificamos que la combinacion de material color no exista
+                if($details[$indice] == null)
+                {
+
+                    //inicializamos las variantes de ese color y material
+                    $details[$indice] = [];
+                    $value = array(
+                                'fotografia' => $productocolor->getProductocolorFoto(),
+                                'talla' => $variante->getProductovarianteTalla(),
+                                'variante' => $variante->getIdproductovariante(),
+                                'cantidad' => $pedido->getPedidoCantidad(),
+
+                             );
+
+                    array_push($details[$indice], $value);
+
+                }else{
+                    $value = array(
+                                'fotografia' => $productocolor->getProductocolorFoto(),
+                                'talla' => $variante->getProductovarianteTalla(),
+                                'variante' => $variante->getIdproductovariante(),
+                                'cantidad' => $pedido->getPedidoCantidad(),
+                             );
+
+                    array_push($details[$indice], $value);
+                }
+                
+            }
+
+
+            $mayoristas = \PedidomayoristadetalleQuery::create()->filterByIdproducto($post_data['idproductogeneral'])->filterByPedidomayoristadetalleEstatus('completado')->find();
+
+
+
+            //iteramos sobre todas als variantes
+            foreach ($mayoristas as $mayorista) {
+                
+                $variante = $mayorista->getProductovariante();
+                $productocolor = $variante->getProductocolor();
+
+                $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
+
+
+                
+                //verificamos que la combinacion de material color no exista
+                if($details[$indice] == null)
+                {
+
+                    //inicializamos las variantes de ese color y material
+                    $details[$indice] = [];
+                    $value = array(
+                                'fotografia' => $productocolor->getProductocolorFoto(),
+                                'talla' => $variante->getProductovarianteTalla(),
+                                'variante' => $variante->getIdproductovariante(),
+                                'cantidad' => $mayorista->getPedidomayoristadetalleCantidad(),
+                             );
+
+                    array_push($details[$indice], $value);
+
+                }else{
+                    $value = array(
+                                'fotografia' => $productocolor->getProductocolorFoto(),
+                                'talla' => $variante->getProductovarianteTalla(),
+                                'variante' => $variante->getIdproductovariante(),
+                                'cantidad' => $mayorista->getPedidomayoristadetalleCantidad(),
+                             );
+
+                    array_push($details[$indice], $value);
+                }
+                
+            }
+
+            $productos = [];
+            foreach ($details as $detail) {
+                
+                foreach ($detail as $product) {
+                    $productoVariante = \ProductovarianteQuery::create()->findPK($product['variante']);
+
+                    $indice = $productoVariante->getProductocolor()->getColor()->getColorNombre() .'/'. $productoVariante->getProductomaterial()->getMaterial()->getMaterialNombre();
+
+                   if($productos[$indice] == null)
+                    {
+
+                        //inicializamos las variantes de ese color y material
+                        $productos[$indice] = [];
+
+                        $value = array(
+                                    'fotografia' => $product['fotografia'],
+                                    'talla' => array($product['talla'] => $product['cantidad']),
+                                    'variante' => array($product['talla'] => $product['variante']),
+                                 );
+
+                        array_push($productos[$indice], $value);
+
+                    }else{
+                      
+                            $productos[$indice][0]['talla'][$product['talla']]+=$product['cantidad'];
+                            $productos[$indice][0]['variante'][$product['talla']]=$product['variante'];
+                        
+                    }
+                }
+            }
+
+            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $productos)));
+
+            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
+        }
+
+    } 
     
 
 }

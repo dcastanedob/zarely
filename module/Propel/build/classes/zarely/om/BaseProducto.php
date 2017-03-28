@@ -140,6 +140,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
     protected $collPedidosPartial;
 
     /**
+     * @var        PropelObjectCollection|Pedidomayoristadetalle[] Collection to store aggregation of Pedidomayoristadetalle objects.
+     */
+    protected $collPedidomayoristadetalles;
+    protected $collPedidomayoristadetallesPartial;
+
+    /**
      * @var        PropelObjectCollection|Productocolor[] Collection to store aggregation of Productocolor objects.
      */
     protected $collProductocolors;
@@ -194,6 +200,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pedidosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pedidomayoristadetallesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -824,6 +836,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->aTipocalzado = null;
             $this->collPedidos = null;
 
+            $this->collPedidomayoristadetalles = null;
+
             $this->collProductocolors = null;
 
             $this->collProductomaterials = null;
@@ -1002,6 +1016,23 @@ abstract class BaseProducto extends BaseObject implements Persistent
 
             if ($this->collPedidos !== null) {
                 foreach ($this->collPedidos as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pedidomayoristadetallesScheduledForDeletion !== null) {
+                if (!$this->pedidomayoristadetallesScheduledForDeletion->isEmpty()) {
+                    PedidomayoristadetalleQuery::create()
+                        ->filterByPrimaryKeys($this->pedidomayoristadetallesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pedidomayoristadetallesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPedidomayoristadetalles !== null) {
+                foreach ($this->collPedidomayoristadetalles as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1351,6 +1382,14 @@ abstract class BaseProducto extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPedidomayoristadetalles !== null) {
+                    foreach ($this->collPedidomayoristadetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collProductocolors !== null) {
                     foreach ($this->collProductocolors as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1532,6 +1571,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
             if (null !== $this->collPedidos) {
                 $result['Pedidos'] = $this->collPedidos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPedidomayoristadetalles) {
+                $result['Pedidomayoristadetalles'] = $this->collPedidomayoristadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collProductocolors) {
                 $result['Productocolors'] = $this->collProductocolors->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1774,6 +1816,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
             foreach ($this->getPedidos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPedido($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPedidomayoristadetalles() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPedidomayoristadetalle($relObj->copy($deepCopy));
                 }
             }
 
@@ -2079,6 +2127,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ('Pedido' == $relationName) {
             $this->initPedidos();
         }
+        if ('Pedidomayoristadetalle' == $relationName) {
+            $this->initPedidomayoristadetalles();
+        }
         if ('Productocolor' == $relationName) {
             $this->initProductocolors();
         }
@@ -2369,6 +2420,281 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $query->joinWith('Sucursal', $join_behavior);
 
         return $this->getPedidos($query, $con);
+    }
+
+    /**
+     * Clears out the collPedidomayoristadetalles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Producto The current object (for fluent API support)
+     * @see        addPedidomayoristadetalles()
+     */
+    public function clearPedidomayoristadetalles()
+    {
+        $this->collPedidomayoristadetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collPedidomayoristadetallesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPedidomayoristadetalles collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPedidomayoristadetalles($v = true)
+    {
+        $this->collPedidomayoristadetallesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPedidomayoristadetalles collection.
+     *
+     * By default this just sets the collPedidomayoristadetalles collection to an empty array (like clearcollPedidomayoristadetalles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPedidomayoristadetalles($overrideExisting = true)
+    {
+        if (null !== $this->collPedidomayoristadetalles && !$overrideExisting) {
+            return;
+        }
+        $this->collPedidomayoristadetalles = new PropelObjectCollection();
+        $this->collPedidomayoristadetalles->setModel('Pedidomayoristadetalle');
+    }
+
+    /**
+     * Gets an array of Pedidomayoristadetalle objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Producto is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Pedidomayoristadetalle[] List of Pedidomayoristadetalle objects
+     * @throws PropelException
+     */
+    public function getPedidomayoristadetalles($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidomayoristadetallesPartial && !$this->isNew();
+        if (null === $this->collPedidomayoristadetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPedidomayoristadetalles) {
+                // return empty collection
+                $this->initPedidomayoristadetalles();
+            } else {
+                $collPedidomayoristadetalles = PedidomayoristadetalleQuery::create(null, $criteria)
+                    ->filterByProducto($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPedidomayoristadetallesPartial && count($collPedidomayoristadetalles)) {
+                      $this->initPedidomayoristadetalles(false);
+
+                      foreach ($collPedidomayoristadetalles as $obj) {
+                        if (false == $this->collPedidomayoristadetalles->contains($obj)) {
+                          $this->collPedidomayoristadetalles->append($obj);
+                        }
+                      }
+
+                      $this->collPedidomayoristadetallesPartial = true;
+                    }
+
+                    $collPedidomayoristadetalles->getInternalIterator()->rewind();
+
+                    return $collPedidomayoristadetalles;
+                }
+
+                if ($partial && $this->collPedidomayoristadetalles) {
+                    foreach ($this->collPedidomayoristadetalles as $obj) {
+                        if ($obj->isNew()) {
+                            $collPedidomayoristadetalles[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPedidomayoristadetalles = $collPedidomayoristadetalles;
+                $this->collPedidomayoristadetallesPartial = false;
+            }
+        }
+
+        return $this->collPedidomayoristadetalles;
+    }
+
+    /**
+     * Sets a collection of Pedidomayoristadetalle objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pedidomayoristadetalles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Producto The current object (for fluent API support)
+     */
+    public function setPedidomayoristadetalles(PropelCollection $pedidomayoristadetalles, PropelPDO $con = null)
+    {
+        $pedidomayoristadetallesToDelete = $this->getPedidomayoristadetalles(new Criteria(), $con)->diff($pedidomayoristadetalles);
+
+
+        $this->pedidomayoristadetallesScheduledForDeletion = $pedidomayoristadetallesToDelete;
+
+        foreach ($pedidomayoristadetallesToDelete as $pedidomayoristadetalleRemoved) {
+            $pedidomayoristadetalleRemoved->setProducto(null);
+        }
+
+        $this->collPedidomayoristadetalles = null;
+        foreach ($pedidomayoristadetalles as $pedidomayoristadetalle) {
+            $this->addPedidomayoristadetalle($pedidomayoristadetalle);
+        }
+
+        $this->collPedidomayoristadetalles = $pedidomayoristadetalles;
+        $this->collPedidomayoristadetallesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Pedidomayoristadetalle objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Pedidomayoristadetalle objects.
+     * @throws PropelException
+     */
+    public function countPedidomayoristadetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidomayoristadetallesPartial && !$this->isNew();
+        if (null === $this->collPedidomayoristadetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPedidomayoristadetalles) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPedidomayoristadetalles());
+            }
+            $query = PedidomayoristadetalleQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProducto($this)
+                ->count($con);
+        }
+
+        return count($this->collPedidomayoristadetalles);
+    }
+
+    /**
+     * Method called to associate a Pedidomayoristadetalle object to this object
+     * through the Pedidomayoristadetalle foreign key attribute.
+     *
+     * @param    Pedidomayoristadetalle $l Pedidomayoristadetalle
+     * @return Producto The current object (for fluent API support)
+     */
+    public function addPedidomayoristadetalle(Pedidomayoristadetalle $l)
+    {
+        if ($this->collPedidomayoristadetalles === null) {
+            $this->initPedidomayoristadetalles();
+            $this->collPedidomayoristadetallesPartial = true;
+        }
+
+        if (!in_array($l, $this->collPedidomayoristadetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPedidomayoristadetalle($l);
+
+            if ($this->pedidomayoristadetallesScheduledForDeletion and $this->pedidomayoristadetallesScheduledForDeletion->contains($l)) {
+                $this->pedidomayoristadetallesScheduledForDeletion->remove($this->pedidomayoristadetallesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Pedidomayoristadetalle $pedidomayoristadetalle The pedidomayoristadetalle object to add.
+     */
+    protected function doAddPedidomayoristadetalle($pedidomayoristadetalle)
+    {
+        $this->collPedidomayoristadetalles[]= $pedidomayoristadetalle;
+        $pedidomayoristadetalle->setProducto($this);
+    }
+
+    /**
+     * @param	Pedidomayoristadetalle $pedidomayoristadetalle The pedidomayoristadetalle object to remove.
+     * @return Producto The current object (for fluent API support)
+     */
+    public function removePedidomayoristadetalle($pedidomayoristadetalle)
+    {
+        if ($this->getPedidomayoristadetalles()->contains($pedidomayoristadetalle)) {
+            $this->collPedidomayoristadetalles->remove($this->collPedidomayoristadetalles->search($pedidomayoristadetalle));
+            if (null === $this->pedidomayoristadetallesScheduledForDeletion) {
+                $this->pedidomayoristadetallesScheduledForDeletion = clone $this->collPedidomayoristadetalles;
+                $this->pedidomayoristadetallesScheduledForDeletion->clear();
+            }
+            $this->pedidomayoristadetallesScheduledForDeletion[]= clone $pedidomayoristadetalle;
+            $pedidomayoristadetalle->setProducto(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Producto is new, it will return
+     * an empty collection; or if this Producto has previously
+     * been saved, it will retrieve related Pedidomayoristadetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Producto.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pedidomayoristadetalle[] List of Pedidomayoristadetalle objects
+     */
+    public function getPedidomayoristadetallesJoinPedidomayorista($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PedidomayoristadetalleQuery::create(null, $criteria);
+        $query->joinWith('Pedidomayorista', $join_behavior);
+
+        return $this->getPedidomayoristadetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Producto is new, it will return
+     * an empty collection; or if this Producto has previously
+     * been saved, it will retrieve related Pedidomayoristadetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Producto.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pedidomayoristadetalle[] List of Pedidomayoristadetalle objects
+     */
+    public function getPedidomayoristadetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PedidomayoristadetalleQuery::create(null, $criteria);
+        $query->joinWith('Productovariante', $join_behavior);
+
+        return $this->getPedidomayoristadetalles($query, $con);
     }
 
     /**
@@ -3692,6 +4018,11 @@ abstract class BaseProducto extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPedidomayoristadetalles) {
+                foreach ($this->collPedidomayoristadetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collProductocolors) {
                 foreach ($this->collProductocolors as $o) {
                     $o->clearAllReferences($deep);
@@ -3737,6 +4068,10 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->collPedidos->clearIterator();
         }
         $this->collPedidos = null;
+        if ($this->collPedidomayoristadetalles instanceof PropelCollection) {
+            $this->collPedidomayoristadetalles->clearIterator();
+        }
+        $this->collPedidomayoristadetalles = null;
         if ($this->collProductocolors instanceof PropelCollection) {
             $this->collProductocolors->clearIterator();
         }

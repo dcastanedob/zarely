@@ -486,6 +486,9 @@ abstract class BaseProductoPeer
         // Invalidate objects in PedidoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidoPeer::clearInstancePool();
+        // Invalidate objects in PedidomayoristadetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PedidomayoristadetallePeer::clearInstancePool();
         // Invalidate objects in ProductomaterialPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductomaterialPeer::clearInstancePool();
@@ -2212,6 +2215,12 @@ abstract class BaseProductoPeer
 
             $criteria->add(PedidoPeer::IDPRODUCTO, $obj->getIdproducto());
             $affectedRows += PedidoPeer::doDelete($criteria, $con);
+
+            // delete related Pedidomayoristadetalle objects
+            $criteria = new Criteria(PedidomayoristadetallePeer::DATABASE_NAME);
+
+            $criteria->add(PedidomayoristadetallePeer::IDPRODUCTO, $obj->getIdproducto());
+            $affectedRows += PedidomayoristadetallePeer::doDelete($criteria, $con);
 
             // delete related Productomaterial objects
             $criteria = new Criteria(ProductomaterialPeer::DATABASE_NAME);

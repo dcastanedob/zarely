@@ -36,7 +36,7 @@ class CompradetalleTableMap extends TableMap
         $this->setPhpName('Compradetalle');
         $this->setClassname('Compradetalle');
         $this->setPackage('zarely');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idcompradetalle', 'Idcompradetalle', 'INTEGER', true, null, null);
         $this->addForeignKey('idcompra', 'Idcompra', 'INTEGER', 'compra', 'idcompra', true, null, null);
