@@ -504,13 +504,15 @@ class PedidoMayoristaController extends AbstractActionController
                     
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            
+            $form->get('pedidomayorista_fechasolicitud')->setValue($entity->getPedidomayoristaFechasolicitud('d/m/Y'));
+            $form->get('pedidomayorista_fechaentrega')->setValue($entity->getPedidomayoristaFechaentrega('d/m/Y'));
             $view_model = new ViewModel();
             $view_model->setTemplate('application/pedido/mayoristas/ver');
             $view_model->setVariables(array(
                 'form' => $form,
                 'entity' => $entity,
             ));
+            //var_dump($entity);exit();
             return $view_model;
             
             

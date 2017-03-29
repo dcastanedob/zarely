@@ -1,6 +1,6 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title">Pedidos solicitados por sucursal</h1>
+	    <h1 class="title-bar-title">Cuentas por pagar</h1>
 	    
 	</div>
 
@@ -20,25 +20,37 @@
 	        </div>
 	<?php endforeach;?>
 
+	<div class="row">
+		<div class="col-md-12">
+			<a class="btn btn-bg btn-success btn-labeled pull-right" href="/compras/generales/nuevo">
+              Nueva cuenta por pagar
+              <span class="btn-label btn-label-right">
+                <span class="icon icon-plus-square icon-lg icon-fw"></span>
+              </span>
+            </a>
+		</div>
+	</div>
 
 	<div class="row">
 		<div class="card-body">
 		    <table id="" class="table table-striped table-nowrap dataTable" cellspacing="0" width="100%">
 		        <thead>
 		            <tr>
-		                <th>ID</th>
-		                <th>Modelo</th>
-		                <th>Marca</th>
 		                <th>Proveedor</th>
+		                <th>Folio</th>
+		                <th>Fecha</th>
+		                <th>Total</th>
+		                <th>Pagada</th>
 		                <th>Opciones</th>
 		            </tr>
 		        </thead>
 		        <tfoot>
 		            <tr>
-		                <th>ID</th>
-		                <th>Modelo</th>
-		                <th>Marca</th>
 		                <th>Proveedor</th>
+		                <th>Folio</th>
+		                <th>Fecha</th>
+		                <th>Total</th>
+		                <th>Pagada</th>
 		                <th>Opciones</th>
 		            </tr>
 		        </tfoot>
@@ -50,9 +62,9 @@
 	</div>
 
 </div>
-<script src="/js/pedido/solicitado.js"></script>
+<script src="/js/fluejoefectivo/cuenta_por_pagar.js"></script>
 
 <script>
-	var solicitado = $('.body_container').solicitado();
-	solicitado.list();
+	var cuenta_por_pagar = $('.body_container').cuenta_por_pagar();
+	cuenta_por_pagar.list();
 </script>

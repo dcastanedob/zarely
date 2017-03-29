@@ -7,12 +7,12 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Application\Compra\Controller;
+namespace Application\FlujoEfectivo\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class CompraGeneralController extends AbstractActionController
+class CuentaPorPagarController extends AbstractActionController
 {
 
     public $column_map = array(
@@ -186,7 +186,7 @@ class CompraGeneralController extends AbstractActionController
     {   
         
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/compra/generales/index');
+        $view_model->setTemplate('application/flujoefectivo/porpagar/index');
         $view_model->setVariables(array(
              'messages' => $this->flashMessenger(),
         ));

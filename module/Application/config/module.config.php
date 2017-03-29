@@ -52,6 +52,17 @@ return array(
                 ),
             ),
 
+            'clientes' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/clientes[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Clientes',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'temporadas' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -217,12 +228,35 @@ return array(
                 ),
             ),
 
+            'mayoristas' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/mayoristas[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoMayorista',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
             'pendientes' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route'    => '/pedidos/pendientes[/:action][/:id]',
                     'defaults' => array(
                         'controller' => 'Application\Pedido\Controller\PedidoPendiente',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'pendientesproducto' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/pendientes-producto[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoPendienteProducto',
                         'action'     => 'index',
                     ),
                 ),
@@ -239,6 +273,18 @@ return array(
                 ),
             ),
 
+            'solicitadosproducto' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/solicitados-producto[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoSolicitadoProducto',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
             'transitos' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -250,12 +296,69 @@ return array(
                 ),
             ),
 
+            'transitosproducto' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/transitos-producto[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoTransitoProducto',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+
             'completados' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route'    => '/pedidos/completados[/:action][/:id]',
                     'defaults' => array(
                         'controller' => 'Application\Pedido\Controller\PedidoCompletado',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'completadosproducto' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/completados-producto[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoCompletadoProducto',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'comprasgenerales' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/compras/generales[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Compra\Controller\CompraGeneral',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'porpagar' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/flujo-efectivo/porpagar[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\FlujoEfectivo\Controller\CuentaPorPagar',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'porcobrar' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/flujo-efectivo/porcobrar[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\FlujoEfectivo\Controller\CuentaPorCobrar',
                         'action'     => 'index',
                     ),
                 ),
@@ -324,6 +427,7 @@ return array(
             'Application\Catalogo\Controller\TipoCalzados' => 'Application\Catalogo\Controller\TipoCalzadosController',
             'Application\Catalogo\Controller\Gastos' => 'Application\Catalogo\Controller\GastosController',
             'Application\Catalogo\Controller\Empleados' => 'Application\Catalogo\Controller\EmpleadosController',
+            'Application\Catalogo\Controller\Clientes' => 'Application\Catalogo\Controller\ClientesController',
             'Application\Catalogo\Controller\Sucursales' => 'Application\Catalogo\Controller\SucursalesController',
             'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController',
             'Application\Catalogo\Controller\Proveedores' => 'Application\Catalogo\Controller\ProveedoresController',
@@ -346,6 +450,22 @@ return array(
             'Application\Pedido\Controller\PedidoTransito' => 'Application\Pedido\Controller\PedidoTransitoController',
 
             'Application\Pedido\Controller\PedidoCompletado' => 'Application\Pedido\Controller\PedidoCompletadoController',
+
+            'Application\Pedido\Controller\PedidoCompletadoProducto' => 'Application\Pedido\Controller\PedidoCompletadoProductoController',
+
+            'Application\Pedido\Controller\PedidoTransitoProducto' => 'Application\Pedido\Controller\PedidoTransitoProductoController',
+
+            'Application\Pedido\Controller\PedidoSolicitadoProducto' => 'Application\Pedido\Controller\PedidoSolicitadoProductoController',
+
+            'Application\Pedido\Controller\PedidoPendienteProducto' => 'Application\Pedido\Controller\PedidoPendienteProductoController',
+
+            'Application\Pedido\Controller\PedidoMayorista' => 'Application\Pedido\Controller\PedidoMayoristaController',
+
+            'Application\Compra\Controller\CompraGeneral' => 'Application\Compra\Controller\CompraGeneralController',
+
+            'Application\FlujoEfectivo\Controller\CuentaPorCobrar' => 'Application\FlujoEfectivo\Controller\CuentaPorCobrarController',
+
+            'Application\FlujoEfectivo\Controller\CuentaPorPagar' => 'Application\FlujoEfectivo\Controller\CuentaPorPagarController',
 
 
         ),

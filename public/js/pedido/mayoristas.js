@@ -57,6 +57,7 @@
 
             $container.find('input[name=pedidomayorista_fechasolicitud]').datepicker({
                 language:'es',
+                dateFormat:'dd-mm-yyyy',
             });
 
             $container.find('input[name=pedidomayorista_fechaentrega]').datepicker({
