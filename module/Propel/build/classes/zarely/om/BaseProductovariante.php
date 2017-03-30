@@ -100,6 +100,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     protected $collCompradetallesPartial;
 
     /**
+     * @var        PropelObjectCollection|Devoluciondetalle[] Collection to store aggregation of Devoluciondetalle objects.
+     */
+    protected $collDevoluciondetalles;
+    protected $collDevoluciondetallesPartial;
+
+    /**
      * @var        PropelObjectCollection|Pedido[] Collection to store aggregation of Pedido objects.
      */
     protected $collPedidos;
@@ -142,6 +148,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $compradetallesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $devoluciondetallesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -587,6 +599,8 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             $this->aProductomaterial = null;
             $this->collCompradetalles = null;
 
+            $this->collDevoluciondetalles = null;
+
             $this->collPedidos = null;
 
             $this->collPedidomayoristadetalles = null;
@@ -754,6 +768,23 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
 
             if ($this->collCompradetalles !== null) {
                 foreach ($this->collCompradetalles as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->devoluciondetallesScheduledForDeletion !== null) {
+                if (!$this->devoluciondetallesScheduledForDeletion->isEmpty()) {
+                    DevoluciondetalleQuery::create()
+                        ->filterByPrimaryKeys($this->devoluciondetallesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->devoluciondetallesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collDevoluciondetalles !== null) {
+                foreach ($this->collDevoluciondetalles as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1027,6 +1058,14 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collDevoluciondetalles !== null) {
+                    foreach ($this->collDevoluciondetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPedidos !== null) {
                     foreach ($this->collPedidos as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1165,6 +1204,9 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             }
             if (null !== $this->collCompradetalles) {
                 $result['Compradetalles'] = $this->collCompradetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collDevoluciondetalles) {
+                $result['Devoluciondetalles'] = $this->collDevoluciondetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPedidos) {
                 $result['Pedidos'] = $this->collPedidos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1365,6 +1407,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             foreach ($this->getCompradetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addCompradetalle($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getDevoluciondetalles() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addDevoluciondetalle($relObj->copy($deepCopy));
                 }
             }
 
@@ -1605,6 +1653,9 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     {
         if ('Compradetalle' == $relationName) {
             $this->initCompradetalles();
+        }
+        if ('Devoluciondetalle' == $relationName) {
+            $this->initDevoluciondetalles();
         }
         if ('Pedido' == $relationName) {
             $this->initPedidos();
@@ -1865,6 +1916,256 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
         $query->joinWith('Compra', $join_behavior);
 
         return $this->getCompradetalles($query, $con);
+    }
+
+    /**
+     * Clears out the collDevoluciondetalles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Productovariante The current object (for fluent API support)
+     * @see        addDevoluciondetalles()
+     */
+    public function clearDevoluciondetalles()
+    {
+        $this->collDevoluciondetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collDevoluciondetallesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collDevoluciondetalles collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialDevoluciondetalles($v = true)
+    {
+        $this->collDevoluciondetallesPartial = $v;
+    }
+
+    /**
+     * Initializes the collDevoluciondetalles collection.
+     *
+     * By default this just sets the collDevoluciondetalles collection to an empty array (like clearcollDevoluciondetalles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initDevoluciondetalles($overrideExisting = true)
+    {
+        if (null !== $this->collDevoluciondetalles && !$overrideExisting) {
+            return;
+        }
+        $this->collDevoluciondetalles = new PropelObjectCollection();
+        $this->collDevoluciondetalles->setModel('Devoluciondetalle');
+    }
+
+    /**
+     * Gets an array of Devoluciondetalle objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Productovariante is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Devoluciondetalle[] List of Devoluciondetalle objects
+     * @throws PropelException
+     */
+    public function getDevoluciondetalles($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collDevoluciondetallesPartial && !$this->isNew();
+        if (null === $this->collDevoluciondetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collDevoluciondetalles) {
+                // return empty collection
+                $this->initDevoluciondetalles();
+            } else {
+                $collDevoluciondetalles = DevoluciondetalleQuery::create(null, $criteria)
+                    ->filterByProductovariante($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collDevoluciondetallesPartial && count($collDevoluciondetalles)) {
+                      $this->initDevoluciondetalles(false);
+
+                      foreach ($collDevoluciondetalles as $obj) {
+                        if (false == $this->collDevoluciondetalles->contains($obj)) {
+                          $this->collDevoluciondetalles->append($obj);
+                        }
+                      }
+
+                      $this->collDevoluciondetallesPartial = true;
+                    }
+
+                    $collDevoluciondetalles->getInternalIterator()->rewind();
+
+                    return $collDevoluciondetalles;
+                }
+
+                if ($partial && $this->collDevoluciondetalles) {
+                    foreach ($this->collDevoluciondetalles as $obj) {
+                        if ($obj->isNew()) {
+                            $collDevoluciondetalles[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collDevoluciondetalles = $collDevoluciondetalles;
+                $this->collDevoluciondetallesPartial = false;
+            }
+        }
+
+        return $this->collDevoluciondetalles;
+    }
+
+    /**
+     * Sets a collection of Devoluciondetalle objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $devoluciondetalles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function setDevoluciondetalles(PropelCollection $devoluciondetalles, PropelPDO $con = null)
+    {
+        $devoluciondetallesToDelete = $this->getDevoluciondetalles(new Criteria(), $con)->diff($devoluciondetalles);
+
+
+        $this->devoluciondetallesScheduledForDeletion = $devoluciondetallesToDelete;
+
+        foreach ($devoluciondetallesToDelete as $devoluciondetalleRemoved) {
+            $devoluciondetalleRemoved->setProductovariante(null);
+        }
+
+        $this->collDevoluciondetalles = null;
+        foreach ($devoluciondetalles as $devoluciondetalle) {
+            $this->addDevoluciondetalle($devoluciondetalle);
+        }
+
+        $this->collDevoluciondetalles = $devoluciondetalles;
+        $this->collDevoluciondetallesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Devoluciondetalle objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Devoluciondetalle objects.
+     * @throws PropelException
+     */
+    public function countDevoluciondetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collDevoluciondetallesPartial && !$this->isNew();
+        if (null === $this->collDevoluciondetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collDevoluciondetalles) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getDevoluciondetalles());
+            }
+            $query = DevoluciondetalleQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProductovariante($this)
+                ->count($con);
+        }
+
+        return count($this->collDevoluciondetalles);
+    }
+
+    /**
+     * Method called to associate a Devoluciondetalle object to this object
+     * through the Devoluciondetalle foreign key attribute.
+     *
+     * @param    Devoluciondetalle $l Devoluciondetalle
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function addDevoluciondetalle(Devoluciondetalle $l)
+    {
+        if ($this->collDevoluciondetalles === null) {
+            $this->initDevoluciondetalles();
+            $this->collDevoluciondetallesPartial = true;
+        }
+
+        if (!in_array($l, $this->collDevoluciondetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddDevoluciondetalle($l);
+
+            if ($this->devoluciondetallesScheduledForDeletion and $this->devoluciondetallesScheduledForDeletion->contains($l)) {
+                $this->devoluciondetallesScheduledForDeletion->remove($this->devoluciondetallesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Devoluciondetalle $devoluciondetalle The devoluciondetalle object to add.
+     */
+    protected function doAddDevoluciondetalle($devoluciondetalle)
+    {
+        $this->collDevoluciondetalles[]= $devoluciondetalle;
+        $devoluciondetalle->setProductovariante($this);
+    }
+
+    /**
+     * @param	Devoluciondetalle $devoluciondetalle The devoluciondetalle object to remove.
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function removeDevoluciondetalle($devoluciondetalle)
+    {
+        if ($this->getDevoluciondetalles()->contains($devoluciondetalle)) {
+            $this->collDevoluciondetalles->remove($this->collDevoluciondetalles->search($devoluciondetalle));
+            if (null === $this->devoluciondetallesScheduledForDeletion) {
+                $this->devoluciondetallesScheduledForDeletion = clone $this->collDevoluciondetalles;
+                $this->devoluciondetallesScheduledForDeletion->clear();
+            }
+            $this->devoluciondetallesScheduledForDeletion[]= clone $devoluciondetalle;
+            $devoluciondetalle->setProductovariante(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Productovariante is new, it will return
+     * an empty collection; or if this Productovariante has previously
+     * been saved, it will retrieve related Devoluciondetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Productovariante.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Devoluciondetalle[] List of Devoluciondetalle objects
+     */
+    public function getDevoluciondetallesJoinDevolucion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = DevoluciondetalleQuery::create(null, $criteria);
+        $query->joinWith('Devolucion', $join_behavior);
+
+        return $this->getDevoluciondetalles($query, $con);
     }
 
     /**
@@ -2708,6 +3009,11 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collDevoluciondetalles) {
+                foreach ($this->collDevoluciondetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPedidos) {
                 foreach ($this->collPedidos as $o) {
                     $o->clearAllReferences($deep);
@@ -2740,6 +3046,10 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             $this->collCompradetalles->clearIterator();
         }
         $this->collCompradetalles = null;
+        if ($this->collDevoluciondetalles instanceof PropelCollection) {
+            $this->collDevoluciondetalles->clearIterator();
+        }
+        $this->collDevoluciondetalles = null;
         if ($this->collPedidos instanceof PropelCollection) {
             $this->collPedidos->clearIterator();
         }

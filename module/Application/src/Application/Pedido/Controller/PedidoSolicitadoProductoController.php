@@ -230,7 +230,7 @@ class PedidoSolicitadoProductoController extends AbstractActionController
 
             $query2 = \PedidomayoristadetalleQuery::create()->filterByPedidomayoristadetalleEstatus('solicitado')->filterByIdproducto($product_array, \Criteria::NOT_EQUAL);
 
-            //var_dump($product_array);exit();
+            
 
             $query2->useProductoQuery('a')->useMarcaQuery('m')->endUse()->endUse();
             $query2->useProductoQuery('a')->useProveedorQuery('p')->endUse()->endUse();
@@ -243,7 +243,6 @@ class PedidoSolicitadoProductoController extends AbstractActionController
             $data2 = array();
 
             foreach ($query2->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME) as $value) {
-
                 $tmp['DT_RowId'] = $value['idproducto'];
                 $tmp['idproducto'] = $value['idproducto'];
                 $tmp['producto_modelo'] = $value['producto_modelo'];

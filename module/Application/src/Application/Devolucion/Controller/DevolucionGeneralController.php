@@ -7,20 +7,20 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Application\Compra\Controller;
+namespace Application\Devolucion\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class CompraGeneralController extends AbstractActionController
+class DevolucionGeneralController extends AbstractActionController
 {
 
     public $column_map = array(
-        0 => 'CompraFechacompra',
+        0 => 'DevolucionFecha',
         1 => 'a.ProveedorNombrecomercial',
-        2 => 'CompraTotal',
-        4 => 'CompraEstatus',
-        3 => 'CompraComprobante',
+        2 => 'DevolucionTotal',
+        4 => 'DevolucionEstatus',
+        3 => 'DevolucionComprobante',
 
 
     );
@@ -33,7 +33,7 @@ class CompraGeneralController extends AbstractActionController
             
             $post_data = $request->getPost();
 
-            $query = new \CompraQuery();
+            $query = new \DevolucionQuery();
             
 
             $query->useProveedorQuery('a')->endUse();
@@ -73,17 +73,17 @@ class CompraGeneralController extends AbstractActionController
                 }
                 $c = new \Criteria();
 
-                $c1= $c->getNewCriterion('compra.idcompra', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1= $c->getNewCriterion('devolucion.iddevolucion', '%'.$search_value.'%', \Criteria::LIKE);
 
                 $c2= $c->getNewCriterion('proveedor.proveedor_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c3= $c->getNewCriterion('compra.compra_estatus', '%'.$search_value.'%', \Criteria::LIKE);
+                $c3= $c->getNewCriterion('devolucion.devolucion_estatus', '%'.$search_value.'%', \Criteria::LIKE);
 
 
                 $c1->addOr($c2)->addOr($c3);
 
                 $query->addAnd($c1);
-                $query->groupByCompraFechacompra();
+                $query->groupBydevolucionFecha();
 
                 $records_filtered = $query->count();
             }
@@ -110,24 +110,23 @@ class CompraGeneralController extends AbstractActionController
 
 
             foreach ($query->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME) as $value) {
-                $tmp['DT_RowId'] = $value['idcompra'];
-                $tmp['idcompra'] = $value['idcompra'];
-                $tmp['compra_fechacompra'] = $value['compra_fechacompra'];
+                $tmp['DT_RowId'] = $value['iddevolucion'];
+                $tmp['iddevolucion'] = $value['iddevolucion'];
+                $tmp['devolucion_fecha'] = $value['devolucion_fecha'];
                 $tmp['proveedor_nombre'] = $value['proveedor_nombre'];
-                $tmp['compra_total'] = '$'.number_format($value['compra_total'],2);
+                $tmp['devolucion_total'] = '$'.number_format($value['devolucion_total'],2);
 
-                if($value['compra_comprobante'] == null)
+                if($value['devolucion_comprobante'] == null)
                 {
-                    $tmp['compra_comprobante'] = "<label>No tiene </label>";
+                    $tmp['devolucion_comprobante'] = "<label>No tiene </label>";
                 }else
                 {
-                    $tmp['compra_comprobante'] = '<a href="'.$value['compra_comprobante'].'"    target="_blank"> 
+                    $tmp['devolucion_comprobante'] = '<a href="'.$value['devolucion_comprobante'].'"    target="_blank"> 
                             <span class="icon icon-file icon-lg ">
                         </span>
                     </a>';
                 }
-
-                $tmp['compra_estatus'] = $value['compra_estatus'];
+                $tmp['devolucion_estatus'] = $value['devolucion_estatus'];
 
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
@@ -137,7 +136,7 @@ class CompraGeneralController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/compras/generales/ver/' . $value['idcompra'] . '">
+                      <a href="/devoluciones/generales/ver/' . $value['iddevolucion'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -193,7 +192,7 @@ class CompraGeneralController extends AbstractActionController
     {   
         
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/compra/generales/index');
+        $view_model->setTemplate('application/devolucion/generales/index');
         $view_model->setVariables(array(
              'messages' => $this->flashMessenger(),
         ));
@@ -211,55 +210,51 @@ class CompraGeneralController extends AbstractActionController
             $post_files = $request->getFiles();
             
 
-            $entity = new \Compra();
+            $entity = new \Devolucion();
 
-            $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
+            $post_data['devolucion_fecha'] = date_create_from_format('d/m/Y', $post_data['pedido_fecha']);
 
-            $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
+            
 
             foreach ($post_data as $key => $value){
-                if(\CompraPeer::getTableMap()->hasColumn($key)){
+                if(\DevolucionPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
 
             $entity->save();
 
-            if(isset($post_files['compra_comprobante'])){
+            if(isset($post_files['devolucion_comprobante'])){
 
-                $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
+                $file_type = $this->get_extension($post_files['devolucion_comprobante']['name']);
 
-                move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
+                move_uploaded_file($post_files['devolucion_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type);
 
 
-                $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
+                $entity->setDevolucionComprobante('/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type)->save();
             }
 
-
-            $entity->setCompraFechacreacion(date("Y-n-j"));
-
-            $entity->save();
             
             $total = 0;
 
             for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
             {
-                $compradetalle = new \Compradetalle();
-                $compradetalle->setIdcompra($entity->getIdcompra())
+                $devoulucion_detalle = new \Devoluciondetalle();
+                $devoulucion_detalle->setIddevolucion($entity->getIddevolucion())
                               ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                              ->setCompradetalleCantidad($post_data['cantidad'][$variante])
-                              ->setCompradetallePreciounitario($post_data['preciounitario'][$variante])
-                              ->setCompradetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
+                              ->setDevoluciondetalleCantidad($post_data['cantidad'][$variante])
+                              ->setDevoluciondetallePreciounitario($post_data['preciounitario'][$variante])
+                              ->setDevoluciondetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
                               ->save();
-                $total+= $compradetalle->getCompradetalleSubtotal();
+                $total+= $devoulucion_detalle->getDevoluciondetalleSubtotal();
 
             }
-            $entity->setCompraTotal($total);
+            $entity->setDevolucionTotal($total);
             $entity->save();
 
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-            return $this->redirect()->toUrl('/compras/generales');
+            return $this->redirect()->toUrl('/devoluciones/generales');
         
 
         }
@@ -302,10 +297,10 @@ class CompraGeneralController extends AbstractActionController
 
 
 
-        $form = new \Application\Compra\Form\CompraGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
+        $form = new \Application\Devolucion\Form\DevolucionGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
         
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/compra/generales/nuevo');
+        $view_model->setTemplate('application/devolucion/generales/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
@@ -320,59 +315,58 @@ class CompraGeneralController extends AbstractActionController
         
         $id = $this->params()->fromRoute('id');
         
-        $exist = \CompraQuery::create()->filterByIdcompra($id)->exists();
+        $exist = \DevolucionQuery::create()->filterByIddevolucion($id)->exists();
         
         if($exist){
             
-            $entity = \CompraQuery::create()->findPk($id);
+            $entity = \DevolucionQuery::create()->findPk($id);
             
             if($request->isPost()){
                 $post_data = $request->getPost();
                 $post_files = $request->getFiles();
 
-                $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
+                $post_data['devolucion_fecha'] = date_create_from_format('d/m/Y', $post_data['devolucion_fecha']);
 
-                $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
                 
                 foreach ($post_data as $key => $value){
-                    if(\CompraPeer::getTableMap()->hasColumn($key)){
+                    if(\DevolucionPeer::getTableMap()->hasColumn($key)){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
                 }
 
-                $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
+                $detalles = \DevoluciondetalleQuery::create()->filterByIddevolucion($id)->delete();
                 //$entity->getProductotallajes()->delete();
 
                 $total = 0;
                 for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
                 {
-                    $compradetalle = new \Compradetalle();
-                    $compradetalle->setIdcompra($entity->getIdcompra())
+                    $devoulucion_detalle = new \Devoluciondetalle();
+                    $devoulucion_detalle->setIddevolucion($entity->getIddevolucion())
                                   ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                                  ->setCompradetalleCantidad($post_data['cantidad'][$variante])
-                                  ->setCompradetallePreciounitario($post_data['preciounitario'][$variante])
-                                  ->setCompradetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
+                                  ->setDevoluciondetalleCantidad($post_data['cantidad'][$variante])
+                                  ->setDevoluciondetallePreciounitario($post_data['preciounitario'][$variante])
+                                  ->setDevoluciondetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
                                   ->save();
-                    $total+= $compradetalle->getCompradetalleSubtotal();
+                    $total+= $devoulucion_detalle->getDevoluciondetalleSubtotal();
 
                 }
 
-                if(isset($post_files['compra_comprobante'])){
+                if(isset($post_files['devolucion_comprobante'])){
 
-                    $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
+                    $file_type = $this->get_extension($post_files['devolucion_comprobante']['name']);
 
-                    move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
+                    move_uploaded_file($post_files['devolucion_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type);
 
 
-                    $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
+                    $entity->setDevolucionComprobante('/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type)->save();
                 }
 
-                $entity->setCompraTotal($total);
+                $entity->setDevolucionTotal($total);
                 $entity->save();
 
 
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-                return $this->redirect()->toUrl('/compras/generales');
+                return $this->redirect()->toUrl('/devoluciones/generales');
             }
             
                 
@@ -413,17 +407,15 @@ class CompraGeneralController extends AbstractActionController
             }
 
             
-            $form = new \Application\Compra\Form\CompraGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
+            $form = new \Application\Devolucion\Form\DevolucionGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            $form->get("compra_comprobante")->setAttribute('required',false);
-            
-            $form->get('compra_fechacompra')->setValue($entity->getCompraFechacompra('d/m/Y'));
-            $form->get('compra_fechaentrega')->setValue($entity->getCompraFechaentrega('d/m/Y'));
+            $form->get("devolucion_comprobante")->setAttribute('required',false);
 
+            $form->get('devolucion_fecha')->setValue($entity->getDevolucionFecha('d/m/Y'));
 
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/compra/generales/ver');
+            $view_model->setTemplate('application/devolucion/generales/ver');
             $view_model->setVariables(array(
                 'form' => $form,
                 'entity' => $entity,
@@ -433,7 +425,7 @@ class CompraGeneralController extends AbstractActionController
             
         }else{
             $this->flashMessenger()->addErrorMessage('Id Invalido.');
-            return $this->redirect()->toUrl('/compras/generales');
+            return $this->redirect()->toUrl('/devoluciones/generales');
         }
         return $view_model;
     }
@@ -442,10 +434,11 @@ class CompraGeneralController extends AbstractActionController
 
 
     public function getProductovariantes($data){
+
         $information = [
-            'selects' => \CompradetalleQuery::create()->select('idproductovariante')->filterByIdcompra($data['idcompra'])->find()->toArray(),
-            'cantidad' =>\CompradetalleQuery::create()->select('compradetalle_cantidad')->filterByIdcompra($data['idcompra'])->find()->toArray(),
-            'precio' =>\CompradetalleQuery::create()->select('compradetalle_preciounitario')->filterByIdcompra($data['idcompra'])->find()->toArray(),
+            'selects' => \DevoluciondetalleQuery::create()->select('idproductovariante')->filterByIddevolucion($data['iddevolucion'])->find()->toArray(),
+            'cantidad' =>\DevoluciondetalleQuery::create()->select('devoluciondetalle_cantidad')->filterByIddevolucion($data['iddevolucion'])->find()->toArray(),
+            'precio' =>\DevoluciondetalleQuery::create()->select('devoluciondetalle_preciounitario')->filterByIddevolucion($data['iddevolucion'])->find()->toArray(),
         ];
 
         return $information;
@@ -526,13 +519,12 @@ class CompraGeneralController extends AbstractActionController
         if($request->isPost())
         {
             $id = $this->params()->fromRoute('id');
-            $entity = \CompraQuery::Create()->findPk($id);
+            $entity = \DevolucionQuery::Create()->findPk($id);
 
-            unlink("/files/compras/19.");
             
             $entity->delete();
 
-            $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
+            $detalles = \DevoluciondetalleQuery::create()->filterByIddevolucion($id)->delete();
             
             if($entity->isDeleted()){
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido eliminado satisfactoriamente.');
@@ -541,7 +533,7 @@ class CompraGeneralController extends AbstractActionController
             }
         }
 
-        return $this->redirect()->toUrl('/compras/generales');
+        return $this->redirect()->toUrl('/devoluciones/generales');
     }
 
 }

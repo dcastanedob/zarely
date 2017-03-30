@@ -121,6 +121,74 @@ CREATE TABLE `configuracion`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- cuentabancaria
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cuentabancaria`;
+
+CREATE TABLE `cuentabancaria`
+(
+    `idcuentabancaria` INTEGER NOT NULL AUTO_INCREMENT,
+    `cuentabancaria_banco` VARCHAR(255) NOT NULL,
+    `cuentabancaria_cuenta` VARCHAR(45) NOT NULL,
+    `cuentabancaria_saldo` DECIMAL(15,5) NOT NULL,
+    PRIMARY KEY (`idcuentabancaria`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- devolucion
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `devolucion`;
+
+CREATE TABLE `devolucion`
+(
+    `iddevolucion` INTEGER NOT NULL AUTO_INCREMENT,
+    `idproveedor` INTEGER NOT NULL,
+    `devolucion_fecha` DATE NOT NULL,
+    `devolucion_total` DECIMAL(10,5) NOT NULL,
+    `devolucion_estatus` enum('pendiente','completado') NOT NULL,
+    `devolucion_nota` TEXT,
+    `devolucion_comprobante` TEXT,
+    PRIMARY KEY (`iddevolucion`),
+    INDEX `idproveedor` (`idproveedor`),
+    CONSTRAINT `idproveedor_devolucion`
+        FOREIGN KEY (`idproveedor`)
+        REFERENCES `proveedor` (`idproveedor`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- devoluciondetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `devoluciondetalle`;
+
+CREATE TABLE `devoluciondetalle`
+(
+    `iddevoluciondetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `iddevolucion` INTEGER NOT NULL,
+    `idproductovariante` INTEGER NOT NULL,
+    `devoluciondetalle_cantidad` DECIMAL(10,2) NOT NULL,
+    `devoluciondetalle_preciounitario` DECIMAL(10,2) NOT NULL,
+    `devoluciondetalle_subtotal` DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (`iddevoluciondetalle`),
+    INDEX `iddevolucion` (`iddevolucion`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    CONSTRAINT `iddevolucion_devoluciondetalle`
+        FOREIGN KEY (`iddevolucion`)
+        REFERENCES `devolucion` (`iddevolucion`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductovariante_devoluciondetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- empleado
 -- ---------------------------------------------------------------------
 

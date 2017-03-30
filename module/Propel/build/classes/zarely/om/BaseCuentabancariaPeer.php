@@ -2,62 +2,56 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'proveedor' table.
+ * Base static class for performing query and update operations on the 'cuentabancaria' table.
  *
  *
  *
  * @package propel.generator.zarely.om
  */
-abstract class BaseProveedorPeer
+abstract class BaseCuentabancariaPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'zarely';
 
     /** the table name for this class */
-    const TABLE_NAME = 'proveedor';
+    const TABLE_NAME = 'cuentabancaria';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Proveedor';
+    const OM_CLASS = 'Cuentabancaria';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'ProveedorTableMap';
+    const TM_CLASS = 'CuentabancariaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 4;
 
-    /** the column name for the idproveedor field */
-    const IDPROVEEDOR = 'proveedor.idproveedor';
+    /** the column name for the idcuentabancaria field */
+    const IDCUENTABANCARIA = 'cuentabancaria.idcuentabancaria';
 
-    /** the column name for the proveedor_nombrecomercial field */
-    const PROVEEDOR_NOMBRECOMERCIAL = 'proveedor.proveedor_nombrecomercial';
+    /** the column name for the cuentabancaria_banco field */
+    const CUENTABANCARIA_BANCO = 'cuentabancaria.cuentabancaria_banco';
 
-    /** the column name for the proveedor_telefono field */
-    const PROVEEDOR_TELEFONO = 'proveedor.proveedor_telefono';
+    /** the column name for the cuentabancaria_cuenta field */
+    const CUENTABANCARIA_CUENTA = 'cuentabancaria.cuentabancaria_cuenta';
 
-    /** the column name for the proveedor_celular field */
-    const PROVEEDOR_CELULAR = 'proveedor.proveedor_celular';
-
-    /** the column name for the proveedor_fechainicio field */
-    const PROVEEDOR_FECHAINICIO = 'proveedor.proveedor_fechainicio';
-
-    /** the column name for the proveedor_email field */
-    const PROVEEDOR_EMAIL = 'proveedor.proveedor_email';
+    /** the column name for the cuentabancaria_saldo field */
+    const CUENTABANCARIA_SALDO = 'cuentabancaria.cuentabancaria_saldo';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of Proveedor objects.
+     * An identity map to hold any loaded instances of Cuentabancaria objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array Proveedor[]
+     * @var        array Cuentabancaria[]
      */
     public static $instances = array();
 
@@ -66,30 +60,30 @@ abstract class BaseProveedorPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. ProveedorPeer::$fieldNames[ProveedorPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. CuentabancariaPeer::$fieldNames[CuentabancariaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproveedor', 'ProveedorNombrecomercial', 'ProveedorTelefono', 'ProveedorCelular', 'ProveedorFechainicio', 'ProveedorEmail', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproveedor', 'proveedorNombrecomercial', 'proveedorTelefono', 'proveedorCelular', 'proveedorFechainicio', 'proveedorEmail', ),
-        BasePeer::TYPE_COLNAME => array (ProveedorPeer::IDPROVEEDOR, ProveedorPeer::PROVEEDOR_NOMBRECOMERCIAL, ProveedorPeer::PROVEEDOR_TELEFONO, ProveedorPeer::PROVEEDOR_CELULAR, ProveedorPeer::PROVEEDOR_FECHAINICIO, ProveedorPeer::PROVEEDOR_EMAIL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPROVEEDOR', 'PROVEEDOR_NOMBRECOMERCIAL', 'PROVEEDOR_TELEFONO', 'PROVEEDOR_CELULAR', 'PROVEEDOR_FECHAINICIO', 'PROVEEDOR_EMAIL', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproveedor', 'proveedor_nombrecomercial', 'proveedor_telefono', 'proveedor_celular', 'proveedor_fechainicio', 'proveedor_email', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Idcuentabancaria', 'CuentabancariaBanco', 'CuentabancariaCuenta', 'CuentabancariaSaldo', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancaria', 'cuentabancariaBanco', 'cuentabancariaCuenta', 'cuentabancariaSaldo', ),
+        BasePeer::TYPE_COLNAME => array (CuentabancariaPeer::IDCUENTABANCARIA, CuentabancariaPeer::CUENTABANCARIA_BANCO, CuentabancariaPeer::CUENTABANCARIA_CUENTA, CuentabancariaPeer::CUENTABANCARIA_SALDO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIA', 'CUENTABANCARIA_BANCO', 'CUENTABANCARIA_CUENTA', 'CUENTABANCARIA_SALDO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idcuentabancaria', 'cuentabancaria_banco', 'cuentabancaria_cuenta', 'cuentabancaria_saldo', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. ProveedorPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. CuentabancariaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproveedor' => 0, 'ProveedorNombrecomercial' => 1, 'ProveedorTelefono' => 2, 'ProveedorCelular' => 3, 'ProveedorFechainicio' => 4, 'ProveedorEmail' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproveedor' => 0, 'proveedorNombrecomercial' => 1, 'proveedorTelefono' => 2, 'proveedorCelular' => 3, 'proveedorFechainicio' => 4, 'proveedorEmail' => 5, ),
-        BasePeer::TYPE_COLNAME => array (ProveedorPeer::IDPROVEEDOR => 0, ProveedorPeer::PROVEEDOR_NOMBRECOMERCIAL => 1, ProveedorPeer::PROVEEDOR_TELEFONO => 2, ProveedorPeer::PROVEEDOR_CELULAR => 3, ProveedorPeer::PROVEEDOR_FECHAINICIO => 4, ProveedorPeer::PROVEEDOR_EMAIL => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPROVEEDOR' => 0, 'PROVEEDOR_NOMBRECOMERCIAL' => 1, 'PROVEEDOR_TELEFONO' => 2, 'PROVEEDOR_CELULAR' => 3, 'PROVEEDOR_FECHAINICIO' => 4, 'PROVEEDOR_EMAIL' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproveedor' => 0, 'proveedor_nombrecomercial' => 1, 'proveedor_telefono' => 2, 'proveedor_celular' => 3, 'proveedor_fechainicio' => 4, 'proveedor_email' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Idcuentabancaria' => 0, 'CuentabancariaBanco' => 1, 'CuentabancariaCuenta' => 2, 'CuentabancariaSaldo' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancaria' => 0, 'cuentabancariaBanco' => 1, 'cuentabancariaCuenta' => 2, 'cuentabancariaSaldo' => 3, ),
+        BasePeer::TYPE_COLNAME => array (CuentabancariaPeer::IDCUENTABANCARIA => 0, CuentabancariaPeer::CUENTABANCARIA_BANCO => 1, CuentabancariaPeer::CUENTABANCARIA_CUENTA => 2, CuentabancariaPeer::CUENTABANCARIA_SALDO => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIA' => 0, 'CUENTABANCARIA_BANCO' => 1, 'CUENTABANCARIA_CUENTA' => 2, 'CUENTABANCARIA_SALDO' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('idcuentabancaria' => 0, 'cuentabancaria_banco' => 1, 'cuentabancaria_cuenta' => 2, 'cuentabancaria_saldo' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -104,10 +98,10 @@ abstract class BaseProveedorPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = ProveedorPeer::getFieldNames($toType);
-        $key = isset(ProveedorPeer::$fieldKeys[$fromType][$name]) ? ProveedorPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = CuentabancariaPeer::getFieldNames($toType);
+        $key = isset(CuentabancariaPeer::$fieldKeys[$fromType][$name]) ? CuentabancariaPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ProveedorPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(CuentabancariaPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -124,11 +118,11 @@ abstract class BaseProveedorPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, ProveedorPeer::$fieldNames)) {
+        if (!array_key_exists($type, CuentabancariaPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return ProveedorPeer::$fieldNames[$type];
+        return CuentabancariaPeer::$fieldNames[$type];
     }
 
     /**
@@ -140,12 +134,12 @@ abstract class BaseProveedorPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. ProveedorPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. CuentabancariaPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(ProveedorPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(CuentabancariaPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -163,19 +157,15 @@ abstract class BaseProveedorPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ProveedorPeer::IDPROVEEDOR);
-            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_NOMBRECOMERCIAL);
-            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_TELEFONO);
-            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_CELULAR);
-            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_FECHAINICIO);
-            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_EMAIL);
+            $criteria->addSelectColumn(CuentabancariaPeer::IDCUENTABANCARIA);
+            $criteria->addSelectColumn(CuentabancariaPeer::CUENTABANCARIA_BANCO);
+            $criteria->addSelectColumn(CuentabancariaPeer::CUENTABANCARIA_CUENTA);
+            $criteria->addSelectColumn(CuentabancariaPeer::CUENTABANCARIA_SALDO);
         } else {
-            $criteria->addSelectColumn($alias . '.idproveedor');
-            $criteria->addSelectColumn($alias . '.proveedor_nombrecomercial');
-            $criteria->addSelectColumn($alias . '.proveedor_telefono');
-            $criteria->addSelectColumn($alias . '.proveedor_celular');
-            $criteria->addSelectColumn($alias . '.proveedor_fechainicio');
-            $criteria->addSelectColumn($alias . '.proveedor_email');
+            $criteria->addSelectColumn($alias . '.idcuentabancaria');
+            $criteria->addSelectColumn($alias . '.cuentabancaria_banco');
+            $criteria->addSelectColumn($alias . '.cuentabancaria_cuenta');
+            $criteria->addSelectColumn($alias . '.cuentabancaria_saldo');
         }
     }
 
@@ -195,21 +185,21 @@ abstract class BaseProveedorPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProveedorPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(CuentabancariaPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProveedorPeer::addSelectColumns($criteria);
+            CuentabancariaPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(ProveedorPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(CuentabancariaPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(ProveedorPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(CuentabancariaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -228,7 +218,7 @@ abstract class BaseProveedorPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return Proveedor
+     * @return Cuentabancaria
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -236,7 +226,7 @@ abstract class BaseProveedorPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = ProveedorPeer::doSelect($critcopy, $con);
+        $objects = CuentabancariaPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -254,7 +244,7 @@ abstract class BaseProveedorPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return ProveedorPeer::populateObjects(ProveedorPeer::doSelectStmt($criteria, $con));
+        return CuentabancariaPeer::populateObjects(CuentabancariaPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -272,16 +262,16 @@ abstract class BaseProveedorPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProveedorPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(CuentabancariaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            ProveedorPeer::addSelectColumns($criteria);
+            CuentabancariaPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ProveedorPeer::DATABASE_NAME);
+        $criteria->setDbName(CuentabancariaPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -295,16 +285,16 @@ abstract class BaseProveedorPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param Proveedor $obj A Proveedor object.
+     * @param Cuentabancaria $obj A Cuentabancaria object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = (string) $obj->getIdproveedor();
+                $key = (string) $obj->getIdcuentabancaria();
             } // if key === null
-            ProveedorPeer::$instances[$key] = $obj;
+            CuentabancariaPeer::$instances[$key] = $obj;
         }
     }
 
@@ -316,7 +306,7 @@ abstract class BaseProveedorPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A Proveedor object or a primary key value.
+     * @param      mixed $value A Cuentabancaria object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -324,17 +314,17 @@ abstract class BaseProveedorPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof Proveedor) {
-                $key = (string) $value->getIdproveedor();
+            if (is_object($value) && $value instanceof Cuentabancaria) {
+                $key = (string) $value->getIdcuentabancaria();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Proveedor object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Cuentabancaria object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(ProveedorPeer::$instances[$key]);
+            unset(CuentabancariaPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -345,14 +335,14 @@ abstract class BaseProveedorPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return Proveedor Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return Cuentabancaria Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(ProveedorPeer::$instances[$key])) {
-                return ProveedorPeer::$instances[$key];
+            if (isset(CuentabancariaPeer::$instances[$key])) {
+                return CuentabancariaPeer::$instances[$key];
             }
         }
 
@@ -367,31 +357,19 @@ abstract class BaseProveedorPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (ProveedorPeer::$instances as $instance) {
+        foreach (CuentabancariaPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        ProveedorPeer::$instances = array();
+        CuentabancariaPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to proveedor
+     * Method to invalidate the instance pool of all tables related to cuentabancaria
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in CompraPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        CompraPeer::clearInstancePool();
-        // Invalidate objects in DevolucionPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        DevolucionPeer::clearInstancePool();
-        // Invalidate objects in ProductoPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ProductoPeer::clearInstancePool();
-        // Invalidate objects in ProveedormarcaPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ProveedormarcaPeer::clearInstancePool();
     }
 
     /**
@@ -441,11 +419,11 @@ abstract class BaseProveedorPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = ProveedorPeer::getOMClass();
+        $cls = CuentabancariaPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = ProveedorPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = ProveedorPeer::getInstanceFromPool($key))) {
+            $key = CuentabancariaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = CuentabancariaPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -454,7 +432,7 @@ abstract class BaseProveedorPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                ProveedorPeer::addInstanceToPool($obj, $key);
+                CuentabancariaPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -468,21 +446,21 @@ abstract class BaseProveedorPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (Proveedor object, last column rank)
+     * @return array (Cuentabancaria object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = ProveedorPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = ProveedorPeer::getInstanceFromPool($key))) {
+        $key = CuentabancariaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = CuentabancariaPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + ProveedorPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + CuentabancariaPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = ProveedorPeer::OM_CLASS;
+            $cls = CuentabancariaPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            ProveedorPeer::addInstanceToPool($obj, $key);
+            CuentabancariaPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -497,7 +475,7 @@ abstract class BaseProveedorPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(ProveedorPeer::DATABASE_NAME)->getTable(ProveedorPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(CuentabancariaPeer::DATABASE_NAME)->getTable(CuentabancariaPeer::TABLE_NAME);
     }
 
     /**
@@ -505,9 +483,9 @@ abstract class BaseProveedorPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BaseProveedorPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BaseProveedorPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \ProveedorTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseCuentabancariaPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseCuentabancariaPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \CuentabancariaTableMap());
       }
     }
 
@@ -519,13 +497,13 @@ abstract class BaseProveedorPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return ProveedorPeer::OM_CLASS;
+        return CuentabancariaPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a Proveedor or Criteria object.
+     * Performs an INSERT on the database, given a Cuentabancaria or Criteria object.
      *
-     * @param      mixed $values Criteria or Proveedor object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or Cuentabancaria object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -534,22 +512,22 @@ abstract class BaseProveedorPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProveedorPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(CuentabancariaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from Proveedor object
+            $criteria = $values->buildCriteria(); // build Criteria from Cuentabancaria object
         }
 
-        if ($criteria->containsKey(ProveedorPeer::IDPROVEEDOR) && $criteria->keyContainsValue(ProveedorPeer::IDPROVEEDOR) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProveedorPeer::IDPROVEEDOR.')');
+        if ($criteria->containsKey(CuentabancariaPeer::IDCUENTABANCARIA) && $criteria->keyContainsValue(CuentabancariaPeer::IDCUENTABANCARIA) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.CuentabancariaPeer::IDCUENTABANCARIA.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(ProveedorPeer::DATABASE_NAME);
+        $criteria->setDbName(CuentabancariaPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -566,9 +544,9 @@ abstract class BaseProveedorPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a Proveedor or Criteria object.
+     * Performs an UPDATE on the database, given a Cuentabancaria or Criteria object.
      *
-     * @param      mixed $values Criteria or Proveedor object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or Cuentabancaria object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -577,35 +555,35 @@ abstract class BaseProveedorPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProveedorPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(CuentabancariaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(ProveedorPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(CuentabancariaPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(ProveedorPeer::IDPROVEEDOR);
-            $value = $criteria->remove(ProveedorPeer::IDPROVEEDOR);
+            $comparison = $criteria->getComparison(CuentabancariaPeer::IDCUENTABANCARIA);
+            $value = $criteria->remove(CuentabancariaPeer::IDCUENTABANCARIA);
             if ($value) {
-                $selectCriteria->add(ProveedorPeer::IDPROVEEDOR, $value, $comparison);
+                $selectCriteria->add(CuentabancariaPeer::IDCUENTABANCARIA, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(ProveedorPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(CuentabancariaPeer::TABLE_NAME);
             }
 
-        } else { // $values is Proveedor object
+        } else { // $values is Cuentabancaria object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(ProveedorPeer::DATABASE_NAME);
+        $criteria->setDbName(CuentabancariaPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the proveedor table.
+     * Deletes all rows from the cuentabancaria table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -614,20 +592,19 @@ abstract class BaseProveedorPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProveedorPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(CuentabancariaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += ProveedorPeer::doOnDeleteCascade(new Criteria(ProveedorPeer::DATABASE_NAME), $con);
-            $affectedRows += BasePeer::doDeleteAll(ProveedorPeer::TABLE_NAME, $con, ProveedorPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(CuentabancariaPeer::TABLE_NAME, $con, CuentabancariaPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            ProveedorPeer::clearInstancePool();
-            ProveedorPeer::clearRelatedInstancePool();
+            CuentabancariaPeer::clearInstancePool();
+            CuentabancariaPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -638,9 +615,9 @@ abstract class BaseProveedorPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a Proveedor or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Cuentabancaria or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or Proveedor object or primary key or array of primary keys
+     * @param      mixed $values Criteria or Cuentabancaria object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -651,22 +628,32 @@ abstract class BaseProveedorPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(ProveedorPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(CuentabancariaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
+            // invalidate the cache for all objects of this type, since we have no
+            // way of knowing (without running a query) what objects should be invalidated
+            // from the cache based on this Criteria.
+            CuentabancariaPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof Proveedor) { // it's a model object
+        } elseif ($values instanceof Cuentabancaria) { // it's a model object
+            // invalidate the cache for this single object
+            CuentabancariaPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ProveedorPeer::DATABASE_NAME);
-            $criteria->add(ProveedorPeer::IDPROVEEDOR, (array) $values, Criteria::IN);
+            $criteria = new Criteria(CuentabancariaPeer::DATABASE_NAME);
+            $criteria->add(CuentabancariaPeer::IDCUENTABANCARIA, (array) $values, Criteria::IN);
+            // invalidate the cache for this object(s)
+            foreach ((array) $values as $singleval) {
+                CuentabancariaPeer::removeInstanceFromPool($singleval);
+            }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ProveedorPeer::DATABASE_NAME);
+        $criteria->setDbName(CuentabancariaPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -675,25 +662,8 @@ abstract class BaseProveedorPeer
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
 
-            // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
-            $c = clone $criteria;
-            $affectedRows += ProveedorPeer::doOnDeleteCascade($c, $con);
-
-            // Because this db requires some delete cascade/set null emulation, we have to
-            // clear the cached instance *after* the emulation has happened (since
-            // instances get re-added by the select statement contained therein).
-            if ($values instanceof Criteria) {
-                ProveedorPeer::clearInstancePool();
-            } elseif ($values instanceof Proveedor) { // it's a model object
-                ProveedorPeer::removeInstanceFromPool($values);
-            } else { // it's a primary key, or an array of pks
-                foreach ((array) $values as $singleval) {
-                    ProveedorPeer::removeInstanceFromPool($singleval);
-                }
-            }
-
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            ProveedorPeer::clearRelatedInstancePool();
+            CuentabancariaPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -704,64 +674,13 @@ abstract class BaseProveedorPeer
     }
 
     /**
-     * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
-     * feature (like MySQL or SQLite).
-     *
-     * This method is not very speedy because it must perform a query first to get
-     * the implicated records and then perform the deletes by calling those Peer classes.
-     *
-     * This method should be used within a transaction if possible.
-     *
-     * @param      Criteria $criteria
-     * @param      PropelPDO $con
-     * @return int The number of affected rows (if supported by underlying database driver).
-     */
-    protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
-    {
-        // initialize var to track total num of affected rows
-        $affectedRows = 0;
-
-        // first find the objects that are implicated by the $criteria
-        $objects = ProveedorPeer::doSelect($criteria, $con);
-        foreach ($objects as $obj) {
-
-
-            // delete related Compra objects
-            $criteria = new Criteria(CompraPeer::DATABASE_NAME);
-
-            $criteria->add(CompraPeer::IDPROVEEDOR, $obj->getIdproveedor());
-            $affectedRows += CompraPeer::doDelete($criteria, $con);
-
-            // delete related Devolucion objects
-            $criteria = new Criteria(DevolucionPeer::DATABASE_NAME);
-
-            $criteria->add(DevolucionPeer::IDPROVEEDOR, $obj->getIdproveedor());
-            $affectedRows += DevolucionPeer::doDelete($criteria, $con);
-
-            // delete related Producto objects
-            $criteria = new Criteria(ProductoPeer::DATABASE_NAME);
-
-            $criteria->add(ProductoPeer::IDPROVEEDOR, $obj->getIdproveedor());
-            $affectedRows += ProductoPeer::doDelete($criteria, $con);
-
-            // delete related Proveedormarca objects
-            $criteria = new Criteria(ProveedormarcaPeer::DATABASE_NAME);
-
-            $criteria->add(ProveedormarcaPeer::IDPROVEEDOR, $obj->getIdproveedor());
-            $affectedRows += ProveedormarcaPeer::doDelete($criteria, $con);
-        }
-
-        return $affectedRows;
-    }
-
-    /**
-     * Validates all modified columns of given Proveedor object.
+     * Validates all modified columns of given Cuentabancaria object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param Proveedor $obj The object to validate.
+     * @param Cuentabancaria $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -771,8 +690,8 @@ abstract class BaseProveedorPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(ProveedorPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(ProveedorPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(CuentabancariaPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(CuentabancariaPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -788,7 +707,7 @@ abstract class BaseProveedorPeer
 
         }
 
-        return BasePeer::doValidate(ProveedorPeer::DATABASE_NAME, ProveedorPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(CuentabancariaPeer::DATABASE_NAME, CuentabancariaPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -796,23 +715,23 @@ abstract class BaseProveedorPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return Proveedor
+     * @return Cuentabancaria
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = ProveedorPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = CuentabancariaPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProveedorPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(CuentabancariaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(ProveedorPeer::DATABASE_NAME);
-        $criteria->add(ProveedorPeer::IDPROVEEDOR, $pk);
+        $criteria = new Criteria(CuentabancariaPeer::DATABASE_NAME);
+        $criteria->add(CuentabancariaPeer::IDCUENTABANCARIA, $pk);
 
-        $v = ProveedorPeer::doSelect($criteria, $con);
+        $v = CuentabancariaPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -822,31 +741,31 @@ abstract class BaseProveedorPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return Proveedor[]
+     * @return Cuentabancaria[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProveedorPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(CuentabancariaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(ProveedorPeer::DATABASE_NAME);
-            $criteria->add(ProveedorPeer::IDPROVEEDOR, $pks, Criteria::IN);
-            $objs = ProveedorPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(CuentabancariaPeer::DATABASE_NAME);
+            $criteria->add(CuentabancariaPeer::IDCUENTABANCARIA, $pks, Criteria::IN);
+            $objs = CuentabancariaPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BaseProveedorPeer
+} // BaseCuentabancariaPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseProveedorPeer::buildTableMap();
+BaseCuentabancariaPeer::buildTableMap();
 

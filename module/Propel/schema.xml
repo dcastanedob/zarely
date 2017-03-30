@@ -90,6 +90,56 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="cuentabancaria" phpName="Cuentabancaria" idMethod="native">
+    <column name="idcuentabancaria" phpName="Idcuentabancaria" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="cuentabancaria_banco" phpName="CuentabancariaBanco" type="VARCHAR" size="255" required="true"/>
+    <column name="cuentabancaria_cuenta" phpName="CuentabancariaCuenta" type="VARCHAR" size="45" required="true"/>
+    <column name="cuentabancaria_saldo" phpName="CuentabancariaSaldo" type="DECIMAL" size="15" scale="5" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="devolucion" phpName="Devolucion" idMethod="native">
+    <column name="iddevolucion" phpName="Iddevolucion" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idproveedor" phpName="Idproveedor" type="INTEGER" required="true"/>
+    <column name="devolucion_fecha" phpName="DevolucionFecha" type="DATE" required="true"/>
+    <column name="devolucion_total" phpName="DevolucionTotal" type="DECIMAL" size="10" scale="5" required="true"/>
+    <column name="devolucion_estatus" phpName="DevolucionEstatus" type="CHAR" sqlType="enum('pendiente','completado')" required="true"/>
+    <column name="devolucion_nota" phpName="DevolucionNota" type="LONGVARCHAR" required="false"/>
+    <column name="devolucion_comprobante" phpName="DevolucionComprobante" type="LONGVARCHAR" required="false"/>
+    <foreign-key foreignTable="proveedor" name="idproveedor_devolucion" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproveedor" foreign="idproveedor"/>
+    </foreign-key>
+    <index name="idproveedor">
+      <index-column name="idproveedor"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="devoluciondetalle" phpName="Devoluciondetalle" idMethod="native">
+    <column name="iddevoluciondetalle" phpName="Iddevoluciondetalle" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="iddevolucion" phpName="Iddevolucion" type="INTEGER" required="true"/>
+    <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
+    <column name="devoluciondetalle_cantidad" phpName="DevoluciondetalleCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="devoluciondetalle_preciounitario" phpName="DevoluciondetallePreciounitario" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="devoluciondetalle_subtotal" phpName="DevoluciondetalleSubtotal" type="DECIMAL" size="10" scale="2" required="true"/>
+    <foreign-key foreignTable="devolucion" name="iddevolucion_devoluciondetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="iddevolucion" foreign="iddevolucion"/>
+    </foreign-key>
+    <foreign-key foreignTable="productovariante" name="idproductovariante_devoluciondetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductovariante" foreign="idproductovariante"/>
+    </foreign-key>
+    <index name="iddevolucion">
+      <index-column name="iddevolucion"/>
+    </index>
+    <index name="idproductovariante">
+      <index-column name="idproductovariante"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="empleado" phpName="Empleado" idMethod="native">
     <column name="idempleado" phpName="Idempleado" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="empleado_nombre" phpName="EmpleadoNombre" type="VARCHAR" size="45" required="true"/>

@@ -1,0 +1,161 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title"> Devoluciones - Registro </h1>
+	</div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+    		<div class="demo-form-wrapper">
+    			<form class="form form-horizontal" name="formulario" action="/devoluciones/generales/nuevo" method="POST" enctype="multipart/form-data"">
+    				<div class="row">
+		    			<div class="col-md-5">
+			       			<div class="form-group">
+				           		<label  for="Modelo">Fecha </label>
+				                <?php echo $this->formText($form->get('devolucion_fecha')) ?>
+			        		</div>
+
+			        		
+
+			        		<div class="form-group">
+				           		<label  for="tipo">Estatus</label>
+				                <?php echo $this->formSelect($form->get('devolucion_estatus')) ?>
+			        		</div>
+			        		
+			        	</div>
+			        	<div class="col-md-1"></div>
+		        		<div class="col-md-5">
+			       			<div class="form-group">
+				           		<label  for="Proveedor">Proveedor </label>
+				                <?php echo $this->formSelect($form->get('idproveedor')) ?>
+			        		</div>
+
+			        		<div class="form-group">
+				           		<label  for="marca"> Factura </label>
+				                <?php echo $this->formFile($form->get('devolucion_comprobante')) ?>
+			        		</div>
+
+			        		
+
+			        		
+			        	</div>
+		        	
+ 					</div> <!--end class row-->
+
+
+ 					<div class="row">
+		        		
+    					<div class="col-md-11 alineamiento" >
+    						
+							<div class="form-group" >
+								<label for="tallaje">Productos</label>
+								
+								<input type="radio" id="variante" name="validar" checked><label class="alinearTexto">Variante</label>
+								<input type="radio" id="general" name="validar"><label class="alinearTexto">Producto general</label>
+							</div>
+
+	        				<div id="medidasInformation">
+	        					<div id="variantes">
+			        				<div class="col-md-9 ">
+					                    <div class="form-group">
+							                <?php echo $this->formSelect($form->get('idproductovariante[]')) ?>
+						        		</div>
+			        				</div>
+			        				<div class="col-md-1 "></div>
+
+					        		<div class="col-md-2 ">		
+					        			<div class="form-group" style="margin-top: -23px">
+							           		<label  for="guardar"></label>
+		                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_productovariante">			Agregar
+		                                    </a>
+						        		</div>
+						        	</div>	
+					        	</div>
+
+					        	<div class="ocultar" id="producto_general"> 
+					        		<div class="col-md-9 ">
+					                    <div class="form-group">
+							                <?php echo $this->formSelect($form->get('productos_generales')) ?>
+						        		</div>
+			        				</div>
+
+			        				<div class="col-md-1 "></div>
+
+					        		<div class="col-md-2 ">		
+					        			<div class="form-group" style="margin-top: -23px">
+							           		<label  for="guardar"></label>
+		                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_productogeneral">			Agregar
+		                                    </a>
+						        		</div>
+						        	</div>
+					        	</div>
+
+	                            <table class="table table-bordered " id="tabla_productovariante">
+		        				    <thead>
+		        				      <tr>
+		        				        <th>Producto</th>
+		        				        <th>Cantidad</th>
+		        				        <th>Precio unitario</th>
+		        				        <th>Subtotal</th>
+		        				        <th>Opciones</th>
+		        				      </tr>
+		        				    </thead>
+		        				    <tbody>
+		        
+		        				    </tbody>
+		        				</table>
+		        					<div class="row">
+		        						<div class="col-md-12">
+		        							<label  class="pull-right" >
+		        				              TOTAL:
+		        				              	<input id="total_devolucion" type="text" name="devolucion_total" disabled>
+		        				              
+		        				              </span>
+		        				            </label>
+		        						</div>
+		        					</div>
+	        				</div>
+
+	        			</div>	
+
+		        	</div>
+		        	<hr>
+
+		        	
+ 					<div class="row">
+ 						<div class="col-md-11 alineamiento" >
+ 							<div class="">
+				           		<label  for="nota">Notas</label>
+				                <?php echo $this->formTextarea($form->get('devolucion_nota')) ?>
+			        		</div>
+ 						</div>
+ 					</div>
+
+		        	<div class="row">
+		        		<div class="col-md-11 alineamiento" >
+ 							<div class="">
+				           		<label  for="guardar"></label>
+			                    <button class="btn btn-primary btn-block btn-next" type="submit">
+		                         	Guardar
+		                        </button>
+		                    </div>
+		                </div>
+	        		</div>
+ 
+    			</form>
+    		</div>
+    	</div>
+	</div>
+
+
+	
+
+   
+
+</div>
+<link rel="stylesheet"  href="/css/tableScroll.css">
+
+<script src="/js/devolucion/generales.js"></script>
+<script>
+	var generales = $('.body_container').generales();
+	generales.initForm();
+</script>
+

@@ -63,6 +63,17 @@ return array(
                 ),
             ),
 
+            'cuentas' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/cuentas[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Cuentas',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'temporadas' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -342,6 +353,19 @@ return array(
                 ),
             ),
 
+
+            'devolucionesgenerales' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/devoluciones/generales[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Devolucion\Controller\DevolucionGeneral',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
             'porpagar' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -428,6 +452,7 @@ return array(
             'Application\Catalogo\Controller\Gastos' => 'Application\Catalogo\Controller\GastosController',
             'Application\Catalogo\Controller\Empleados' => 'Application\Catalogo\Controller\EmpleadosController',
             'Application\Catalogo\Controller\Clientes' => 'Application\Catalogo\Controller\ClientesController',
+            'Application\Catalogo\Controller\Cuentas' => 'Application\Catalogo\Controller\CuentasController',
             'Application\Catalogo\Controller\Sucursales' => 'Application\Catalogo\Controller\SucursalesController',
             'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController',
             'Application\Catalogo\Controller\Proveedores' => 'Application\Catalogo\Controller\ProveedoresController',
@@ -462,6 +487,8 @@ return array(
             'Application\Pedido\Controller\PedidoMayorista' => 'Application\Pedido\Controller\PedidoMayoristaController',
 
             'Application\Compra\Controller\CompraGeneral' => 'Application\Compra\Controller\CompraGeneralController',
+
+            'Application\Devolucion\Controller\DevolucionGeneral' => 'Application\Devolucion\Controller\DevolucionGeneralController',
 
             'Application\FlujoEfectivo\Controller\CuentaPorCobrar' => 'Application\FlujoEfectivo\Controller\CuentaPorCobrarController',
 
