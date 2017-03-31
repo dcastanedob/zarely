@@ -359,12 +359,15 @@ class CompraGeneralController extends AbstractActionController
 
                 if(isset($post_files['compra_comprobante'])){
 
-                    $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
+                    if($post_files['compra_comprobante']['name'] != ""){
 
-                    move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
+                        $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
+
+                        move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
 
 
-                    $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
+                        $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
+                    }
                 }
 
                 $entity->setCompraTotal($total);
@@ -528,7 +531,7 @@ class CompraGeneralController extends AbstractActionController
             $id = $this->params()->fromRoute('id');
             $entity = \CompraQuery::Create()->findPk($id);
 
-            unlink("/files/compras/19.");
+            //unlink("/files/compras/19.");
             
             $entity->delete();
 

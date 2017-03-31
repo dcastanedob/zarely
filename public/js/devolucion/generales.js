@@ -217,7 +217,7 @@
                               '</div>',
                               
                              ' <div class="modal-body" style="overflow-x:auto;">',
-                                '<table id="details" class="table table-bordered table-nowrap " cellspacing="0" width="100%">',
+                                '<table id="details" class="table table-bordered table-nowrap dataTable" cellspacing="0" width="100%">',
                                     '<thead>',
                                         '<th>Variante</th>',
                                         '<th id="tallaje70">7.0</th>',
@@ -373,7 +373,16 @@
                       });
                       
                     });
-                    
+
+                    $modal.find('.dataTable').dataTable(
+                    {
+                        language: {
+                          url: "/json/datatable_es.json",
+
+                        },
+                        "scrollX": true,
+                    });
+
                     $modal.modal();
                   }
               });

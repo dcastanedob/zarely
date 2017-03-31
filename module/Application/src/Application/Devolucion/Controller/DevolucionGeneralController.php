@@ -353,12 +353,16 @@ class DevolucionGeneralController extends AbstractActionController
 
                 if(isset($post_files['devolucion_comprobante'])){
 
-                    $file_type = $this->get_extension($post_files['devolucion_comprobante']['name']);
+                    if($post_files['devolucion_comprobante']['name'] != ""){
 
-                    move_uploaded_file($post_files['devolucion_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type);
+                        $file_type = $this->get_extension($post_files['devolucion_comprobante']['name']);
+
+                        move_uploaded_file($post_files['devolucion_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type);
 
 
-                    $entity->setDevolucionComprobante('/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type)->save();
+                        $entity->setDevolucionComprobante('/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type)->save();
+                    }
+
                 }
 
                 $entity->setDevolucionTotal($total);
