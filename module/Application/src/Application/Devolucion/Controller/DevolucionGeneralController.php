@@ -212,7 +212,7 @@ class DevolucionGeneralController extends AbstractActionController
 
             $entity = new \Devolucion();
 
-            $post_data['devolucion_fecha'] = date_create_from_format('d/m/Y', $post_data['pedido_fecha']);
+            $post_data['devolucion_fecha'] = date_create_from_format('d/m/Y', $post_data['devolucion_fecha']);
 
             
 

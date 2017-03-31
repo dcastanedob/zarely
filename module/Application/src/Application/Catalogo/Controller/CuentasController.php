@@ -17,7 +17,7 @@ class CuentasController  extends AbstractActionController
 
     public $column_map = array(
         0 => 'Idcuentabancaria',
-        1 => 'CuentabancariaNombre',
+        1 => 'CuentabancariaBanco',
         2 => 'CuentabancariaCuenta',
         3 => 'CuentabancariaSaldo',
     );
