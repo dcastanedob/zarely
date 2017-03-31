@@ -452,9 +452,15 @@ abstract class BaseProductovariantePeer
         // Invalidate objects in CompradetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CompradetallePeer::clearInstancePool();
+        // Invalidate objects in DevoluciondetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        DevoluciondetallePeer::clearInstancePool();
         // Invalidate objects in PedidoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidoPeer::clearInstancePool();
+        // Invalidate objects in PedidomayoristadetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PedidomayoristadetallePeer::clearInstancePool();
         // Invalidate objects in ProductosucursalPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductosucursalPeer::clearInstancePool();
@@ -1775,11 +1781,23 @@ abstract class BaseProductovariantePeer
             $criteria->add(CompradetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
             $affectedRows += CompradetallePeer::doDelete($criteria, $con);
 
+            // delete related Devoluciondetalle objects
+            $criteria = new Criteria(DevoluciondetallePeer::DATABASE_NAME);
+
+            $criteria->add(DevoluciondetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
+            $affectedRows += DevoluciondetallePeer::doDelete($criteria, $con);
+
             // delete related Pedido objects
             $criteria = new Criteria(PedidoPeer::DATABASE_NAME);
 
             $criteria->add(PedidoPeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
             $affectedRows += PedidoPeer::doDelete($criteria, $con);
+
+            // delete related Pedidomayoristadetalle objects
+            $criteria = new Criteria(PedidomayoristadetallePeer::DATABASE_NAME);
+
+            $criteria->add(PedidomayoristadetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
+            $affectedRows += PedidomayoristadetallePeer::doDelete($criteria, $con);
 
             // delete related Productosucursal objects
             $criteria = new Criteria(ProductosucursalPeer::DATABASE_NAME);

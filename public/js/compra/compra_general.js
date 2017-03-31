@@ -64,15 +64,16 @@
                         url:'/compras/generales/serverside',
                     },
                     columns:[
-                        {"data":"compra_fechacompra","name":"compra_fechacompra","orderable":false},
-                        {"data":"proveedor_nombre","name":"proveedor_nombre","orderable":false},
-                        {"data":"compra_total","name":"compra_total","orderable":false},
+                        {"data":"compra_fechacompra","name":"compra_fechacompra","orderable":true},
+                        {"data":"proveedor_nombre","name":"proveedor_nombre","orderable":true},
+                        {"data":"compra_total","name":"compra_total","orderable":true},
+                        {"data":"compra_comprobante","name":"compra_comprobante","orderable":false},
                         {"data":"compra_estatus","name":"compra_estatus","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},
                     ],
                     proccesing: true,
 
-                    /*createdRow: function(row,data,index){
+                    createdRow: function(row,data,index){
                         $(row).find('.delete_modal').on('click',function(){
                             var id = $(row).attr('id');
                             var tmpl = [
@@ -85,7 +86,7 @@
                                           '<span class="sr-only">Close</span>',
                                         '</button>',
                                       '</div>',
-                                      '<form action="/catalogo/pendiente/eliminar/'+id+'" method="POST">',
+                                      '<form action="/compras/generales/eliminar/'+id+'" method="POST">',
                                      ' <div class="modal-body">',
                                         '<div class="text-center">',
                                          ' <span class="text-primary icon icon-times-circle icon-5x"></span>',
@@ -105,7 +106,7 @@
 
                             $(tmpl).modal();
                         });
-                    }*/
+                    }
                 }
             );
 

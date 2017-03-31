@@ -383,6 +383,9 @@ abstract class BaseProveedorPeer
         // Invalidate objects in CompraPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CompraPeer::clearInstancePool();
+        // Invalidate objects in DevolucionPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        DevolucionPeer::clearInstancePool();
         // Invalidate objects in ProductoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductoPeer::clearInstancePool();
@@ -728,6 +731,12 @@ abstract class BaseProveedorPeer
 
             $criteria->add(CompraPeer::IDPROVEEDOR, $obj->getIdproveedor());
             $affectedRows += CompraPeer::doDelete($criteria, $con);
+
+            // delete related Devolucion objects
+            $criteria = new Criteria(DevolucionPeer::DATABASE_NAME);
+
+            $criteria->add(DevolucionPeer::IDPROVEEDOR, $obj->getIdproveedor());
+            $affectedRows += DevolucionPeer::doDelete($criteria, $con);
 
             // delete related Producto objects
             $criteria = new Criteria(ProductoPeer::DATABASE_NAME);

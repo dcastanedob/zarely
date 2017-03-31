@@ -222,63 +222,63 @@
                                 '<table id="details" class="table table-bordered table-nowrap " cellspacing="0" width="100%">',
                                     '<thead>',
                                         '<th>Variante</th>',
-                                        '<th>7.0</th>',
-                                        '<th>7.5</th>',
-                                        '<th>8.0</th>',
-                                        '<th>8.5</th>',
-                                        '<th>9.0</th>',
-                                        '<th>9.5</th>',
-                                        '<th>10.0</th>',
-                                        '<th>10.5</th>',
-                                        '<th>11.0</th>',
-                                        '<th>11.5</th>',
-                                        '<th>12.0</th>',
-                                        '<th>12.5</th>',
-                                        '<th>13.0</th>',
-                                        '<th>13.5</th>',
-                                        '<th>14.0</th>',
-                                        '<th>14.5</th>',
-                                        '<th>15.0</th>',
-                                        '<th>15.5</th>',
-                                        '<th>16.0</th>',
-                                        '<th>16.5</th>',
-                                        '<th>17.0</th>',
-                                        '<th>17.5</th>',
-                                        '<th>18.0</th>',
-                                        '<th>18.5</th>',
-                                        '<th>19.0</th>',
-                                        '<th>19.5</th>',
-                                        '<th>20.0</th>',
-                                        '<th>20.5</th>',
-                                        '<th>21.0</th>',
-                                        '<th>21.5</th>',
-                                        '<th>22.0</th>',
-                                        '<th>22.5</th>',
-                                        '<th>23.0</th>',
-                                        '<th>23.5</th>',
-                                        '<th>24.0</th>',
-                                        '<th>24.5</th>',
-                                        '<th>25.0</th>',
-                                        '<th>25.5</th>',
-                                        '<th>26.0</th>',
-                                        '<th>26.5</th>',
-                                        '<th>27.0</th>',
-                                        '<th>27.5</th>',
-                                        '<th>28.0</th>',
-                                        '<th>28.5</th>',
-                                        '<th>29.0</th>',
-                                        '<th>29.5</th>',
-                                        '<th>30.0</th>',
-                                        '<th>30.5</th>',
-                                        '<th>31.0</th>',
-                                        '<th>31.5</th>',
-                                        '<th>32.0</th>',
-                                        '<th>32.5</th>',
-                                        '<th>33.0</th>',
-                                        '<th>33.5</th>',
-                                        '<th>34.0</th>',
-                                        '<th>34.5</th>',
-                                        '<th>35.0</th>',
+                                        '<th id="tallaje70">7.0</th>',
+                                        '<th id="tallaje75">7.5</th>',
+                                        '<th id="tallaje80">8.0</th>',
+                                        '<th id="tallaje85">8.5</th>',
+                                        '<th id="tallaje90">9.0</th>',
+                                        '<th id="tallaje95">9.5</th>',
+                                        '<th id="tallaje100">10.0</th>',
+                                        '<th id="tallaje105">10.5</th>',
+                                        '<th id="tallaje110">11.0</th>',
+                                        '<th id="tallaje115">11.5</th>',
+                                        '<th id="tallaje120">12.0</th>',
+                                        '<th id="tallaje125">12.5</th>',
+                                        '<th id="tallaje130">13.0</th>',
+                                        '<th id="tallaje135">13.5</th>',
+                                        '<th id="tallaje140">14.0</th>',
+                                        '<th id="tallaje145">14.5</th>',
+                                        '<th id="tallaje150">15.0</th>',
+                                        '<th id="tallaje155">15.5</th>',
+                                        '<th id="tallaje160">16.0</th>',
+                                        '<th id="tallaje165">16.5</th>',
+                                        '<th id="tallaje170">17.0</th>',
+                                        '<th id="tallaje175">17.5</th>',
+                                        '<th id="tallaje180">18.0</th>',
+                                        '<th id="tallaje185">18.5</th>',
+                                        '<th id="tallaje190">19.0</th>',
+                                        '<th id="tallaje195">19.5</th>',
+                                        '<th id="tallaje200">20.0</th>',
+                                        '<th id="tallaje205">20.5</th>',
+                                        '<th id="tallaje210">21.0</th>',
+                                        '<th id="tallaje215">21.5</th>',
+                                        '<th id="tallaje220">22.0</th>',
+                                        '<th id="tallaje225">22.5</th>',
+                                        '<th id="tallaje230">23.0</th>',
+                                        '<th id="tallaje235">23.5</th>',
+                                        '<th id="tallaje240">24.0</th>',
+                                        '<th id="tallaje245">24.5</th>',
+                                        '<th id="tallaje250">25.0</th>',
+                                        '<th id="tallaje255">25.5</th>',
+                                        '<th id="tallaje260">26.0</th>',
+                                        '<th id="tallaje265">26.5</th>',
+                                        '<th id="tallaje270">27.0</th>',
+                                        '<th id="tallaje275">27.5</th>',
+                                        '<th id="tallaje280">28.0</th>',
+                                        '<th id="tallaje285">28.5</th>',
+                                        '<th id="tallaje290">29.0</th>',
+                                        '<th id="tallaje295">29.5</th>',
+                                        '<th id="tallaje300">30.0</th>',
+                                        '<th id="tallaje305">30.5</th>',
+                                        '<th id="tallaje310">31.0</th>',
+                                        '<th id="tallaje315">31.5</th>',
+                                        '<th id="tallaje320">32.0</th>',
+                                        '<th id="tallaje325">32.5</th>',
+                                        '<th id="tallaje330">33.0</th>',
+                                        '<th id="tallaje335">33.5</th>',
+                                        '<th id="tallaje340">34.0</th>',
+                                        '<th id="tallaje345">34.5</th>',
+                                        '<th id="tallaje350">35.0</th>',
                                         '<th>Acción</th>',
                                     '</thead>',
                                     '<tbody>',
@@ -309,7 +309,11 @@
                         i+=5;
                       }
 
+                      variantesDisponibles = [];
+
                       $.each(value,function(indexVariante, valueVariante){
+                        variantesDisponibles.push(valueVariante.talla*10);
+
                         $input = $('<input>');
                         $input.attr('id',valueVariante.variante);
                         $input.attr('size',1);
@@ -318,6 +322,26 @@
                         $tr.find('#'+(valueVariante.talla*10)).append($input);
                         
                       });
+
+                      for(var i = 70; i<=350;)
+                      {
+                        var bandera = false;
+                        for(var j = 0; j < variantesDisponibles.length; j++)
+                        {
+                          if(i == parseInt(variantesDisponibles[j]))
+                          {
+                            bandera = true;
+                            break;
+                          }
+                        }
+                        if(!bandera)
+                        {
+                          $tr.find('#'+(i)).remove();
+                          $modal.find('#tallaje'+i).remove();
+                        }
+                        i+=5;
+                      }
+
                       $tr.append('<td><button class="btn btn-primary">Guardar</button></td>');
                       $modal.find('#details tbody').append($tr);
 
@@ -338,7 +362,7 @@
 
                           });
 
-                          $container.find('select[name*=idproductovariante]') .multipleSelect("setSelects", selects);
+                          $container.find('select[name*=idproductovariante]').multipleSelect("setSelects", selects);
                           $container.find('#btn_add_productovariante').trigger('click');
 
                           for(var i = 0; i<selects.length;i++)

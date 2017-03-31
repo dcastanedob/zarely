@@ -18,17 +18,28 @@ class PedidoPendienteController extends AbstractActionController
     public function getdetailsAction(){
 
         $request = $this->getRequest();
+        //Verificamos que la peticion sea post
         if($request->isPost()){
 
+            //obtenemos todos los pedidos del request que se mandó
             $post_data = $request->getPost();
-            $pedido = \PedidoQuery::create()->findPK($post_data['idpedido']);
 
-            $details = \PedidoQuery::create()->filterByPedidoEstatus('pendiente')->filterByIdsucursal($pedido->getIdsucursal())->filterByIdproductovariante($pedido->getIdproductovariante())->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
+            //filtramos por estatus pendiente y por la variante
+            $details = \PedidoQuery::create()->filterByPedidoEstatus('pendiente')->filterByIdproductovariante($post_data['idvariante'])->filterByIdsucursal($post_data['idSucursal'])->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
+
+            //iteramos para obtener el nombre de la sucursal
+            for ($pedido = 0; $pedido<count($details); $pedido++) {
+                $sucursal = \SucursalQuery::create()->findPK($details[$pedido]['idsucursal']);
+
+                //verificamos que exista
+                if($sucursal != null)
+                    $details[$pedido]['idsucursal'] = $sucursal->getSucursalNombrecomercial();
+            }
 
 
+            //regresamos la respuesta
             return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
 
-            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
         }
 
     } 
@@ -442,6 +453,139 @@ class PedidoPendienteController extends AbstractActionController
             
         }
     }
+
+
+    public function initializetableAction(){
+
+        $request = $this->getRequest();
+        
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+
+
+            $pedidos = \PedidoQuery::create()->filterByIdproducto($post_data['idproductogeneral'])->filterByPedidoEstatus('pendiente')->find();
+
+            $details = [];
+
+
+            //iteramos sobre todas als variantes
+            foreach ($pedidos as $pedido) {
+                
+                $variante = $pedido->getProductovariante();
+                $productocolor = $variante->getProductocolor();
+
+                $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
+                $sucursal = $pedido->getIdsucursal();
+
+                if($details[$sucursal] == null)
+                {
+                    $details[$sucursal] = [];
+
+                    //verificamos que la combinacion de material color no exista
+                    if($details[$sucursal][$indice] == null)
+                    {
+
+                        //inicializamos las variantes de ese color y material
+                        $details[$sucursal][$indice] = [];
+                        $value = array(
+                                    'fotografia' => $productocolor->getProductocolorFoto(),
+                                    'talla' => $variante->getProductovarianteTalla(),
+                                    'variante' => $variante->getIdproductovariante(),
+                                    'cantidad' => $pedido->getPedidoCantidad(),
+
+                                 );
+
+                        array_push($details[$sucursal][$indice], $value);
+
+                    }else{
+                        $value = array(
+                                    'fotografia' => $productocolor->getProductocolorFoto(),
+                                    'talla' => $variante->getProductovarianteTalla(),
+                                    'variante' => $variante->getIdproductovariante(),
+                                    'cantidad' => $pedido->getPedidoCantidad(),
+                                 );
+
+                        array_push($details[$sucursal][$indice], $value);
+                    }
+                }
+                else
+                {
+                    //verificamos que la combinacion de material color no exista
+                    if($details[$sucursal][$indice] == null)
+                    {
+
+                        //inicializamos las variantes de ese color y material
+                        $details[$sucursal][$indice] = [];
+                        $value = array(
+                                    'fotografia' => $productocolor->getProductocolorFoto(),
+                                    'talla' => $variante->getProductovarianteTalla(),
+                                    'variante' => $variante->getIdproductovariante(),
+                                    'cantidad' => $pedido->getPedidoCantidad(),
+
+                                 );
+
+                        array_push($details[$sucursal][$indice], $value);
+
+                    }else{
+                        $value = array(
+                                    'fotografia' => $productocolor->getProductocolorFoto(),
+                                    'talla' => $variante->getProductovarianteTalla(),
+                                    'variante' => $variante->getIdproductovariante(),
+                                    'cantidad' => $pedido->getPedidoCantidad(),
+                                 );
+
+                        array_push($details[$sucursal][$indice], $value);
+                    }
+                }
+                
+                
+                
+            }
+
+
+
+            $productos = [];
+            foreach ($details as $key=>$sucursal) {
+          
+                foreach ($sucursal as $detail) {
+                    
+                    foreach ($detail as $product) {
+                        $productoVariante = \ProductovarianteQuery::create()->findPK($product['variante']);
+
+                        $indice = $productoVariante->getProductocolor()->getColor()->getColorNombre() .'/'. $productoVariante->getProductomaterial()->getMaterial()->getMaterialNombre();
+
+                       if($productos[$key][$indice] == null)
+                        {
+                            $nombreSucursal = \SucursalQuery::create()->findPK($key)->getSucursalNombrecomercial();
+                            //inicializamos las variantes de ese color y material
+                            $productos[$key][$indice] = [];
+
+                            $value = array(
+                                        'fotografia' => $product['fotografia'],
+                                        'talla' => array($product['talla'] => $product['cantidad']),
+                                        'variante' => array($product['talla'] => $product['variante']),
+                                        'sucursal' => $nombreSucursal,
+                                     );
+
+                            array_push($productos[$key][$indice], $value);
+
+                        }else{
+                          
+                                $productos[$key][$indice][0]['talla'][$product['talla']]+=$product['cantidad'];
+                                $productos[$key][$indice][0]['variante'][$product['talla']]=$product['variante'];
+                            
+                        }
+                    }
+                }
+            }
+
+            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $productos)));
+
+            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
+        }
+
+    } 
     
 
 }

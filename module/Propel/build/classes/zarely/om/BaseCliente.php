@@ -60,6 +60,120 @@ abstract class BaseCliente extends BaseObject implements Persistent
     protected $cliente_rfc;
 
     /**
+     * The value for the cliente_razonsocial field.
+     * @var        string
+     */
+    protected $cliente_razonsocial;
+
+    /**
+     * The value for the cliente_callefiscal field.
+     * @var        string
+     */
+    protected $cliente_callefiscal;
+
+    /**
+     * The value for the cliente_numerofiscal field.
+     * @var        string
+     */
+    protected $cliente_numerofiscal;
+
+    /**
+     * The value for the cliente_interiorfiscal field.
+     * @var        string
+     */
+    protected $cliente_interiorfiscal;
+
+    /**
+     * The value for the cliente_coloniafiscal field.
+     * @var        string
+     */
+    protected $cliente_coloniafiscal;
+
+    /**
+     * The value for the cliente_ciudadfiscal field.
+     * @var        string
+     */
+    protected $cliente_ciudadfiscal;
+
+    /**
+     * The value for the cliente_cpfiscal field.
+     * @var        string
+     */
+    protected $cliente_cpfiscal;
+
+    /**
+     * The value for the cliente_estadofiscal field.
+     * @var        string
+     */
+    protected $cliente_estadofiscal;
+
+    /**
+     * The value for the cliente_calle field.
+     * @var        string
+     */
+    protected $cliente_calle;
+
+    /**
+     * The value for the cliente_numero field.
+     * @var        string
+     */
+    protected $cliente_numero;
+
+    /**
+     * The value for the cliente_interior field.
+     * @var        string
+     */
+    protected $cliente_interior;
+
+    /**
+     * The value for the cliente_colonia field.
+     * @var        string
+     */
+    protected $cliente_colonia;
+
+    /**
+     * The value for the cliente_cp field.
+     * @var        string
+     */
+    protected $cliente_cp;
+
+    /**
+     * The value for the cliente_ciudad field.
+     * @var        string
+     */
+    protected $cliente_ciudad;
+
+    /**
+     * The value for the cliente_estado field.
+     * @var        string
+     */
+    protected $cliente_estado;
+
+    /**
+     * The value for the cliente_tipo field.
+     * @var        string
+     */
+    protected $cliente_tipo;
+
+    /**
+     * The value for the cliente_fecharegistro field.
+     * @var        string
+     */
+    protected $cliente_fecharegistro;
+
+    /**
+     * The value for the cliente_estatus field.
+     * @var        boolean
+     */
+    protected $cliente_estatus;
+
+    /**
+     * @var        PropelObjectCollection|Pedidomayorista[] Collection to store aggregation of Pedidomayorista objects.
+     */
+    protected $collPedidomayoristas;
+    protected $collPedidomayoristasPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -78,6 +192,12 @@ abstract class BaseCliente extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pedidomayoristasScheduledForDeletion = null;
 
     /**
      * Get the [idcliente] column value.
@@ -132,6 +252,233 @@ abstract class BaseCliente extends BaseObject implements Persistent
     {
 
         return $this->cliente_rfc;
+    }
+
+    /**
+     * Get the [cliente_razonsocial] column value.
+     *
+     * @return string
+     */
+    public function getClienteRazonsocial()
+    {
+
+        return $this->cliente_razonsocial;
+    }
+
+    /**
+     * Get the [cliente_callefiscal] column value.
+     *
+     * @return string
+     */
+    public function getClienteCallefiscal()
+    {
+
+        return $this->cliente_callefiscal;
+    }
+
+    /**
+     * Get the [cliente_numerofiscal] column value.
+     *
+     * @return string
+     */
+    public function getClienteNumerofiscal()
+    {
+
+        return $this->cliente_numerofiscal;
+    }
+
+    /**
+     * Get the [cliente_interiorfiscal] column value.
+     *
+     * @return string
+     */
+    public function getClienteInteriorfiscal()
+    {
+
+        return $this->cliente_interiorfiscal;
+    }
+
+    /**
+     * Get the [cliente_coloniafiscal] column value.
+     *
+     * @return string
+     */
+    public function getClienteColoniafiscal()
+    {
+
+        return $this->cliente_coloniafiscal;
+    }
+
+    /**
+     * Get the [cliente_ciudadfiscal] column value.
+     *
+     * @return string
+     */
+    public function getClienteCiudadfiscal()
+    {
+
+        return $this->cliente_ciudadfiscal;
+    }
+
+    /**
+     * Get the [cliente_cpfiscal] column value.
+     *
+     * @return string
+     */
+    public function getClienteCpfiscal()
+    {
+
+        return $this->cliente_cpfiscal;
+    }
+
+    /**
+     * Get the [cliente_estadofiscal] column value.
+     *
+     * @return string
+     */
+    public function getClienteEstadofiscal()
+    {
+
+        return $this->cliente_estadofiscal;
+    }
+
+    /**
+     * Get the [cliente_calle] column value.
+     *
+     * @return string
+     */
+    public function getClienteCalle()
+    {
+
+        return $this->cliente_calle;
+    }
+
+    /**
+     * Get the [cliente_numero] column value.
+     *
+     * @return string
+     */
+    public function getClienteNumero()
+    {
+
+        return $this->cliente_numero;
+    }
+
+    /**
+     * Get the [cliente_interior] column value.
+     *
+     * @return string
+     */
+    public function getClienteInterior()
+    {
+
+        return $this->cliente_interior;
+    }
+
+    /**
+     * Get the [cliente_colonia] column value.
+     *
+     * @return string
+     */
+    public function getClienteColonia()
+    {
+
+        return $this->cliente_colonia;
+    }
+
+    /**
+     * Get the [cliente_cp] column value.
+     *
+     * @return string
+     */
+    public function getClienteCp()
+    {
+
+        return $this->cliente_cp;
+    }
+
+    /**
+     * Get the [cliente_ciudad] column value.
+     *
+     * @return string
+     */
+    public function getClienteCiudad()
+    {
+
+        return $this->cliente_ciudad;
+    }
+
+    /**
+     * Get the [cliente_estado] column value.
+     *
+     * @return string
+     */
+    public function getClienteEstado()
+    {
+
+        return $this->cliente_estado;
+    }
+
+    /**
+     * Get the [cliente_tipo] column value.
+     *
+     * @return string
+     */
+    public function getClienteTipo()
+    {
+
+        return $this->cliente_tipo;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [cliente_fecharegistro] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getClienteFecharegistro($format = '%x')
+    {
+        if ($this->cliente_fecharegistro === null) {
+            return null;
+        }
+
+        if ($this->cliente_fecharegistro === '0000-00-00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->cliente_fecharegistro);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->cliente_fecharegistro, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [cliente_estatus] column value.
+     *
+     * @return boolean
+     */
+    public function getClienteEstatus()
+    {
+
+        return $this->cliente_estatus;
     }
 
     /**
@@ -240,6 +587,394 @@ abstract class BaseCliente extends BaseObject implements Persistent
     } // setClienteRfc()
 
     /**
+     * Set the value of [cliente_razonsocial] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteRazonsocial($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_razonsocial !== $v) {
+            $this->cliente_razonsocial = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_RAZONSOCIAL;
+        }
+
+
+        return $this;
+    } // setClienteRazonsocial()
+
+    /**
+     * Set the value of [cliente_callefiscal] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCallefiscal($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_callefiscal !== $v) {
+            $this->cliente_callefiscal = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CALLEFISCAL;
+        }
+
+
+        return $this;
+    } // setClienteCallefiscal()
+
+    /**
+     * Set the value of [cliente_numerofiscal] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteNumerofiscal($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_numerofiscal !== $v) {
+            $this->cliente_numerofiscal = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_NUMEROFISCAL;
+        }
+
+
+        return $this;
+    } // setClienteNumerofiscal()
+
+    /**
+     * Set the value of [cliente_interiorfiscal] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteInteriorfiscal($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_interiorfiscal !== $v) {
+            $this->cliente_interiorfiscal = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_INTERIORFISCAL;
+        }
+
+
+        return $this;
+    } // setClienteInteriorfiscal()
+
+    /**
+     * Set the value of [cliente_coloniafiscal] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteColoniafiscal($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_coloniafiscal !== $v) {
+            $this->cliente_coloniafiscal = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_COLONIAFISCAL;
+        }
+
+
+        return $this;
+    } // setClienteColoniafiscal()
+
+    /**
+     * Set the value of [cliente_ciudadfiscal] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCiudadfiscal($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_ciudadfiscal !== $v) {
+            $this->cliente_ciudadfiscal = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CIUDADFISCAL;
+        }
+
+
+        return $this;
+    } // setClienteCiudadfiscal()
+
+    /**
+     * Set the value of [cliente_cpfiscal] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCpfiscal($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_cpfiscal !== $v) {
+            $this->cliente_cpfiscal = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CPFISCAL;
+        }
+
+
+        return $this;
+    } // setClienteCpfiscal()
+
+    /**
+     * Set the value of [cliente_estadofiscal] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteEstadofiscal($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_estadofiscal !== $v) {
+            $this->cliente_estadofiscal = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_ESTADOFISCAL;
+        }
+
+
+        return $this;
+    } // setClienteEstadofiscal()
+
+    /**
+     * Set the value of [cliente_calle] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCalle($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_calle !== $v) {
+            $this->cliente_calle = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CALLE;
+        }
+
+
+        return $this;
+    } // setClienteCalle()
+
+    /**
+     * Set the value of [cliente_numero] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteNumero($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_numero !== $v) {
+            $this->cliente_numero = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_NUMERO;
+        }
+
+
+        return $this;
+    } // setClienteNumero()
+
+    /**
+     * Set the value of [cliente_interior] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteInterior($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_interior !== $v) {
+            $this->cliente_interior = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_INTERIOR;
+        }
+
+
+        return $this;
+    } // setClienteInterior()
+
+    /**
+     * Set the value of [cliente_colonia] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteColonia($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_colonia !== $v) {
+            $this->cliente_colonia = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_COLONIA;
+        }
+
+
+        return $this;
+    } // setClienteColonia()
+
+    /**
+     * Set the value of [cliente_cp] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCp($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_cp !== $v) {
+            $this->cliente_cp = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CP;
+        }
+
+
+        return $this;
+    } // setClienteCp()
+
+    /**
+     * Set the value of [cliente_ciudad] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCiudad($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_ciudad !== $v) {
+            $this->cliente_ciudad = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CIUDAD;
+        }
+
+
+        return $this;
+    } // setClienteCiudad()
+
+    /**
+     * Set the value of [cliente_estado] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteEstado($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_estado !== $v) {
+            $this->cliente_estado = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_ESTADO;
+        }
+
+
+        return $this;
+    } // setClienteEstado()
+
+    /**
+     * Set the value of [cliente_tipo] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteTipo($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_tipo !== $v) {
+            $this->cliente_tipo = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_TIPO;
+        }
+
+
+        return $this;
+    } // setClienteTipo()
+
+    /**
+     * Sets the value of [cliente_fecharegistro] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteFecharegistro($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->cliente_fecharegistro !== null || $dt !== null) {
+            $currentDateAsString = ($this->cliente_fecharegistro !== null && $tmpDt = new DateTime($this->cliente_fecharegistro)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->cliente_fecharegistro = $newDateAsString;
+                $this->modifiedColumns[] = ClientePeer::CLIENTE_FECHAREGISTRO;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setClienteFecharegistro()
+
+    /**
+     * Sets the value of the [cliente_estatus] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteEstatus($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->cliente_estatus !== $v) {
+            $this->cliente_estatus = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_ESTATUS;
+        }
+
+
+        return $this;
+    } // setClienteEstatus()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -276,6 +1011,24 @@ abstract class BaseCliente extends BaseObject implements Persistent
             $this->cliente_apaterno = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->cliente_amaterno = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->cliente_rfc = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->cliente_razonsocial = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->cliente_callefiscal = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->cliente_numerofiscal = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->cliente_interiorfiscal = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->cliente_coloniafiscal = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->cliente_ciudadfiscal = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->cliente_cpfiscal = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->cliente_estadofiscal = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->cliente_calle = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->cliente_numero = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->cliente_interior = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->cliente_colonia = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+            $this->cliente_cp = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+            $this->cliente_ciudad = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
+            $this->cliente_estado = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+            $this->cliente_tipo = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->cliente_fecharegistro = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
+            $this->cliente_estatus = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -285,7 +1038,7 @@ abstract class BaseCliente extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = ClientePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 23; // 23 = ClientePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Cliente object", $e);
@@ -346,6 +1099,8 @@ abstract class BaseCliente extends BaseObject implements Persistent
         $this->hydrate($row, 0, true); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->collPedidomayoristas = null;
 
         } // if (deep)
     }
@@ -471,6 +1226,23 @@ abstract class BaseCliente extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->pedidomayoristasScheduledForDeletion !== null) {
+                if (!$this->pedidomayoristasScheduledForDeletion->isEmpty()) {
+                    PedidomayoristaQuery::create()
+                        ->filterByPrimaryKeys($this->pedidomayoristasScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pedidomayoristasScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPedidomayoristas !== null) {
+                foreach ($this->collPedidomayoristas as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -512,6 +1284,60 @@ abstract class BaseCliente extends BaseObject implements Persistent
         if ($this->isColumnModified(ClientePeer::CLIENTE_RFC)) {
             $modifiedColumns[':p' . $index++]  = '`cliente_rfc`';
         }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_RAZONSOCIAL)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_razonsocial`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CALLEFISCAL)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_callefiscal`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_NUMEROFISCAL)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_numerofiscal`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_INTERIORFISCAL)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_interiorfiscal`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_COLONIAFISCAL)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_coloniafiscal`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CIUDADFISCAL)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_ciudadfiscal`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CPFISCAL)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_cpfiscal`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_ESTADOFISCAL)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_estadofiscal`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CALLE)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_calle`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_NUMERO)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_numero`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_INTERIOR)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_interior`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_COLONIA)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_colonia`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CP)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_cp`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CIUDAD)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_ciudad`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_ESTADO)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_estado`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_TIPO)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_tipo`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_FECHAREGISTRO)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_fecharegistro`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_ESTATUS)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_estatus`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `cliente` (%s) VALUES (%s)',
@@ -537,6 +1363,60 @@ abstract class BaseCliente extends BaseObject implements Persistent
                         break;
                     case '`cliente_rfc`':
                         $stmt->bindValue($identifier, $this->cliente_rfc, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_razonsocial`':
+                        $stmt->bindValue($identifier, $this->cliente_razonsocial, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_callefiscal`':
+                        $stmt->bindValue($identifier, $this->cliente_callefiscal, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_numerofiscal`':
+                        $stmt->bindValue($identifier, $this->cliente_numerofiscal, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_interiorfiscal`':
+                        $stmt->bindValue($identifier, $this->cliente_interiorfiscal, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_coloniafiscal`':
+                        $stmt->bindValue($identifier, $this->cliente_coloniafiscal, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_ciudadfiscal`':
+                        $stmt->bindValue($identifier, $this->cliente_ciudadfiscal, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_cpfiscal`':
+                        $stmt->bindValue($identifier, $this->cliente_cpfiscal, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_estadofiscal`':
+                        $stmt->bindValue($identifier, $this->cliente_estadofiscal, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_calle`':
+                        $stmt->bindValue($identifier, $this->cliente_calle, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_numero`':
+                        $stmt->bindValue($identifier, $this->cliente_numero, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_interior`':
+                        $stmt->bindValue($identifier, $this->cliente_interior, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_colonia`':
+                        $stmt->bindValue($identifier, $this->cliente_colonia, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_cp`':
+                        $stmt->bindValue($identifier, $this->cliente_cp, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_ciudad`':
+                        $stmt->bindValue($identifier, $this->cliente_ciudad, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_estado`':
+                        $stmt->bindValue($identifier, $this->cliente_estado, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_tipo`':
+                        $stmt->bindValue($identifier, $this->cliente_tipo, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_fecharegistro`':
+                        $stmt->bindValue($identifier, $this->cliente_fecharegistro, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_estatus`':
+                        $stmt->bindValue($identifier, (int) $this->cliente_estatus, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -637,6 +1517,14 @@ abstract class BaseCliente extends BaseObject implements Persistent
             }
 
 
+                if ($this->collPedidomayoristas !== null) {
+                    foreach ($this->collPedidomayoristas as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -687,6 +1575,60 @@ abstract class BaseCliente extends BaseObject implements Persistent
             case 4:
                 return $this->getClienteRfc();
                 break;
+            case 5:
+                return $this->getClienteRazonsocial();
+                break;
+            case 6:
+                return $this->getClienteCallefiscal();
+                break;
+            case 7:
+                return $this->getClienteNumerofiscal();
+                break;
+            case 8:
+                return $this->getClienteInteriorfiscal();
+                break;
+            case 9:
+                return $this->getClienteColoniafiscal();
+                break;
+            case 10:
+                return $this->getClienteCiudadfiscal();
+                break;
+            case 11:
+                return $this->getClienteCpfiscal();
+                break;
+            case 12:
+                return $this->getClienteEstadofiscal();
+                break;
+            case 13:
+                return $this->getClienteCalle();
+                break;
+            case 14:
+                return $this->getClienteNumero();
+                break;
+            case 15:
+                return $this->getClienteInterior();
+                break;
+            case 16:
+                return $this->getClienteColonia();
+                break;
+            case 17:
+                return $this->getClienteCp();
+                break;
+            case 18:
+                return $this->getClienteCiudad();
+                break;
+            case 19:
+                return $this->getClienteEstado();
+                break;
+            case 20:
+                return $this->getClienteTipo();
+                break;
+            case 21:
+                return $this->getClienteFecharegistro();
+                break;
+            case 22:
+                return $this->getClienteEstatus();
+                break;
             default:
                 return null;
                 break;
@@ -704,10 +1646,11 @@ abstract class BaseCliente extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['Cliente'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -720,12 +1663,35 @@ abstract class BaseCliente extends BaseObject implements Persistent
             $keys[2] => $this->getClienteApaterno(),
             $keys[3] => $this->getClienteAmaterno(),
             $keys[4] => $this->getClienteRfc(),
+            $keys[5] => $this->getClienteRazonsocial(),
+            $keys[6] => $this->getClienteCallefiscal(),
+            $keys[7] => $this->getClienteNumerofiscal(),
+            $keys[8] => $this->getClienteInteriorfiscal(),
+            $keys[9] => $this->getClienteColoniafiscal(),
+            $keys[10] => $this->getClienteCiudadfiscal(),
+            $keys[11] => $this->getClienteCpfiscal(),
+            $keys[12] => $this->getClienteEstadofiscal(),
+            $keys[13] => $this->getClienteCalle(),
+            $keys[14] => $this->getClienteNumero(),
+            $keys[15] => $this->getClienteInterior(),
+            $keys[16] => $this->getClienteColonia(),
+            $keys[17] => $this->getClienteCp(),
+            $keys[18] => $this->getClienteCiudad(),
+            $keys[19] => $this->getClienteEstado(),
+            $keys[20] => $this->getClienteTipo(),
+            $keys[21] => $this->getClienteFecharegistro(),
+            $keys[22] => $this->getClienteEstatus(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->collPedidomayoristas) {
+                $result['Pedidomayoristas'] = $this->collPedidomayoristas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -774,6 +1740,60 @@ abstract class BaseCliente extends BaseObject implements Persistent
             case 4:
                 $this->setClienteRfc($value);
                 break;
+            case 5:
+                $this->setClienteRazonsocial($value);
+                break;
+            case 6:
+                $this->setClienteCallefiscal($value);
+                break;
+            case 7:
+                $this->setClienteNumerofiscal($value);
+                break;
+            case 8:
+                $this->setClienteInteriorfiscal($value);
+                break;
+            case 9:
+                $this->setClienteColoniafiscal($value);
+                break;
+            case 10:
+                $this->setClienteCiudadfiscal($value);
+                break;
+            case 11:
+                $this->setClienteCpfiscal($value);
+                break;
+            case 12:
+                $this->setClienteEstadofiscal($value);
+                break;
+            case 13:
+                $this->setClienteCalle($value);
+                break;
+            case 14:
+                $this->setClienteNumero($value);
+                break;
+            case 15:
+                $this->setClienteInterior($value);
+                break;
+            case 16:
+                $this->setClienteColonia($value);
+                break;
+            case 17:
+                $this->setClienteCp($value);
+                break;
+            case 18:
+                $this->setClienteCiudad($value);
+                break;
+            case 19:
+                $this->setClienteEstado($value);
+                break;
+            case 20:
+                $this->setClienteTipo($value);
+                break;
+            case 21:
+                $this->setClienteFecharegistro($value);
+                break;
+            case 22:
+                $this->setClienteEstatus($value);
+                break;
         } // switch()
     }
 
@@ -803,6 +1823,24 @@ abstract class BaseCliente extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setClienteApaterno($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setClienteAmaterno($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setClienteRfc($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setClienteRazonsocial($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setClienteCallefiscal($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setClienteNumerofiscal($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setClienteInteriorfiscal($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setClienteColoniafiscal($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setClienteCiudadfiscal($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setClienteCpfiscal($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setClienteEstadofiscal($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setClienteCalle($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setClienteNumero($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setClienteInterior($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setClienteColonia($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setClienteCp($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setClienteCiudad($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setClienteEstado($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setClienteTipo($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setClienteFecharegistro($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setClienteEstatus($arr[$keys[22]]);
     }
 
     /**
@@ -819,6 +1857,24 @@ abstract class BaseCliente extends BaseObject implements Persistent
         if ($this->isColumnModified(ClientePeer::CLIENTE_APATERNO)) $criteria->add(ClientePeer::CLIENTE_APATERNO, $this->cliente_apaterno);
         if ($this->isColumnModified(ClientePeer::CLIENTE_AMATERNO)) $criteria->add(ClientePeer::CLIENTE_AMATERNO, $this->cliente_amaterno);
         if ($this->isColumnModified(ClientePeer::CLIENTE_RFC)) $criteria->add(ClientePeer::CLIENTE_RFC, $this->cliente_rfc);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_RAZONSOCIAL)) $criteria->add(ClientePeer::CLIENTE_RAZONSOCIAL, $this->cliente_razonsocial);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CALLEFISCAL)) $criteria->add(ClientePeer::CLIENTE_CALLEFISCAL, $this->cliente_callefiscal);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_NUMEROFISCAL)) $criteria->add(ClientePeer::CLIENTE_NUMEROFISCAL, $this->cliente_numerofiscal);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_INTERIORFISCAL)) $criteria->add(ClientePeer::CLIENTE_INTERIORFISCAL, $this->cliente_interiorfiscal);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_COLONIAFISCAL)) $criteria->add(ClientePeer::CLIENTE_COLONIAFISCAL, $this->cliente_coloniafiscal);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CIUDADFISCAL)) $criteria->add(ClientePeer::CLIENTE_CIUDADFISCAL, $this->cliente_ciudadfiscal);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CPFISCAL)) $criteria->add(ClientePeer::CLIENTE_CPFISCAL, $this->cliente_cpfiscal);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_ESTADOFISCAL)) $criteria->add(ClientePeer::CLIENTE_ESTADOFISCAL, $this->cliente_estadofiscal);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CALLE)) $criteria->add(ClientePeer::CLIENTE_CALLE, $this->cliente_calle);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_NUMERO)) $criteria->add(ClientePeer::CLIENTE_NUMERO, $this->cliente_numero);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_INTERIOR)) $criteria->add(ClientePeer::CLIENTE_INTERIOR, $this->cliente_interior);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_COLONIA)) $criteria->add(ClientePeer::CLIENTE_COLONIA, $this->cliente_colonia);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CP)) $criteria->add(ClientePeer::CLIENTE_CP, $this->cliente_cp);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CIUDAD)) $criteria->add(ClientePeer::CLIENTE_CIUDAD, $this->cliente_ciudad);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_ESTADO)) $criteria->add(ClientePeer::CLIENTE_ESTADO, $this->cliente_estado);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_TIPO)) $criteria->add(ClientePeer::CLIENTE_TIPO, $this->cliente_tipo);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_FECHAREGISTRO)) $criteria->add(ClientePeer::CLIENTE_FECHAREGISTRO, $this->cliente_fecharegistro);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_ESTATUS)) $criteria->add(ClientePeer::CLIENTE_ESTATUS, $this->cliente_estatus);
 
         return $criteria;
     }
@@ -886,6 +1942,42 @@ abstract class BaseCliente extends BaseObject implements Persistent
         $copyObj->setClienteApaterno($this->getClienteApaterno());
         $copyObj->setClienteAmaterno($this->getClienteAmaterno());
         $copyObj->setClienteRfc($this->getClienteRfc());
+        $copyObj->setClienteRazonsocial($this->getClienteRazonsocial());
+        $copyObj->setClienteCallefiscal($this->getClienteCallefiscal());
+        $copyObj->setClienteNumerofiscal($this->getClienteNumerofiscal());
+        $copyObj->setClienteInteriorfiscal($this->getClienteInteriorfiscal());
+        $copyObj->setClienteColoniafiscal($this->getClienteColoniafiscal());
+        $copyObj->setClienteCiudadfiscal($this->getClienteCiudadfiscal());
+        $copyObj->setClienteCpfiscal($this->getClienteCpfiscal());
+        $copyObj->setClienteEstadofiscal($this->getClienteEstadofiscal());
+        $copyObj->setClienteCalle($this->getClienteCalle());
+        $copyObj->setClienteNumero($this->getClienteNumero());
+        $copyObj->setClienteInterior($this->getClienteInterior());
+        $copyObj->setClienteColonia($this->getClienteColonia());
+        $copyObj->setClienteCp($this->getClienteCp());
+        $copyObj->setClienteCiudad($this->getClienteCiudad());
+        $copyObj->setClienteEstado($this->getClienteEstado());
+        $copyObj->setClienteTipo($this->getClienteTipo());
+        $copyObj->setClienteFecharegistro($this->getClienteFecharegistro());
+        $copyObj->setClienteEstatus($this->getClienteEstatus());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            foreach ($this->getPedidomayoristas() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPedidomayorista($relObj->copy($deepCopy));
+                }
+            }
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdcliente(NULL); // this is a auto-increment column, so set to default value
@@ -932,6 +2024,247 @@ abstract class BaseCliente extends BaseObject implements Persistent
         return self::$peer;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Pedidomayorista' == $relationName) {
+            $this->initPedidomayoristas();
+        }
+    }
+
+    /**
+     * Clears out the collPedidomayoristas collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Cliente The current object (for fluent API support)
+     * @see        addPedidomayoristas()
+     */
+    public function clearPedidomayoristas()
+    {
+        $this->collPedidomayoristas = null; // important to set this to null since that means it is uninitialized
+        $this->collPedidomayoristasPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPedidomayoristas collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPedidomayoristas($v = true)
+    {
+        $this->collPedidomayoristasPartial = $v;
+    }
+
+    /**
+     * Initializes the collPedidomayoristas collection.
+     *
+     * By default this just sets the collPedidomayoristas collection to an empty array (like clearcollPedidomayoristas());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPedidomayoristas($overrideExisting = true)
+    {
+        if (null !== $this->collPedidomayoristas && !$overrideExisting) {
+            return;
+        }
+        $this->collPedidomayoristas = new PropelObjectCollection();
+        $this->collPedidomayoristas->setModel('Pedidomayorista');
+    }
+
+    /**
+     * Gets an array of Pedidomayorista objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Cliente is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Pedidomayorista[] List of Pedidomayorista objects
+     * @throws PropelException
+     */
+    public function getPedidomayoristas($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidomayoristasPartial && !$this->isNew();
+        if (null === $this->collPedidomayoristas || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPedidomayoristas) {
+                // return empty collection
+                $this->initPedidomayoristas();
+            } else {
+                $collPedidomayoristas = PedidomayoristaQuery::create(null, $criteria)
+                    ->filterByCliente($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPedidomayoristasPartial && count($collPedidomayoristas)) {
+                      $this->initPedidomayoristas(false);
+
+                      foreach ($collPedidomayoristas as $obj) {
+                        if (false == $this->collPedidomayoristas->contains($obj)) {
+                          $this->collPedidomayoristas->append($obj);
+                        }
+                      }
+
+                      $this->collPedidomayoristasPartial = true;
+                    }
+
+                    $collPedidomayoristas->getInternalIterator()->rewind();
+
+                    return $collPedidomayoristas;
+                }
+
+                if ($partial && $this->collPedidomayoristas) {
+                    foreach ($this->collPedidomayoristas as $obj) {
+                        if ($obj->isNew()) {
+                            $collPedidomayoristas[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPedidomayoristas = $collPedidomayoristas;
+                $this->collPedidomayoristasPartial = false;
+            }
+        }
+
+        return $this->collPedidomayoristas;
+    }
+
+    /**
+     * Sets a collection of Pedidomayorista objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pedidomayoristas A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setPedidomayoristas(PropelCollection $pedidomayoristas, PropelPDO $con = null)
+    {
+        $pedidomayoristasToDelete = $this->getPedidomayoristas(new Criteria(), $con)->diff($pedidomayoristas);
+
+
+        $this->pedidomayoristasScheduledForDeletion = $pedidomayoristasToDelete;
+
+        foreach ($pedidomayoristasToDelete as $pedidomayoristaRemoved) {
+            $pedidomayoristaRemoved->setCliente(null);
+        }
+
+        $this->collPedidomayoristas = null;
+        foreach ($pedidomayoristas as $pedidomayorista) {
+            $this->addPedidomayorista($pedidomayorista);
+        }
+
+        $this->collPedidomayoristas = $pedidomayoristas;
+        $this->collPedidomayoristasPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Pedidomayorista objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Pedidomayorista objects.
+     * @throws PropelException
+     */
+    public function countPedidomayoristas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidomayoristasPartial && !$this->isNew();
+        if (null === $this->collPedidomayoristas || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPedidomayoristas) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPedidomayoristas());
+            }
+            $query = PedidomayoristaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCliente($this)
+                ->count($con);
+        }
+
+        return count($this->collPedidomayoristas);
+    }
+
+    /**
+     * Method called to associate a Pedidomayorista object to this object
+     * through the Pedidomayorista foreign key attribute.
+     *
+     * @param    Pedidomayorista $l Pedidomayorista
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function addPedidomayorista(Pedidomayorista $l)
+    {
+        if ($this->collPedidomayoristas === null) {
+            $this->initPedidomayoristas();
+            $this->collPedidomayoristasPartial = true;
+        }
+
+        if (!in_array($l, $this->collPedidomayoristas->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPedidomayorista($l);
+
+            if ($this->pedidomayoristasScheduledForDeletion and $this->pedidomayoristasScheduledForDeletion->contains($l)) {
+                $this->pedidomayoristasScheduledForDeletion->remove($this->pedidomayoristasScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Pedidomayorista $pedidomayorista The pedidomayorista object to add.
+     */
+    protected function doAddPedidomayorista($pedidomayorista)
+    {
+        $this->collPedidomayoristas[]= $pedidomayorista;
+        $pedidomayorista->setCliente($this);
+    }
+
+    /**
+     * @param	Pedidomayorista $pedidomayorista The pedidomayorista object to remove.
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function removePedidomayorista($pedidomayorista)
+    {
+        if ($this->getPedidomayoristas()->contains($pedidomayorista)) {
+            $this->collPedidomayoristas->remove($this->collPedidomayoristas->search($pedidomayorista));
+            if (null === $this->pedidomayoristasScheduledForDeletion) {
+                $this->pedidomayoristasScheduledForDeletion = clone $this->collPedidomayoristas;
+                $this->pedidomayoristasScheduledForDeletion->clear();
+            }
+            $this->pedidomayoristasScheduledForDeletion[]= clone $pedidomayorista;
+            $pedidomayorista->setCliente(null);
+        }
+
+        return $this;
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -942,6 +2275,24 @@ abstract class BaseCliente extends BaseObject implements Persistent
         $this->cliente_apaterno = null;
         $this->cliente_amaterno = null;
         $this->cliente_rfc = null;
+        $this->cliente_razonsocial = null;
+        $this->cliente_callefiscal = null;
+        $this->cliente_numerofiscal = null;
+        $this->cliente_interiorfiscal = null;
+        $this->cliente_coloniafiscal = null;
+        $this->cliente_ciudadfiscal = null;
+        $this->cliente_cpfiscal = null;
+        $this->cliente_estadofiscal = null;
+        $this->cliente_calle = null;
+        $this->cliente_numero = null;
+        $this->cliente_interior = null;
+        $this->cliente_colonia = null;
+        $this->cliente_cp = null;
+        $this->cliente_ciudad = null;
+        $this->cliente_estado = null;
+        $this->cliente_tipo = null;
+        $this->cliente_fecharegistro = null;
+        $this->cliente_estatus = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -964,10 +2315,19 @@ abstract class BaseCliente extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collPedidomayoristas) {
+                foreach ($this->collPedidomayoristas as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collPedidomayoristas instanceof PropelCollection) {
+            $this->collPedidomayoristas->clearIterator();
+        }
+        $this->collPedidomayoristas = null;
     }
 
     /**

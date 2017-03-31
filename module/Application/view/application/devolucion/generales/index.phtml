@@ -1,0 +1,70 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title">Devoluciones</h1>
+	    
+	</div>
+
+	<?php foreach ($messages->getSuccessMessages() as $message):?>
+	        <div class="alert alert-success alert-dismissable">
+	            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+	            <strong>Éxito!</strong>
+	            <?php echo $message?>
+	        </div>
+	<?php endforeach;?>
+
+	<?php foreach ($messages->geterrorMessages() as $message):?>
+	        <div class="alert alert-danger alert-dismissable">
+	            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+	            <strong>Error!</strong>
+	            <?php echo $message?>
+	        </div>
+	<?php endforeach;?>
+
+	<div class="row">
+		<div class="col-md-12">
+			<a class="btn btn-bg btn-success btn-labeled pull-right" href="/devoluciones/generales/nuevo">
+              Nueva devolución
+              <span class="btn-label btn-label-right">
+                <span class="icon icon-plus-square icon-lg icon-fw"></span>
+              </span>
+            </a>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="card-body">
+		    <table id="" class="table table-striped table-nowrap dataTable" cellspacing="0" width="100%">
+		        <thead>
+		            <tr>
+		                <th>Fecha</th>
+		                <th>Proveedor</th>
+		                <th>Total</th>
+		                <th>Factura</th>
+		                <th>Estatus</th>
+		                <th>Opciones</th>
+		            </tr>
+		        </thead>
+		        <tfoot>
+		            <tr>
+		                <th>Fecha</th>
+		                <th>Proveedor</th>
+		                <th>Total</th>
+		                <th>Factura</th>
+		                <th>Estatus</th>
+		                <th>Opciones</th>
+		            </tr>
+		        </tfoot>
+		        <tbody>
+		            
+		        </tbody>
+		    </table>
+		</div>
+	</div>
+
+</div>
+<script src="/js/devolucion/devolucion_general.js"></script>
+
+<script>
+	var devolucion_general = $('.body_container').devolucion_general();
+	devolucion_general.list();
+</script>

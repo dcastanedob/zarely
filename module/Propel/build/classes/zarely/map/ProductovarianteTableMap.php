@@ -63,7 +63,9 @@ class ProductovarianteTableMap extends TableMap
         $this->addRelation('Productocolor', 'Productocolor', RelationMap::MANY_TO_ONE, array('idproductocolor' => 'idproductocolor', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Productomaterial', 'Productomaterial', RelationMap::MANY_TO_ONE, array('idproductomaterial' => 'idproductomaterial', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Compradetalle', 'Compradetalle', RelationMap::ONE_TO_MANY, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE', 'Compradetalles');
+        $this->addRelation('Devoluciondetalle', 'Devoluciondetalle', RelationMap::ONE_TO_MANY, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE', 'Devoluciondetalles');
         $this->addRelation('Pedido', 'Pedido', RelationMap::ONE_TO_MANY, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE', 'Pedidos');
+        $this->addRelation('Pedidomayoristadetalle', 'Pedidomayoristadetalle', RelationMap::ONE_TO_MANY, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE', 'Pedidomayoristadetalles');
         $this->addRelation('Productosucursal', 'Productosucursal', RelationMap::ONE_TO_MANY, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE', 'Productosucursals');
     } // buildRelations()
 

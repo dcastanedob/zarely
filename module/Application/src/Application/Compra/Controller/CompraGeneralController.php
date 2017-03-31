@@ -17,8 +17,11 @@ class CompraGeneralController extends AbstractActionController
 
     public $column_map = array(
         0 => 'CompraFechacompra',
-        1 => 'CompraTotal',
-        2 => 'CompraEstatus',
+        1 => 'a.ProveedorNombrecomercial',
+        2 => 'CompraTotal',
+        4 => 'CompraEstatus',
+        3 => 'CompraComprobante',
+
 
     );
     
@@ -112,14 +115,55 @@ class CompraGeneralController extends AbstractActionController
                 $tmp['compra_fechacompra'] = $value['compra_fechacompra'];
                 $tmp['proveedor_nombre'] = $value['proveedor_nombre'];
                 $tmp['compra_total'] = '$'.number_format($value['compra_total'],2);
+
+                if($value['compra_comprobante'] == null)
+                {
+                    $tmp['compra_comprobante'] = "<label>No tiene </label>";
+                }else
+                {
+                    $tmp['compra_comprobante'] = '<a href="'.$value['compra_comprobante'].'"    target="_blank"> 
+                            <span class="icon icon-file icon-lg ">
+                        </span>
+                    </a>';
+                }
+
                 $tmp['compra_estatus'] = $value['compra_estatus'];
 
-                $tmp['options'] = '
-                <a href="/compras/generales/ver/' . $value['idcompra'] . '">
-                <button class="btn btn-info dropdown-toggle" aria-expanded="false" style="padding: 2px 6px;">
-                    <span class="icon icon-eye icon-lg icon-fw"></span>
-                    Ver 
-                  </button></a>';
+                $tmp['options'] = '<td><div class="btn-group dropdown">
+                  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
+                    <span class="icon icon-gear icon-lg icon-fw"></span>
+                    Opciones
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="/compras/generales/ver/' . $value['idcompra'] . '">
+                        <div class="media">
+                          <div class="media-left">
+                            <span class="icon icon-edit icon-lg icon-fw"></span>
+                          </div>
+                          <div class="media-body">
+                            <span class="d-b">Editar</span>
+                           
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:;" class="delete_modal">
+                        <div class="media">
+                          <div class="media-left">
+                            <span class="icon icon-trash icon-lg icon-fw"></span>
+                          </div>
+                          <div class="media-body">
+                            <span class="d-b">Eliminar</span>
+                       
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div></td>';
 
 
                 $data[] = $tmp;
@@ -140,7 +184,11 @@ class CompraGeneralController extends AbstractActionController
         }
     }
     
-    
+    function get_extension($file) {
+         $extension = end(explode(".", $file));
+         return $extension ? $extension : false;
+    }
+
     public function indexAction()
     {   
         
@@ -160,7 +208,9 @@ class CompraGeneralController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
 
+            $post_files = $request->getFiles();
             
+
             $entity = new \Compra();
 
             $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
@@ -172,6 +222,19 @@ class CompraGeneralController extends AbstractActionController
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
+
+            $entity->save();
+
+            if(isset($post_files['compra_comprobante'])){
+
+                $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
+
+                move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
+
+
+                $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
+            }
+
 
             $entity->setCompraFechacreacion(date("Y-n-j"));
 
@@ -265,6 +328,7 @@ class CompraGeneralController extends AbstractActionController
             
             if($request->isPost()){
                 $post_data = $request->getPost();
+                $post_files = $request->getFiles();
 
                 $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
 
@@ -291,6 +355,16 @@ class CompraGeneralController extends AbstractActionController
                                   ->save();
                     $total+= $compradetalle->getCompradetalleSubtotal();
 
+                }
+
+                if(isset($post_files['compra_comprobante'])){
+
+                    $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
+
+                    move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
+
+
+                    $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
                 }
 
                 $entity->setCompraTotal($total);
@@ -342,7 +416,12 @@ class CompraGeneralController extends AbstractActionController
             $form = new \Application\Compra\Form\CompraGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
+            $form->get("compra_comprobante")->setAttribute('required',false);
             
+            $form->get('compra_fechacompra')->setValue($entity->getCompraFechacompra('d/m/Y'));
+            $form->get('compra_fechaentrega')->setValue($entity->getCompraFechaentrega('d/m/Y'));
+
+
             $view_model = new ViewModel();
             $view_model->setTemplate('application/compra/generales/ver');
             $view_model->setVariables(array(
@@ -399,7 +478,7 @@ class CompraGeneralController extends AbstractActionController
             
             //filtramos los productos variantes por producto
             $variantes = \ProductovarianteQuery::create()->filterByIdproducto($post_data['idproductogeneral'])->find();
-
+            
             $details = [];
 
 
@@ -440,5 +519,29 @@ class CompraGeneralController extends AbstractActionController
 
     } 
     
+
+    public function eliminarAction(){
+        $request = $this->getRequest();
+
+        if($request->isPost())
+        {
+            $id = $this->params()->fromRoute('id');
+            $entity = \CompraQuery::Create()->findPk($id);
+
+            unlink("/files/compras/19.");
+            
+            $entity->delete();
+
+            $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
+            
+            if($entity->isDeleted()){
+                $this->flashMessenger()->addSuccessMessage('Su registro ha sido eliminado satisfactoriamente.');
+            }else{
+                $this->flashMessenger()->addErrorMessage('Ocurrió un error al intentar eliminar. Pruebe más tarde.');
+            }
+        }
+
+        return $this->redirect()->toUrl('/compras/generales');
+    }
 
 }

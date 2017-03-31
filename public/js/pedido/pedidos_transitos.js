@@ -51,203 +51,308 @@
         }
 
         plugin.list =function(){
-
-            var columns = [
-                {"data":"sucursal_nombre","name":"sucursal_nombre","orderable":true},
-                {"data":"producto_variantes","name":"producto_variantes","orderable":true},
-                {"data":"color_fotografia","name":"color_fotografia","orderable":false},
-                {"data":"Tallaje70","name":"Tallaje70","orderable":false},
-                {"data":"Tallaje75","name":"Tallaje75","orderable":false},
-                {"data":"Tallaje80","name":"Tallaje80","orderable":false},
-                {"data":"Tallaje85","name":"Tallaje85","orderable":false},
-                {"data":"Tallaje90","name":"Tallaje90","orderable":false},
-                {"data":"Tallaje95","name":"Tallaje95","orderable":false},
-                {"data":"Tallaje100","name":"Tallaje100","orderable":false},
-                {"data":"Tallaje105","name":"Tallaje105","orderable":false},
-                {"data":"Tallaje110","name":"Tallaje110","orderable":false},
-                {"data":"Tallaje115","name":"Tallaje115","orderable":false},
-                {"data":"Tallaje120","name":"Tallaje120","orderable":false},
-                {"data":"Tallaje125","name":"Tallaje125","orderable":false},
-                {"data":"Tallaje130","name":"Tallaje130","orderable":false},
-                {"data":"Tallaje135","name":"Tallaje135","orderable":false},
-                {"data":"Tallaje140","name":"Tallaje140","orderable":false},
-                {"data":"Tallaje145","name":"Tallaje145","orderable":false},
-                {"data":"Tallaje150","name":"Tallaje150","orderable":false},
-                {"data":"Tallaje155","name":"Tallaje155","orderable":false},
-                {"data":"Tallaje160","name":"Tallaje160","orderable":false},
-                {"data":"Tallaje165","name":"Tallaje165","orderable":false},
-                {"data":"Tallaje170","name":"Tallaje170","orderable":false},
-                {"data":"Tallaje175","name":"Tallaje175","orderable":false},
-                {"data":"Tallaje180","name":"Tallaje180","orderable":false},
-                {"data":"Tallaje185","name":"Tallaje185","orderable":false},
-                {"data":"Tallaje190","name":"Tallaje190","orderable":false},
-                {"data":"Tallaje195","name":"Tallaje195","orderable":false},
-                {"data":"Tallaje200","name":"Tallaje200","orderable":false},
-                {"data":"Tallaje205","name":"Tallaje205","orderable":false},
-                {"data":"Tallaje210","name":"Tallaje210","orderable":false},
-                {"data":"Tallaje215","name":"Tallaje215","orderable":false},
-                {"data":"Tallaje220","name":"Tallaje220","orderable":false},
-                {"data":"Tallaje225","name":"Tallaje225","orderable":false},
-                {"data":"Tallaje230","name":"Tallaje230","orderable":false},
-                {"data":"Tallaje235","name":"Tallaje235","orderable":false},
-                {"data":"Tallaje240","name":"Tallaje240","orderable":false},
-                {"data":"Tallaje245","name":"Tallaje245","orderable":false},
-                {"data":"Tallaje250","name":"Tallaje250","orderable":false},
-                {"data":"Tallaje255","name":"Tallaje255","orderable":false},
-                {"data":"Tallaje260","name":"Tallaje260","orderable":false},
-                {"data":"Tallaje265","name":"Tallaje265","orderable":false},
-                {"data":"Tallaje270","name":"Tallaje270","orderable":false},
-                {"data":"Tallaje275","name":"Tallaje275","orderable":false},
-                {"data":"Tallaje280","name":"Tallaje280","orderable":false},
-                {"data":"Tallaje285","name":"Tallaje285","orderable":false},
-                {"data":"Tallaje290","name":"Tallaje290","orderable":false},
-                {"data":"Tallaje295","name":"Tallaje295","orderable":false},
-                {"data":"Tallaje300","name":"Tallaje300","orderable":false},
-                {"data":"Tallaje305","name":"Tallaje305","orderable":false},
-                {"data":"Tallaje310","name":"Tallaje310","orderable":false},
-                {"data":"Tallaje315","name":"Tallaje315","orderable":false},
-                {"data":"Tallaje320","name":"Tallaje320","orderable":false},
-                {"data":"Tallaje325","name":"Tallaje325","orderable":false},
-                {"data":"Tallaje330","name":"Tallaje330","orderable":false},
-                {"data":"Tallaje335","name":"Tallaje335","orderable":false},
-                {"data":"Tallaje340","name":"Tallaje340","orderable":false},
-                {"data":"Tallaje345","name":"Tallaje345","orderable":false},
-                {"data":"Tallaje350","name":"Tallaje350","orderable":false},
-                
-
-
-                
-                
-            ];
-
+            var idproductogeneral = $('input[name=idproducto]').val();
             
 
-
-            var $table = $container.find('.dataTable').dataTable(
-                {
+            $.ajax({
+                url:'/pedidos/transitos/initializetable',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    idproductogeneral:idproductogeneral,
+                  },
+                success: function (data, textStatus, jqXHR) {
                     
-                    language: {
-                      url: "/json/datatable_es.json",
+                    var tmpl = [
+                        '<div id="">',
+                            '<table id="variantecantidad" class="table table-bordered table-nowrap dataTable" cellspacing="0" width="100%">',
+                                '<thead>',
+                                    '<th>Sucursal</th>',
+                                    '<th>Variante</th>',
+                                    '<th>Fotografía</th>',
+                                    '<th id="tallaje70">7.0</th>',
+                                    '<th id="tallaje75">7.5</th>',
+                                    '<th id="tallaje80">8.0</th>',
+                                    '<th id="tallaje85">8.5</th>',
+                                    '<th id="tallaje90">9.0</th>',
+                                    '<th id="tallaje95">9.5</th>',
+                                    '<th id="tallaje100">10.0</th>',
+                                    '<th id="tallaje105">10.5</th>',
+                                    '<th id="tallaje110">11.0</th>',
+                                    '<th id="tallaje115">11.5</th>',
+                                    '<th id="tallaje120">12.0</th>',
+                                    '<th id="tallaje125">12.5</th>',
+                                    '<th id="tallaje130">13.0</th>',
+                                    '<th id="tallaje135">13.5</th>',
+                                    '<th id="tallaje140">14.0</th>',
+                                    '<th id="tallaje145">14.5</th>',
+                                    '<th id="tallaje150">15.0</th>',
+                                    '<th id="tallaje155">15.5</th>',
+                                    '<th id="tallaje160">16.0</th>',
+                                    '<th id="tallaje165">16.5</th>',
+                                    '<th id="tallaje170">17.0</th>',
+                                    '<th id="tallaje175">17.5</th>',
+                                    '<th id="tallaje180">18.0</th>',
+                                    '<th id="tallaje185">18.5</th>',
+                                    '<th id="tallaje190">19.0</th>',
+                                    '<th id="tallaje195">19.5</th>',
+                                    '<th id="tallaje200">20.0</th>',
+                                    '<th id="tallaje205">20.5</th>',
+                                    '<th id="tallaje210">21.0</th>',
+                                    '<th id="tallaje215">21.5</th>',
+                                    '<th id="tallaje220">22.0</th>',
+                                    '<th id="tallaje225">22.5</th>',
+                                    '<th id="tallaje230">23.0</th>',
+                                    '<th id="tallaje235">23.5</th>',
+                                    '<th id="tallaje240">24.0</th>',
+                                    '<th id="tallaje245">24.5</th>',
+                                    '<th id="tallaje250">25.0</th>',
+                                    '<th id="tallaje255">25.5</th>',
+                                    '<th id="tallaje260">26.0</th>',
+                                    '<th id="tallaje265">26.5</th>',
+                                    '<th id="tallaje270">27.0</th>',
+                                    '<th id="tallaje275">27.5</th>',
+                                    '<th id="tallaje280">28.0</th>',
+                                    '<th id="tallaje285">28.5</th>',
+                                    '<th id="tallaje290">29.0</th>',
+                                    '<th id="tallaje295">29.5</th>',
+                                    '<th id="tallaje300">30.0</th>',
+                                    '<th id="tallaje305">30.5</th>',
+                                    '<th id="tallaje310">31.0</th>',
+                                    '<th id="tallaje315">31.5</th>',
+                                    '<th id="tallaje320">32.0</th>',
+                                    '<th id="tallaje325">32.5</th>',
+                                    '<th id="tallaje330">33.0</th>',
+                                    '<th id="tallaje335">33.5</th>',
+                                    '<th id="tallaje340">34.0</th>',
+                                    '<th id="tallaje345">34.5</th>',
+                                    '<th id="tallaje350">35.0</th>',
+                                '</thead>',
+                                '<tbody id="contenido">',
+                                '</tbody>',
+                            '</table>',
+                        '</div>',
+                              
+                    ].join('');
 
-                    },
-                    serverSide:true,
+                    $table = $(tmpl);
 
-                    ajax:{
-                        method: 'POST',
-                        url:'/pedidos/transitos/serversideproductovariante',
-                        data:{
-                          idproducto:$container.find('input[name=idproducto]').val(),
-                        },
-                    },
-                    columns:columns,
-                    proccesing: true,
-                    "scrollX": true,
-                    createdRow: function(row,data,index){
-                        $(row).find('a').on('click',function(){
-                            var id = $(row).attr('id');
-                            $.ajax({
-                                url:'/pedidos/transitos/getdetails',
-                                method:'post',
-                                dataType:'json',
-                                data:{idpedido:id},
-                                success:function(data){
+                    
+                    variantesDisponibles = [];
+                    $.each(data.data,function(indexSucursal, sucursal){
 
-                                    var tmpl = [
-                                    '<div id="modalBounceInLeft" tabindex="-1" role="dialog" class="modal in">',
-                                          '<div class="modal-dialog">',
-                                           ' <div class="modal-content animated bounceInLeft">',
-                                            '  <div class="modal-header">',
-                                                ' <button type="button" class="close" data-dismiss="modal">',
-                                                  '<span aria-hidden="true">×</span>',
-                                                  '<span class="sr-only">Close</span>',
-                                                '</button>',
-                                                '<h3 class="text-primary">Detalles</h3>',
-                                               
-                                              '</div>',
-                                              
-                                             ' <div class="modal-body">',
-                                                '<table id="details" class="table table-striped table-nowrap dataTable" cellspacing="0" width="100%">',
-                                                    '<thead>',
-                                                        '<th>Fecha</th>',
-                                                        '<th>Cantidad</th>',
-                                                        '<th>Estatus</th>',
-                                                        '<th>Opciones</th>',
-                                                    '</thead>',
-                                                    '<tbody>',
-                                                    '</tbody>',
-                                                '</table>',
-                                              '</div>',
-                                              '<div class="modal-footer">',
-                                                '<a href="" type"button" class="btn btn-info">Regresar</a>',
-                                              '</div>',
-                                            '</div>',
-                                          '</div>',
-                                        '</div>',
-                                    ].join('');
+                   
+                        $.each(sucursal,function(index, value){
 
+                          $tr = $('<tr>');
+                          $tr.attr('id',indexSucursal);
+                          $tr.append('<td id="sucursal"></td>');
+                          $tr.append('<td>'+index+'</td>');
+                          $tr.append('<td id="fotografia"></td>');
+                          for(var i = 70; i<=350;)
+                          {
+                            $tr.append('<td id="'+i+'"></td>'); 
+                            i+=5;
+                          }
 
-                                    $modal = $(tmpl);
+                          
 
-                                    data.data.forEach(function(value,index){
-                                         
-                                        $select = $('<select>');
-                                        $select.append('<option value="pendiente">Pendiente</option>');
-                                        $select.append('<option value="solicitado">Solicitado</option>');
-                                        $select.append('<option value="transito">Transito</option>');
-                                        $select.append('<option value="completado">Completado</option>');
+                          $.each(value,function(indexVariante, valueVariante){
 
-                                        $select.find('option[value='+value.pedido_estatus+']').attr('selected',true);
+                            
+                            $img = $('<img>');
+                            $img.attr('src',valueVariante.fotografia);
+                            $img.attr('width',100);
+                            $img.attr('height',100);
 
-                                        console.log($select);
-                                        $tr = $('<tr>');
-                                        $tr.attr('id',value.idpedido);
-                                        $tr.append('<td>'+value.pedido_fecha+'</td>');
-                                        $tr.append('<td><input name="pedido_cantidad" class="form-control" value="'+value.pedido_cantidad+'" disabled></td>');
-                                        $tr.append('<td><select class="form-control">'+$select.html()+'</select></td>');
-                                        $tr.append('<td><button class="btn btn-primary">Guardar</button></td>');
-                                        
-                                        $modal.find('#details tbody').append($tr);
-
-
-                                        $tr.find('button').on('click',function(){
-
-                                            var $tr = $(this).closest('tr');
-
-                                            var pedido_estatus = $tr.find('select option:selected').val();
-                                            $.ajax({
-                                                method: 'POST',
-                                                url:'/pedidos/transitos/actualizarinformacion',
-                                                dataType: 'json',
-                                                data:{
-                                                    idpedido:value.idpedido,
-                                                    pedido_estatus:pedido_estatus,
-                                                },
-                                                success: function(data){
-                                                    console.log(data);
-                                                  if(data.response){
-                                                    swal("Éxito","Estatus actualizado!!!  ","success");
-                                                  }
-                                                  
-                                                },
-                                            })
-                                        });
-
-
-                                        
-
-
-                                    });
-
-                                    $modal.modal();
-                                  //  console.log($(tmpl));
-
-                                }
+                            $tr.find('#fotografia').append($img);
+                            $tr.find('#sucursal').append(valueVariante.sucursal);
+                            console.log(valueVariante);
+                            $.each(valueVariante.talla,function(talla, cantidad)
+                            {
+                                variantesDisponibles.push(talla*10);
+                                $a = $('<a>');
+                                $a.attr('id',valueVariante.variante[talla]);
+                                $a.attr('href','#');
+                                $a.append(cantidad);
+                                $a.numeric();
+                                
+                                $tr.find('#'+(talla*10)).append($a);
                             });
                             
+                          });
+
+                          
+
+                          $table.find('#contenido').append($tr);
+
+                          $tr.find('a').filter(function(){
+
+                            $(this).on('click',function(){
+                                
+                                var idvariante = $(this).attr('id');
+                                var idSucursal = $(this).closest('tr').attr('id');
+
+                                $modal = null;
+
+                                $.ajax({
+                                    url:'/pedidos/transitos/getdetails',
+                                    method:'post',
+                                    dataType:'json',
+                                    data:{
+                                        idvariante:idvariante,
+                                        idSucursal:idSucursal,
+                                    },
+                                    success:function(data){
+
+                                        var tmpl = [
+                                        '<div id="modalBounceInLeft" tabindex="-1" role="dialog" class="modal in">',
+                                              '<div class="modal-dialog" style="width:60%; max-height: 80vh">',
+                                               ' <div class="modal-content animated bounceInLeft">',
+                                                '  <div class="modal-header">',
+                                                    ' <button type="button" class="close" data-dismiss="modal">',
+                                                      '<span aria-hidden="true">×</span>',
+                                                      '<span class="sr-only">Close</span>',
+                                                    '</button>',
+                                                    '<h3 class="text-primary">Detalles</h3>',
+                                                   
+                                                  '</div>',
+                                                  
+                                                 ' <div id="scrolltable" class="modal-body">',
+                                                    '<table id="details" class="table  table-bordered table-nowrap dataTable" cellspacing="0" width="100%">',
+                                                        '<thead>',
+                                                            '<th>Sucursal</th>',
+                                                            '<th>Fecha</th>',
+                                                            '<th>Cantidad</th>',
+                                                            '<th>Estatus</th>',
+                                                            '<th>Opciones</th>',
+                                                        '</thead>',
+                                                        '<tbody>',
+                                                        '</tbody>',
+                                                    '</table>',
+                                                  '</div>',
+                                                  '<div class="modal-footer">',
+                                                    '<a href="" type"button" class="btn btn-info">Regresar</a>',
+                                                  '</div>',
+                                                '</div>',
+                                              '</div>',
+                                            '</div>',
+                                        ].join('');
+
+
+                                        $modal = $(tmpl);
+
+                                        data.data.forEach(function(value,index){
+                                             console.log(value);
+                                            $select = $('<select>');
+                                            $select.append('<option value="pendiente">Pendiente</option>');
+                                            $select.append('<option value="solicitado">Solicitado</option>');
+                                            $select.append('<option value="transito">Transito</option>');
+                                            $select.append('<option value="completado">Completado</option>');
+
+                                            $select.find('option[value='+value.pedido_estatus+']').attr('selected',true);
+
+                                            console.log($select);
+                                            $tr = $('<tr>');
+                                            $tr.attr('id',value.idpedido);
+                                            $tr.append('<td>'+value.idsucursal+'</td>');
+                                            $tr.append('<td>'+value.pedido_fecha+'</td>');
+                                            $tr.append('<td><input name="pedido_cantidad" class="form-control" value="'+value.pedido_cantidad+'" disabled></td>');
+                                            $tr.append('<td><select class="form-control">'+$select.html()+'</select></td>');
+                                            $tr.append('<td><button class="btn btn-primary">Guardar</button></td>');
+                                            
+                                            $modal.find('#details tbody').append($tr);
+
+
+                                            $tr.find('button').on('click',function(){
+
+                                                var $tr = $(this).closest('tr');
+
+                                                var pedido_estatus = $tr.find('select option:selected').val();
+                                                $.ajax({
+                                                    method: 'POST',
+                                                    url:'/pedidos/transitos/actualizarinformacion',
+                                                    dataType: 'json',
+                                                    data:{
+                                                        idpedido:value.idpedido,
+                                                        pedido_estatus:pedido_estatus,
+                                                    },
+                                                    success: function(data){
+                                                        console.log(data);
+                                                      if(data.response){
+                                                        swal("Éxito","Estatus actualizado!!!  ","success");
+                                                      }
+                                                      
+                                                    },
+                                                })
+                                            });
+
+
+                                            $modal.modal();
+
+
+                                            
+
+
+                                        });
+
+                                        $modal.find('.dataTable').dataTable(
+                                        {
+                                            language: {
+                                              url: "/json/datatable_es.json",
+
+                                            },
+                                            "scrollX": true,
+                                        });
+
+                                        
+
+                                    }
+                                });
+
+                                
+                            });
+                          });
+
+                          
                         });
+                     })
+
+                    for(var i = 70; i<=350;)
+                    {
+                      var bandera = false;
+                      for(var j = 0; j < variantesDisponibles.length; j++)
+                      {
+                        if(i == parseInt(variantesDisponibles[j]))
+                        {
+                          bandera = true;
+                          break;
+                        }
+                      }
+                      if(!bandera)
+                      {
+                        $table.find('#'+(i)).remove();
+                        $table.find('#tallaje'+i).remove();
+                      }
+                      i+=5;
                     }
+
+
+                    $('div.card-body').append($table);
+                    $container.find('.dataTable').dataTable(
+                    {
+                        language: {
+                          url: "/json/datatable_es.json",
+
+                        },
+                        "scrollX": true,
+                    });
+                    
                 }
-            );
+            });
+
+
+            
 
 
         }
