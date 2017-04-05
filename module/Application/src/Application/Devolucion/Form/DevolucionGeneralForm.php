@@ -106,7 +106,7 @@ class DevolucionGeneralForm extends Form
             'value_options' => $productosvariante_array,   
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => '',
                 
 
@@ -122,7 +122,7 @@ class DevolucionGeneralForm extends Form
             'value_options' => $productos_generales_array,   
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
 
 
