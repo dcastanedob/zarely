@@ -214,11 +214,34 @@ class DevolucionGeneralController extends AbstractActionController
 
             $post_data['devolucion_fecha'] = date_create_from_format('d/m/Y', $post_data['devolucion_fecha']);
 
-            
-
+            $precios = [];
+            $variantes = [];
             foreach ($post_data as $key => $value){
                 if(\DevolucionPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                }
+
+
+                if(substr( $key, 0, 6 ) === "precio")
+                {
+                    $temp = array(
+                        "variante" => str_replace("preciounitario", "", $key),
+                        "valor" => $value
+                    );
+                    array_push($precios, $temp);
+                }
+
+                if(substr( $key, 0, 8 ) === "cantidad")
+                {
+                    /*if($value != 0)
+                    {*/
+                        $temp = array(
+                            "variante" => str_replace("cantidad", "", $key),
+                            "valor" => $value
+                        );
+                        array_push($variantes, $temp);
+                    //}
+                    
                 }
             }
 
@@ -234,23 +257,55 @@ class DevolucionGeneralController extends AbstractActionController
                 $entity->setDevolucionComprobante('/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type)->save();
             }
 
-            
+
             $total = 0;
-
-            for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
-            {
+            foreach ($variantes as $variante) {
                 $devoulucion_detalle = new \Devoluciondetalle();
-                $devoulucion_detalle->setIddevolucion($entity->getIddevolucion())
-                              ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                              ->setDevoluciondetalleCantidad($post_data['cantidad'][$variante])
-                              ->setDevoluciondetallePreciounitario($post_data['preciounitario'][$variante])
-                              ->setDevoluciondetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
-                              ->save();
-                $total+= $devoulucion_detalle->getDevoluciondetalleSubtotal();
+                $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+                //encontrar a que precio le corresponde
+                foreach ($precios as $key=>$precio) {
 
+                    //obtenemos la variante 
+                    $productovariante = \ProductovarianteQuery::create()->findPk($precio["variante"]);
+
+                    if($productovariante->getIdproducto() == $varianteTemp->getIdproducto() && $productovariante->getIdproductocolor() == $varianteTemp->getIdproductocolor() && $productovariante->getIdproductomaterial() == $varianteTemp->getIdproductomaterial())
+                        {
+
+
+                        //obtenemos el rango de los tallajes
+                        $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($productovariante->getIdproducto())->find();
+
+                        $boolean = false;
+                        foreach ($tallajes->toArray() as $tallaje) {
+                            $rango = $tallaje["Tallajerango"];
+                            $inf = explode(" - ", $rango);
+
+
+                            //verificamos que este en el rango del precio asociado
+                            if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
+                            {
+                                $devoulucion_detalle->setIddevolucion($entity->getIddevolucion())
+                                              ->setIdproductovariante($variante["variante"])
+                                              ->setDevoluciondetalleCantidad($variante["valor"])
+                                              ->setDevoluciondetallePreciounitario($precio["valor"])
+                                              ->setDevoluciondetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
+
+                                $total+= $devoulucion_detalle->getDevoluciondetalleSubtotal();
+                                $boolean = true;
+                                break;
+                            }
+                        }
+
+                        $entity->setDevolucionTotal($total);
+                        $entity->save();
+
+                        //unset($precios[$key]);
+                        if($boolean)
+                            break;
+                    }
+                    
+                }
             }
-            $entity->setDevolucionTotal($total);
-            $entity->save();
 
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
@@ -269,7 +324,8 @@ class DevolucionGeneralController extends AbstractActionController
 
 
         //traer los productosvariantes
-        $variantes = \ProductovarianteQuery::create()->find();
+        $variantes = \ProductovarianteQuery::create()->groupByIdproductomaterial()->groupByIdproductocolor()->find();
+
         $productosvariante_array = array();
 
         foreach ($variantes as $value){
@@ -280,7 +336,7 @@ class DevolucionGeneralController extends AbstractActionController
             $material = $material->getMaterial();
 
 
-            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre().' / '. $value->getProductovarianteTalla().'';
+            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre();
 
             $productosvariante_array[$value->getIdproductovariante()] = $information;
         }
@@ -327,91 +383,143 @@ class DevolucionGeneralController extends AbstractActionController
 
                 $post_data['devolucion_fecha'] = date_create_from_format('d/m/Y', $post_data['devolucion_fecha']);
 
-                
+                $precios = [];
+                $variantes = [];
                 foreach ($post_data as $key => $value){
                     if(\DevolucionPeer::getTableMap()->hasColumn($key)){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
-                }
 
+
+                    if(substr( $key, 0, 6 ) === "precio")
+                    {
+                        $temp = array(
+                            "variante" => str_replace("preciounitario", "", $key),
+                            "valor" => $value
+                        );
+                        array_push($precios, $temp);
+                    }
+
+                    if(substr( $key, 0, 8 ) === "cantidad")
+                    {
+                        /*if($value != 0)
+                        {*/
+                            $temp = array(
+                                "variante" => str_replace("cantidad", "", $key),
+                                "valor" => $value
+                            );
+                            array_push($variantes, $temp);
+                        //}
+                        
+                    }
+                }
                 $detalles = \DevoluciondetalleQuery::create()->filterByIddevolucion($id)->delete();
-                //$entity->getProductotallajes()->delete();
-
-                $total = 0;
-                for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
-                {
-                    $devoulucion_detalle = new \Devoluciondetalle();
-                    $devoulucion_detalle->setIddevolucion($entity->getIddevolucion())
-                                  ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                                  ->setDevoluciondetalleCantidad($post_data['cantidad'][$variante])
-                                  ->setDevoluciondetallePreciounitario($post_data['preciounitario'][$variante])
-                                  ->setDevoluciondetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
-                                  ->save();
-                    $total+= $devoulucion_detalle->getDevoluciondetalleSubtotal();
-
-                }
+                $entity->save();
 
                 if(isset($post_files['devolucion_comprobante'])){
 
-                    if($post_files['devolucion_comprobante']['name'] != ""){
+                    $file_type = $this->get_extension($post_files['devolucion_comprobante']['name']);
 
-                        $file_type = $this->get_extension($post_files['devolucion_comprobante']['name']);
-
-                        move_uploaded_file($post_files['devolucion_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type);
+                    move_uploaded_file($post_files['devolucion_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type);
 
 
-                        $entity->setDevolucionComprobante('/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type)->save();
-                    }
-
+                    $entity->setDevolucionComprobante('/files/devoluciones/'.$entity->getIddevolucion().'.'.$file_type)->save();
                 }
 
-                $entity->setDevolucionTotal($total);
-                $entity->save();
+
+                $total = 0;
+                foreach ($variantes as $variante) {
+                    $devoulucion_detalle = new \Devoluciondetalle();
+                    $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+                    //encontrar a que precio le corresponde
+                    foreach ($precios as $key=>$precio) {
+
+                        //obtenemos la variante 
+                        $productovariante = \ProductovarianteQuery::create()->findPk($precio["variante"]);
+
+                        if($productovariante->getIdproducto() == $varianteTemp->getIdproducto() && $productovariante->getIdproductocolor() == $varianteTemp->getIdproductocolor() && $productovariante->getIdproductomaterial() == $varianteTemp->getIdproductomaterial())
+                            {
 
 
+                            //obtenemos el rango de los tallajes
+                            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($productovariante->getIdproducto())->find();
+
+                            $boolean = false;
+                            foreach ($tallajes->toArray() as $tallaje) {
+                                $rango = $tallaje["Tallajerango"];
+                                $inf = explode(" - ", $rango);
+
+
+                                //verificamos que este en el rango del precio asociado
+                                if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
+                                {
+                                    $devoulucion_detalle->setIddevolucion($entity->getIddevolucion())
+                                                  ->setIdproductovariante($variante["variante"])
+                                                  ->setDevoluciondetalleCantidad($variante["valor"])
+                                                  ->setDevoluciondetallePreciounitario($precio["valor"])
+                                                  ->setDevoluciondetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
+
+                                    $total+= $devoulucion_detalle->getDevoluciondetalleSubtotal();
+                                    $boolean = true;
+                                    break;
+                                }
+                            }
+
+                            $entity->setDevolucionTotal($total);
+                            $entity->save();
+
+                            //unset($precios[$key]);
+                            if($boolean)
+                                break;
+                        }
+                        
+                    }
+                }
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
                 return $this->redirect()->toUrl('/devoluciones/generales');
             }
             
                 
-            //traer los proveedores
-            $provedorees = \ProveedorQuery::create()->find();
-            $provedorees_array = array();
+           //traer los proveedores
+        $provedorees = \ProveedorQuery::create()->find();
+        $provedorees_array = array();
 
-            foreach ($provedorees as $value){
-                $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
-            }
-
-
-            //traer los productosvariantes
-            $variantes = \ProductovarianteQuery::create()->find();
-            $productosvariante_array = array();
-
-            foreach ($variantes as $value){
-                $producto = $value->getProducto();
-                $color = $value->getProductocolor();
-                $color = $color->getColor();
-                $material = $value->getProductomaterial();
-                $material = $material->getMaterial();
+        foreach ($provedorees as $value){
+            $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
+        }
 
 
-                $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre().' / '. $value->getProductovarianteTalla().'';
+        //traer los productosvariantes
+        $variantes = \ProductovarianteQuery::create()->groupByIdproductomaterial()->groupByIdproductocolor()->find();
 
-                $productosvariante_array[$value->getIdproductovariante()] = $information;
-            }
+        $productosvariante_array = array();
 
-            
-            //traer los productos generales
-            $generales = \ProductoQuery::create()->find();
-            $productos_generales_array = array();
+        foreach ($variantes as $value){
+            $producto = $value->getProducto();
+            $color = $value->getProductocolor();
+            $color = $color->getColor();
+            $material = $value->getProductomaterial();
+            $material = $material->getMaterial();
 
-            foreach ($generales as $value){
 
-                $productos_generales_array[$value->getIdproducto()] = $value->getProductoModelo();
-            }
+            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre();
 
-            
-            $form = new \Application\Devolucion\Form\DevolucionGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
+            $productosvariante_array[$value->getIdproductovariante()] = $information;
+        }
+
+
+        //traer los productos generales
+        $generales = \ProductoQuery::create()->find();
+        $productos_generales_array = array();
+
+        foreach ($generales as $value){
+
+            $productos_generales_array[$value->getIdproducto()] = $value->getProductoModelo();
+        }
+
+
+
+        $form = new \Application\Devolucion\Form\DevolucionGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
             $form->get("devolucion_comprobante")->setAttribute('required',false);
@@ -457,7 +565,6 @@ class DevolucionGeneralController extends AbstractActionController
             $post_data = $request->getPost();
             if($post_data['name'] == 'productosvariantes'){
                 $response = $this->getProductovariantes($post_data['data']);
-
                 return $this->getResponse()->setContent(json_encode($response));
                 
             }
@@ -508,6 +615,124 @@ class DevolucionGeneralController extends AbstractActionController
                 }
                 
             }
+
+            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
+
+            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
+        }
+
+    } 
+
+    public function initializetableAction(){
+
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+            
+            //obtenemos la variante 
+            $variante = \ProductovarianteQuery::create()->findPk($post_data['id']);
+
+            //obtenemos el rango de los tallajes
+            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($variante->getIdproducto())->find();
+
+            //ovtenemos combinacion color/material
+            $details = [];
+            $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
+            $details[$indice] = [];
+
+            $nombreProducto = $variante->getProducto()->getProductoModelo();
+
+            foreach ($tallajes->toArray() as $tallaje) {
+                //obtenemos el rango del tallaje
+                $rango = $tallaje["Tallajerango"];
+                $inf = explode(" - ", $rango);
+                $details[$indice][$tallaje['Idproductotallaje']] = [];
+
+                //iteramos desde el limite superior hasta el inferior 
+                for ($i = $inf[0]; $i<=$inf[1];) {
+
+                    //obtenemos la variante correspondiente a lo solicitado
+                    $productoVariante = \ProductovarianteQuery::create()->filterByIdproducto($variante->getIdproducto())->filterByIdproductomaterial($variante->getIdproductomaterial())->filterByIdproductocolor($variante->getIdproductocolor())->filterByProductovarianteTalla($i)->findOne();
+                    if($productoVariante != null)
+                    {
+                        $productoVariante = $productoVariante->toArray();
+                        $value = array(
+                                    'talla' => $productoVariante['ProductovarianteTalla'],
+                                    'variante' => $productoVariante['Idproductovariante'],
+                                    'modelo' => $nombreProducto,
+                                 );
+
+                        array_push($details[$indice][$tallaje['Idproductotallaje']], $value);
+                    }
+                    $i+=0.5;
+                }
+
+            }
+
+            
+
+            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
+
+            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
+        }
+
+    } 
+
+    public function initializetablegeneralAction(){
+
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+            
+            //obtenemos la variante 
+            $variante = \ProductovarianteQuery::create()->findPk($post_data['id']);
+
+            //obtenemos el rango de los tallajes
+            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($variante->getIdproducto())->find();
+
+            //ovtenemos combinacion color/material
+            $details = [];
+            $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
+            $details[$indice] = [];
+
+            $nombreProducto = $variante->getProducto()->getProductoModelo();
+
+            foreach ($tallajes->toArray() as $tallaje) {
+                //obtenemos el rango del tallaje
+                $rango = $tallaje["Tallajerango"];
+                $inf = explode(" - ", $rango);
+                
+
+                //Verificamos que pertenezca al tallaje
+                if($variante->getProductovarianteTalla() <= $inf[1] && $variante->getProductovarianteTalla() >= $inf[0])
+                {
+                    $details[$indice][$tallaje['Idproductotallaje']] = [];
+
+                    //iteramos desde el limite superior hasta el inferior 
+                    for ($i = $inf[0]; $i<=$inf[1];) {
+
+                        //obtenemos la variante correspondiente a lo solicitado
+                        $productoVariante = \ProductovarianteQuery::create()->filterByIdproducto($variante->getIdproducto())->filterByIdproductomaterial($variante->getIdproductomaterial())->filterByIdproductocolor($variante->getIdproductocolor())->filterByProductovarianteTalla($i)->findOne();
+                        if($productoVariante != null)
+                        {
+                            $productoVariante = $productoVariante->toArray();
+                            $value = array(
+                                        'talla' => $productoVariante['ProductovarianteTalla'],
+                                        'variante' => $productoVariante['Idproductovariante'],
+                                        'modelo' => $nombreProducto,
+                                     );
+
+                            array_push($details[$indice][$tallaje['Idproductotallaje']], $value);
+                        }
+                        $i+=0.5;
+                    }
+                }
+
+            }
+
+            
 
             return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
 
