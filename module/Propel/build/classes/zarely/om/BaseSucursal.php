@@ -108,6 +108,18 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     protected $collSucursalempleadosPartial;
 
     /**
+     * @var        PropelObjectCollection|Transferencia[] Collection to store aggregation of Transferencia objects.
+     */
+    protected $collTransferenciasRelatedByIdsucursaldestino;
+    protected $collTransferenciasRelatedByIdsucursaldestinoPartial;
+
+    /**
+     * @var        PropelObjectCollection|Transferencia[] Collection to store aggregation of Transferencia objects.
+     */
+    protected $collTransferenciasRelatedByIdsucursalorigen;
+    protected $collTransferenciasRelatedByIdsucursalorigenPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -144,6 +156,18 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $sucursalempleadosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $transferenciasRelatedByIdsucursaldestinoScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $transferenciasRelatedByIdsucursalorigenScheduledForDeletion = null;
 
     /**
      * Get the [idsucursal] column value.
@@ -584,6 +608,10 @@ abstract class BaseSucursal extends BaseObject implements Persistent
 
             $this->collSucursalempleados = null;
 
+            $this->collTransferenciasRelatedByIdsucursaldestino = null;
+
+            $this->collTransferenciasRelatedByIdsucursalorigen = null;
+
         } // if (deep)
     }
 
@@ -753,6 +781,40 @@ abstract class BaseSucursal extends BaseObject implements Persistent
 
             if ($this->collSucursalempleados !== null) {
                 foreach ($this->collSucursalempleados as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion !== null) {
+                if (!$this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion->isEmpty()) {
+                    TransferenciaQuery::create()
+                        ->filterByPrimaryKeys($this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTransferenciasRelatedByIdsucursaldestino !== null) {
+                foreach ($this->collTransferenciasRelatedByIdsucursaldestino as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion !== null) {
+                if (!$this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion->isEmpty()) {
+                    TransferenciaQuery::create()
+                        ->filterByPrimaryKeys($this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTransferenciasRelatedByIdsucursalorigen !== null) {
+                foreach ($this->collTransferenciasRelatedByIdsucursalorigen as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -979,6 +1041,22 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collTransferenciasRelatedByIdsucursaldestino !== null) {
+                    foreach ($this->collTransferenciasRelatedByIdsucursaldestino as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collTransferenciasRelatedByIdsucursalorigen !== null) {
+                    foreach ($this->collTransferenciasRelatedByIdsucursalorigen as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1098,6 +1176,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             }
             if (null !== $this->collSucursalempleados) {
                 $result['Sucursalempleados'] = $this->collSucursalempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collTransferenciasRelatedByIdsucursaldestino) {
+                $result['TransferenciasRelatedByIdsucursaldestino'] = $this->collTransferenciasRelatedByIdsucursaldestino->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collTransferenciasRelatedByIdsucursalorigen) {
+                $result['TransferenciasRelatedByIdsucursalorigen'] = $this->collTransferenciasRelatedByIdsucursalorigen->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1316,6 +1400,18 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getTransferenciasRelatedByIdsucursaldestino() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTransferenciaRelatedByIdsucursaldestino($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getTransferenciasRelatedByIdsucursalorigen() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTransferenciaRelatedByIdsucursalorigen($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1385,6 +1481,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         }
         if ('Sucursalempleado' == $relationName) {
             $this->initSucursalempleados();
+        }
+        if ('TransferenciaRelatedByIdsucursaldestino' == $relationName) {
+            $this->initTransferenciasRelatedByIdsucursaldestino();
+        }
+        if ('TransferenciaRelatedByIdsucursalorigen' == $relationName) {
+            $this->initTransferenciasRelatedByIdsucursalorigen();
         }
     }
 
@@ -2164,6 +2266,556 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collTransferenciasRelatedByIdsucursaldestino collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Sucursal The current object (for fluent API support)
+     * @see        addTransferenciasRelatedByIdsucursaldestino()
+     */
+    public function clearTransferenciasRelatedByIdsucursaldestino()
+    {
+        $this->collTransferenciasRelatedByIdsucursaldestino = null; // important to set this to null since that means it is uninitialized
+        $this->collTransferenciasRelatedByIdsucursaldestinoPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collTransferenciasRelatedByIdsucursaldestino collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTransferenciasRelatedByIdsucursaldestino($v = true)
+    {
+        $this->collTransferenciasRelatedByIdsucursaldestinoPartial = $v;
+    }
+
+    /**
+     * Initializes the collTransferenciasRelatedByIdsucursaldestino collection.
+     *
+     * By default this just sets the collTransferenciasRelatedByIdsucursaldestino collection to an empty array (like clearcollTransferenciasRelatedByIdsucursaldestino());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTransferenciasRelatedByIdsucursaldestino($overrideExisting = true)
+    {
+        if (null !== $this->collTransferenciasRelatedByIdsucursaldestino && !$overrideExisting) {
+            return;
+        }
+        $this->collTransferenciasRelatedByIdsucursaldestino = new PropelObjectCollection();
+        $this->collTransferenciasRelatedByIdsucursaldestino->setModel('Transferencia');
+    }
+
+    /**
+     * Gets an array of Transferencia objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Sucursal is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     * @throws PropelException
+     */
+    public function getTransferenciasRelatedByIdsucursaldestino($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciasRelatedByIdsucursaldestinoPartial && !$this->isNew();
+        if (null === $this->collTransferenciasRelatedByIdsucursaldestino || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciasRelatedByIdsucursaldestino) {
+                // return empty collection
+                $this->initTransferenciasRelatedByIdsucursaldestino();
+            } else {
+                $collTransferenciasRelatedByIdsucursaldestino = TransferenciaQuery::create(null, $criteria)
+                    ->filterBySucursalRelatedByIdsucursaldestino($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collTransferenciasRelatedByIdsucursaldestinoPartial && count($collTransferenciasRelatedByIdsucursaldestino)) {
+                      $this->initTransferenciasRelatedByIdsucursaldestino(false);
+
+                      foreach ($collTransferenciasRelatedByIdsucursaldestino as $obj) {
+                        if (false == $this->collTransferenciasRelatedByIdsucursaldestino->contains($obj)) {
+                          $this->collTransferenciasRelatedByIdsucursaldestino->append($obj);
+                        }
+                      }
+
+                      $this->collTransferenciasRelatedByIdsucursaldestinoPartial = true;
+                    }
+
+                    $collTransferenciasRelatedByIdsucursaldestino->getInternalIterator()->rewind();
+
+                    return $collTransferenciasRelatedByIdsucursaldestino;
+                }
+
+                if ($partial && $this->collTransferenciasRelatedByIdsucursaldestino) {
+                    foreach ($this->collTransferenciasRelatedByIdsucursaldestino as $obj) {
+                        if ($obj->isNew()) {
+                            $collTransferenciasRelatedByIdsucursaldestino[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTransferenciasRelatedByIdsucursaldestino = $collTransferenciasRelatedByIdsucursaldestino;
+                $this->collTransferenciasRelatedByIdsucursaldestinoPartial = false;
+            }
+        }
+
+        return $this->collTransferenciasRelatedByIdsucursaldestino;
+    }
+
+    /**
+     * Sets a collection of TransferenciaRelatedByIdsucursaldestino objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $transferenciasRelatedByIdsucursaldestino A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function setTransferenciasRelatedByIdsucursaldestino(PropelCollection $transferenciasRelatedByIdsucursaldestino, PropelPDO $con = null)
+    {
+        $transferenciasRelatedByIdsucursaldestinoToDelete = $this->getTransferenciasRelatedByIdsucursaldestino(new Criteria(), $con)->diff($transferenciasRelatedByIdsucursaldestino);
+
+
+        $this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion = $transferenciasRelatedByIdsucursaldestinoToDelete;
+
+        foreach ($transferenciasRelatedByIdsucursaldestinoToDelete as $transferenciaRelatedByIdsucursaldestinoRemoved) {
+            $transferenciaRelatedByIdsucursaldestinoRemoved->setSucursalRelatedByIdsucursaldestino(null);
+        }
+
+        $this->collTransferenciasRelatedByIdsucursaldestino = null;
+        foreach ($transferenciasRelatedByIdsucursaldestino as $transferenciaRelatedByIdsucursaldestino) {
+            $this->addTransferenciaRelatedByIdsucursaldestino($transferenciaRelatedByIdsucursaldestino);
+        }
+
+        $this->collTransferenciasRelatedByIdsucursaldestino = $transferenciasRelatedByIdsucursaldestino;
+        $this->collTransferenciasRelatedByIdsucursaldestinoPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Transferencia objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Transferencia objects.
+     * @throws PropelException
+     */
+    public function countTransferenciasRelatedByIdsucursaldestino(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciasRelatedByIdsucursaldestinoPartial && !$this->isNew();
+        if (null === $this->collTransferenciasRelatedByIdsucursaldestino || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciasRelatedByIdsucursaldestino) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTransferenciasRelatedByIdsucursaldestino());
+            }
+            $query = TransferenciaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySucursalRelatedByIdsucursaldestino($this)
+                ->count($con);
+        }
+
+        return count($this->collTransferenciasRelatedByIdsucursaldestino);
+    }
+
+    /**
+     * Method called to associate a Transferencia object to this object
+     * through the Transferencia foreign key attribute.
+     *
+     * @param    Transferencia $l Transferencia
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function addTransferenciaRelatedByIdsucursaldestino(Transferencia $l)
+    {
+        if ($this->collTransferenciasRelatedByIdsucursaldestino === null) {
+            $this->initTransferenciasRelatedByIdsucursaldestino();
+            $this->collTransferenciasRelatedByIdsucursaldestinoPartial = true;
+        }
+
+        if (!in_array($l, $this->collTransferenciasRelatedByIdsucursaldestino->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddTransferenciaRelatedByIdsucursaldestino($l);
+
+            if ($this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion and $this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion->contains($l)) {
+                $this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion->remove($this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	TransferenciaRelatedByIdsucursaldestino $transferenciaRelatedByIdsucursaldestino The transferenciaRelatedByIdsucursaldestino object to add.
+     */
+    protected function doAddTransferenciaRelatedByIdsucursaldestino($transferenciaRelatedByIdsucursaldestino)
+    {
+        $this->collTransferenciasRelatedByIdsucursaldestino[]= $transferenciaRelatedByIdsucursaldestino;
+        $transferenciaRelatedByIdsucursaldestino->setSucursalRelatedByIdsucursaldestino($this);
+    }
+
+    /**
+     * @param	TransferenciaRelatedByIdsucursaldestino $transferenciaRelatedByIdsucursaldestino The transferenciaRelatedByIdsucursaldestino object to remove.
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function removeTransferenciaRelatedByIdsucursaldestino($transferenciaRelatedByIdsucursaldestino)
+    {
+        if ($this->getTransferenciasRelatedByIdsucursaldestino()->contains($transferenciaRelatedByIdsucursaldestino)) {
+            $this->collTransferenciasRelatedByIdsucursaldestino->remove($this->collTransferenciasRelatedByIdsucursaldestino->search($transferenciaRelatedByIdsucursaldestino));
+            if (null === $this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion) {
+                $this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion = clone $this->collTransferenciasRelatedByIdsucursaldestino;
+                $this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion->clear();
+            }
+            $this->transferenciasRelatedByIdsucursaldestinoScheduledForDeletion[]= clone $transferenciaRelatedByIdsucursaldestino;
+            $transferenciaRelatedByIdsucursaldestino->setSucursalRelatedByIdsucursaldestino(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related TransferenciasRelatedByIdsucursaldestino from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     */
+    public function getTransferenciasRelatedByIdsucursaldestinoJoinEmpleadoRelatedByIdempleadocreador($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TransferenciaQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadocreador', $join_behavior);
+
+        return $this->getTransferenciasRelatedByIdsucursaldestino($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related TransferenciasRelatedByIdsucursaldestino from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     */
+    public function getTransferenciasRelatedByIdsucursaldestinoJoinEmpleadoRelatedByIdempleadoreceptor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TransferenciaQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadoreceptor', $join_behavior);
+
+        return $this->getTransferenciasRelatedByIdsucursaldestino($query, $con);
+    }
+
+    /**
+     * Clears out the collTransferenciasRelatedByIdsucursalorigen collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Sucursal The current object (for fluent API support)
+     * @see        addTransferenciasRelatedByIdsucursalorigen()
+     */
+    public function clearTransferenciasRelatedByIdsucursalorigen()
+    {
+        $this->collTransferenciasRelatedByIdsucursalorigen = null; // important to set this to null since that means it is uninitialized
+        $this->collTransferenciasRelatedByIdsucursalorigenPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collTransferenciasRelatedByIdsucursalorigen collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTransferenciasRelatedByIdsucursalorigen($v = true)
+    {
+        $this->collTransferenciasRelatedByIdsucursalorigenPartial = $v;
+    }
+
+    /**
+     * Initializes the collTransferenciasRelatedByIdsucursalorigen collection.
+     *
+     * By default this just sets the collTransferenciasRelatedByIdsucursalorigen collection to an empty array (like clearcollTransferenciasRelatedByIdsucursalorigen());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTransferenciasRelatedByIdsucursalorigen($overrideExisting = true)
+    {
+        if (null !== $this->collTransferenciasRelatedByIdsucursalorigen && !$overrideExisting) {
+            return;
+        }
+        $this->collTransferenciasRelatedByIdsucursalorigen = new PropelObjectCollection();
+        $this->collTransferenciasRelatedByIdsucursalorigen->setModel('Transferencia');
+    }
+
+    /**
+     * Gets an array of Transferencia objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Sucursal is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     * @throws PropelException
+     */
+    public function getTransferenciasRelatedByIdsucursalorigen($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciasRelatedByIdsucursalorigenPartial && !$this->isNew();
+        if (null === $this->collTransferenciasRelatedByIdsucursalorigen || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciasRelatedByIdsucursalorigen) {
+                // return empty collection
+                $this->initTransferenciasRelatedByIdsucursalorigen();
+            } else {
+                $collTransferenciasRelatedByIdsucursalorigen = TransferenciaQuery::create(null, $criteria)
+                    ->filterBySucursalRelatedByIdsucursalorigen($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collTransferenciasRelatedByIdsucursalorigenPartial && count($collTransferenciasRelatedByIdsucursalorigen)) {
+                      $this->initTransferenciasRelatedByIdsucursalorigen(false);
+
+                      foreach ($collTransferenciasRelatedByIdsucursalorigen as $obj) {
+                        if (false == $this->collTransferenciasRelatedByIdsucursalorigen->contains($obj)) {
+                          $this->collTransferenciasRelatedByIdsucursalorigen->append($obj);
+                        }
+                      }
+
+                      $this->collTransferenciasRelatedByIdsucursalorigenPartial = true;
+                    }
+
+                    $collTransferenciasRelatedByIdsucursalorigen->getInternalIterator()->rewind();
+
+                    return $collTransferenciasRelatedByIdsucursalorigen;
+                }
+
+                if ($partial && $this->collTransferenciasRelatedByIdsucursalorigen) {
+                    foreach ($this->collTransferenciasRelatedByIdsucursalorigen as $obj) {
+                        if ($obj->isNew()) {
+                            $collTransferenciasRelatedByIdsucursalorigen[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTransferenciasRelatedByIdsucursalorigen = $collTransferenciasRelatedByIdsucursalorigen;
+                $this->collTransferenciasRelatedByIdsucursalorigenPartial = false;
+            }
+        }
+
+        return $this->collTransferenciasRelatedByIdsucursalorigen;
+    }
+
+    /**
+     * Sets a collection of TransferenciaRelatedByIdsucursalorigen objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $transferenciasRelatedByIdsucursalorigen A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function setTransferenciasRelatedByIdsucursalorigen(PropelCollection $transferenciasRelatedByIdsucursalorigen, PropelPDO $con = null)
+    {
+        $transferenciasRelatedByIdsucursalorigenToDelete = $this->getTransferenciasRelatedByIdsucursalorigen(new Criteria(), $con)->diff($transferenciasRelatedByIdsucursalorigen);
+
+
+        $this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion = $transferenciasRelatedByIdsucursalorigenToDelete;
+
+        foreach ($transferenciasRelatedByIdsucursalorigenToDelete as $transferenciaRelatedByIdsucursalorigenRemoved) {
+            $transferenciaRelatedByIdsucursalorigenRemoved->setSucursalRelatedByIdsucursalorigen(null);
+        }
+
+        $this->collTransferenciasRelatedByIdsucursalorigen = null;
+        foreach ($transferenciasRelatedByIdsucursalorigen as $transferenciaRelatedByIdsucursalorigen) {
+            $this->addTransferenciaRelatedByIdsucursalorigen($transferenciaRelatedByIdsucursalorigen);
+        }
+
+        $this->collTransferenciasRelatedByIdsucursalorigen = $transferenciasRelatedByIdsucursalorigen;
+        $this->collTransferenciasRelatedByIdsucursalorigenPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Transferencia objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Transferencia objects.
+     * @throws PropelException
+     */
+    public function countTransferenciasRelatedByIdsucursalorigen(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciasRelatedByIdsucursalorigenPartial && !$this->isNew();
+        if (null === $this->collTransferenciasRelatedByIdsucursalorigen || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciasRelatedByIdsucursalorigen) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTransferenciasRelatedByIdsucursalorigen());
+            }
+            $query = TransferenciaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySucursalRelatedByIdsucursalorigen($this)
+                ->count($con);
+        }
+
+        return count($this->collTransferenciasRelatedByIdsucursalorigen);
+    }
+
+    /**
+     * Method called to associate a Transferencia object to this object
+     * through the Transferencia foreign key attribute.
+     *
+     * @param    Transferencia $l Transferencia
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function addTransferenciaRelatedByIdsucursalorigen(Transferencia $l)
+    {
+        if ($this->collTransferenciasRelatedByIdsucursalorigen === null) {
+            $this->initTransferenciasRelatedByIdsucursalorigen();
+            $this->collTransferenciasRelatedByIdsucursalorigenPartial = true;
+        }
+
+        if (!in_array($l, $this->collTransferenciasRelatedByIdsucursalorigen->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddTransferenciaRelatedByIdsucursalorigen($l);
+
+            if ($this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion and $this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion->contains($l)) {
+                $this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion->remove($this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	TransferenciaRelatedByIdsucursalorigen $transferenciaRelatedByIdsucursalorigen The transferenciaRelatedByIdsucursalorigen object to add.
+     */
+    protected function doAddTransferenciaRelatedByIdsucursalorigen($transferenciaRelatedByIdsucursalorigen)
+    {
+        $this->collTransferenciasRelatedByIdsucursalorigen[]= $transferenciaRelatedByIdsucursalorigen;
+        $transferenciaRelatedByIdsucursalorigen->setSucursalRelatedByIdsucursalorigen($this);
+    }
+
+    /**
+     * @param	TransferenciaRelatedByIdsucursalorigen $transferenciaRelatedByIdsucursalorigen The transferenciaRelatedByIdsucursalorigen object to remove.
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function removeTransferenciaRelatedByIdsucursalorigen($transferenciaRelatedByIdsucursalorigen)
+    {
+        if ($this->getTransferenciasRelatedByIdsucursalorigen()->contains($transferenciaRelatedByIdsucursalorigen)) {
+            $this->collTransferenciasRelatedByIdsucursalorigen->remove($this->collTransferenciasRelatedByIdsucursalorigen->search($transferenciaRelatedByIdsucursalorigen));
+            if (null === $this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion) {
+                $this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion = clone $this->collTransferenciasRelatedByIdsucursalorigen;
+                $this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion->clear();
+            }
+            $this->transferenciasRelatedByIdsucursalorigenScheduledForDeletion[]= clone $transferenciaRelatedByIdsucursalorigen;
+            $transferenciaRelatedByIdsucursalorigen->setSucursalRelatedByIdsucursalorigen(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related TransferenciasRelatedByIdsucursalorigen from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     */
+    public function getTransferenciasRelatedByIdsucursalorigenJoinEmpleadoRelatedByIdempleadocreador($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TransferenciaQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadocreador', $join_behavior);
+
+        return $this->getTransferenciasRelatedByIdsucursalorigen($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related TransferenciasRelatedByIdsucursalorigen from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     */
+    public function getTransferenciasRelatedByIdsucursalorigenJoinEmpleadoRelatedByIdempleadoreceptor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TransferenciaQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadoreceptor', $join_behavior);
+
+        return $this->getTransferenciasRelatedByIdsucursalorigen($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -2215,6 +2867,16 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collTransferenciasRelatedByIdsucursaldestino) {
+                foreach ($this->collTransferenciasRelatedByIdsucursaldestino as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collTransferenciasRelatedByIdsucursalorigen) {
+                foreach ($this->collTransferenciasRelatedByIdsucursalorigen as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -2231,6 +2893,14 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $this->collSucursalempleados->clearIterator();
         }
         $this->collSucursalempleados = null;
+        if ($this->collTransferenciasRelatedByIdsucursaldestino instanceof PropelCollection) {
+            $this->collTransferenciasRelatedByIdsucursaldestino->clearIterator();
+        }
+        $this->collTransferenciasRelatedByIdsucursaldestino = null;
+        if ($this->collTransferenciasRelatedByIdsucursalorigen instanceof PropelCollection) {
+            $this->collTransferenciasRelatedByIdsucursalorigen->clearIterator();
+        }
+        $this->collTransferenciasRelatedByIdsucursalorigen = null;
     }
 
     /**

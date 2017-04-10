@@ -124,6 +124,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     protected $collProductosucursalsPartial;
 
     /**
+     * @var        PropelObjectCollection|Transferenciadetalle[] Collection to store aggregation of Transferenciadetalle objects.
+     */
+    protected $collTransferenciadetalles;
+    protected $collTransferenciadetallesPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -172,6 +178,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $productosucursalsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $transferenciadetallesScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -607,6 +619,8 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
 
             $this->collProductosucursals = null;
 
+            $this->collTransferenciadetalles = null;
+
         } // if (deep)
     }
 
@@ -836,6 +850,23 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
 
             if ($this->collProductosucursals !== null) {
                 foreach ($this->collProductosucursals as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->transferenciadetallesScheduledForDeletion !== null) {
+                if (!$this->transferenciadetallesScheduledForDeletion->isEmpty()) {
+                    TransferenciadetalleQuery::create()
+                        ->filterByPrimaryKeys($this->transferenciadetallesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->transferenciadetallesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTransferenciadetalles !== null) {
+                foreach ($this->collTransferenciadetalles as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1090,6 +1121,14 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collTransferenciadetalles !== null) {
+                    foreach ($this->collTransferenciadetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1216,6 +1255,9 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             }
             if (null !== $this->collProductosucursals) {
                 $result['Productosucursals'] = $this->collProductosucursals->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collTransferenciadetalles) {
+                $result['Transferenciadetalles'] = $this->collTransferenciadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1431,6 +1473,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             foreach ($this->getProductosucursals() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addProductosucursal($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getTransferenciadetalles() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTransferenciadetalle($relObj->copy($deepCopy));
                 }
             }
 
@@ -1665,6 +1713,9 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
         }
         if ('Productosucursal' == $relationName) {
             $this->initProductosucursals();
+        }
+        if ('Transferenciadetalle' == $relationName) {
+            $this->initTransferenciadetalles();
         }
     }
 
@@ -2969,6 +3020,256 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collTransferenciadetalles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Productovariante The current object (for fluent API support)
+     * @see        addTransferenciadetalles()
+     */
+    public function clearTransferenciadetalles()
+    {
+        $this->collTransferenciadetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collTransferenciadetallesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collTransferenciadetalles collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTransferenciadetalles($v = true)
+    {
+        $this->collTransferenciadetallesPartial = $v;
+    }
+
+    /**
+     * Initializes the collTransferenciadetalles collection.
+     *
+     * By default this just sets the collTransferenciadetalles collection to an empty array (like clearcollTransferenciadetalles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTransferenciadetalles($overrideExisting = true)
+    {
+        if (null !== $this->collTransferenciadetalles && !$overrideExisting) {
+            return;
+        }
+        $this->collTransferenciadetalles = new PropelObjectCollection();
+        $this->collTransferenciadetalles->setModel('Transferenciadetalle');
+    }
+
+    /**
+     * Gets an array of Transferenciadetalle objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Productovariante is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Transferenciadetalle[] List of Transferenciadetalle objects
+     * @throws PropelException
+     */
+    public function getTransferenciadetalles($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciadetallesPartial && !$this->isNew();
+        if (null === $this->collTransferenciadetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciadetalles) {
+                // return empty collection
+                $this->initTransferenciadetalles();
+            } else {
+                $collTransferenciadetalles = TransferenciadetalleQuery::create(null, $criteria)
+                    ->filterByProductovariante($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collTransferenciadetallesPartial && count($collTransferenciadetalles)) {
+                      $this->initTransferenciadetalles(false);
+
+                      foreach ($collTransferenciadetalles as $obj) {
+                        if (false == $this->collTransferenciadetalles->contains($obj)) {
+                          $this->collTransferenciadetalles->append($obj);
+                        }
+                      }
+
+                      $this->collTransferenciadetallesPartial = true;
+                    }
+
+                    $collTransferenciadetalles->getInternalIterator()->rewind();
+
+                    return $collTransferenciadetalles;
+                }
+
+                if ($partial && $this->collTransferenciadetalles) {
+                    foreach ($this->collTransferenciadetalles as $obj) {
+                        if ($obj->isNew()) {
+                            $collTransferenciadetalles[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTransferenciadetalles = $collTransferenciadetalles;
+                $this->collTransferenciadetallesPartial = false;
+            }
+        }
+
+        return $this->collTransferenciadetalles;
+    }
+
+    /**
+     * Sets a collection of Transferenciadetalle objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $transferenciadetalles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function setTransferenciadetalles(PropelCollection $transferenciadetalles, PropelPDO $con = null)
+    {
+        $transferenciadetallesToDelete = $this->getTransferenciadetalles(new Criteria(), $con)->diff($transferenciadetalles);
+
+
+        $this->transferenciadetallesScheduledForDeletion = $transferenciadetallesToDelete;
+
+        foreach ($transferenciadetallesToDelete as $transferenciadetalleRemoved) {
+            $transferenciadetalleRemoved->setProductovariante(null);
+        }
+
+        $this->collTransferenciadetalles = null;
+        foreach ($transferenciadetalles as $transferenciadetalle) {
+            $this->addTransferenciadetalle($transferenciadetalle);
+        }
+
+        $this->collTransferenciadetalles = $transferenciadetalles;
+        $this->collTransferenciadetallesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Transferenciadetalle objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Transferenciadetalle objects.
+     * @throws PropelException
+     */
+    public function countTransferenciadetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciadetallesPartial && !$this->isNew();
+        if (null === $this->collTransferenciadetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciadetalles) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTransferenciadetalles());
+            }
+            $query = TransferenciadetalleQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProductovariante($this)
+                ->count($con);
+        }
+
+        return count($this->collTransferenciadetalles);
+    }
+
+    /**
+     * Method called to associate a Transferenciadetalle object to this object
+     * through the Transferenciadetalle foreign key attribute.
+     *
+     * @param    Transferenciadetalle $l Transferenciadetalle
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function addTransferenciadetalle(Transferenciadetalle $l)
+    {
+        if ($this->collTransferenciadetalles === null) {
+            $this->initTransferenciadetalles();
+            $this->collTransferenciadetallesPartial = true;
+        }
+
+        if (!in_array($l, $this->collTransferenciadetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddTransferenciadetalle($l);
+
+            if ($this->transferenciadetallesScheduledForDeletion and $this->transferenciadetallesScheduledForDeletion->contains($l)) {
+                $this->transferenciadetallesScheduledForDeletion->remove($this->transferenciadetallesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Transferenciadetalle $transferenciadetalle The transferenciadetalle object to add.
+     */
+    protected function doAddTransferenciadetalle($transferenciadetalle)
+    {
+        $this->collTransferenciadetalles[]= $transferenciadetalle;
+        $transferenciadetalle->setProductovariante($this);
+    }
+
+    /**
+     * @param	Transferenciadetalle $transferenciadetalle The transferenciadetalle object to remove.
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function removeTransferenciadetalle($transferenciadetalle)
+    {
+        if ($this->getTransferenciadetalles()->contains($transferenciadetalle)) {
+            $this->collTransferenciadetalles->remove($this->collTransferenciadetalles->search($transferenciadetalle));
+            if (null === $this->transferenciadetallesScheduledForDeletion) {
+                $this->transferenciadetallesScheduledForDeletion = clone $this->collTransferenciadetalles;
+                $this->transferenciadetallesScheduledForDeletion->clear();
+            }
+            $this->transferenciadetallesScheduledForDeletion[]= clone $transferenciadetalle;
+            $transferenciadetalle->setProductovariante(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Productovariante is new, it will return
+     * an empty collection; or if this Productovariante has previously
+     * been saved, it will retrieve related Transferenciadetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Productovariante.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Transferenciadetalle[] List of Transferenciadetalle objects
+     */
+    public function getTransferenciadetallesJoinTransferencia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TransferenciadetalleQuery::create(null, $criteria);
+        $query->joinWith('Transferencia', $join_behavior);
+
+        return $this->getTransferenciadetalles($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -3029,6 +3330,11 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collTransferenciadetalles) {
+                foreach ($this->collTransferenciadetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aProducto instanceof Persistent) {
               $this->aProducto->clearAllReferences($deep);
             }
@@ -3062,6 +3368,10 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             $this->collProductosucursals->clearIterator();
         }
         $this->collProductosucursals = null;
+        if ($this->collTransferenciadetalles instanceof PropelCollection) {
+            $this->collTransferenciadetalles->clearIterator();
+        }
+        $this->collTransferenciadetalles = null;
         $this->aProducto = null;
         $this->aProductocolor = null;
         $this->aProductomaterial = null;

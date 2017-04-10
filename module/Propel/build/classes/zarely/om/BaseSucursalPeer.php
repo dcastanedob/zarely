@@ -409,6 +409,12 @@ abstract class BaseSucursalPeer
         // Invalidate objects in SucursalempleadoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         SucursalempleadoPeer::clearInstancePool();
+        // Invalidate objects in TransferenciaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        TransferenciaPeer::clearInstancePool();
+        // Invalidate objects in TransferenciaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        TransferenciaPeer::clearInstancePool();
     }
 
     /**
@@ -760,6 +766,18 @@ abstract class BaseSucursalPeer
 
             $criteria->add(SucursalempleadoPeer::IDSUCURSAL, $obj->getIdsucursal());
             $affectedRows += SucursalempleadoPeer::doDelete($criteria, $con);
+
+            // delete related Transferencia objects
+            $criteria = new Criteria(TransferenciaPeer::DATABASE_NAME);
+
+            $criteria->add(TransferenciaPeer::IDSUCURSALDESTINO, $obj->getIdsucursal());
+            $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
+
+            // delete related Transferencia objects
+            $criteria = new Criteria(TransferenciaPeer::DATABASE_NAME);
+
+            $criteria->add(TransferenciaPeer::IDSUCURSALORIGEN, $obj->getIdsucursal());
+            $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

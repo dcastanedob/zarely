@@ -60,6 +60,10 @@
  * @method ProductovarianteQuery rightJoinProductosucursal($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productosucursal relation
  * @method ProductovarianteQuery innerJoinProductosucursal($relationAlias = null) Adds a INNER JOIN clause to the query using the Productosucursal relation
  *
+ * @method ProductovarianteQuery leftJoinTransferenciadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Transferenciadetalle relation
+ * @method ProductovarianteQuery rightJoinTransferenciadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Transferenciadetalle relation
+ * @method ProductovarianteQuery innerJoinTransferenciadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Transferenciadetalle relation
+ *
  * @method Productovariante findOne(PropelPDO $con = null) Return the first Productovariante matching the query
  * @method Productovariante findOneOrCreate(PropelPDO $con = null) Return the first Productovariante matching the query, or a new Productovariante object populated from the query conditions when no match is found
  *
@@ -1159,6 +1163,80 @@ abstract class BaseProductovarianteQuery extends ModelCriteria
         return $this
             ->joinProductosucursal($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Productosucursal', 'ProductosucursalQuery');
+    }
+
+    /**
+     * Filter the query by a related Transferenciadetalle object
+     *
+     * @param   Transferenciadetalle|PropelObjectCollection $transferenciadetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductovarianteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByTransferenciadetalle($transferenciadetalle, $comparison = null)
+    {
+        if ($transferenciadetalle instanceof Transferenciadetalle) {
+            return $this
+                ->addUsingAlias(ProductovariantePeer::IDPRODUCTOVARIANTE, $transferenciadetalle->getIdproductovariante(), $comparison);
+        } elseif ($transferenciadetalle instanceof PropelObjectCollection) {
+            return $this
+                ->useTransferenciadetalleQuery()
+                ->filterByPrimaryKeys($transferenciadetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTransferenciadetalle() only accepts arguments of type Transferenciadetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Transferenciadetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductovarianteQuery The current query, for fluid interface
+     */
+    public function joinTransferenciadetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Transferenciadetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Transferenciadetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Transferenciadetalle relation Transferenciadetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   TransferenciadetalleQuery A secondary query class using the current class as primary query
+     */
+    public function useTransferenciadetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinTransferenciadetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Transferenciadetalle', 'TransferenciadetalleQuery');
     }
 
     /**

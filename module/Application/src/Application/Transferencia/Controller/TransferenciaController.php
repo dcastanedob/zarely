@@ -16,30 +16,31 @@ class TransferenciaController extends AbstractActionController
 {
 
     public $column_map = array(
-        0 => 'CompraFechacompra',
-        1 => 'a.ProveedorNombrecomercial',
-        2 => 'CompraTotal',
-        4 => 'CompraEstatus',
-        3 => 'CompraComprobante',
+        0 => 'a.SucursalNombrecomercial',
+        1 => 'b.SucursalNombrecomercial',
+        2 => 'TransferenciaFecha',
+        4 => 'TransferenciaFecharecepcion',
+        3 => 'TransferenciaEstatus',
 
 
     );
     
     public function serversideAction(){
-        
+
         $request = $this->getRequest();
         
         if ($request->isPost()) {
             
             $post_data = $request->getPost();
 
-            $query = new \CompraQuery();
+            $query = new \TransferenciaQuery();
             
 
-            $query->useProveedorQuery('a')->endUse();
+            $query->useSucursalRelatedByIdsucursalorigenQuery('a')->endUse();
+            $query->useSucursalRelatedByIdsucursaldestinoQuery('b')->endUse();
 
-            $query->withColumn('a.ProveedorNombrecomercial', 'proveedor_nombre');
-
+            $query->withColumn('a.SucursalNombrecomercial', 'sucursal_origen');
+            $query->withColumn('b.SucursalNombrecomercial', 'sucursal_destino');
 
             $records_filtered = $query->count();
 
@@ -73,17 +74,19 @@ class TransferenciaController extends AbstractActionController
                 }
                 $c = new \Criteria();
 
-                $c1= $c->getNewCriterion('compra.idcompra', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1= $c->getNewCriterion('transferencia.idtransferencia', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c2= $c->getNewCriterion('proveedor.proveedor_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('sucursal.sucursal_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c3= $c->getNewCriterion('compra.compra_estatus', '%'.$search_value.'%', \Criteria::LIKE);
+                $c3= $c->getNewCriterion('sucursal.sucursal_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
+
+                $c4= $c->getNewCriterion('transferencia.transferencia_estatus', '%'.$search_value.'%', \Criteria::LIKE);
 
 
-                $c1->addOr($c2)->addOr($c3);
+                $c1->addOr($c2)->addOr($c3)->addOr($c4);
 
                 $query->addAnd($c1);
-                $query->groupByCompraFechacompra();
+                $query->groupByTransferenciaFecha();
 
                 $records_filtered = $query->count();
             }
@@ -110,24 +113,13 @@ class TransferenciaController extends AbstractActionController
 
 
             foreach ($query->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME) as $value) {
-                $tmp['DT_RowId'] = $value['idcompra'];
-                $tmp['idcompra'] = $value['idcompra'];
-                $tmp['compra_fechacompra'] = $value['compra_fechacompra'];
-                $tmp['proveedor_nombre'] = $value['proveedor_nombre'];
-                $tmp['compra_total'] = '$'.number_format($value['compra_total'],2);
+                $tmp['DT_RowId'] = $value['idtransferencia'];
+                $tmp['idtransferencia'] = $value['idtransferencia'];
+                $tmp['sucursal_origen'] = $value['sucursal_origen'];
+                $tmp['sucursal_destino'] = $value['sucursal_destino'];
+                $tmp['transferencia_fecha'] = $value['transferencia_fecha'];
 
-                if($value['compra_comprobante'] == null)
-                {
-                    $tmp['compra_comprobante'] = "<label>No tiene </label>";
-                }else
-                {
-                    $tmp['compra_comprobante'] = '<a href="'.$value['compra_comprobante'].'"    target="_blank"> 
-                            <span class="icon icon-file icon-lg ">
-                        </span>
-                    </a>';
-                }
-
-                $tmp['compra_estatus'] = $value['compra_estatus'];
+                $tmp['transferencia_estatus'] = $value['transferencia_estatus'];
 
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
@@ -137,7 +129,7 @@ class TransferenciaController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/compras/generales/ver/' . $value['idcompra'] . '">
+                      <a href="/transferencias/ver/' . $value['idtransferencia'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -184,16 +176,13 @@ class TransferenciaController extends AbstractActionController
         }
     }
     
-    function get_extension($file) {
-         $extension = end(explode(".", $file));
-         return $extension ? $extension : false;
-    }
+    
 
     public function indexAction()
     {   
         
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/compra/generales/index');
+        $view_model->setTemplate('application/transferencias/index');
         $view_model->setVariables(array(
              'messages' => $this->flashMessenger(),
         ));
@@ -207,20 +196,22 @@ class TransferenciaController extends AbstractActionController
         
         if($request->isPost()){
             $post_data = $request->getPost();
-
-            $post_files = $request->getFiles();
             
 
-            $entity = new \Compra();
+            $entity = new \Transferencia();
 
-            $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
+            $post_data['transferencia_fecharecepcion'] = date_create_from_format('d/m/Y', $post_data['transferencia_fecharecepcion']);
 
-            $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
+            $post_data['transferencia_fecha'] = date_create_from_format('d/m/Y', $post_data['transferencia_fecha']);
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
+
+            $post_data['idempleadocreador'] = $user['idempleado'];
 
             $precios = [];
             $variantes = [];
             foreach ($post_data as $key => $value){
-                if(\CompraPeer::getTableMap()->hasColumn($key)){
+                if(\TransferenciaPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
 
@@ -249,25 +240,11 @@ class TransferenciaController extends AbstractActionController
 
             $entity->save();
 
-            if(isset($post_files['compra_comprobante'])){
-
-                $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
-
-                move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
-
-
-                $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
-            }
-
-
-            $entity->setCompraFechacreacion(date("Y-n-j"));
-
-            $entity->save();
             
             
-            $total = 0;
+            //$total = 0;
             foreach ($variantes as $variante) {
-                $compra_detalle = new \Compradetalle();
+                $transferencia_detalle = new \Transferenciadetalle();
                 $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
                 //encontrar a que precio le corresponde
                 foreach ($precios as $key=>$precio) {
@@ -291,19 +268,19 @@ class TransferenciaController extends AbstractActionController
                             //verificamos que este en el rango del precio asociado
                             if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
                             {
-                                $compra_detalle->setIdcompra($entity->getIdcompra())
+                                $transferencia_detalle->setIdtransferencia($entity->getIdtransferencia())
                                               ->setIdproductovariante($variante["variante"])
-                                              ->setCompradetalleCantidad($variante["valor"])
-                                              ->setCompradetallePreciounitario($precio["valor"])
-                                              ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
+                                              ->setTransferenciadetalleCantidad($variante["valor"])
+                                              ->setTransferenciadetallePreciounitario($precio["valor"])
+                                              ->setTransferenciadetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
 
-                                $total+= $compra_detalle->getCompradetalleSubtotal();
+                                //$total+= $transferencia_detalle->getCompradetalleSubtotal();
                                 $boolean = true;
                                 break;
                             }
                         }
 
-                        $entity->setCompraTotal($total);
+                        //$entity->setCompraTotal($total);
                         $entity->save();
 
                         //unset($precios[$key]);
@@ -316,17 +293,25 @@ class TransferenciaController extends AbstractActionController
 
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-            return $this->redirect()->toUrl('/compras/generales');
+            return $this->redirect()->toUrl('/transferencias');
         
 
         }
 
         //traer los proveedores
-        $provedorees = \ProveedorQuery::create()->find();
-        $provedorees_array = array();
+        $empleados = \EmpleadoQuery::create()->find();
+        $empleados_array = array();
 
-        foreach ($provedorees as $value){
-            $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
+        foreach ($empleados as $value){
+            $empleados_array[$value->getIdempleado()] = $value->getEmpleadoNombre()." " . $value->getEmpleadoApaterno() ." " . $value->getEmpleadoAmaterno();
+        }
+
+        //traer las sucursales
+        $sucursales = \SucursalQuery::create()->find();
+        $sucursales_array = array();
+
+        foreach ($sucursales as $value){
+            $sucursales_array[$value->getIdsucursal()] = $value->getSucursalNombrecomercial();
         }
 
 
@@ -358,12 +343,14 @@ class TransferenciaController extends AbstractActionController
             $productos_generales_array[$value->getIdproducto()] = $value->getProductoModelo();
         }
 
+        $user = new \Application\Session\AouthSession();
+        $user = $user->getData();
 
 
-        $form = new \Application\Compra\Form\CompraGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
+        $form = new \Application\Transferencia\Form\TransferenciaForm($empleados_array,$sucursales_array,$productosvariante_array,$productos_generales_array,$user);
         
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/compra/generales/nuevo');
+        $view_model->setTemplate('application/transferencias/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
@@ -378,25 +365,29 @@ class TransferenciaController extends AbstractActionController
         
         $id = $this->params()->fromRoute('id');
         
-        $exist = \CompraQuery::create()->filterByIdcompra($id)->exists();
+        $exist = \TransferenciaQuery::create()->filterByIdtransferencia($id)->exists();
         
         if($exist){
             
-            $entity = \CompraQuery::create()->findPk($id);
+            $entity = \TransferenciaQuery::create()->findPk($id);
             
             if($request->isPost()){
                 $post_data = $request->getPost();
                 $post_files = $request->getFiles();
 
-                $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
+                $post_data['transferencia_fecharecepcion'] = date_create_from_format('d/m/Y', $post_data['transferencia_fecharecepcion']);
 
-                $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
+                $post_data['transferencia_fecha'] = date_create_from_format('d/m/Y', $post_data['transferencia_fecha']);
+                $user = new \Application\Session\AouthSession();
+                $user = $user->getData();
+
+                $post_data['idempleadocreador'] = $user['idempleado'];
                 
                 $precios = [];
                 $variantes = [];
 
                 foreach ($post_data as $key => $value){
-                    if(\CompraPeer::getTableMap()->hasColumn($key)){
+                    if(\TransferenciaPeer::getTableMap()->hasColumn($key)){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
 
@@ -423,25 +414,13 @@ class TransferenciaController extends AbstractActionController
                     }
                 }
 
-                $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
+                $detalles = \TransferenciadetalleQuery::create()->filterByIdtransferencia($id)->delete();
                 $entity->save();
 
-                if(isset($post_files['compra_comprobante'])){
 
-                    if($post_files['compra_comprobante']['name'] != ""){
-
-                        $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
-
-                        move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
-
-
-                        $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
-                    }
-                }
-
-                $total = 0;
+                //$total = 0;
                 foreach ($variantes as $variante) {
-                    $compra_detalle = new \Compradetalle();
+                    $transferencia_detalle = new \Transferenciadetalle();
                     $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
                     //encontrar a que precio le corresponde
                     foreach ($precios as $key=>$precio) {
@@ -465,19 +444,19 @@ class TransferenciaController extends AbstractActionController
                                 //verificamos que este en el rango del precio asociado
                                 if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
                                 {
-                                    $compra_detalle->setIdcompra($entity->getIdcompra())
+                                    $transferencia_detalle->setIdtransferencia($entity->getIdtransferencia())
                                                   ->setIdproductovariante($variante["variante"])
-                                                  ->setCompradetalleCantidad($variante["valor"])
-                                                  ->setCompradetallePreciounitario($precio["valor"])
-                                                  ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
+                                                  ->setTransferenciadetalleCantidad($variante["valor"])
+                                                  ->setTransferenciadetallePreciounitario($precio["valor"])
+                                                  ->setTransferenciadetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
 
-                                    $total+= $compra_detalle->getCompradetalleSubtotal();
+                                    //$total+= $transferencia_detalle->getCompradetalleSubtotal();
                                     $boolean = true;
                                     break;
                                 }
                             }
 
-                            $entity->setCompraTotal($total);
+                            //$entity->setCompraTotal($total);
                             $entity->save();
 
                             //unset($precios[$key]);
@@ -490,16 +469,24 @@ class TransferenciaController extends AbstractActionController
 
 
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-                return $this->redirect()->toUrl('/compras/generales');
+                return $this->redirect()->toUrl('/transferencias');
             }
             
                 
             //traer los proveedores
-            $provedorees = \ProveedorQuery::create()->find();
-            $provedorees_array = array();
+            $empleados = \EmpleadoQuery::create()->find();
+            $empleados_array = array();
 
-            foreach ($provedorees as $value){
-                $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
+            foreach ($empleados as $value){
+                $empleados_array[$value->getIdempleado()] = $value->getEmpleadoNombre()." " . $value->getEmpleadoApaterno() ." " . $value->getEmpleadoAmaterno();
+            }
+
+            //traer las sucursales
+            $sucursales = \SucursalQuery::create()->find();
+            $sucursales_array = array();
+
+            foreach ($sucursales as $value){
+                $sucursales_array[$value->getIdsucursal()] = $value->getSucursalNombrecomercial();
             }
 
 
@@ -521,7 +508,7 @@ class TransferenciaController extends AbstractActionController
                 $productosvariante_array[$value->getIdproductovariante()] = $information;
             }
 
-            
+
             //traer los productos generales
             $generales = \ProductoQuery::create()->find();
             $productos_generales_array = array();
@@ -531,18 +518,17 @@ class TransferenciaController extends AbstractActionController
                 $productos_generales_array[$value->getIdproducto()] = $value->getProductoModelo();
             }
 
-            
-            $form = new \Application\Compra\Form\CompraGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
+
+            $form = new \Application\Transferencia\Form\TransferenciaForm($empleados_array,$sucursales_array,$productosvariante_array,$productos_generales_array);
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            $form->get("compra_comprobante")->setAttribute('required',false);
             
-            $form->get('compra_fechacompra')->setValue($entity->getCompraFechacompra('d/m/Y'));
-            $form->get('compra_fechaentrega')->setValue($entity->getCompraFechaentrega('d/m/Y'));
+            $form->get('transferencia_fecha')->setValue($entity->getTransferenciaFecha('d/m/Y'));
+            $form->get('transferencia_fecharecepcion')->setValue($entity->getTransferenciaFecharecepcion('d/m/Y'));
 
 
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/compra/generales/ver');
+            $view_model->setTemplate('application/transferencias/ver');
             $view_model->setVariables(array(
                 'form' => $form,
                 'entity' => $entity,
@@ -552,7 +538,7 @@ class TransferenciaController extends AbstractActionController
             
         }else{
             $this->flashMessenger()->addErrorMessage('Id Invalido.');
-            return $this->redirect()->toUrl('/compras/generales');
+            return $this->redirect()->toUrl('/transferencias');
         }
         return $view_model;
     }
@@ -562,9 +548,9 @@ class TransferenciaController extends AbstractActionController
 
     public function getProductovariantes($data){
         $information = [
-            'selects' => \CompradetalleQuery::create()->select('idproductovariante')->filterByIdcompra($data['idcompra'])->find()->toArray(),
-            'cantidad' =>\CompradetalleQuery::create()->select('compradetalle_cantidad')->filterByIdcompra($data['idcompra'])->find()->toArray(),
-            'precio' =>\CompradetalleQuery::create()->select('compradetalle_preciounitario')->filterByIdcompra($data['idcompra'])->find()->toArray(),
+            'selects' => \TransferenciadetalleQuery::create()->select('idproductovariante')->filterByIdtransferencia($data['idtransferencia'])->find()->toArray(),
+            'cantidad' =>\TransferenciadetalleQuery::create()->select('transferenciadetalle_cantidad')->filterByIdtransferencia($data['idtransferencia'])->find()->toArray(),
+            'precio' =>\TransferenciadetalleQuery::create()->select('transferenciadetalle_preciounitario')->filterByIdtransferencia($data['idtransferencia'])->find()->toArray(),
         ];
 
         return $information;
@@ -762,13 +748,13 @@ class TransferenciaController extends AbstractActionController
         if($request->isPost())
         {
             $id = $this->params()->fromRoute('id');
-            $entity = \CompraQuery::Create()->findPk($id);
+            $entity = \TransferenciaQuery::Create()->findPk($id);
 
             //unlink("/files/compras/19.");
             
             $entity->delete();
 
-            $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
+            $detalles = \TransferenciadetalleQuery::create()->filterByIdtransferencia($id)->delete();
             
             if($entity->isDeleted()){
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido eliminado satisfactoriamente.');
@@ -777,7 +763,7 @@ class TransferenciaController extends AbstractActionController
             }
         }
 
-        return $this->redirect()->toUrl('/compras/generales');
+        return $this->redirect()->toUrl('/transferencias');
     }
 
 }

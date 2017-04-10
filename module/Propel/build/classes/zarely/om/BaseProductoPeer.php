@@ -483,6 +483,9 @@ abstract class BaseProductoPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in DescuentodetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        DescuentodetallePeer::clearInstancePool();
         // Invalidate objects in PedidoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidoPeer::clearInstancePool();
@@ -501,6 +504,12 @@ abstract class BaseProductoPeer
         // Invalidate objects in ProductovariantePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductovariantePeer::clearInstancePool();
+        // Invalidate objects in PromociondetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PromociondetallePeer::clearInstancePool();
+        // Invalidate objects in PromociondetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PromociondetallePeer::clearInstancePool();
     }
 
     /**
@@ -2210,6 +2219,12 @@ abstract class BaseProductoPeer
         foreach ($objects as $obj) {
 
 
+            // delete related Descuentodetalle objects
+            $criteria = new Criteria(DescuentodetallePeer::DATABASE_NAME);
+
+            $criteria->add(DescuentodetallePeer::IDPRODUCTO, $obj->getIdproducto());
+            $affectedRows += DescuentodetallePeer::doDelete($criteria, $con);
+
             // delete related Pedido objects
             $criteria = new Criteria(PedidoPeer::DATABASE_NAME);
 
@@ -2245,6 +2260,18 @@ abstract class BaseProductoPeer
 
             $criteria->add(ProductovariantePeer::IDPRODUCTO, $obj->getIdproducto());
             $affectedRows += ProductovariantePeer::doDelete($criteria, $con);
+
+            // delete related Promociondetalle objects
+            $criteria = new Criteria(PromociondetallePeer::DATABASE_NAME);
+
+            $criteria->add(PromociondetallePeer::IDPRODUCTOOPERANDO, $obj->getIdproducto());
+            $affectedRows += PromociondetallePeer::doDelete($criteria, $con);
+
+            // delete related Promociondetalle objects
+            $criteria = new Criteria(PromociondetallePeer::DATABASE_NAME);
+
+            $criteria->add(PromociondetallePeer::IDPRODUCTORESULTADO, $obj->getIdproducto());
+            $affectedRows += PromociondetallePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

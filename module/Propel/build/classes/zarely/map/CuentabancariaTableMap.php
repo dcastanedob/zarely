@@ -50,6 +50,7 @@ class CuentabancariaTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Cuentabancariamovimiento', 'Cuentabancariamovimiento', RelationMap::ONE_TO_MANY, array('idcuentabancaria' => 'idcuentabancaria', ), 'CASCADE', 'CASCADE', 'Cuentabancariamovimientos');
     } // buildRelations()
 
 } // CuentabancariaTableMap

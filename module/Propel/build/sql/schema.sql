@@ -136,6 +136,89 @@ CREATE TABLE `cuentabancaria`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- cuentabancariamovimiento
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cuentabancariamovimiento`;
+
+CREATE TABLE `cuentabancariamovimiento`
+(
+    `idcuentabancariamovimiento` INTEGER NOT NULL AUTO_INCREMENT,
+    `idcuentabancaria` INTEGER NOT NULL,
+    `idempleado` INTEGER NOT NULL,
+    `cuentabancariamovimiento_proceso` enum('compra','venta') NOT NULL,
+    `idproceso` INTEGER NOT NULL,
+    `cuentabancariamovimiento_cantidad` DECIMAL(10,2) NOT NULL,
+    `cuentabancariamovimiento_comprobante` TEXT,
+    `cuentabancariamovimiento_fechamovimiento` DATETIME NOT NULL,
+    `cuentabancariamovimiento_fechacreacion` DATETIME NOT NULL,
+    `cuentabancariamovimiento_balance` DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (`idcuentabancariamovimiento`),
+    INDEX `idcuentabancaria` (`idcuentabancaria`),
+    INDEX `idempleado` (`idempleado`),
+    CONSTRAINT `idcuentabancaria_cuentabancariamovimiento`
+        FOREIGN KEY (`idcuentabancaria`)
+        REFERENCES `cuentabancaria` (`idcuentabancaria`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idempleado_cuentabancariamovimiento`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- descuento
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `descuento`;
+
+CREATE TABLE `descuento`
+(
+    `iddescuento` INTEGER NOT NULL AUTO_INCREMENT,
+    `descuento_nombre` TEXT NOT NULL,
+    `descuento_fechainicio` DATE NOT NULL,
+    `descuento_fechafin` DATE NOT NULL,
+    `descuento_estatus` TINYINT(1) NOT NULL,
+    `descuento_tipo` enum('porcentaje','cantidad') NOT NULL,
+    PRIMARY KEY (`iddescuento`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- descuentodetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `descuentodetalle`;
+
+CREATE TABLE `descuentodetalle`
+(
+    `iddescuentodetalle` INTEGER NOT NULL,
+    `iddescuento` INTEGER NOT NULL,
+    `idproducto` INTEGER,
+    `idmarca` INTEGER,
+    PRIMARY KEY (`iddescuentodetalle`),
+    INDEX `iddescuento` (`iddescuento`),
+    INDEX `idproducto` (`idproducto`),
+    INDEX `idmarca` (`idmarca`),
+    CONSTRAINT `iddescuento_descuentodetalle`
+        FOREIGN KEY (`iddescuento`)
+        REFERENCES `descuento` (`iddescuento`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idmarca_descuentodetalle`
+        FOREIGN KEY (`idmarca`)
+        REFERENCES `marca` (`idmarca`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproducto_descuentodetalle`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- devolucion
 -- ---------------------------------------------------------------------
 
@@ -633,6 +716,71 @@ CREATE TABLE `productovariante`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- promocion
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `promocion`;
+
+CREATE TABLE `promocion`
+(
+    `idpromocion` INTEGER NOT NULL AUTO_INCREMENT,
+    `promocion_nombre` TEXT NOT NULL,
+    `promocion_fechainicio` DATE NOT NULL,
+    `promocion_fechafin` DATE NOT NULL,
+    `promocion_estatus` TINYINT(1) NOT NULL,
+    PRIMARY KEY (`idpromocion`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- promociondetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `promociondetalle`;
+
+CREATE TABLE `promociondetalle`
+(
+    `idpromociondetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idpromocion` INTEGER NOT NULL,
+    `idmarcaoperando` INTEGER NOT NULL,
+    `idproductooperando` INTEGER NOT NULL,
+    `promociondetalle_cantidadoperando` DECIMAL(10,2) NOT NULL,
+    `idmarcaresultado` INTEGER NOT NULL,
+    `idproductoresultado` INTEGER NOT NULL,
+    `promociondetalle_cantidadresultado` DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (`idpromociondetalle`),
+    INDEX `idpromocion` (`idpromocion`),
+    INDEX `idmarcaoperando` (`idmarcaoperando`),
+    INDEX `idproductooperando` (`idproductooperando`),
+    INDEX `idmarcaresultado` (`idmarcaresultado`),
+    INDEX `idproductoresultado` (`idproductoresultado`),
+    CONSTRAINT `idmarcaoperando_promociondetalle`
+        FOREIGN KEY (`idmarcaoperando`)
+        REFERENCES `marca` (`idmarca`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idmarcaresultado_promociondetalle`
+        FOREIGN KEY (`idmarcaresultado`)
+        REFERENCES `marca` (`idmarca`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductooperando_promociondetalle`
+        FOREIGN KEY (`idproductooperando`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductoresultado_promociondetalle`
+        FOREIGN KEY (`idproductoresultado`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idpromocion_promociondetalle`
+        FOREIGN KEY (`idpromocion`)
+        REFERENCES `promocion` (`idpromocion`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- proveedor
 -- ---------------------------------------------------------------------
 
@@ -833,6 +981,79 @@ CREATE TABLE `tipocalzado`
     `tipocalzado_nombre` VARCHAR(45) NOT NULL,
     `tipocalzado_descripcion` TEXT,
     PRIMARY KEY (`idtipocalzado`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- transferencia
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `transferencia`;
+
+CREATE TABLE `transferencia`
+(
+    `idtransferencia` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursalorigen` INTEGER NOT NULL,
+    `idsucursaldestino` INTEGER NOT NULL,
+    `transferencia_fecha` DATETIME NOT NULL,
+    `transferencia_estatus` enum('creada','aceptada','rechazada') NOT NULL,
+    `idempleadocreador` INTEGER NOT NULL,
+    `idempleadoreceptor` INTEGER NOT NULL,
+    `transferencia_nota` VARCHAR(45),
+    `transferencia_fecharecepcion` DATETIME,
+    PRIMARY KEY (`idtransferencia`),
+    INDEX `idsucursalorigen` (`idsucursalorigen`),
+    INDEX `idsucursaldestino` (`idsucursaldestino`),
+    INDEX `idempleadocreador` (`idempleadocreador`),
+    INDEX `idempleadoreceptor` (`idempleadoreceptor`),
+    CONSTRAINT `idempleadocreador_transferencia`
+        FOREIGN KEY (`idempleadocreador`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idempleadoreceptor_transferencia`
+        FOREIGN KEY (`idempleadoreceptor`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursaldestino_transferencia`
+        FOREIGN KEY (`idsucursaldestino`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursalorigen_transferencia`
+        FOREIGN KEY (`idsucursalorigen`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- transferenciadetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `transferenciadetalle`;
+
+CREATE TABLE `transferenciadetalle`
+(
+    `idtransferenciadetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idtransferencia` INTEGER NOT NULL,
+    `idproductovariante` INTEGER NOT NULL,
+    `transferenciadetalle_cantidad` DECIMAL(10,2) NOT NULL,
+    `transferenciadetalle_preciounitario` DECIMAL(10,2) NOT NULL,
+    `transferenciadetalle_subtotal` DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (`idtransferenciadetalle`),
+    INDEX `idtransferencia` (`idtransferencia`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    CONSTRAINT `idproductovariante_transferenciadetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idtransferencia_transferenciadetalle`
+        FOREIGN KEY (`idtransferencia`)
+        REFERENCES `transferencia` (`idtransferencia`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

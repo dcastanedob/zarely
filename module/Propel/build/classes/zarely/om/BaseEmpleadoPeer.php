@@ -465,9 +465,18 @@ abstract class BaseEmpleadoPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in CuentabancariamovimientoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        CuentabancariamovimientoPeer::clearInstancePool();
         // Invalidate objects in SucursalempleadoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         SucursalempleadoPeer::clearInstancePool();
+        // Invalidate objects in TransferenciaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        TransferenciaPeer::clearInstancePool();
+        // Invalidate objects in TransferenciaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        TransferenciaPeer::clearInstancePool();
     }
 
     /**
@@ -1040,11 +1049,29 @@ abstract class BaseEmpleadoPeer
         foreach ($objects as $obj) {
 
 
+            // delete related Cuentabancariamovimiento objects
+            $criteria = new Criteria(CuentabancariamovimientoPeer::DATABASE_NAME);
+
+            $criteria->add(CuentabancariamovimientoPeer::IDEMPLEADO, $obj->getIdempleado());
+            $affectedRows += CuentabancariamovimientoPeer::doDelete($criteria, $con);
+
             // delete related Sucursalempleado objects
             $criteria = new Criteria(SucursalempleadoPeer::DATABASE_NAME);
 
             $criteria->add(SucursalempleadoPeer::IDEMPLEADO, $obj->getIdempleado());
             $affectedRows += SucursalempleadoPeer::doDelete($criteria, $con);
+
+            // delete related Transferencia objects
+            $criteria = new Criteria(TransferenciaPeer::DATABASE_NAME);
+
+            $criteria->add(TransferenciaPeer::IDEMPLEADOCREADOR, $obj->getIdempleado());
+            $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
+
+            // delete related Transferencia objects
+            $criteria = new Criteria(TransferenciaPeer::DATABASE_NAME);
+
+            $criteria->add(TransferenciaPeer::IDEMPLEADORECEPTOR, $obj->getIdempleado());
+            $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

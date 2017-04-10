@@ -173,10 +173,28 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $aRol;
 
     /**
+     * @var        PropelObjectCollection|Cuentabancariamovimiento[] Collection to store aggregation of Cuentabancariamovimiento objects.
+     */
+    protected $collCuentabancariamovimientos;
+    protected $collCuentabancariamovimientosPartial;
+
+    /**
      * @var        PropelObjectCollection|Sucursalempleado[] Collection to store aggregation of Sucursalempleado objects.
      */
     protected $collSucursalempleados;
     protected $collSucursalempleadosPartial;
+
+    /**
+     * @var        PropelObjectCollection|Transferencia[] Collection to store aggregation of Transferencia objects.
+     */
+    protected $collTransferenciasRelatedByIdempleadocreador;
+    protected $collTransferenciasRelatedByIdempleadocreadorPartial;
+
+    /**
+     * @var        PropelObjectCollection|Transferencia[] Collection to store aggregation of Transferencia objects.
+     */
+    protected $collTransferenciasRelatedByIdempleadoreceptor;
+    protected $collTransferenciasRelatedByIdempleadoreceptorPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -202,7 +220,25 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $cuentabancariamovimientosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $sucursalempleadosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $transferenciasRelatedByIdempleadocreadorScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $transferenciasRelatedByIdempleadoreceptorScheduledForDeletion = null;
 
     /**
      * Get the [idempleado] column value.
@@ -1152,7 +1188,13 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aRol = null;
+            $this->collCuentabancariamovimientos = null;
+
             $this->collSucursalempleados = null;
+
+            $this->collTransferenciasRelatedByIdempleadocreador = null;
+
+            $this->collTransferenciasRelatedByIdempleadoreceptor = null;
 
         } // if (deep)
     }
@@ -1290,6 +1332,23 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->cuentabancariamovimientosScheduledForDeletion !== null) {
+                if (!$this->cuentabancariamovimientosScheduledForDeletion->isEmpty()) {
+                    CuentabancariamovimientoQuery::create()
+                        ->filterByPrimaryKeys($this->cuentabancariamovimientosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->cuentabancariamovimientosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCuentabancariamovimientos !== null) {
+                foreach ($this->collCuentabancariamovimientos as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->sucursalempleadosScheduledForDeletion !== null) {
                 if (!$this->sucursalempleadosScheduledForDeletion->isEmpty()) {
                     SucursalempleadoQuery::create()
@@ -1301,6 +1360,40 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
             if ($this->collSucursalempleados !== null) {
                 foreach ($this->collSucursalempleados as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion !== null) {
+                if (!$this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion->isEmpty()) {
+                    TransferenciaQuery::create()
+                        ->filterByPrimaryKeys($this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTransferenciasRelatedByIdempleadocreador !== null) {
+                foreach ($this->collTransferenciasRelatedByIdempleadocreador as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion !== null) {
+                if (!$this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion->isEmpty()) {
+                    TransferenciaQuery::create()
+                        ->filterByPrimaryKeys($this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTransferenciasRelatedByIdempleadoreceptor !== null) {
+                foreach ($this->collTransferenciasRelatedByIdempleadoreceptor as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1593,8 +1686,32 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
 
 
+                if ($this->collCuentabancariamovimientos !== null) {
+                    foreach ($this->collCuentabancariamovimientos as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collSucursalempleados !== null) {
                     foreach ($this->collSucursalempleados as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collTransferenciasRelatedByIdempleadocreador !== null) {
+                    foreach ($this->collTransferenciasRelatedByIdempleadocreador as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collTransferenciasRelatedByIdempleadoreceptor !== null) {
+                    foreach ($this->collTransferenciasRelatedByIdempleadoreceptor as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1767,8 +1884,17 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             if (null !== $this->aRol) {
                 $result['Rol'] = $this->aRol->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
+            if (null !== $this->collCuentabancariamovimientos) {
+                $result['Cuentabancariamovimientos'] = $this->collCuentabancariamovimientos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collSucursalempleados) {
                 $result['Sucursalempleados'] = $this->collSucursalempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collTransferenciasRelatedByIdempleadocreador) {
+                $result['TransferenciasRelatedByIdempleadocreador'] = $this->collTransferenciasRelatedByIdempleadocreador->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collTransferenciasRelatedByIdempleadoreceptor) {
+                $result['TransferenciasRelatedByIdempleadoreceptor'] = $this->collTransferenciasRelatedByIdempleadoreceptor->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2047,9 +2173,27 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getCuentabancariamovimientos() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCuentabancariamovimiento($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getSucursalempleados() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addSucursalempleado($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getTransferenciasRelatedByIdempleadocreador() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTransferenciaRelatedByIdempleadocreador($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getTransferenciasRelatedByIdempleadoreceptor() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTransferenciaRelatedByIdempleadoreceptor($relObj->copy($deepCopy));
                 }
             }
 
@@ -2166,9 +2310,268 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('Cuentabancariamovimiento' == $relationName) {
+            $this->initCuentabancariamovimientos();
+        }
         if ('Sucursalempleado' == $relationName) {
             $this->initSucursalempleados();
         }
+        if ('TransferenciaRelatedByIdempleadocreador' == $relationName) {
+            $this->initTransferenciasRelatedByIdempleadocreador();
+        }
+        if ('TransferenciaRelatedByIdempleadoreceptor' == $relationName) {
+            $this->initTransferenciasRelatedByIdempleadoreceptor();
+        }
+    }
+
+    /**
+     * Clears out the collCuentabancariamovimientos collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addCuentabancariamovimientos()
+     */
+    public function clearCuentabancariamovimientos()
+    {
+        $this->collCuentabancariamovimientos = null; // important to set this to null since that means it is uninitialized
+        $this->collCuentabancariamovimientosPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collCuentabancariamovimientos collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialCuentabancariamovimientos($v = true)
+    {
+        $this->collCuentabancariamovimientosPartial = $v;
+    }
+
+    /**
+     * Initializes the collCuentabancariamovimientos collection.
+     *
+     * By default this just sets the collCuentabancariamovimientos collection to an empty array (like clearcollCuentabancariamovimientos());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCuentabancariamovimientos($overrideExisting = true)
+    {
+        if (null !== $this->collCuentabancariamovimientos && !$overrideExisting) {
+            return;
+        }
+        $this->collCuentabancariamovimientos = new PropelObjectCollection();
+        $this->collCuentabancariamovimientos->setModel('Cuentabancariamovimiento');
+    }
+
+    /**
+     * Gets an array of Cuentabancariamovimiento objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Cuentabancariamovimiento[] List of Cuentabancariamovimiento objects
+     * @throws PropelException
+     */
+    public function getCuentabancariamovimientos($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collCuentabancariamovimientosPartial && !$this->isNew();
+        if (null === $this->collCuentabancariamovimientos || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCuentabancariamovimientos) {
+                // return empty collection
+                $this->initCuentabancariamovimientos();
+            } else {
+                $collCuentabancariamovimientos = CuentabancariamovimientoQuery::create(null, $criteria)
+                    ->filterByEmpleado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collCuentabancariamovimientosPartial && count($collCuentabancariamovimientos)) {
+                      $this->initCuentabancariamovimientos(false);
+
+                      foreach ($collCuentabancariamovimientos as $obj) {
+                        if (false == $this->collCuentabancariamovimientos->contains($obj)) {
+                          $this->collCuentabancariamovimientos->append($obj);
+                        }
+                      }
+
+                      $this->collCuentabancariamovimientosPartial = true;
+                    }
+
+                    $collCuentabancariamovimientos->getInternalIterator()->rewind();
+
+                    return $collCuentabancariamovimientos;
+                }
+
+                if ($partial && $this->collCuentabancariamovimientos) {
+                    foreach ($this->collCuentabancariamovimientos as $obj) {
+                        if ($obj->isNew()) {
+                            $collCuentabancariamovimientos[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCuentabancariamovimientos = $collCuentabancariamovimientos;
+                $this->collCuentabancariamovimientosPartial = false;
+            }
+        }
+
+        return $this->collCuentabancariamovimientos;
+    }
+
+    /**
+     * Sets a collection of Cuentabancariamovimiento objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $cuentabancariamovimientos A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setCuentabancariamovimientos(PropelCollection $cuentabancariamovimientos, PropelPDO $con = null)
+    {
+        $cuentabancariamovimientosToDelete = $this->getCuentabancariamovimientos(new Criteria(), $con)->diff($cuentabancariamovimientos);
+
+
+        $this->cuentabancariamovimientosScheduledForDeletion = $cuentabancariamovimientosToDelete;
+
+        foreach ($cuentabancariamovimientosToDelete as $cuentabancariamovimientoRemoved) {
+            $cuentabancariamovimientoRemoved->setEmpleado(null);
+        }
+
+        $this->collCuentabancariamovimientos = null;
+        foreach ($cuentabancariamovimientos as $cuentabancariamovimiento) {
+            $this->addCuentabancariamovimiento($cuentabancariamovimiento);
+        }
+
+        $this->collCuentabancariamovimientos = $cuentabancariamovimientos;
+        $this->collCuentabancariamovimientosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Cuentabancariamovimiento objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Cuentabancariamovimiento objects.
+     * @throws PropelException
+     */
+    public function countCuentabancariamovimientos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collCuentabancariamovimientosPartial && !$this->isNew();
+        if (null === $this->collCuentabancariamovimientos || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCuentabancariamovimientos) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCuentabancariamovimientos());
+            }
+            $query = CuentabancariamovimientoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleado($this)
+                ->count($con);
+        }
+
+        return count($this->collCuentabancariamovimientos);
+    }
+
+    /**
+     * Method called to associate a Cuentabancariamovimiento object to this object
+     * through the Cuentabancariamovimiento foreign key attribute.
+     *
+     * @param    Cuentabancariamovimiento $l Cuentabancariamovimiento
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addCuentabancariamovimiento(Cuentabancariamovimiento $l)
+    {
+        if ($this->collCuentabancariamovimientos === null) {
+            $this->initCuentabancariamovimientos();
+            $this->collCuentabancariamovimientosPartial = true;
+        }
+
+        if (!in_array($l, $this->collCuentabancariamovimientos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddCuentabancariamovimiento($l);
+
+            if ($this->cuentabancariamovimientosScheduledForDeletion and $this->cuentabancariamovimientosScheduledForDeletion->contains($l)) {
+                $this->cuentabancariamovimientosScheduledForDeletion->remove($this->cuentabancariamovimientosScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Cuentabancariamovimiento $cuentabancariamovimiento The cuentabancariamovimiento object to add.
+     */
+    protected function doAddCuentabancariamovimiento($cuentabancariamovimiento)
+    {
+        $this->collCuentabancariamovimientos[]= $cuentabancariamovimiento;
+        $cuentabancariamovimiento->setEmpleado($this);
+    }
+
+    /**
+     * @param	Cuentabancariamovimiento $cuentabancariamovimiento The cuentabancariamovimiento object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeCuentabancariamovimiento($cuentabancariamovimiento)
+    {
+        if ($this->getCuentabancariamovimientos()->contains($cuentabancariamovimiento)) {
+            $this->collCuentabancariamovimientos->remove($this->collCuentabancariamovimientos->search($cuentabancariamovimiento));
+            if (null === $this->cuentabancariamovimientosScheduledForDeletion) {
+                $this->cuentabancariamovimientosScheduledForDeletion = clone $this->collCuentabancariamovimientos;
+                $this->cuentabancariamovimientosScheduledForDeletion->clear();
+            }
+            $this->cuentabancariamovimientosScheduledForDeletion[]= clone $cuentabancariamovimiento;
+            $cuentabancariamovimiento->setEmpleado(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related Cuentabancariamovimientos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Cuentabancariamovimiento[] List of Cuentabancariamovimiento objects
+     */
+    public function getCuentabancariamovimientosJoinCuentabancaria($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = CuentabancariamovimientoQuery::create(null, $criteria);
+        $query->joinWith('Cuentabancaria', $join_behavior);
+
+        return $this->getCuentabancariamovimientos($query, $con);
     }
 
     /**
@@ -2422,6 +2825,556 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collTransferenciasRelatedByIdempleadocreador collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addTransferenciasRelatedByIdempleadocreador()
+     */
+    public function clearTransferenciasRelatedByIdempleadocreador()
+    {
+        $this->collTransferenciasRelatedByIdempleadocreador = null; // important to set this to null since that means it is uninitialized
+        $this->collTransferenciasRelatedByIdempleadocreadorPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collTransferenciasRelatedByIdempleadocreador collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTransferenciasRelatedByIdempleadocreador($v = true)
+    {
+        $this->collTransferenciasRelatedByIdempleadocreadorPartial = $v;
+    }
+
+    /**
+     * Initializes the collTransferenciasRelatedByIdempleadocreador collection.
+     *
+     * By default this just sets the collTransferenciasRelatedByIdempleadocreador collection to an empty array (like clearcollTransferenciasRelatedByIdempleadocreador());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTransferenciasRelatedByIdempleadocreador($overrideExisting = true)
+    {
+        if (null !== $this->collTransferenciasRelatedByIdempleadocreador && !$overrideExisting) {
+            return;
+        }
+        $this->collTransferenciasRelatedByIdempleadocreador = new PropelObjectCollection();
+        $this->collTransferenciasRelatedByIdempleadocreador->setModel('Transferencia');
+    }
+
+    /**
+     * Gets an array of Transferencia objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     * @throws PropelException
+     */
+    public function getTransferenciasRelatedByIdempleadocreador($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciasRelatedByIdempleadocreadorPartial && !$this->isNew();
+        if (null === $this->collTransferenciasRelatedByIdempleadocreador || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciasRelatedByIdempleadocreador) {
+                // return empty collection
+                $this->initTransferenciasRelatedByIdempleadocreador();
+            } else {
+                $collTransferenciasRelatedByIdempleadocreador = TransferenciaQuery::create(null, $criteria)
+                    ->filterByEmpleadoRelatedByIdempleadocreador($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collTransferenciasRelatedByIdempleadocreadorPartial && count($collTransferenciasRelatedByIdempleadocreador)) {
+                      $this->initTransferenciasRelatedByIdempleadocreador(false);
+
+                      foreach ($collTransferenciasRelatedByIdempleadocreador as $obj) {
+                        if (false == $this->collTransferenciasRelatedByIdempleadocreador->contains($obj)) {
+                          $this->collTransferenciasRelatedByIdempleadocreador->append($obj);
+                        }
+                      }
+
+                      $this->collTransferenciasRelatedByIdempleadocreadorPartial = true;
+                    }
+
+                    $collTransferenciasRelatedByIdempleadocreador->getInternalIterator()->rewind();
+
+                    return $collTransferenciasRelatedByIdempleadocreador;
+                }
+
+                if ($partial && $this->collTransferenciasRelatedByIdempleadocreador) {
+                    foreach ($this->collTransferenciasRelatedByIdempleadocreador as $obj) {
+                        if ($obj->isNew()) {
+                            $collTransferenciasRelatedByIdempleadocreador[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTransferenciasRelatedByIdempleadocreador = $collTransferenciasRelatedByIdempleadocreador;
+                $this->collTransferenciasRelatedByIdempleadocreadorPartial = false;
+            }
+        }
+
+        return $this->collTransferenciasRelatedByIdempleadocreador;
+    }
+
+    /**
+     * Sets a collection of TransferenciaRelatedByIdempleadocreador objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $transferenciasRelatedByIdempleadocreador A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setTransferenciasRelatedByIdempleadocreador(PropelCollection $transferenciasRelatedByIdempleadocreador, PropelPDO $con = null)
+    {
+        $transferenciasRelatedByIdempleadocreadorToDelete = $this->getTransferenciasRelatedByIdempleadocreador(new Criteria(), $con)->diff($transferenciasRelatedByIdempleadocreador);
+
+
+        $this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion = $transferenciasRelatedByIdempleadocreadorToDelete;
+
+        foreach ($transferenciasRelatedByIdempleadocreadorToDelete as $transferenciaRelatedByIdempleadocreadorRemoved) {
+            $transferenciaRelatedByIdempleadocreadorRemoved->setEmpleadoRelatedByIdempleadocreador(null);
+        }
+
+        $this->collTransferenciasRelatedByIdempleadocreador = null;
+        foreach ($transferenciasRelatedByIdempleadocreador as $transferenciaRelatedByIdempleadocreador) {
+            $this->addTransferenciaRelatedByIdempleadocreador($transferenciaRelatedByIdempleadocreador);
+        }
+
+        $this->collTransferenciasRelatedByIdempleadocreador = $transferenciasRelatedByIdempleadocreador;
+        $this->collTransferenciasRelatedByIdempleadocreadorPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Transferencia objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Transferencia objects.
+     * @throws PropelException
+     */
+    public function countTransferenciasRelatedByIdempleadocreador(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciasRelatedByIdempleadocreadorPartial && !$this->isNew();
+        if (null === $this->collTransferenciasRelatedByIdempleadocreador || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciasRelatedByIdempleadocreador) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTransferenciasRelatedByIdempleadocreador());
+            }
+            $query = TransferenciaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleadoRelatedByIdempleadocreador($this)
+                ->count($con);
+        }
+
+        return count($this->collTransferenciasRelatedByIdempleadocreador);
+    }
+
+    /**
+     * Method called to associate a Transferencia object to this object
+     * through the Transferencia foreign key attribute.
+     *
+     * @param    Transferencia $l Transferencia
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addTransferenciaRelatedByIdempleadocreador(Transferencia $l)
+    {
+        if ($this->collTransferenciasRelatedByIdempleadocreador === null) {
+            $this->initTransferenciasRelatedByIdempleadocreador();
+            $this->collTransferenciasRelatedByIdempleadocreadorPartial = true;
+        }
+
+        if (!in_array($l, $this->collTransferenciasRelatedByIdempleadocreador->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddTransferenciaRelatedByIdempleadocreador($l);
+
+            if ($this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion and $this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion->contains($l)) {
+                $this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion->remove($this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	TransferenciaRelatedByIdempleadocreador $transferenciaRelatedByIdempleadocreador The transferenciaRelatedByIdempleadocreador object to add.
+     */
+    protected function doAddTransferenciaRelatedByIdempleadocreador($transferenciaRelatedByIdempleadocreador)
+    {
+        $this->collTransferenciasRelatedByIdempleadocreador[]= $transferenciaRelatedByIdempleadocreador;
+        $transferenciaRelatedByIdempleadocreador->setEmpleadoRelatedByIdempleadocreador($this);
+    }
+
+    /**
+     * @param	TransferenciaRelatedByIdempleadocreador $transferenciaRelatedByIdempleadocreador The transferenciaRelatedByIdempleadocreador object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeTransferenciaRelatedByIdempleadocreador($transferenciaRelatedByIdempleadocreador)
+    {
+        if ($this->getTransferenciasRelatedByIdempleadocreador()->contains($transferenciaRelatedByIdempleadocreador)) {
+            $this->collTransferenciasRelatedByIdempleadocreador->remove($this->collTransferenciasRelatedByIdempleadocreador->search($transferenciaRelatedByIdempleadocreador));
+            if (null === $this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion) {
+                $this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion = clone $this->collTransferenciasRelatedByIdempleadocreador;
+                $this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion->clear();
+            }
+            $this->transferenciasRelatedByIdempleadocreadorScheduledForDeletion[]= clone $transferenciaRelatedByIdempleadocreador;
+            $transferenciaRelatedByIdempleadocreador->setEmpleadoRelatedByIdempleadocreador(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related TransferenciasRelatedByIdempleadocreador from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     */
+    public function getTransferenciasRelatedByIdempleadocreadorJoinSucursalRelatedByIdsucursaldestino($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TransferenciaQuery::create(null, $criteria);
+        $query->joinWith('SucursalRelatedByIdsucursaldestino', $join_behavior);
+
+        return $this->getTransferenciasRelatedByIdempleadocreador($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related TransferenciasRelatedByIdempleadocreador from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     */
+    public function getTransferenciasRelatedByIdempleadocreadorJoinSucursalRelatedByIdsucursalorigen($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TransferenciaQuery::create(null, $criteria);
+        $query->joinWith('SucursalRelatedByIdsucursalorigen', $join_behavior);
+
+        return $this->getTransferenciasRelatedByIdempleadocreador($query, $con);
+    }
+
+    /**
+     * Clears out the collTransferenciasRelatedByIdempleadoreceptor collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addTransferenciasRelatedByIdempleadoreceptor()
+     */
+    public function clearTransferenciasRelatedByIdempleadoreceptor()
+    {
+        $this->collTransferenciasRelatedByIdempleadoreceptor = null; // important to set this to null since that means it is uninitialized
+        $this->collTransferenciasRelatedByIdempleadoreceptorPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collTransferenciasRelatedByIdempleadoreceptor collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTransferenciasRelatedByIdempleadoreceptor($v = true)
+    {
+        $this->collTransferenciasRelatedByIdempleadoreceptorPartial = $v;
+    }
+
+    /**
+     * Initializes the collTransferenciasRelatedByIdempleadoreceptor collection.
+     *
+     * By default this just sets the collTransferenciasRelatedByIdempleadoreceptor collection to an empty array (like clearcollTransferenciasRelatedByIdempleadoreceptor());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTransferenciasRelatedByIdempleadoreceptor($overrideExisting = true)
+    {
+        if (null !== $this->collTransferenciasRelatedByIdempleadoreceptor && !$overrideExisting) {
+            return;
+        }
+        $this->collTransferenciasRelatedByIdempleadoreceptor = new PropelObjectCollection();
+        $this->collTransferenciasRelatedByIdempleadoreceptor->setModel('Transferencia');
+    }
+
+    /**
+     * Gets an array of Transferencia objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     * @throws PropelException
+     */
+    public function getTransferenciasRelatedByIdempleadoreceptor($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciasRelatedByIdempleadoreceptorPartial && !$this->isNew();
+        if (null === $this->collTransferenciasRelatedByIdempleadoreceptor || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciasRelatedByIdempleadoreceptor) {
+                // return empty collection
+                $this->initTransferenciasRelatedByIdempleadoreceptor();
+            } else {
+                $collTransferenciasRelatedByIdempleadoreceptor = TransferenciaQuery::create(null, $criteria)
+                    ->filterByEmpleadoRelatedByIdempleadoreceptor($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collTransferenciasRelatedByIdempleadoreceptorPartial && count($collTransferenciasRelatedByIdempleadoreceptor)) {
+                      $this->initTransferenciasRelatedByIdempleadoreceptor(false);
+
+                      foreach ($collTransferenciasRelatedByIdempleadoreceptor as $obj) {
+                        if (false == $this->collTransferenciasRelatedByIdempleadoreceptor->contains($obj)) {
+                          $this->collTransferenciasRelatedByIdempleadoreceptor->append($obj);
+                        }
+                      }
+
+                      $this->collTransferenciasRelatedByIdempleadoreceptorPartial = true;
+                    }
+
+                    $collTransferenciasRelatedByIdempleadoreceptor->getInternalIterator()->rewind();
+
+                    return $collTransferenciasRelatedByIdempleadoreceptor;
+                }
+
+                if ($partial && $this->collTransferenciasRelatedByIdempleadoreceptor) {
+                    foreach ($this->collTransferenciasRelatedByIdempleadoreceptor as $obj) {
+                        if ($obj->isNew()) {
+                            $collTransferenciasRelatedByIdempleadoreceptor[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTransferenciasRelatedByIdempleadoreceptor = $collTransferenciasRelatedByIdempleadoreceptor;
+                $this->collTransferenciasRelatedByIdempleadoreceptorPartial = false;
+            }
+        }
+
+        return $this->collTransferenciasRelatedByIdempleadoreceptor;
+    }
+
+    /**
+     * Sets a collection of TransferenciaRelatedByIdempleadoreceptor objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $transferenciasRelatedByIdempleadoreceptor A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setTransferenciasRelatedByIdempleadoreceptor(PropelCollection $transferenciasRelatedByIdempleadoreceptor, PropelPDO $con = null)
+    {
+        $transferenciasRelatedByIdempleadoreceptorToDelete = $this->getTransferenciasRelatedByIdempleadoreceptor(new Criteria(), $con)->diff($transferenciasRelatedByIdempleadoreceptor);
+
+
+        $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion = $transferenciasRelatedByIdempleadoreceptorToDelete;
+
+        foreach ($transferenciasRelatedByIdempleadoreceptorToDelete as $transferenciaRelatedByIdempleadoreceptorRemoved) {
+            $transferenciaRelatedByIdempleadoreceptorRemoved->setEmpleadoRelatedByIdempleadoreceptor(null);
+        }
+
+        $this->collTransferenciasRelatedByIdempleadoreceptor = null;
+        foreach ($transferenciasRelatedByIdempleadoreceptor as $transferenciaRelatedByIdempleadoreceptor) {
+            $this->addTransferenciaRelatedByIdempleadoreceptor($transferenciaRelatedByIdempleadoreceptor);
+        }
+
+        $this->collTransferenciasRelatedByIdempleadoreceptor = $transferenciasRelatedByIdempleadoreceptor;
+        $this->collTransferenciasRelatedByIdempleadoreceptorPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Transferencia objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Transferencia objects.
+     * @throws PropelException
+     */
+    public function countTransferenciasRelatedByIdempleadoreceptor(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collTransferenciasRelatedByIdempleadoreceptorPartial && !$this->isNew();
+        if (null === $this->collTransferenciasRelatedByIdempleadoreceptor || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTransferenciasRelatedByIdempleadoreceptor) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTransferenciasRelatedByIdempleadoreceptor());
+            }
+            $query = TransferenciaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleadoRelatedByIdempleadoreceptor($this)
+                ->count($con);
+        }
+
+        return count($this->collTransferenciasRelatedByIdempleadoreceptor);
+    }
+
+    /**
+     * Method called to associate a Transferencia object to this object
+     * through the Transferencia foreign key attribute.
+     *
+     * @param    Transferencia $l Transferencia
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addTransferenciaRelatedByIdempleadoreceptor(Transferencia $l)
+    {
+        if ($this->collTransferenciasRelatedByIdempleadoreceptor === null) {
+            $this->initTransferenciasRelatedByIdempleadoreceptor();
+            $this->collTransferenciasRelatedByIdempleadoreceptorPartial = true;
+        }
+
+        if (!in_array($l, $this->collTransferenciasRelatedByIdempleadoreceptor->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddTransferenciaRelatedByIdempleadoreceptor($l);
+
+            if ($this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion and $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion->contains($l)) {
+                $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion->remove($this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	TransferenciaRelatedByIdempleadoreceptor $transferenciaRelatedByIdempleadoreceptor The transferenciaRelatedByIdempleadoreceptor object to add.
+     */
+    protected function doAddTransferenciaRelatedByIdempleadoreceptor($transferenciaRelatedByIdempleadoreceptor)
+    {
+        $this->collTransferenciasRelatedByIdempleadoreceptor[]= $transferenciaRelatedByIdempleadoreceptor;
+        $transferenciaRelatedByIdempleadoreceptor->setEmpleadoRelatedByIdempleadoreceptor($this);
+    }
+
+    /**
+     * @param	TransferenciaRelatedByIdempleadoreceptor $transferenciaRelatedByIdempleadoreceptor The transferenciaRelatedByIdempleadoreceptor object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeTransferenciaRelatedByIdempleadoreceptor($transferenciaRelatedByIdempleadoreceptor)
+    {
+        if ($this->getTransferenciasRelatedByIdempleadoreceptor()->contains($transferenciaRelatedByIdempleadoreceptor)) {
+            $this->collTransferenciasRelatedByIdempleadoreceptor->remove($this->collTransferenciasRelatedByIdempleadoreceptor->search($transferenciaRelatedByIdempleadoreceptor));
+            if (null === $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion) {
+                $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion = clone $this->collTransferenciasRelatedByIdempleadoreceptor;
+                $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion->clear();
+            }
+            $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion[]= clone $transferenciaRelatedByIdempleadoreceptor;
+            $transferenciaRelatedByIdempleadoreceptor->setEmpleadoRelatedByIdempleadoreceptor(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related TransferenciasRelatedByIdempleadoreceptor from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     */
+    public function getTransferenciasRelatedByIdempleadoreceptorJoinSucursalRelatedByIdsucursaldestino($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TransferenciaQuery::create(null, $criteria);
+        $query->joinWith('SucursalRelatedByIdsucursaldestino', $join_behavior);
+
+        return $this->getTransferenciasRelatedByIdempleadoreceptor($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related TransferenciasRelatedByIdempleadoreceptor from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Transferencia[] List of Transferencia objects
+     */
+    public function getTransferenciasRelatedByIdempleadoreceptorJoinSucursalRelatedByIdsucursalorigen($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TransferenciaQuery::create(null, $criteria);
+        $query->joinWith('SucursalRelatedByIdsucursalorigen', $join_behavior);
+
+        return $this->getTransferenciasRelatedByIdempleadoreceptor($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -2471,8 +3424,23 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collCuentabancariamovimientos) {
+                foreach ($this->collCuentabancariamovimientos as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collSucursalempleados) {
                 foreach ($this->collSucursalempleados as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collTransferenciasRelatedByIdempleadocreador) {
+                foreach ($this->collTransferenciasRelatedByIdempleadocreador as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collTransferenciasRelatedByIdempleadoreceptor) {
+                foreach ($this->collTransferenciasRelatedByIdempleadoreceptor as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2483,10 +3451,22 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collCuentabancariamovimientos instanceof PropelCollection) {
+            $this->collCuentabancariamovimientos->clearIterator();
+        }
+        $this->collCuentabancariamovimientos = null;
         if ($this->collSucursalempleados instanceof PropelCollection) {
             $this->collSucursalempleados->clearIterator();
         }
         $this->collSucursalempleados = null;
+        if ($this->collTransferenciasRelatedByIdempleadocreador instanceof PropelCollection) {
+            $this->collTransferenciasRelatedByIdempleadocreador->clearIterator();
+        }
+        $this->collTransferenciasRelatedByIdempleadocreador = null;
+        if ($this->collTransferenciasRelatedByIdempleadoreceptor instanceof PropelCollection) {
+            $this->collTransferenciasRelatedByIdempleadoreceptor->clearIterator();
+        }
+        $this->collTransferenciasRelatedByIdempleadoreceptor = null;
         $this->aRol = null;
     }
 

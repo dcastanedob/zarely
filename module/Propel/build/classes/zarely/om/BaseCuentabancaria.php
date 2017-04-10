@@ -54,6 +54,12 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
     protected $cuentabancaria_saldo;
 
     /**
+     * @var        PropelObjectCollection|Cuentabancariamovimiento[] Collection to store aggregation of Cuentabancariamovimiento objects.
+     */
+    protected $collCuentabancariamovimientos;
+    protected $collCuentabancariamovimientosPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -72,6 +78,12 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $cuentabancariamovimientosScheduledForDeletion = null;
 
     /**
      * Get the [idcuentabancaria] column value.
@@ -308,6 +320,8 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collCuentabancariamovimientos = null;
+
         } // if (deep)
     }
 
@@ -430,6 +444,23 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->cuentabancariamovimientosScheduledForDeletion !== null) {
+                if (!$this->cuentabancariamovimientosScheduledForDeletion->isEmpty()) {
+                    CuentabancariamovimientoQuery::create()
+                        ->filterByPrimaryKeys($this->cuentabancariamovimientosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->cuentabancariamovimientosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCuentabancariamovimientos !== null) {
+                foreach ($this->collCuentabancariamovimientos as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -592,6 +623,14 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
             }
 
 
+                if ($this->collCuentabancariamovimientos !== null) {
+                    foreach ($this->collCuentabancariamovimientos as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -656,10 +695,11 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['Cuentabancaria'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -677,6 +717,11 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->collCuentabancariamovimientos) {
+                $result['Cuentabancariamovimientos'] = $this->collCuentabancariamovimientos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -831,6 +876,24 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
         $copyObj->setCuentabancariaBanco($this->getCuentabancariaBanco());
         $copyObj->setCuentabancariaCuenta($this->getCuentabancariaCuenta());
         $copyObj->setCuentabancariaSaldo($this->getCuentabancariaSaldo());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            foreach ($this->getCuentabancariamovimientos() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCuentabancariamovimiento($relObj->copy($deepCopy));
+                }
+            }
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdcuentabancaria(NULL); // this is a auto-increment column, so set to default value
@@ -877,6 +940,272 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
         return self::$peer;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Cuentabancariamovimiento' == $relationName) {
+            $this->initCuentabancariamovimientos();
+        }
+    }
+
+    /**
+     * Clears out the collCuentabancariamovimientos collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Cuentabancaria The current object (for fluent API support)
+     * @see        addCuentabancariamovimientos()
+     */
+    public function clearCuentabancariamovimientos()
+    {
+        $this->collCuentabancariamovimientos = null; // important to set this to null since that means it is uninitialized
+        $this->collCuentabancariamovimientosPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collCuentabancariamovimientos collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialCuentabancariamovimientos($v = true)
+    {
+        $this->collCuentabancariamovimientosPartial = $v;
+    }
+
+    /**
+     * Initializes the collCuentabancariamovimientos collection.
+     *
+     * By default this just sets the collCuentabancariamovimientos collection to an empty array (like clearcollCuentabancariamovimientos());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCuentabancariamovimientos($overrideExisting = true)
+    {
+        if (null !== $this->collCuentabancariamovimientos && !$overrideExisting) {
+            return;
+        }
+        $this->collCuentabancariamovimientos = new PropelObjectCollection();
+        $this->collCuentabancariamovimientos->setModel('Cuentabancariamovimiento');
+    }
+
+    /**
+     * Gets an array of Cuentabancariamovimiento objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Cuentabancaria is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Cuentabancariamovimiento[] List of Cuentabancariamovimiento objects
+     * @throws PropelException
+     */
+    public function getCuentabancariamovimientos($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collCuentabancariamovimientosPartial && !$this->isNew();
+        if (null === $this->collCuentabancariamovimientos || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCuentabancariamovimientos) {
+                // return empty collection
+                $this->initCuentabancariamovimientos();
+            } else {
+                $collCuentabancariamovimientos = CuentabancariamovimientoQuery::create(null, $criteria)
+                    ->filterByCuentabancaria($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collCuentabancariamovimientosPartial && count($collCuentabancariamovimientos)) {
+                      $this->initCuentabancariamovimientos(false);
+
+                      foreach ($collCuentabancariamovimientos as $obj) {
+                        if (false == $this->collCuentabancariamovimientos->contains($obj)) {
+                          $this->collCuentabancariamovimientos->append($obj);
+                        }
+                      }
+
+                      $this->collCuentabancariamovimientosPartial = true;
+                    }
+
+                    $collCuentabancariamovimientos->getInternalIterator()->rewind();
+
+                    return $collCuentabancariamovimientos;
+                }
+
+                if ($partial && $this->collCuentabancariamovimientos) {
+                    foreach ($this->collCuentabancariamovimientos as $obj) {
+                        if ($obj->isNew()) {
+                            $collCuentabancariamovimientos[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCuentabancariamovimientos = $collCuentabancariamovimientos;
+                $this->collCuentabancariamovimientosPartial = false;
+            }
+        }
+
+        return $this->collCuentabancariamovimientos;
+    }
+
+    /**
+     * Sets a collection of Cuentabancariamovimiento objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $cuentabancariamovimientos A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Cuentabancaria The current object (for fluent API support)
+     */
+    public function setCuentabancariamovimientos(PropelCollection $cuentabancariamovimientos, PropelPDO $con = null)
+    {
+        $cuentabancariamovimientosToDelete = $this->getCuentabancariamovimientos(new Criteria(), $con)->diff($cuentabancariamovimientos);
+
+
+        $this->cuentabancariamovimientosScheduledForDeletion = $cuentabancariamovimientosToDelete;
+
+        foreach ($cuentabancariamovimientosToDelete as $cuentabancariamovimientoRemoved) {
+            $cuentabancariamovimientoRemoved->setCuentabancaria(null);
+        }
+
+        $this->collCuentabancariamovimientos = null;
+        foreach ($cuentabancariamovimientos as $cuentabancariamovimiento) {
+            $this->addCuentabancariamovimiento($cuentabancariamovimiento);
+        }
+
+        $this->collCuentabancariamovimientos = $cuentabancariamovimientos;
+        $this->collCuentabancariamovimientosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Cuentabancariamovimiento objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Cuentabancariamovimiento objects.
+     * @throws PropelException
+     */
+    public function countCuentabancariamovimientos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collCuentabancariamovimientosPartial && !$this->isNew();
+        if (null === $this->collCuentabancariamovimientos || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCuentabancariamovimientos) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCuentabancariamovimientos());
+            }
+            $query = CuentabancariamovimientoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCuentabancaria($this)
+                ->count($con);
+        }
+
+        return count($this->collCuentabancariamovimientos);
+    }
+
+    /**
+     * Method called to associate a Cuentabancariamovimiento object to this object
+     * through the Cuentabancariamovimiento foreign key attribute.
+     *
+     * @param    Cuentabancariamovimiento $l Cuentabancariamovimiento
+     * @return Cuentabancaria The current object (for fluent API support)
+     */
+    public function addCuentabancariamovimiento(Cuentabancariamovimiento $l)
+    {
+        if ($this->collCuentabancariamovimientos === null) {
+            $this->initCuentabancariamovimientos();
+            $this->collCuentabancariamovimientosPartial = true;
+        }
+
+        if (!in_array($l, $this->collCuentabancariamovimientos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddCuentabancariamovimiento($l);
+
+            if ($this->cuentabancariamovimientosScheduledForDeletion and $this->cuentabancariamovimientosScheduledForDeletion->contains($l)) {
+                $this->cuentabancariamovimientosScheduledForDeletion->remove($this->cuentabancariamovimientosScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Cuentabancariamovimiento $cuentabancariamovimiento The cuentabancariamovimiento object to add.
+     */
+    protected function doAddCuentabancariamovimiento($cuentabancariamovimiento)
+    {
+        $this->collCuentabancariamovimientos[]= $cuentabancariamovimiento;
+        $cuentabancariamovimiento->setCuentabancaria($this);
+    }
+
+    /**
+     * @param	Cuentabancariamovimiento $cuentabancariamovimiento The cuentabancariamovimiento object to remove.
+     * @return Cuentabancaria The current object (for fluent API support)
+     */
+    public function removeCuentabancariamovimiento($cuentabancariamovimiento)
+    {
+        if ($this->getCuentabancariamovimientos()->contains($cuentabancariamovimiento)) {
+            $this->collCuentabancariamovimientos->remove($this->collCuentabancariamovimientos->search($cuentabancariamovimiento));
+            if (null === $this->cuentabancariamovimientosScheduledForDeletion) {
+                $this->cuentabancariamovimientosScheduledForDeletion = clone $this->collCuentabancariamovimientos;
+                $this->cuentabancariamovimientosScheduledForDeletion->clear();
+            }
+            $this->cuentabancariamovimientosScheduledForDeletion[]= clone $cuentabancariamovimiento;
+            $cuentabancariamovimiento->setCuentabancaria(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Cuentabancaria is new, it will return
+     * an empty collection; or if this Cuentabancaria has previously
+     * been saved, it will retrieve related Cuentabancariamovimientos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Cuentabancaria.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Cuentabancariamovimiento[] List of Cuentabancariamovimiento objects
+     */
+    public function getCuentabancariamovimientosJoinEmpleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = CuentabancariamovimientoQuery::create(null, $criteria);
+        $query->joinWith('Empleado', $join_behavior);
+
+        return $this->getCuentabancariamovimientos($query, $con);
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -908,10 +1237,19 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collCuentabancariamovimientos) {
+                foreach ($this->collCuentabancariamovimientos as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collCuentabancariamovimientos instanceof PropelCollection) {
+            $this->collCuentabancariamovimientos->clearIterator();
+        }
+        $this->collCuentabancariamovimientos = null;
     }
 
     /**
