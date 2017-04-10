@@ -99,6 +99,7 @@
                 //multipleWidth: 100
             });
 
+            $container.find('select[name*=idproveedor]').select2();
             
             
             var iddevolucion = $('input[name=iddevolucion]').val();
@@ -186,8 +187,8 @@
                             '<div id="details" style="overflow:auto"> ',
                               '<table  class="table table-bordered table-nowrap" cellspacing="0" width="100%">',
                                   '<thead>',
-                                      '<th>Modelo</th>',
-                                      '<th>Variante</th>',
+                                      '<th style="width:10px">Modelo</th>',
+                                      '<th style="width:10px">Variante</th>',
                                       '<th id="tallaje70">7.0</th>',
                                       '<th id="tallaje75">7.5</th>',
                                       '<th id="tallaje80">8.0</th>',
@@ -365,6 +366,7 @@
 
             $container.find('#btn_add_productogeneral').on('click',function(){
               var idproductogeneral = $container.find('select[name*=productos_generales] option:selected').val();
+              var producto = $container.find('select[name*=productos_generales] option:selected').html();
 
               $.ajax({
                   method: 'POST',
@@ -383,7 +385,7 @@
                                   '<span aria-hidden="true">×</span>',
                                   '<span class="sr-only">Close</span>',
                                 '</button>',
-                                '<h3 class="text-primary">Detalles</h3>',
+                                '<h3 class="text-primary">Detalles del producto '+producto+'</h3>',
                                
                               '</div>',
                               

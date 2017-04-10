@@ -107,7 +107,7 @@ class PedidoMayoristaForm extends Form
             'value_options' => $productosvariante_array,   
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => '',
                 
 

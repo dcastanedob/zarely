@@ -7,150 +7,23 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Application\Pedido\Controller;
+namespace Application\Transferencia\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class PedidoMayoristaController extends AbstractActionController
+class TransferenciaController extends AbstractActionController
 {
 
     public $column_map = array(
-        0 => 'a.ClienteNombre',
-        1 => 'PedidomayoristaFechasolicitud',
-        2 => 'PedidomayoristaEstatus',
-        4 => 'PedidomayoristaFechaentrega',
+        0 => 'CompraFechacompra',
+        1 => 'a.ProveedorNombrecomercial',
+        2 => 'CompraTotal',
+        4 => 'CompraEstatus',
+        3 => 'CompraComprobante',
 
 
     );
-
-    public function getdetailsolicitadoAction(){
-
-        $request = $this->getRequest();
-        //Verificamos que la peticion sea post
-        if($request->isPost()){
-
-            //obtenemos todos los pedidos del request que se mandó
-            $post_data = $request->getPost();
-
-            //filtramos por estatus solicitado y por la variante
-            $details = \PedidomayoristadetalleQuery::create()->filterByPedidomayoristadetalleEstatus('solicitado')->filterByIdproductovariante($post_data['idvariante'])->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
-
-            //iteramos para obtener el nombre del mayorista
-            for ($pedido = 0; $pedido<count($details); $pedido++) {
-                $pedidomayorista = \PedidomayoristaQuery::create()->findPK($details[$pedido]['idpedidomayorista']);
-
-                $cliente = $pedidomayorista->getCliente();
-
-
-                //verificamos que exista
-                if($cliente != null)
-                    $details[$pedido]['idpedidomayorista'] = $cliente->getClienteNombre();
-            }
-
-
-            //regresamos la respuesta
-            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
-
-        }
-
-    } 
-
-    public function getdetailpendienteAction(){
-
-        $request = $this->getRequest();
-        //Verificamos que la peticion sea post
-        if($request->isPost()){
-
-            //obtenemos todos los pedidos del request que se mandó
-            $post_data = $request->getPost();
-
-            //filtramos por estatus pendiente y por la variante
-            $details = \PedidomayoristadetalleQuery::create()->filterByPedidomayoristadetalleEstatus('pendiente')->filterByIdproductovariante($post_data['idvariante'])->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
-
-            //iteramos para obtener el nombre del mayorista
-            for ($pedido = 0; $pedido<count($details); $pedido++) {
-                $pedidomayorista = \PedidomayoristaQuery::create()->findPK($details[$pedido]['idpedidomayorista']);
-
-                $cliente = $pedidomayorista->getCliente();
-
-
-                //verificamos que exista
-                if($cliente != null)
-                    $details[$pedido]['idpedidomayorista'] = $cliente->getClienteNombre();
-            }
-
-
-            //regresamos la respuesta
-            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
-
-        }
-
-    } 
-
-    public function getdetailcompletadoAction(){
-
-        $request = $this->getRequest();
-        //Verificamos que la peticion sea post
-        if($request->isPost()){
-
-            //obtenemos todos los pedidos del request que se mandó
-            $post_data = $request->getPost();
-
-            //filtramos por estatus completado y por la variante
-            $details = \PedidomayoristadetalleQuery::create()->filterByPedidomayoristadetalleEstatus('completado')->filterByIdproductovariante($post_data['idvariante'])->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
-
-            //iteramos para obtener el nombre del mayorista
-            for ($pedido = 0; $pedido<count($details); $pedido++) {
-                $pedidomayorista = \PedidomayoristaQuery::create()->findPK($details[$pedido]['idpedidomayorista']);
-
-                $cliente = $pedidomayorista->getCliente();
-
-
-                //verificamos que exista
-                if($cliente != null)
-                    $details[$pedido]['idpedidomayorista'] = $cliente->getClienteNombre();
-            }
-
-
-            //regresamos la respuesta
-            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
-
-        }
-
-    } 
-
-    public function getdetailtransitoAction(){
-
-        $request = $this->getRequest();
-        //Verificamos que la peticion sea post
-        if($request->isPost()){
-
-            //obtenemos todos los pedidos del request que se mandó
-            $post_data = $request->getPost();
-
-            //filtramos por estatus transito y por la variante
-            $details = \PedidomayoristadetalleQuery::create()->filterByPedidomayoristadetalleEstatus('transito')->filterByIdproductovariante($post_data['idvariante'])->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
-
-            //iteramos para obtener el nombre del mayorista
-            for ($pedido = 0; $pedido<count($details); $pedido++) {
-                $pedidomayorista = \PedidomayoristaQuery::create()->findPK($details[$pedido]['idpedidomayorista']);
-
-                $cliente = $pedidomayorista->getCliente();
-
-
-                //verificamos que exista
-                if($cliente != null)
-                    $details[$pedido]['idpedidomayorista'] = $cliente->getClienteNombre();
-            }
-
-
-            //regresamos la respuesta
-            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
-
-        }
-
-    } 
     
     public function serversideAction(){
         
@@ -160,12 +33,12 @@ class PedidoMayoristaController extends AbstractActionController
             
             $post_data = $request->getPost();
 
-            $query = new \PedidomayoristaQuery();
+            $query = new \CompraQuery();
             
 
-            $query->useClienteQuery('a')->endUse();
+            $query->useProveedorQuery('a')->endUse();
 
-            $query->withColumn('a.ClienteNombre', 'pedido_clientenombre');
+            $query->withColumn('a.ProveedorNombrecomercial', 'proveedor_nombre');
 
 
             $records_filtered = $query->count();
@@ -200,19 +73,17 @@ class PedidoMayoristaController extends AbstractActionController
                 }
                 $c = new \Criteria();
 
-                $c1= $c->getNewCriterion('pedidomayorista.idcliente', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1= $c->getNewCriterion('compra.idcompra', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c2= $c->getNewCriterion('pedidomayorista.pedidomayorista_fechasolicitud', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('proveedor.proveedor_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c3= $c->getNewCriterion('pedidomayorista.pedidomayorista_estatus', '%'.$search_value.'%', \Criteria::LIKE);
-
-                $c4= $c->getNewCriterion('pedidomayorista.pedidomayorista_fechaentrega', '%'.$search_value.'%', \Criteria::LIKE);
+                $c3= $c->getNewCriterion('compra.compra_estatus', '%'.$search_value.'%', \Criteria::LIKE);
 
 
-                $c1->addOr($c2)->addOr($c3)->addOr($c4);
+                $c1->addOr($c2)->addOr($c3);
 
                 $query->addAnd($c1);
-                $query->groupByPedidomayoristaFechasolicitud();
+                $query->groupByCompraFechacompra();
 
                 $records_filtered = $query->count();
             }
@@ -239,13 +110,24 @@ class PedidoMayoristaController extends AbstractActionController
 
 
             foreach ($query->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME) as $value) {
-                $tmp['DT_RowId'] = $value['idpedidomayorista'];
-                $tmp['idpedidomayorista'] = $value['idpedidomayorista'];
-                $tmp['pedido_clientenombre'] = $value['pedido_clientenombre'];
-                $tmp['pedidomayorista_fechasolicitud'] = $value['pedidomayorista_fechasolicitud'];
-                $tmp['pedidomayorista_estatus'] = $value['pedidomayorista_estatus'];
-                $tmp['pedidomayorista_fechaentrega'] = $value['pedidomayorista_fechaentrega'];
-                
+                $tmp['DT_RowId'] = $value['idcompra'];
+                $tmp['idcompra'] = $value['idcompra'];
+                $tmp['compra_fechacompra'] = $value['compra_fechacompra'];
+                $tmp['proveedor_nombre'] = $value['proveedor_nombre'];
+                $tmp['compra_total'] = '$'.number_format($value['compra_total'],2);
+
+                if($value['compra_comprobante'] == null)
+                {
+                    $tmp['compra_comprobante'] = "<label>No tiene </label>";
+                }else
+                {
+                    $tmp['compra_comprobante'] = '<a href="'.$value['compra_comprobante'].'"    target="_blank"> 
+                            <span class="icon icon-file icon-lg ">
+                        </span>
+                    </a>';
+                }
+
+                $tmp['compra_estatus'] = $value['compra_estatus'];
 
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
@@ -255,7 +137,7 @@ class PedidoMayoristaController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/pedidos/mayoristas/ver/' . $value['idpedidomayorista'] . '">
+                      <a href="/compras/generales/ver/' . $value['idcompra'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -302,13 +184,16 @@ class PedidoMayoristaController extends AbstractActionController
         }
     }
     
-    
+    function get_extension($file) {
+         $extension = end(explode(".", $file));
+         return $extension ? $extension : false;
+    }
 
     public function indexAction()
     {   
         
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/pedido/mayoristas/index');
+        $view_model->setTemplate('application/compra/generales/index');
         $view_model->setVariables(array(
              'messages' => $this->flashMessenger(),
         ));
@@ -317,23 +202,35 @@ class PedidoMayoristaController extends AbstractActionController
 
 
     public function nuevoAction(){
+        
         $request = $this->getRequest();
         
         if($request->isPost()){
             $post_data = $request->getPost();
+
             $post_files = $request->getFiles();
             
 
-            $entity = new \Pedidomayorista();
+            $entity = new \Compra();
 
-            $post_data['pedidomayorista_fechasolicitud'] = date_create_from_format('d/m/Y', $post_data['pedidomayorista_fechasolicitud']);
+            $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
 
-            $post_data['pedidomayorista_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['pedidomayorista_fechaentrega']);
+            $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
 
+            $precios = [];
             $variantes = [];
             foreach ($post_data as $key => $value){
-                if(\PedidomayoristaPeer::getTableMap()->hasColumn($key)){
+                if(\CompraPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                }
+
+                if(substr( $key, 0, 6 ) === "precio")
+                {
+                    $temp = array(
+                        "variante" => str_replace("preciounitario", "", $key),
+                        "valor" => $value
+                    );
+                    array_push($precios, $temp);
                 }
 
                 if(substr( $key, 0, 8 ) === "cantidad")
@@ -352,32 +249,84 @@ class PedidoMayoristaController extends AbstractActionController
 
             $entity->save();
 
-            foreach ($variantes as $variante) {
-                $pedidomayoristadetalle = new \Pedidomayoristadetalle();
-                $producto_variante = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+            if(isset($post_files['compra_comprobante'])){
 
-                $pedidomayoristadetalle->setIdpedidomayorista($entity->getIdpedidomayorista())
-                              ->setIdproductovariante($variante["variante"])
-                              ->setPedidomayoristadetalleCantidad($variante["valor"])
-                              ->setPedidomayoristadetalleEstatus($entity->getPedidomayoristaEstatus())
-                              ->setPedidomayoristadetalleFecha($entity->getPedidomayoristaFechasolicitud());
-                              $pedidomayoristadetalle->setIdproducto($producto_variante->getIdproducto())->save();
+                $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
+
+                move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
+
+
+                $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
             }
 
 
+            $entity->setCompraFechacreacion(date("Y-n-j"));
+
+            $entity->save();
+            
+            
+            $total = 0;
+            foreach ($variantes as $variante) {
+                $compra_detalle = new \Compradetalle();
+                $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+                //encontrar a que precio le corresponde
+                foreach ($precios as $key=>$precio) {
+
+                    //obtenemos la variante 
+                    $productovariante = \ProductovarianteQuery::create()->findPk($precio["variante"]);
+
+                    if($productovariante->getIdproducto() == $varianteTemp->getIdproducto() && $productovariante->getIdproductocolor() == $varianteTemp->getIdproductocolor() && $productovariante->getIdproductomaterial() == $varianteTemp->getIdproductomaterial())
+                        {
+
+
+                        //obtenemos el rango de los tallajes
+                        $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($productovariante->getIdproducto())->find();
+
+                        $boolean = false;
+                        foreach ($tallajes->toArray() as $tallaje) {
+                            $rango = $tallaje["Tallajerango"];
+                            $inf = explode(" - ", $rango);
+
+
+                            //verificamos que este en el rango del precio asociado
+                            if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
+                            {
+                                $compra_detalle->setIdcompra($entity->getIdcompra())
+                                              ->setIdproductovariante($variante["variante"])
+                                              ->setCompradetalleCantidad($variante["valor"])
+                                              ->setCompradetallePreciounitario($precio["valor"])
+                                              ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
+
+                                $total+= $compra_detalle->getCompradetalleSubtotal();
+                                $boolean = true;
+                                break;
+                            }
+                        }
+
+                        $entity->setCompraTotal($total);
+                        $entity->save();
+
+                        //unset($precios[$key]);
+                        if($boolean)
+                            break;
+                    }
+                    
+                }
+            }
+
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-            return $this->redirect()->toUrl('/pedidos/mayoristas');
+            return $this->redirect()->toUrl('/compras/generales');
         
 
         }
 
-        //traer los clientes
-        $clientes = \ClienteQuery::create()->find();
-        $clientes_array = array();
+        //traer los proveedores
+        $provedorees = \ProveedorQuery::create()->find();
+        $provedorees_array = array();
 
-        foreach ($clientes as $cliente){
-            $clientes_array[$cliente->getIdcliente()] = $cliente->getClienteNombre();
+        foreach ($provedorees as $value){
+            $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
         }
 
 
@@ -411,10 +360,10 @@ class PedidoMayoristaController extends AbstractActionController
 
 
 
-        $form = new \Application\Pedido\Form\PedidoMayoristaForm($clientes_array,$productosvariante_array,$productos_generales_array);
+        $form = new \Application\Compra\Form\CompraGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
         
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/pedido/mayoristas/nuevo');
+        $view_model->setTemplate('application/compra/generales/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
@@ -425,30 +374,40 @@ class PedidoMayoristaController extends AbstractActionController
 
     public function verAction()
     {
-
         $request = $this->getRequest();
         
         $id = $this->params()->fromRoute('id');
         
-        $exist = \PedidomayoristaQuery::create()->filterByIdpedidomayorista($id)->exists();
+        $exist = \CompraQuery::create()->filterByIdcompra($id)->exists();
         
         if($exist){
-            $entity = \PedidomayoristaQuery::create()->findPk($id);
+            
+            $entity = \CompraQuery::create()->findPk($id);
             
             if($request->isPost()){
-
                 $post_data = $request->getPost();
+                $post_files = $request->getFiles();
 
-                $post_data['pedidomayorista_fechasolicitud'] = date_create_from_format('d/m/Y', $post_data['pedidomayorista_fechasolicitud']);
+                $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
 
-                $post_data['pedidomayorista_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['pedidomayorista_fechaentrega']);
+                $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
                 
+                $precios = [];
                 $variantes = [];
+
                 foreach ($post_data as $key => $value){
-                    if(\PedidomayoristaPeer::getTableMap()->hasColumn($key)){
+                    if(\CompraPeer::getTableMap()->hasColumn($key)){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
 
+                    if(substr( $key, 0, 6 ) === "precio")
+                    {
+                        $temp = array(
+                            "variante" => str_replace("preciounitario", "", $key),
+                            "valor" => $value
+                        );
+                        array_push($precios, $temp);
+                    }
 
                     if(substr( $key, 0, 8 ) === "cantidad")
                     {
@@ -464,39 +423,85 @@ class PedidoMayoristaController extends AbstractActionController
                     }
                 }
 
-                $detalles = \PedidomayoristadetalleQuery::create()->filterByIdpedidomayorista($id)->delete();
+                $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
                 $entity->save();
 
-                foreach ($variantes as $variante) {
-                    $pedidomayoristadetalle = new \Pedidomayoristadetalle();
-                    $producto_variante = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+                if(isset($post_files['compra_comprobante'])){
 
-                    $pedidomayoristadetalle->setIdpedidomayorista($entity->getIdpedidomayorista())
-                                  ->setIdproductovariante($variante["variante"])
-                                  ->setPedidomayoristadetalleCantidad($variante["valor"])
-                                  ->setPedidomayoristadetalleEstatus($entity->getPedidomayoristaEstatus())
-                                  ->setPedidomayoristadetalleFecha($entity->getPedidomayoristaFechasolicitud());
-                                  $pedidomayoristadetalle->setIdproducto($producto_variante->getIdproducto())->save();
+                    if($post_files['compra_comprobante']['name'] != ""){
+
+                        $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
+
+                        move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
+
+
+                        $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
+                    }
+                }
+
+                $total = 0;
+                foreach ($variantes as $variante) {
+                    $compra_detalle = new \Compradetalle();
+                    $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+                    //encontrar a que precio le corresponde
+                    foreach ($precios as $key=>$precio) {
+
+                        //obtenemos la variante 
+                        $productovariante = \ProductovarianteQuery::create()->findPk($precio["variante"]);
+
+                        if($productovariante->getIdproducto() == $varianteTemp->getIdproducto() && $productovariante->getIdproductocolor() == $varianteTemp->getIdproductocolor() && $productovariante->getIdproductomaterial() == $varianteTemp->getIdproductomaterial())
+                            {
+
+
+                            //obtenemos el rango de los tallajes
+                            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($productovariante->getIdproducto())->find();
+
+                            $boolean = false;
+                            foreach ($tallajes->toArray() as $tallaje) {
+                                $rango = $tallaje["Tallajerango"];
+                                $inf = explode(" - ", $rango);
+
+
+                                //verificamos que este en el rango del precio asociado
+                                if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
+                                {
+                                    $compra_detalle->setIdcompra($entity->getIdcompra())
+                                                  ->setIdproductovariante($variante["variante"])
+                                                  ->setCompradetalleCantidad($variante["valor"])
+                                                  ->setCompradetallePreciounitario($precio["valor"])
+                                                  ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
+
+                                    $total+= $compra_detalle->getCompradetalleSubtotal();
+                                    $boolean = true;
+                                    break;
+                                }
+                            }
+
+                            $entity->setCompraTotal($total);
+                            $entity->save();
+
+                            //unset($precios[$key]);
+                            if($boolean)
+                                break;
+                        }
+                        
+                    }
                 }
 
 
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-                return $this->redirect()->toUrl('/pedidos/mayoristas');
+                return $this->redirect()->toUrl('/compras/generales');
             }
-            
             
                 
-            //traer los clientes
-            $clientes = \ClienteQuery::create()->find();
-            $clientes_array = array();
+            //traer los proveedores
+            $provedorees = \ProveedorQuery::create()->find();
+            $provedorees_array = array();
 
-            foreach ($clientes as $cliente){
-                $clientes_array[$cliente->getIdcliente()] = $cliente->getClienteNombre();
+            foreach ($provedorees as $value){
+                $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
             }
 
-            
-            //$variantesMayoristas = \PedidomayoristadetalleQuery::create()->useProductovarianteQuery()->groupByIdproductomaterial()->groupByIdproductocolor()->endUse()->find();
-            
 
             //traer los productosvariantes
             $variantes = \ProductovarianteQuery::create()->groupByIdproductomaterial()->groupByIdproductocolor()->find();
@@ -516,7 +521,7 @@ class PedidoMayoristaController extends AbstractActionController
                 $productosvariante_array[$value->getIdproductovariante()] = $information;
             }
 
-
+            
             //traer los productos generales
             $generales = \ProductoQuery::create()->find();
             $productos_generales_array = array();
@@ -526,22 +531,22 @@ class PedidoMayoristaController extends AbstractActionController
                 $productos_generales_array[$value->getIdproducto()] = $value->getProductoModelo();
             }
 
-
-
-            $form = new \Application\Pedido\Form\PedidoMayoristaForm($clientes_array,$productosvariante_array,$productos_generales_array);
-                    
+            
+            $form = new \Application\Compra\Form\CompraGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
+            $form->get("compra_comprobante")->setAttribute('required',false);
             
-            $form->get('pedidomayorista_fechasolicitud')->setValue($entity->getPedidomayoristaFechasolicitud('d/m/Y'));
-            $form->get('pedidomayorista_fechaentrega')->setValue($entity->getPedidomayoristaFechaentrega('d/m/Y'));
+            $form->get('compra_fechacompra')->setValue($entity->getCompraFechacompra('d/m/Y'));
+            $form->get('compra_fechaentrega')->setValue($entity->getCompraFechaentrega('d/m/Y'));
+
+
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/pedido/mayoristas/ver');
+            $view_model->setTemplate('application/compra/generales/ver');
             $view_model->setVariables(array(
                 'form' => $form,
                 'entity' => $entity,
             ));
-            //var_dump($entity);exit();
             return $view_model;
             
             
@@ -557,10 +562,11 @@ class PedidoMayoristaController extends AbstractActionController
 
     public function getProductovariantes($data){
         $information = [
-            'selects' => \PedidomayoristadetalleQuery::create()->select('idproductovariante')->filterByIdpedidomayorista($data['idpedidomayorista'])->find()->toArray(),
-            'cantidad' =>\PedidomayoristadetalleQuery::create()->select('pedidomayoristadetalle_cantidad')->filterByIdpedidomayorista($data['idpedidomayorista'])->find()->toArray(),
-            'estatus' =>\PedidomayoristadetalleQuery::create()->select('pedidomayoristadetalle_estatus')->filterByIdpedidomayorista($data['idpedidomayorista'])->find()->toArray(),
+            'selects' => \CompradetalleQuery::create()->select('idproductovariante')->filterByIdcompra($data['idcompra'])->find()->toArray(),
+            'cantidad' =>\CompradetalleQuery::create()->select('compradetalle_cantidad')->filterByIdcompra($data['idcompra'])->find()->toArray(),
+            'precio' =>\CompradetalleQuery::create()->select('compradetalle_preciounitario')->filterByIdcompra($data['idcompra'])->find()->toArray(),
         ];
+
         return $information;
 
     }
@@ -571,7 +577,6 @@ class PedidoMayoristaController extends AbstractActionController
         if($request->isPost()){
             
             $post_data = $request->getPost();
-
             if($post_data['name'] == 'productosvariantes'){
                 $response = $this->getProductovariantes($post_data['data']);
 
@@ -592,7 +597,7 @@ class PedidoMayoristaController extends AbstractActionController
             
             //filtramos los productos variantes por producto
             $variantes = \ProductovarianteQuery::create()->filterByIdproducto($post_data['idproductogeneral'])->find();
-
+            
             $details = [];
 
 
@@ -632,7 +637,7 @@ class PedidoMayoristaController extends AbstractActionController
         }
 
     } 
-
+    
     public function initializetableAction(){
 
         $request = $this->getRequest();
@@ -749,8 +754,7 @@ class PedidoMayoristaController extends AbstractActionController
             //echo '<pre>'; var_dump($details); echo '</pre>';exit();
         }
 
-    }
-
+    } 
 
     public function eliminarAction(){
         $request = $this->getRequest();
@@ -758,10 +762,13 @@ class PedidoMayoristaController extends AbstractActionController
         if($request->isPost())
         {
             $id = $this->params()->fromRoute('id');
-            $entity = \PedidomayoristaQuery::Create()->findPk($id);
+            $entity = \CompraQuery::Create()->findPk($id);
+
+            //unlink("/files/compras/19.");
+            
             $entity->delete();
 
-            $detalles = \PedidomayoristadetalleQuery::create()->filterByIdpedidomayorista($id)->delete();
+            $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
             
             if($entity->isDeleted()){
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido eliminado satisfactoriamente.');
@@ -770,26 +777,7 @@ class PedidoMayoristaController extends AbstractActionController
             }
         }
 
-        return $this->redirect()->toUrl('/pedidos/mayoristas');
+        return $this->redirect()->toUrl('/compras/generales');
     }
 
-    
-    public function actualizarinformacionAction()
-    {
-        $request = $this->getRequest();
-        if($request->isPost())
-        {
-
-            $post_data = $request->getPost();
-            $pedido = \PedidomayoristadetalleQuery::create()->findPK($post_data['idpedido']);
-                        
-            if($pedido != null)
-            {
-                $pedido->setPedidomayoristadetalleEstatus($post_data['pedido_estatus'])
-                ->save();
-                return $this->getResponse()->setContent(json_encode(array('response' => true)));
-            }
-            
-        }
-    }
 }
