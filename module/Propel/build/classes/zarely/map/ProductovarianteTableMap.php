@@ -67,6 +67,7 @@ class ProductovarianteTableMap extends TableMap
         $this->addRelation('Pedido', 'Pedido', RelationMap::ONE_TO_MANY, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE', 'Pedidos');
         $this->addRelation('Pedidomayoristadetalle', 'Pedidomayoristadetalle', RelationMap::ONE_TO_MANY, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE', 'Pedidomayoristadetalles');
         $this->addRelation('Productosucursal', 'Productosucursal', RelationMap::ONE_TO_MANY, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE', 'Productosucursals');
+        $this->addRelation('Transferenciadetalle', 'Transferenciadetalle', RelationMap::ONE_TO_MANY, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE', 'Transferenciadetalles');
     } // buildRelations()
 
 } // ProductovarianteTableMap

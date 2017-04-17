@@ -62,9 +62,21 @@
  * @method EmpleadoQuery rightJoinRol($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Rol relation
  * @method EmpleadoQuery innerJoinRol($relationAlias = null) Adds a INNER JOIN clause to the query using the Rol relation
  *
+ * @method EmpleadoQuery leftJoinCuentabancariamovimiento($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cuentabancariamovimiento relation
+ * @method EmpleadoQuery rightJoinCuentabancariamovimiento($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cuentabancariamovimiento relation
+ * @method EmpleadoQuery innerJoinCuentabancariamovimiento($relationAlias = null) Adds a INNER JOIN clause to the query using the Cuentabancariamovimiento relation
+ *
  * @method EmpleadoQuery leftJoinSucursalempleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Sucursalempleado relation
  * @method EmpleadoQuery rightJoinSucursalempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Sucursalempleado relation
  * @method EmpleadoQuery innerJoinSucursalempleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Sucursalempleado relation
+ *
+ * @method EmpleadoQuery leftJoinTransferenciaRelatedByIdempleadocreador($relationAlias = null) Adds a LEFT JOIN clause to the query using the TransferenciaRelatedByIdempleadocreador relation
+ * @method EmpleadoQuery rightJoinTransferenciaRelatedByIdempleadocreador($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TransferenciaRelatedByIdempleadocreador relation
+ * @method EmpleadoQuery innerJoinTransferenciaRelatedByIdempleadocreador($relationAlias = null) Adds a INNER JOIN clause to the query using the TransferenciaRelatedByIdempleadocreador relation
+ *
+ * @method EmpleadoQuery leftJoinTransferenciaRelatedByIdempleadoreceptor($relationAlias = null) Adds a LEFT JOIN clause to the query using the TransferenciaRelatedByIdempleadoreceptor relation
+ * @method EmpleadoQuery rightJoinTransferenciaRelatedByIdempleadoreceptor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TransferenciaRelatedByIdempleadoreceptor relation
+ * @method EmpleadoQuery innerJoinTransferenciaRelatedByIdempleadoreceptor($relationAlias = null) Adds a INNER JOIN clause to the query using the TransferenciaRelatedByIdempleadoreceptor relation
  *
  * @method Empleado findOne(PropelPDO $con = null) Return the first Empleado matching the query
  * @method Empleado findOneOrCreate(PropelPDO $con = null) Return the first Empleado matching the query, or a new Empleado object populated from the query conditions when no match is found
@@ -1107,6 +1119,80 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related Cuentabancariamovimiento object
+     *
+     * @param   Cuentabancariamovimiento|PropelObjectCollection $cuentabancariamovimiento  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByCuentabancariamovimiento($cuentabancariamovimiento, $comparison = null)
+    {
+        if ($cuentabancariamovimiento instanceof Cuentabancariamovimiento) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $cuentabancariamovimiento->getIdempleado(), $comparison);
+        } elseif ($cuentabancariamovimiento instanceof PropelObjectCollection) {
+            return $this
+                ->useCuentabancariamovimientoQuery()
+                ->filterByPrimaryKeys($cuentabancariamovimiento->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCuentabancariamovimiento() only accepts arguments of type Cuentabancariamovimiento or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Cuentabancariamovimiento relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinCuentabancariamovimiento($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Cuentabancariamovimiento');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Cuentabancariamovimiento');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Cuentabancariamovimiento relation Cuentabancariamovimiento object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   CuentabancariamovimientoQuery A secondary query class using the current class as primary query
+     */
+    public function useCuentabancariamovimientoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCuentabancariamovimiento($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Cuentabancariamovimiento', 'CuentabancariamovimientoQuery');
+    }
+
+    /**
      * Filter the query by a related Sucursalempleado object
      *
      * @param   Sucursalempleado|PropelObjectCollection $sucursalempleado  the related object to use as filter
@@ -1178,6 +1264,154 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
         return $this
             ->joinSucursalempleado($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Sucursalempleado', 'SucursalempleadoQuery');
+    }
+
+    /**
+     * Filter the query by a related Transferencia object
+     *
+     * @param   Transferencia|PropelObjectCollection $transferencia  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByTransferenciaRelatedByIdempleadocreador($transferencia, $comparison = null)
+    {
+        if ($transferencia instanceof Transferencia) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $transferencia->getIdempleadocreador(), $comparison);
+        } elseif ($transferencia instanceof PropelObjectCollection) {
+            return $this
+                ->useTransferenciaRelatedByIdempleadocreadorQuery()
+                ->filterByPrimaryKeys($transferencia->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTransferenciaRelatedByIdempleadocreador() only accepts arguments of type Transferencia or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the TransferenciaRelatedByIdempleadocreador relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinTransferenciaRelatedByIdempleadocreador($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('TransferenciaRelatedByIdempleadocreador');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'TransferenciaRelatedByIdempleadocreador');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the TransferenciaRelatedByIdempleadocreador relation Transferencia object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   TransferenciaQuery A secondary query class using the current class as primary query
+     */
+    public function useTransferenciaRelatedByIdempleadocreadorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinTransferenciaRelatedByIdempleadocreador($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'TransferenciaRelatedByIdempleadocreador', 'TransferenciaQuery');
+    }
+
+    /**
+     * Filter the query by a related Transferencia object
+     *
+     * @param   Transferencia|PropelObjectCollection $transferencia  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByTransferenciaRelatedByIdempleadoreceptor($transferencia, $comparison = null)
+    {
+        if ($transferencia instanceof Transferencia) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $transferencia->getIdempleadoreceptor(), $comparison);
+        } elseif ($transferencia instanceof PropelObjectCollection) {
+            return $this
+                ->useTransferenciaRelatedByIdempleadoreceptorQuery()
+                ->filterByPrimaryKeys($transferencia->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTransferenciaRelatedByIdempleadoreceptor() only accepts arguments of type Transferencia or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the TransferenciaRelatedByIdempleadoreceptor relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinTransferenciaRelatedByIdempleadoreceptor($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('TransferenciaRelatedByIdempleadoreceptor');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'TransferenciaRelatedByIdempleadoreceptor');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the TransferenciaRelatedByIdempleadoreceptor relation Transferencia object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   TransferenciaQuery A secondary query class using the current class as primary query
+     */
+    public function useTransferenciaRelatedByIdempleadoreceptorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinTransferenciaRelatedByIdempleadoreceptor($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'TransferenciaRelatedByIdempleadoreceptor', 'TransferenciaQuery');
     }
 
     /**

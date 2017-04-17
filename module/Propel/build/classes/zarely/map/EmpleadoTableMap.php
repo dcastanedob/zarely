@@ -70,7 +70,10 @@ class EmpleadoTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Rol', 'Rol', RelationMap::MANY_TO_ONE, array('idrol' => 'idrol', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Cuentabancariamovimiento', 'Cuentabancariamovimiento', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Cuentabancariamovimientos');
         $this->addRelation('Sucursalempleado', 'Sucursalempleado', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Sucursalempleados');
+        $this->addRelation('TransferenciaRelatedByIdempleadocreador', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadocreador', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleadocreador');
+        $this->addRelation('TransferenciaRelatedByIdempleadoreceptor', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadoreceptor', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleadoreceptor');
     } // buildRelations()
 
 } // EmpleadoTableMap

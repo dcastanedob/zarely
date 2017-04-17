@@ -65,8 +65,9 @@
     <column name="idcompra" phpName="Idcompra" type="INTEGER" required="true"/>
     <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
     <column name="compradetalle_cantidad" phpName="CompradetalleCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
-    <column name="compradetalle_preciounitario" phpName="CompradetallePreciounitario" type="DECIMAL" size="10" scale="2" required="false"/>
-    <column name="compradetalle_subtotal" phpName="CompradetalleSubtotal" type="DECIMAL" size="10" scale="2" required="false"/>
+    <column name="compradetalle_preciounitario" phpName="CompradetallePreciounitario" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="compradetalle_subtotal" phpName="CompradetalleSubtotal" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="compradetalle_costo" phpName="CompradetalleCosto" type="VARCHAR" size="45" required="true"/>
     <foreign-key foreignTable="compra" name="idcompra_compradetalle" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idcompra" foreign="idcompra"/>
     </foreign-key>
@@ -95,6 +96,71 @@
     <column name="cuentabancaria_banco" phpName="CuentabancariaBanco" type="VARCHAR" size="255" required="true"/>
     <column name="cuentabancaria_cuenta" phpName="CuentabancariaCuenta" type="VARCHAR" size="45" required="true"/>
     <column name="cuentabancaria_saldo" phpName="CuentabancariaSaldo" type="DECIMAL" size="15" scale="5" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="cuentabancariamovimiento" phpName="Cuentabancariamovimiento" idMethod="native">
+    <column name="idcuentabancariamovimiento" phpName="Idcuentabancariamovimiento" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idcuentabancaria" phpName="Idcuentabancaria" type="INTEGER" required="true"/>
+    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
+    <column name="cuentabancariamovimiento_proceso" phpName="CuentabancariamovimientoProceso" type="CHAR" sqlType="enum('compra','venta')" required="true"/>
+    <column name="idproceso" phpName="Idproceso" type="INTEGER" required="true"/>
+    <column name="cuentabancariamovimiento_cantidad" phpName="CuentabancariamovimientoCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="cuentabancariamovimiento_comprobante" phpName="CuentabancariamovimientoComprobante" type="LONGVARCHAR" required="false"/>
+    <column name="cuentabancariamovimiento_fechamovimiento" phpName="CuentabancariamovimientoFechamovimiento" type="TIMESTAMP" required="true"/>
+    <column name="cuentabancariamovimiento_fechacreacion" phpName="CuentabancariamovimientoFechacreacion" type="TIMESTAMP" required="true"/>
+    <column name="cuentabancariamovimiento_balance" phpName="CuentabancariamovimientoBalance" type="DECIMAL" size="10" scale="2" required="true"/>
+    <foreign-key foreignTable="cuentabancaria" name="idcuentabancaria_cuentabancariamovimiento" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idcuentabancaria" foreign="idcuentabancaria"/>
+    </foreign-key>
+    <foreign-key foreignTable="empleado" name="idempleado_cuentabancariamovimiento" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleado" foreign="idempleado"/>
+    </foreign-key>
+    <index name="idcuentabancaria">
+      <index-column name="idcuentabancaria"/>
+    </index>
+    <index name="idempleado">
+      <index-column name="idempleado"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="descuento" phpName="Descuento" idMethod="native">
+    <column name="iddescuento" phpName="Iddescuento" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="descuento_nombre" phpName="DescuentoNombre" type="LONGVARCHAR" required="true"/>
+    <column name="descuento_fechainicio" phpName="DescuentoFechainicio" type="DATE" required="true"/>
+    <column name="descuento_fechafin" phpName="DescuentoFechafin" type="DATE" required="true"/>
+    <column name="descuento_estatus" phpName="DescuentoEstatus" type="BOOLEAN" size="1" required="true"/>
+    <column name="descuento_tipo" phpName="DescuentoTipo" type="CHAR" sqlType="enum('porcentaje','cantidad')" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="descuentodetalle" phpName="Descuentodetalle" idMethod="native">
+    <column name="iddescuentodetalle" phpName="Iddescuentodetalle" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="iddescuento" phpName="Iddescuento" type="INTEGER" required="true"/>
+    <column name="idproducto" phpName="Idproducto" type="INTEGER" required="false"/>
+    <column name="idmarca" phpName="Idmarca" type="INTEGER" required="false"/>
+    <foreign-key foreignTable="descuento" name="iddescuento_descuentodetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="iddescuento" foreign="iddescuento"/>
+    </foreign-key>
+    <foreign-key foreignTable="marca" name="idmarca_descuentodetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idmarca" foreign="idmarca"/>
+    </foreign-key>
+    <foreign-key foreignTable="producto" name="idproducto_descuentodetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproducto" foreign="idproducto"/>
+    </foreign-key>
+    <index name="iddescuento">
+      <index-column name="iddescuento"/>
+    </index>
+    <index name="idproducto">
+      <index-column name="idproducto"/>
+    </index>
+    <index name="idmarca">
+      <index-column name="idmarca"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -285,7 +351,7 @@
     <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
     <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
     <column name="pedidomayoristadetalle_cantidad" phpName="PedidomayoristadetalleCantidad" type="INTEGER" required="true"/>
-    <column name="pedidomayoristadetalle_estatus" phpName="PedidomayoristadetalleEstatus" type="CHAR" sqlType="enum('pendiente','solicitado','transito','completado')" required="true"/>
+    <column name="pedidomayoristadetalle_estatus" phpName="PedidomayoristadetalleEstatus" type="CHAR" sqlType="enum('pendiente','solicitado','transito','completado','cancelado')" required="true"/>
     <column name="pedidomayoristadetalle_fecha" phpName="PedidomayoristadetalleFecha" type="DATE" required="true"/>
     <foreign-key foreignTable="pedidomayorista" name="idpedidomayorista_pedidomayoristadetalle" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idpedidomayorista" foreign="idpedidomayorista"/>
@@ -324,6 +390,7 @@
     <column name="producto_maximo" phpName="ProductoMaximo" type="INTEGER" required="false"/>
     <column name="idtipocalzado" phpName="Idtipocalzado" type="INTEGER" required="true"/>
     <column name="producto_descripcion" phpName="ProductoDescripcion" type="VARCHAR" size="500" required="false"/>
+    <column name="producto_costo" phpName="ProductoCosto" type="DECIMAL" size="10" scale="5" required="true"/>
     <foreign-key foreignTable="marca" name="idmarca_producto" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idmarca" foreign="idmarca"/>
     </foreign-key>
@@ -423,6 +490,7 @@
     <column name="productosucursal_precioventa" phpName="ProductosucursalPrecioventa" type="DECIMAL" size="10" scale="5" required="true"/>
     <column name="productosucursal_preciomayoreo" phpName="ProductosucursalPreciomayoreo" type="DECIMAL" size="10" scale="5" required="true"/>
     <column name="productosucursal_estatus" phpName="ProductosucursalEstatus" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
+    <column name="productosucursal_costo" phpName="ProductosucursalCosto" type="DECIMAL" size="10" scale="5" required="true"/>
     <foreign-key foreignTable="productovariante" name="idproductovariante_productosucursal" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idproductovariante" foreign="idproductovariante"/>
     </foreign-key>
@@ -485,6 +553,59 @@
     </index>
     <index name="idproducto_productovariante_idx">
       <index-column name="idproducto"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="promocion" phpName="Promocion" idMethod="native">
+    <column name="idpromocion" phpName="Idpromocion" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="promocion_nombre" phpName="PromocionNombre" type="LONGVARCHAR" required="true"/>
+    <column name="promocion_fechainicio" phpName="PromocionFechainicio" type="DATE" required="true"/>
+    <column name="promocion_fechafin" phpName="PromocionFechafin" type="DATE" required="true"/>
+    <column name="promocion_estatus" phpName="PromocionEstatus" type="BOOLEAN" size="1" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="promociondetalle" phpName="Promociondetalle" idMethod="native">
+    <column name="idpromociondetalle" phpName="Idpromociondetalle" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idpromocion" phpName="Idpromocion" type="INTEGER" required="true"/>
+    <column name="idmarcaoperando" phpName="Idmarcaoperando" type="INTEGER" required="true"/>
+    <column name="idproductooperando" phpName="Idproductooperando" type="INTEGER" required="true"/>
+    <column name="promociondetalle_cantidadoperando" phpName="PromociondetalleCantidadoperando" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="idmarcaresultado" phpName="Idmarcaresultado" type="INTEGER" required="true"/>
+    <column name="idproductoresultado" phpName="Idproductoresultado" type="INTEGER" required="true"/>
+    <column name="promociondetalle_cantidadresultado" phpName="PromociondetalleCantidadresultado" type="DECIMAL" size="10" scale="2" required="true"/>
+    <foreign-key foreignTable="marca" name="idmarcaoperando_promociondetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idmarcaoperando" foreign="idmarca"/>
+    </foreign-key>
+    <foreign-key foreignTable="marca" name="idmarcaresultado_promociondetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idmarcaresultado" foreign="idmarca"/>
+    </foreign-key>
+    <foreign-key foreignTable="producto" name="idproductooperando_promociondetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductooperando" foreign="idproducto"/>
+    </foreign-key>
+    <foreign-key foreignTable="producto" name="idproductoresultado_promociondetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductoresultado" foreign="idproducto"/>
+    </foreign-key>
+    <foreign-key foreignTable="promocion" name="idpromocion_promociondetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idpromocion" foreign="idpromocion"/>
+    </foreign-key>
+    <index name="idpromocion">
+      <index-column name="idpromocion"/>
+    </index>
+    <index name="idmarcaoperando">
+      <index-column name="idmarcaoperando"/>
+    </index>
+    <index name="idproductooperando">
+      <index-column name="idproductooperando"/>
+    </index>
+    <index name="idmarcaresultado">
+      <index-column name="idmarcaresultado"/>
+    </index>
+    <index name="idproductoresultado">
+      <index-column name="idproductoresultado"/>
     </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
@@ -641,6 +762,67 @@
     <column name="idtipocalzado" phpName="Idtipocalzado" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="tipocalzado_nombre" phpName="TipocalzadoNombre" type="VARCHAR" size="45" required="true"/>
     <column name="tipocalzado_descripcion" phpName="TipocalzadoDescripcion" type="LONGVARCHAR" required="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="transferencia" phpName="Transferencia" idMethod="native">
+    <column name="idtransferencia" phpName="Idtransferencia" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idsucursalorigen" phpName="Idsucursalorigen" type="INTEGER" required="true"/>
+    <column name="idsucursaldestino" phpName="Idsucursaldestino" type="INTEGER" required="true"/>
+    <column name="transferencia_fecha" phpName="TransferenciaFecha" type="TIMESTAMP" required="true"/>
+    <column name="transferencia_estatus" phpName="TransferenciaEstatus" type="CHAR" sqlType="enum('creada','aceptada','rechazada')" required="true"/>
+    <column name="idempleadocreador" phpName="Idempleadocreador" type="INTEGER" required="true"/>
+    <column name="idempleadoreceptor" phpName="Idempleadoreceptor" type="INTEGER" required="false"/>
+    <column name="transferencia_nota" phpName="TransferenciaNota" type="VARCHAR" size="45" required="false"/>
+    <column name="transferencia_fecharecepcion" phpName="TransferenciaFecharecepcion" type="TIMESTAMP" required="false"/>
+    <foreign-key foreignTable="empleado" name="idempleadocreador_transferencia" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleadocreador" foreign="idempleado"/>
+    </foreign-key>
+    <foreign-key foreignTable="empleado" name="idempleadoreceptor_transferencia" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleadoreceptor" foreign="idempleado"/>
+    </foreign-key>
+    <foreign-key foreignTable="sucursal" name="idsucursaldestino_transferencia" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idsucursaldestino" foreign="idsucursal"/>
+    </foreign-key>
+    <foreign-key foreignTable="sucursal" name="idsucursalorigen_transferencia" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idsucursalorigen" foreign="idsucursal"/>
+    </foreign-key>
+    <index name="idsucursalorigen">
+      <index-column name="idsucursalorigen"/>
+    </index>
+    <index name="idsucursaldestino">
+      <index-column name="idsucursaldestino"/>
+    </index>
+    <index name="idempleadocreador">
+      <index-column name="idempleadocreador"/>
+    </index>
+    <index name="idempleadoreceptor">
+      <index-column name="idempleadoreceptor"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="transferenciadetalle" phpName="Transferenciadetalle" idMethod="native">
+    <column name="idtransferenciadetalle" phpName="Idtransferenciadetalle" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idtransferencia" phpName="Idtransferencia" type="INTEGER" required="true"/>
+    <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
+    <column name="transferenciadetalle_cantidad" phpName="TransferenciadetalleCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="transferenciadetalle_preciounitario" phpName="TransferenciadetallePreciounitario" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="transferenciadetalle_subtotal" phpName="TransferenciadetalleSubtotal" type="DECIMAL" size="10" scale="2" required="true"/>
+    <foreign-key foreignTable="productovariante" name="idproductovariante_transferenciadetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproductovariante" foreign="idproductovariante"/>
+    </foreign-key>
+    <foreign-key foreignTable="transferencia" name="idtransferencia_transferenciadetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idtransferencia" foreign="idtransferencia"/>
+    </foreign-key>
+    <index name="idtransferencia">
+      <index-column name="idtransferencia"/>
+    </index>
+    <index name="idproductovariante">
+      <index-column name="idproductovariante"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

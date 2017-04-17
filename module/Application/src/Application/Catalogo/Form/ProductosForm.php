@@ -87,6 +87,16 @@ class ProductosForm extends Form
         ));
 
         $this->add(array(
+            'name' => 'producto_costo',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => true,
+                'class' => 'form-control infput-thick',
+                'tabindex' => 12,
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'producto_comisionable',
             'type' => 'Select',
             'options' => array(

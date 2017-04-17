@@ -360,12 +360,21 @@ abstract class BaseMarcaPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in DescuentodetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        DescuentodetallePeer::clearInstancePool();
         // Invalidate objects in MarcatallajePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         MarcatallajePeer::clearInstancePool();
         // Invalidate objects in ProductoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductoPeer::clearInstancePool();
+        // Invalidate objects in PromociondetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PromociondetallePeer::clearInstancePool();
+        // Invalidate objects in PromociondetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PromociondetallePeer::clearInstancePool();
         // Invalidate objects in ProveedormarcaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProveedormarcaPeer::clearInstancePool();
@@ -703,6 +712,12 @@ abstract class BaseMarcaPeer
         foreach ($objects as $obj) {
 
 
+            // delete related Descuentodetalle objects
+            $criteria = new Criteria(DescuentodetallePeer::DATABASE_NAME);
+
+            $criteria->add(DescuentodetallePeer::IDMARCA, $obj->getIdmarca());
+            $affectedRows += DescuentodetallePeer::doDelete($criteria, $con);
+
             // delete related Marcatallaje objects
             $criteria = new Criteria(MarcatallajePeer::DATABASE_NAME);
 
@@ -714,6 +729,18 @@ abstract class BaseMarcaPeer
 
             $criteria->add(ProductoPeer::IDMARCA, $obj->getIdmarca());
             $affectedRows += ProductoPeer::doDelete($criteria, $con);
+
+            // delete related Promociondetalle objects
+            $criteria = new Criteria(PromociondetallePeer::DATABASE_NAME);
+
+            $criteria->add(PromociondetallePeer::IDMARCAOPERANDO, $obj->getIdmarca());
+            $affectedRows += PromociondetallePeer::doDelete($criteria, $con);
+
+            // delete related Promociondetalle objects
+            $criteria = new Criteria(PromociondetallePeer::DATABASE_NAME);
+
+            $criteria->add(PromociondetallePeer::IDMARCARESULTADO, $obj->getIdmarca());
+            $affectedRows += PromociondetallePeer::doDelete($criteria, $con);
 
             // delete related Proveedormarca objects
             $criteria = new Criteria(ProveedormarcaPeer::DATABASE_NAME);

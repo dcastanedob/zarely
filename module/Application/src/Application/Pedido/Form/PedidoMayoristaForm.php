@@ -69,6 +69,7 @@ class PedidoMayoristaForm extends Form
                     'solicitado' => 'Solicitado',
                     'completado' => 'Completado',
                     'transito' => 'En tránsito',
+                    'cancelado' => 'Cancelado',
 
                 ),
             ),
@@ -107,7 +108,7 @@ class PedidoMayoristaForm extends Form
             'value_options' => $productosvariante_array,   
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => '',
                 
 

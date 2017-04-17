@@ -217,12 +217,45 @@ class CompraGeneralController extends AbstractActionController
 
             $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
 
+            $precios = [];
+            $variantes = [];
+            $costos = [];
             foreach ($post_data as $key => $value){
                 if(\CompraPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
-            }
 
+                if(substr( $key, 0, 6 ) === "precio")
+                {
+                    $temp = array(
+                        "variante" => str_replace("preciounitario", "", $key),
+                        "valor" => $value
+                    );
+                    array_push($precios, $temp);
+                }
+
+                if(substr( $key, 0, 5 ) === "costo")
+                {
+                    $temp = array(
+                        "variante" => str_replace("costounitario", "", $key),
+                        "valor" => $value
+                    );
+                    array_push($costos, $temp);
+                }
+
+                if(substr( $key, 0, 8 ) === "cantidad")
+                {
+                    /*if($value != 0)
+                    {*/
+                        $temp = array(
+                            "variante" => str_replace("cantidad", "", $key),
+                            "valor" => $value
+                        );
+                        array_push($variantes, $temp);
+                    //}
+                    
+                }
+            }
             $entity->save();
 
             if(isset($post_files['compra_comprobante'])){
@@ -240,22 +273,57 @@ class CompraGeneralController extends AbstractActionController
 
             $entity->save();
             
+            
             $total = 0;
+            $i = 0;
+            foreach ($variantes as $variante) {
+                $compra_detalle = new \Compradetalle();
+                $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+                //encontrar a que costo le corresponde
+                foreach ($costos as $key=>$costo) {
 
-            for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
-            {
-                $compradetalle = new \Compradetalle();
-                $compradetalle->setIdcompra($entity->getIdcompra())
-                              ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                              ->setCompradetalleCantidad($post_data['cantidad'][$variante])
-                              ->setCompradetallePreciounitario($post_data['preciounitario'][$variante])
-                              ->setCompradetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
-                              ->save();
-                $total+= $compradetalle->getCompradetalleSubtotal();
+                    //obtenemos la variante 
+                    $productovariante = \ProductovarianteQuery::create()->findPk($costo["variante"]);
 
+                    if($productovariante->getIdproducto() == $varianteTemp->getIdproducto() && $productovariante->getIdproductocolor() == $varianteTemp->getIdproductocolor() && $productovariante->getIdproductomaterial() == $varianteTemp->getIdproductomaterial())
+                        {
+
+
+                        //obtenemos el rango de los tallajes
+                        $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($productovariante->getIdproducto())->find();
+
+                        $boolean = false;
+                        foreach ($tallajes->toArray() as $tallaje) {
+                            $rango = $tallaje["Tallajerango"];
+                            $inf = explode(" - ", $rango);
+
+
+                            //verificamos que este en el rango del costo asociado
+                            if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
+                            {
+                                $compra_detalle->setIdcompra($entity->getIdcompra())
+                                              ->setIdproductovariante($variante["variante"])
+                                              ->setCompradetalleCantidad($variante["valor"])
+                                              ->setCompradetalleCosto($costo["valor"])
+                                              ->setCompradetallePreciounitario($precios[$i]['valor'])
+                                              ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($costo["valor"])))->save();
+
+                                $total+= $compra_detalle->getCompradetalleSubtotal();
+                                $boolean = true;
+                                break;
+                            }
+                        }
+
+                        $entity->setCompraTotal($total);
+                        $entity->save();
+
+                        //unset($costos[$key]);
+                        if($boolean)
+                            break;
+                    }
+                    $i++;
+                }
             }
-            $entity->setCompraTotal($total);
-            $entity->save();
 
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
@@ -274,7 +342,8 @@ class CompraGeneralController extends AbstractActionController
 
 
         //traer los productosvariantes
-        $variantes = \ProductovarianteQuery::create()->find();
+        $variantes = \ProductovarianteQuery::create()->groupByIdproductomaterial()->groupByIdproductocolor()->find();
+
         $productosvariante_array = array();
 
         foreach ($variantes as $value){
@@ -285,7 +354,7 @@ class CompraGeneralController extends AbstractActionController
             $material = $material->getMaterial();
 
 
-            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre().' / '. $value->getProductovarianteTalla().'';
+            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre();
 
             $productosvariante_array[$value->getIdproductovariante()] = $information;
         }
@@ -334,28 +403,48 @@ class CompraGeneralController extends AbstractActionController
 
                 $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
                 
+                $precios = [];
+                $variantes = [];
+                $costos = [];
                 foreach ($post_data as $key => $value){
                     if(\CompraPeer::getTableMap()->hasColumn($key)){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
+
+                    if(substr( $key, 0, 6 ) === "precio")
+                    {
+                        $temp = array(
+                            "variante" => str_replace("preciounitario", "", $key),
+                            "valor" => $value
+                        );
+                        array_push($precios, $temp);
+                    }
+
+                    if(substr( $key, 0, 5 ) === "costo")
+                    {
+                        $temp = array(
+                            "variante" => str_replace("costounitario", "", $key),
+                            "valor" => $value
+                        );
+                        array_push($costos, $temp);
+                    }
+
+                    if(substr( $key, 0, 8 ) === "cantidad")
+                    {
+                        /*if($value != 0)
+                        {*/
+                            $temp = array(
+                                "variante" => str_replace("cantidad", "", $key),
+                                "valor" => $value
+                            );
+                            array_push($variantes, $temp);
+                        //}
+                        
+                    }
                 }
 
                 $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
-                //$entity->getProductotallajes()->delete();
-
-                $total = 0;
-                for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
-                {
-                    $compradetalle = new \Compradetalle();
-                    $compradetalle->setIdcompra($entity->getIdcompra())
-                                  ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                                  ->setCompradetalleCantidad($post_data['cantidad'][$variante])
-                                  ->setCompradetallePreciounitario($post_data['preciounitario'][$variante])
-                                  ->setCompradetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
-                                  ->save();
-                    $total+= $compradetalle->getCompradetalleSubtotal();
-
-                }
+                $entity->save();
 
                 if(isset($post_files['compra_comprobante'])){
 
@@ -370,8 +459,56 @@ class CompraGeneralController extends AbstractActionController
                     }
                 }
 
-                $entity->setCompraTotal($total);
-                $entity->save();
+                $total = 0;
+                $i = 0;
+                foreach ($variantes as $variante) {
+                    $compra_detalle = new \Compradetalle();
+                    $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+                    //encontrar a que costo le corresponde
+                    foreach ($costos as $key=>$costo) {
+
+                        //obtenemos la variante 
+                        $productovariante = \ProductovarianteQuery::create()->findPk($costo["variante"]);
+
+                        if($productovariante->getIdproducto() == $varianteTemp->getIdproducto() && $productovariante->getIdproductocolor() == $varianteTemp->getIdproductocolor() && $productovariante->getIdproductomaterial() == $varianteTemp->getIdproductomaterial())
+                            {
+
+
+                            //obtenemos el rango de los tallajes
+                            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($productovariante->getIdproducto())->find();
+
+                            $boolean = false;
+                            foreach ($tallajes->toArray() as $tallaje) {
+                                $rango = $tallaje["Tallajerango"];
+                                $inf = explode(" - ", $rango);
+
+
+                                //verificamos que este en el rango del costo asociado
+                                if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
+                                {
+                                    $compra_detalle->setIdcompra($entity->getIdcompra())
+                                                  ->setIdproductovariante($variante["variante"])
+                                                  ->setCompradetalleCantidad($variante["valor"])
+                                                  ->setCompradetalleCosto($costo["valor"])
+                                                  ->setCompradetallePreciounitario($precios[$i]['valor'])
+                                                  ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($costo["valor"])))->save();
+
+                                    $total+= $compra_detalle->getCompradetalleSubtotal();
+                                    $boolean = true;
+                                    break;
+                                }
+                            }
+
+                            $entity->setCompraTotal($total);
+                            $entity->save();
+
+                            //unset($costos[$key]);
+                            if($boolean)
+                                break;
+                        }
+                        $i++;
+                    }
+                }
 
 
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
@@ -389,7 +526,8 @@ class CompraGeneralController extends AbstractActionController
 
 
             //traer los productosvariantes
-            $variantes = \ProductovarianteQuery::create()->find();
+            $variantes = \ProductovarianteQuery::create()->groupByIdproductomaterial()->groupByIdproductocolor()->find();
+
             $productosvariante_array = array();
 
             foreach ($variantes as $value){
@@ -400,7 +538,7 @@ class CompraGeneralController extends AbstractActionController
                 $material = $material->getMaterial();
 
 
-                $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre().' / '. $value->getProductovarianteTalla().'';
+                $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre();
 
                 $productosvariante_array[$value->getIdproductovariante()] = $information;
             }
@@ -449,6 +587,7 @@ class CompraGeneralController extends AbstractActionController
             'selects' => \CompradetalleQuery::create()->select('idproductovariante')->filterByIdcompra($data['idcompra'])->find()->toArray(),
             'cantidad' =>\CompradetalleQuery::create()->select('compradetalle_cantidad')->filterByIdcompra($data['idcompra'])->find()->toArray(),
             'precio' =>\CompradetalleQuery::create()->select('compradetalle_preciounitario')->filterByIdcompra($data['idcompra'])->find()->toArray(),
+            'costo' =>\CompradetalleQuery::create()->select('compradetalle_costo')->filterByIdcompra($data['idcompra'])->find()->toArray(),
         ];
 
         return $information;
@@ -522,6 +661,123 @@ class CompraGeneralController extends AbstractActionController
 
     } 
     
+    public function initializetableAction(){
+
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+            
+            //obtenemos la variante 
+            $variante = \ProductovarianteQuery::create()->findPk($post_data['id']);
+
+            //obtenemos el rango de los tallajes
+            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($variante->getIdproducto())->find();
+
+            //ovtenemos combinacion color/material
+            $details = [];
+            $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
+            $details[$indice] = [];
+
+            $nombreProducto = $variante->getProducto()->getProductoModelo();
+
+            foreach ($tallajes->toArray() as $tallaje) {
+                //obtenemos el rango del tallaje
+                $rango = $tallaje["Tallajerango"];
+                $inf = explode(" - ", $rango);
+                $details[$indice][$tallaje['Idproductotallaje']] = [];
+
+                //iteramos desde el limite superior hasta el inferior 
+                for ($i = $inf[0]; $i<=$inf[1];) {
+
+                    //obtenemos la variante correspondiente a lo solicitado
+                    $productoVariante = \ProductovarianteQuery::create()->filterByIdproducto($variante->getIdproducto())->filterByIdproductomaterial($variante->getIdproductomaterial())->filterByIdproductocolor($variante->getIdproductocolor())->filterByProductovarianteTalla($i)->findOne();
+                    if($productoVariante != null)
+                    {
+                        $productoVariante = $productoVariante->toArray();
+                        $value = array(
+                                    'talla' => $productoVariante['ProductovarianteTalla'],
+                                    'variante' => $productoVariante['Idproductovariante'],
+                                    'modelo' => $nombreProducto,
+                                 );
+
+                        array_push($details[$indice][$tallaje['Idproductotallaje']], $value);
+                    }
+                    $i+=0.5;
+                }
+
+            }
+
+            
+
+            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
+
+            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
+        }
+
+    } 
+
+    public function initializetablegeneralAction(){
+
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+            
+            //obtenemos la variante 
+            $variante = \ProductovarianteQuery::create()->findPk($post_data['id']);
+
+            //obtenemos el rango de los tallajes
+            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($variante->getIdproducto())->find();
+
+            //ovtenemos combinacion color/material
+            $details = [];
+            $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
+            $details[$indice] = [];
+
+            $nombreProducto = $variante->getProducto()->getProductoModelo();
+
+            foreach ($tallajes->toArray() as $tallaje) {
+                //obtenemos el rango del tallaje
+                $rango = $tallaje["Tallajerango"];
+                $inf = explode(" - ", $rango);
+                
+
+                //Verificamos que pertenezca al tallaje
+                if($variante->getProductovarianteTalla() <= $inf[1] && $variante->getProductovarianteTalla() >= $inf[0])
+                {
+                    $details[$indice][$tallaje['Idproductotallaje']] = [];
+
+                    //iteramos desde el limite superior hasta el inferior 
+                    for ($i = $inf[0]; $i<=$inf[1];) {
+
+                        //obtenemos la variante correspondiente a lo solicitado
+                        $productoVariante = \ProductovarianteQuery::create()->filterByIdproducto($variante->getIdproducto())->filterByIdproductomaterial($variante->getIdproductomaterial())->filterByIdproductocolor($variante->getIdproductocolor())->filterByProductovarianteTalla($i)->findOne();
+                        if($productoVariante != null)
+                        {
+                            $productoVariante = $productoVariante->toArray();
+                            $value = array(
+                                        'talla' => $productoVariante['ProductovarianteTalla'],
+                                        'variante' => $productoVariante['Idproductovariante'],
+                                        'modelo' => $nombreProducto,
+                                     );
+
+                            array_push($details[$indice][$tallaje['Idproductotallaje']], $value);
+                        }
+                        $i+=0.5;
+                    }
+                }
+
+            }
+
+            
+
+            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
+
+            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
+        }
+
+    } 
 
     public function eliminarAction(){
         $request = $this->getRequest();

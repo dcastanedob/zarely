@@ -388,6 +388,17 @@ return array(
                 ),
             ),
 
+            'transferencias' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/transferencias[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Transferencia\Controller\Transferencia',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
 
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
@@ -493,6 +504,7 @@ return array(
             'Application\FlujoEfectivo\Controller\CuentaPorCobrar' => 'Application\FlujoEfectivo\Controller\CuentaPorCobrarController',
 
             'Application\FlujoEfectivo\Controller\CuentaPorPagar' => 'Application\FlujoEfectivo\Controller\CuentaPorPagarController',
+            'Application\Transferencia\Controller\Transferencia' => 'Application\Transferencia\Controller\TransferenciaController',
 
 
         ),

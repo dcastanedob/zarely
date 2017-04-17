@@ -24,13 +24,13 @@ abstract class BaseCompradetallePeer
     const TM_CLASS = 'CompradetalleTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the idcompradetalle field */
     const IDCOMPRADETALLE = 'compradetalle.idcompradetalle';
@@ -49,6 +49,9 @@ abstract class BaseCompradetallePeer
 
     /** the column name for the compradetalle_subtotal field */
     const COMPRADETALLE_SUBTOTAL = 'compradetalle.compradetalle_subtotal';
+
+    /** the column name for the compradetalle_costo field */
+    const COMPRADETALLE_COSTO = 'compradetalle.compradetalle_costo';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -69,12 +72,12 @@ abstract class BaseCompradetallePeer
      * e.g. CompradetallePeer::$fieldNames[CompradetallePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcompradetalle', 'Idcompra', 'Idproductovariante', 'CompradetalleCantidad', 'CompradetallePreciounitario', 'CompradetalleSubtotal', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcompradetalle', 'idcompra', 'idproductovariante', 'compradetalleCantidad', 'compradetallePreciounitario', 'compradetalleSubtotal', ),
-        BasePeer::TYPE_COLNAME => array (CompradetallePeer::IDCOMPRADETALLE, CompradetallePeer::IDCOMPRA, CompradetallePeer::IDPRODUCTOVARIANTE, CompradetallePeer::COMPRADETALLE_CANTIDAD, CompradetallePeer::COMPRADETALLE_PRECIOUNITARIO, CompradetallePeer::COMPRADETALLE_SUBTOTAL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCOMPRADETALLE', 'IDCOMPRA', 'IDPRODUCTOVARIANTE', 'COMPRADETALLE_CANTIDAD', 'COMPRADETALLE_PRECIOUNITARIO', 'COMPRADETALLE_SUBTOTAL', ),
-        BasePeer::TYPE_FIELDNAME => array ('idcompradetalle', 'idcompra', 'idproductovariante', 'compradetalle_cantidad', 'compradetalle_preciounitario', 'compradetalle_subtotal', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Idcompradetalle', 'Idcompra', 'Idproductovariante', 'CompradetalleCantidad', 'CompradetallePreciounitario', 'CompradetalleSubtotal', 'CompradetalleCosto', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcompradetalle', 'idcompra', 'idproductovariante', 'compradetalleCantidad', 'compradetallePreciounitario', 'compradetalleSubtotal', 'compradetalleCosto', ),
+        BasePeer::TYPE_COLNAME => array (CompradetallePeer::IDCOMPRADETALLE, CompradetallePeer::IDCOMPRA, CompradetallePeer::IDPRODUCTOVARIANTE, CompradetallePeer::COMPRADETALLE_CANTIDAD, CompradetallePeer::COMPRADETALLE_PRECIOUNITARIO, CompradetallePeer::COMPRADETALLE_SUBTOTAL, CompradetallePeer::COMPRADETALLE_COSTO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCOMPRADETALLE', 'IDCOMPRA', 'IDPRODUCTOVARIANTE', 'COMPRADETALLE_CANTIDAD', 'COMPRADETALLE_PRECIOUNITARIO', 'COMPRADETALLE_SUBTOTAL', 'COMPRADETALLE_COSTO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idcompradetalle', 'idcompra', 'idproductovariante', 'compradetalle_cantidad', 'compradetalle_preciounitario', 'compradetalle_subtotal', 'compradetalle_costo', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -84,12 +87,12 @@ abstract class BaseCompradetallePeer
      * e.g. CompradetallePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcompradetalle' => 0, 'Idcompra' => 1, 'Idproductovariante' => 2, 'CompradetalleCantidad' => 3, 'CompradetallePreciounitario' => 4, 'CompradetalleSubtotal' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcompradetalle' => 0, 'idcompra' => 1, 'idproductovariante' => 2, 'compradetalleCantidad' => 3, 'compradetallePreciounitario' => 4, 'compradetalleSubtotal' => 5, ),
-        BasePeer::TYPE_COLNAME => array (CompradetallePeer::IDCOMPRADETALLE => 0, CompradetallePeer::IDCOMPRA => 1, CompradetallePeer::IDPRODUCTOVARIANTE => 2, CompradetallePeer::COMPRADETALLE_CANTIDAD => 3, CompradetallePeer::COMPRADETALLE_PRECIOUNITARIO => 4, CompradetallePeer::COMPRADETALLE_SUBTOTAL => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCOMPRADETALLE' => 0, 'IDCOMPRA' => 1, 'IDPRODUCTOVARIANTE' => 2, 'COMPRADETALLE_CANTIDAD' => 3, 'COMPRADETALLE_PRECIOUNITARIO' => 4, 'COMPRADETALLE_SUBTOTAL' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('idcompradetalle' => 0, 'idcompra' => 1, 'idproductovariante' => 2, 'compradetalle_cantidad' => 3, 'compradetalle_preciounitario' => 4, 'compradetalle_subtotal' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Idcompradetalle' => 0, 'Idcompra' => 1, 'Idproductovariante' => 2, 'CompradetalleCantidad' => 3, 'CompradetallePreciounitario' => 4, 'CompradetalleSubtotal' => 5, 'CompradetalleCosto' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcompradetalle' => 0, 'idcompra' => 1, 'idproductovariante' => 2, 'compradetalleCantidad' => 3, 'compradetallePreciounitario' => 4, 'compradetalleSubtotal' => 5, 'compradetalleCosto' => 6, ),
+        BasePeer::TYPE_COLNAME => array (CompradetallePeer::IDCOMPRADETALLE => 0, CompradetallePeer::IDCOMPRA => 1, CompradetallePeer::IDPRODUCTOVARIANTE => 2, CompradetallePeer::COMPRADETALLE_CANTIDAD => 3, CompradetallePeer::COMPRADETALLE_PRECIOUNITARIO => 4, CompradetallePeer::COMPRADETALLE_SUBTOTAL => 5, CompradetallePeer::COMPRADETALLE_COSTO => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCOMPRADETALLE' => 0, 'IDCOMPRA' => 1, 'IDPRODUCTOVARIANTE' => 2, 'COMPRADETALLE_CANTIDAD' => 3, 'COMPRADETALLE_PRECIOUNITARIO' => 4, 'COMPRADETALLE_SUBTOTAL' => 5, 'COMPRADETALLE_COSTO' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('idcompradetalle' => 0, 'idcompra' => 1, 'idproductovariante' => 2, 'compradetalle_cantidad' => 3, 'compradetalle_preciounitario' => 4, 'compradetalle_subtotal' => 5, 'compradetalle_costo' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -169,6 +172,7 @@ abstract class BaseCompradetallePeer
             $criteria->addSelectColumn(CompradetallePeer::COMPRADETALLE_CANTIDAD);
             $criteria->addSelectColumn(CompradetallePeer::COMPRADETALLE_PRECIOUNITARIO);
             $criteria->addSelectColumn(CompradetallePeer::COMPRADETALLE_SUBTOTAL);
+            $criteria->addSelectColumn(CompradetallePeer::COMPRADETALLE_COSTO);
         } else {
             $criteria->addSelectColumn($alias . '.idcompradetalle');
             $criteria->addSelectColumn($alias . '.idcompra');
@@ -176,6 +180,7 @@ abstract class BaseCompradetallePeer
             $criteria->addSelectColumn($alias . '.compradetalle_cantidad');
             $criteria->addSelectColumn($alias . '.compradetalle_preciounitario');
             $criteria->addSelectColumn($alias . '.compradetalle_subtotal');
+            $criteria->addSelectColumn($alias . '.compradetalle_costo');
         }
     }
 

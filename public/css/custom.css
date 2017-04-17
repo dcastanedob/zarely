@@ -73,3 +73,42 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+
+.selectColorTransito
+{
+    width: 40px;
+    background-color: blue;
+    color: white;
+}
+
+
+.selectColorCompletado
+{
+    width: 40px;
+    background-color: green;
+    color: white;
+}
+
+
+.selectColorPendiente
+{
+    width: 40px;
+    background-color: #996600;
+    color: white;
+}
+
+.selectColorSolicitado
+{
+    width: 40px;
+    background-color: black;
+    color: white;
+}
+
+
+.selectColorCancelado
+{
+    width: 40px;
+    background-color: red;
+    color: white;
+}

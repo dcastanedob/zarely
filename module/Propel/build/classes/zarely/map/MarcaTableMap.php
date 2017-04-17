@@ -48,8 +48,11 @@ class MarcaTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Descuentodetalle', 'Descuentodetalle', RelationMap::ONE_TO_MANY, array('idmarca' => 'idmarca', ), 'CASCADE', 'CASCADE', 'Descuentodetalles');
         $this->addRelation('Marcatallaje', 'Marcatallaje', RelationMap::ONE_TO_MANY, array('idmarca' => 'idmarca', ), 'CASCADE', 'CASCADE', 'Marcatallajes');
         $this->addRelation('Producto', 'Producto', RelationMap::ONE_TO_MANY, array('idmarca' => 'idmarca', ), 'CASCADE', 'CASCADE', 'Productos');
+        $this->addRelation('PromociondetalleRelatedByIdmarcaoperando', 'Promociondetalle', RelationMap::ONE_TO_MANY, array('idmarca' => 'idmarcaoperando', ), 'CASCADE', 'CASCADE', 'PromociondetallesRelatedByIdmarcaoperando');
+        $this->addRelation('PromociondetalleRelatedByIdmarcaresultado', 'Promociondetalle', RelationMap::ONE_TO_MANY, array('idmarca' => 'idmarcaresultado', ), 'CASCADE', 'CASCADE', 'PromociondetallesRelatedByIdmarcaresultado');
         $this->addRelation('Proveedormarca', 'Proveedormarca', RelationMap::ONE_TO_MANY, array('idmarca' => 'idmarca', ), 'CASCADE', 'CASCADE', 'Proveedormarcas');
     } // buildRelations()
 

@@ -44,6 +44,14 @@
  * @method SucursalQuery rightJoinSucursalempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Sucursalempleado relation
  * @method SucursalQuery innerJoinSucursalempleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Sucursalempleado relation
  *
+ * @method SucursalQuery leftJoinTransferenciaRelatedByIdsucursaldestino($relationAlias = null) Adds a LEFT JOIN clause to the query using the TransferenciaRelatedByIdsucursaldestino relation
+ * @method SucursalQuery rightJoinTransferenciaRelatedByIdsucursaldestino($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TransferenciaRelatedByIdsucursaldestino relation
+ * @method SucursalQuery innerJoinTransferenciaRelatedByIdsucursaldestino($relationAlias = null) Adds a INNER JOIN clause to the query using the TransferenciaRelatedByIdsucursaldestino relation
+ *
+ * @method SucursalQuery leftJoinTransferenciaRelatedByIdsucursalorigen($relationAlias = null) Adds a LEFT JOIN clause to the query using the TransferenciaRelatedByIdsucursalorigen relation
+ * @method SucursalQuery rightJoinTransferenciaRelatedByIdsucursalorigen($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TransferenciaRelatedByIdsucursalorigen relation
+ * @method SucursalQuery innerJoinTransferenciaRelatedByIdsucursalorigen($relationAlias = null) Adds a INNER JOIN clause to the query using the TransferenciaRelatedByIdsucursalorigen relation
+ *
  * @method Sucursal findOne(PropelPDO $con = null) Return the first Sucursal matching the query
  * @method Sucursal findOneOrCreate(PropelPDO $con = null) Return the first Sucursal matching the query, or a new Sucursal object populated from the query conditions when no match is found
  *
@@ -786,6 +794,154 @@ abstract class BaseSucursalQuery extends ModelCriteria
         return $this
             ->joinSucursalempleado($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Sucursalempleado', 'SucursalempleadoQuery');
+    }
+
+    /**
+     * Filter the query by a related Transferencia object
+     *
+     * @param   Transferencia|PropelObjectCollection $transferencia  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 SucursalQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByTransferenciaRelatedByIdsucursaldestino($transferencia, $comparison = null)
+    {
+        if ($transferencia instanceof Transferencia) {
+            return $this
+                ->addUsingAlias(SucursalPeer::IDSUCURSAL, $transferencia->getIdsucursaldestino(), $comparison);
+        } elseif ($transferencia instanceof PropelObjectCollection) {
+            return $this
+                ->useTransferenciaRelatedByIdsucursaldestinoQuery()
+                ->filterByPrimaryKeys($transferencia->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTransferenciaRelatedByIdsucursaldestino() only accepts arguments of type Transferencia or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the TransferenciaRelatedByIdsucursaldestino relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return SucursalQuery The current query, for fluid interface
+     */
+    public function joinTransferenciaRelatedByIdsucursaldestino($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('TransferenciaRelatedByIdsucursaldestino');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'TransferenciaRelatedByIdsucursaldestino');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the TransferenciaRelatedByIdsucursaldestino relation Transferencia object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   TransferenciaQuery A secondary query class using the current class as primary query
+     */
+    public function useTransferenciaRelatedByIdsucursaldestinoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinTransferenciaRelatedByIdsucursaldestino($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'TransferenciaRelatedByIdsucursaldestino', 'TransferenciaQuery');
+    }
+
+    /**
+     * Filter the query by a related Transferencia object
+     *
+     * @param   Transferencia|PropelObjectCollection $transferencia  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 SucursalQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByTransferenciaRelatedByIdsucursalorigen($transferencia, $comparison = null)
+    {
+        if ($transferencia instanceof Transferencia) {
+            return $this
+                ->addUsingAlias(SucursalPeer::IDSUCURSAL, $transferencia->getIdsucursalorigen(), $comparison);
+        } elseif ($transferencia instanceof PropelObjectCollection) {
+            return $this
+                ->useTransferenciaRelatedByIdsucursalorigenQuery()
+                ->filterByPrimaryKeys($transferencia->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTransferenciaRelatedByIdsucursalorigen() only accepts arguments of type Transferencia or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the TransferenciaRelatedByIdsucursalorigen relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return SucursalQuery The current query, for fluid interface
+     */
+    public function joinTransferenciaRelatedByIdsucursalorigen($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('TransferenciaRelatedByIdsucursalorigen');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'TransferenciaRelatedByIdsucursalorigen');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the TransferenciaRelatedByIdsucursalorigen relation Transferencia object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   TransferenciaQuery A secondary query class using the current class as primary query
+     */
+    public function useTransferenciaRelatedByIdsucursalorigenQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinTransferenciaRelatedByIdsucursalorigen($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'TransferenciaRelatedByIdsucursalorigen', 'TransferenciaQuery');
     }
 
     /**

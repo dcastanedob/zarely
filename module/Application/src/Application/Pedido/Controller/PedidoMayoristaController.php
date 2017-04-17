@@ -317,13 +317,11 @@ class PedidoMayoristaController extends AbstractActionController
 
 
     public function nuevoAction(){
-        
         $request = $this->getRequest();
         
         if($request->isPost()){
             $post_data = $request->getPost();
             $post_files = $request->getFiles();
-            
 
             $entity = new \Pedidomayorista();
 
@@ -331,28 +329,40 @@ class PedidoMayoristaController extends AbstractActionController
 
             $post_data['pedidomayorista_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['pedidomayorista_fechaentrega']);
 
+            $variantes = [];
             foreach ($post_data as $key => $value){
                 if(\PedidomayoristaPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                }
+
+                if(substr( $key, 0, 8 ) === "cantidad")
+                {
+                    /*if($value != 0)
+                    {*/
+                        $temp = array(
+                            "variante" => str_replace("cantidad", "", $key),
+                            "valor" => $value
+                        );
+                        array_push($variantes, $temp);
+                    //}
+                    
                 }
             }
 
             $entity->save();
 
-            for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
-            {
+            foreach ($variantes as $variante) {
                 $pedidomayoristadetalle = new \Pedidomayoristadetalle();
+                $producto_variante = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+
                 $pedidomayoristadetalle->setIdpedidomayorista($entity->getIdpedidomayorista())
-                              ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                              ->setPedidomayoristadetalleCantidad($post_data['cantidad'][$variante])
-                              ->setPedidomayoristadetalleEstatus($post_data["estatus"][$variante])
+                              ->setIdproductovariante($variante["variante"])
+                              ->setPedidomayoristadetalleCantidad($variante["valor"])
+                              ->setPedidomayoristadetalleEstatus($post_data['estatus' . $variante["variante"]])
                               ->setPedidomayoristadetalleFecha($entity->getPedidomayoristaFechasolicitud());
-
-                $producto =  \ProductovarianteQuery::create()->findPk($post_data['productosvariantes'][$variante]);
-                $pedidomayoristadetalle->setIdproducto($producto->getIdproducto())->save();
-                
-
+                              $pedidomayoristadetalle->setIdproducto($producto_variante->getIdproducto())->save();
             }
+
 
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
@@ -371,7 +381,8 @@ class PedidoMayoristaController extends AbstractActionController
 
 
         //traer los productosvariantes
-        $variantes = \ProductovarianteQuery::create()->find();
+        $variantes = \ProductovarianteQuery::create()->groupByIdproductomaterial()->groupByIdproductocolor()->find();
+
         $productosvariante_array = array();
 
         foreach ($variantes as $value){
@@ -382,7 +393,7 @@ class PedidoMayoristaController extends AbstractActionController
             $material = $material->getMaterial();
 
 
-            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre().' / '. $value->getProductovarianteTalla().'';
+            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre();
 
             $productosvariante_array[$value->getIdproductovariante()] = $information;
         }
@@ -431,28 +442,40 @@ class PedidoMayoristaController extends AbstractActionController
 
                 $post_data['pedidomayorista_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['pedidomayorista_fechaentrega']);
                 
+                $variantes = [];
                 foreach ($post_data as $key => $value){
                     if(\PedidomayoristaPeer::getTableMap()->hasColumn($key)){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                    }
+
+
+                    if(substr( $key, 0, 8 ) === "cantidad")
+                    {
+                        /*if($value != 0)
+                        {*/
+                            $temp = array(
+                                "variante" => str_replace("cantidad", "", $key),
+                                "valor" => $value
+                            );
+                            array_push($variantes, $temp);
+                        //}
+                        
                     }
                 }
 
                 $detalles = \PedidomayoristadetalleQuery::create()->filterByIdpedidomayorista($id)->delete();
                 $entity->save();
 
-                for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
-                {
+                foreach ($variantes as $variante) {
                     $pedidomayoristadetalle = new \Pedidomayoristadetalle();
+                    $producto_variante = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+
                     $pedidomayoristadetalle->setIdpedidomayorista($entity->getIdpedidomayorista())
-                                  ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                                  ->setPedidomayoristadetalleCantidad($post_data['cantidad'][$variante])
-                                  ->setPedidomayoristadetalleEstatus($post_data["estatus"][$variante])
+                                  ->setIdproductovariante($variante["variante"])
+                                  ->setPedidomayoristadetalleCantidad($variante["valor"])
+                                  ->setPedidomayoristadetalleEstatus($post_data['estatus' . $variante["variante"]])
                                   ->setPedidomayoristadetalleFecha($entity->getPedidomayoristaFechasolicitud());
-
-                    $producto =  \ProductovarianteQuery::create()->findPk($post_data['productosvariantes'][$variante]);
-                    $pedidomayoristadetalle->setIdproducto($producto->getIdproducto())->save();
-                    
-
+                                  $pedidomayoristadetalle->setIdproducto($producto_variante->getIdproducto())->save();
                 }
 
 
@@ -470,9 +493,13 @@ class PedidoMayoristaController extends AbstractActionController
                 $clientes_array[$cliente->getIdcliente()] = $cliente->getClienteNombre();
             }
 
+            
+            //$variantesMayoristas = \PedidomayoristadetalleQuery::create()->useProductovarianteQuery()->groupByIdproductomaterial()->groupByIdproductocolor()->endUse()->find();
+            
 
             //traer los productosvariantes
-            $variantes = \ProductovarianteQuery::create()->find();
+            $variantes = \ProductovarianteQuery::create()->groupByIdproductomaterial()->groupByIdproductocolor()->find();
+
             $productosvariante_array = array();
 
             foreach ($variantes as $value){
@@ -483,7 +510,7 @@ class PedidoMayoristaController extends AbstractActionController
                 $material = $material->getMaterial();
 
 
-                $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre().' / '. $value->getProductovarianteTalla().'';
+                $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre();
 
                 $productosvariante_array[$value->getIdproductovariante()] = $information;
             }
@@ -504,6 +531,7 @@ class PedidoMayoristaController extends AbstractActionController
                     
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
+            
             $form->get('pedidomayorista_fechasolicitud')->setValue($entity->getPedidomayoristaFechasolicitud('d/m/Y'));
             $form->get('pedidomayorista_fechaentrega')->setValue($entity->getPedidomayoristaFechaentrega('d/m/Y'));
             $view_model = new ViewModel();
@@ -532,7 +560,6 @@ class PedidoMayoristaController extends AbstractActionController
             'cantidad' =>\PedidomayoristadetalleQuery::create()->select('pedidomayoristadetalle_cantidad')->filterByIdpedidomayorista($data['idpedidomayorista'])->find()->toArray(),
             'estatus' =>\PedidomayoristadetalleQuery::create()->select('pedidomayoristadetalle_estatus')->filterByIdpedidomayorista($data['idpedidomayorista'])->find()->toArray(),
         ];
-
         return $information;
 
     }
@@ -604,6 +631,124 @@ class PedidoMayoristaController extends AbstractActionController
         }
 
     } 
+
+    public function initializetableAction(){
+
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+            
+            //obtenemos la variante 
+            $variante = \ProductovarianteQuery::create()->findPk($post_data['id']);
+
+            //obtenemos el rango de los tallajes
+            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($variante->getIdproducto())->find();
+
+            //ovtenemos combinacion color/material
+            $details = [];
+            $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
+            $details[$indice] = [];
+
+            $nombreProducto = $variante->getProducto()->getProductoModelo();
+
+            foreach ($tallajes->toArray() as $tallaje) {
+                //obtenemos el rango del tallaje
+                $rango = $tallaje["Tallajerango"];
+                $inf = explode(" - ", $rango);
+                $details[$indice][$tallaje['Idproductotallaje']] = [];
+
+                //iteramos desde el limite superior hasta el inferior 
+                for ($i = $inf[0]; $i<=$inf[1];) {
+
+                    //obtenemos la variante correspondiente a lo solicitado
+                    $productoVariante = \ProductovarianteQuery::create()->filterByIdproducto($variante->getIdproducto())->filterByIdproductomaterial($variante->getIdproductomaterial())->filterByIdproductocolor($variante->getIdproductocolor())->filterByProductovarianteTalla($i)->findOne();
+                    if($productoVariante != null)
+                    {
+                        $productoVariante = $productoVariante->toArray();
+                        $value = array(
+                                    'talla' => $productoVariante['ProductovarianteTalla'],
+                                    'variante' => $productoVariante['Idproductovariante'],
+                                    'modelo' => $nombreProducto,
+                                 );
+
+                        array_push($details[$indice][$tallaje['Idproductotallaje']], $value);
+                    }
+                    $i+=0.5;
+                }
+
+            }
+
+            
+
+            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
+
+            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
+        }
+
+    } 
+
+    public function initializetablegeneralAction(){
+
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+            
+            //obtenemos la variante 
+            $variante = \ProductovarianteQuery::create()->findPk($post_data['id']);
+
+            //obtenemos el rango de los tallajes
+            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($variante->getIdproducto())->find();
+
+            //ovtenemos combinacion color/material
+            $details = [];
+            $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
+            $details[$indice] = [];
+
+            $nombreProducto = $variante->getProducto()->getProductoModelo();
+
+            foreach ($tallajes->toArray() as $tallaje) {
+                //obtenemos el rango del tallaje
+                $rango = $tallaje["Tallajerango"];
+                $inf = explode(" - ", $rango);
+                
+
+                //Verificamos que pertenezca al tallaje
+                if($variante->getProductovarianteTalla() <= $inf[1] && $variante->getProductovarianteTalla() >= $inf[0])
+                {
+                    $details[$indice][$tallaje['Idproductotallaje']] = [];
+
+                    //iteramos desde el limite superior hasta el inferior 
+                    for ($i = $inf[0]; $i<=$inf[1];) {
+
+                        //obtenemos la variante correspondiente a lo solicitado
+                        $productoVariante = \ProductovarianteQuery::create()->filterByIdproducto($variante->getIdproducto())->filterByIdproductomaterial($variante->getIdproductomaterial())->filterByIdproductocolor($variante->getIdproductocolor())->filterByProductovarianteTalla($i)->findOne();
+                        if($productoVariante != null)
+                        {
+                            $productoVariante = $productoVariante->toArray();
+                            $value = array(
+                                        'talla' => $productoVariante['ProductovarianteTalla'],
+                                        'variante' => $productoVariante['Idproductovariante'],
+                                        'modelo' => $nombreProducto,
+                                     );
+
+                            array_push($details[$indice][$tallaje['Idproductotallaje']], $value);
+                        }
+                        $i+=0.5;
+                    }
+                }
+
+            }
+
+            
+
+            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
+
+            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
+        }
+
+    }
 
 
     public function eliminarAction(){

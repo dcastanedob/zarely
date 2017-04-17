@@ -12,6 +12,7 @@
  * @method CompradetalleQuery orderByCompradetalleCantidad($order = Criteria::ASC) Order by the compradetalle_cantidad column
  * @method CompradetalleQuery orderByCompradetallePreciounitario($order = Criteria::ASC) Order by the compradetalle_preciounitario column
  * @method CompradetalleQuery orderByCompradetalleSubtotal($order = Criteria::ASC) Order by the compradetalle_subtotal column
+ * @method CompradetalleQuery orderByCompradetalleCosto($order = Criteria::ASC) Order by the compradetalle_costo column
  *
  * @method CompradetalleQuery groupByIdcompradetalle() Group by the idcompradetalle column
  * @method CompradetalleQuery groupByIdcompra() Group by the idcompra column
@@ -19,6 +20,7 @@
  * @method CompradetalleQuery groupByCompradetalleCantidad() Group by the compradetalle_cantidad column
  * @method CompradetalleQuery groupByCompradetallePreciounitario() Group by the compradetalle_preciounitario column
  * @method CompradetalleQuery groupByCompradetalleSubtotal() Group by the compradetalle_subtotal column
+ * @method CompradetalleQuery groupByCompradetalleCosto() Group by the compradetalle_costo column
  *
  * @method CompradetalleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method CompradetalleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -40,6 +42,7 @@
  * @method Compradetalle findOneByCompradetalleCantidad(string $compradetalle_cantidad) Return the first Compradetalle filtered by the compradetalle_cantidad column
  * @method Compradetalle findOneByCompradetallePreciounitario(string $compradetalle_preciounitario) Return the first Compradetalle filtered by the compradetalle_preciounitario column
  * @method Compradetalle findOneByCompradetalleSubtotal(string $compradetalle_subtotal) Return the first Compradetalle filtered by the compradetalle_subtotal column
+ * @method Compradetalle findOneByCompradetalleCosto(string $compradetalle_costo) Return the first Compradetalle filtered by the compradetalle_costo column
  *
  * @method array findByIdcompradetalle(int $idcompradetalle) Return Compradetalle objects filtered by the idcompradetalle column
  * @method array findByIdcompra(int $idcompra) Return Compradetalle objects filtered by the idcompra column
@@ -47,6 +50,7 @@
  * @method array findByCompradetalleCantidad(string $compradetalle_cantidad) Return Compradetalle objects filtered by the compradetalle_cantidad column
  * @method array findByCompradetallePreciounitario(string $compradetalle_preciounitario) Return Compradetalle objects filtered by the compradetalle_preciounitario column
  * @method array findByCompradetalleSubtotal(string $compradetalle_subtotal) Return Compradetalle objects filtered by the compradetalle_subtotal column
+ * @method array findByCompradetalleCosto(string $compradetalle_costo) Return Compradetalle objects filtered by the compradetalle_costo column
  *
  * @package    propel.generator.zarely.om
  */
@@ -154,7 +158,7 @@ abstract class BaseCompradetalleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idcompradetalle`, `idcompra`, `idproductovariante`, `compradetalle_cantidad`, `compradetalle_preciounitario`, `compradetalle_subtotal` FROM `compradetalle` WHERE `idcompradetalle` = :p0';
+        $sql = 'SELECT `idcompradetalle`, `idcompra`, `idproductovariante`, `compradetalle_cantidad`, `compradetalle_preciounitario`, `compradetalle_subtotal`, `compradetalle_costo` FROM `compradetalle` WHERE `idcompradetalle` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -497,6 +501,35 @@ abstract class BaseCompradetalleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CompradetallePeer::COMPRADETALLE_SUBTOTAL, $compradetalleSubtotal, $comparison);
+    }
+
+    /**
+     * Filter the query on the compradetalle_costo column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCompradetalleCosto('fooValue');   // WHERE compradetalle_costo = 'fooValue'
+     * $query->filterByCompradetalleCosto('%fooValue%'); // WHERE compradetalle_costo LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $compradetalleCosto The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CompradetalleQuery The current query, for fluid interface
+     */
+    public function filterByCompradetalleCosto($compradetalleCosto = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($compradetalleCosto)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $compradetalleCosto)) {
+                $compradetalleCosto = str_replace('*', '%', $compradetalleCosto);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CompradetallePeer::COMPRADETALLE_COSTO, $compradetalleCosto, $comparison);
     }
 
     /**

@@ -17,7 +17,8 @@ class EnReordenProductoController extends AbstractActionController
 
     public $column_map = array(
          0 => 'Idproducto',
-        1 => 'ProductoModel',
+        1 => 'ProductoModelo',
+        2=> 'IdMarca',
     );
 
     public $column_map_producto_variante = array(
@@ -40,6 +41,8 @@ class EnReordenProductoController extends AbstractActionController
 
             $query = new \ProductoQuery();  
 
+            $query->useMarcaQuery('a')->endUse();
+            $query->withColumn('a.MarcaNombre', 'marca_nombre');
 
             //WHERE
             $records_filtered = $query->count();
@@ -77,9 +80,9 @@ class EnReordenProductoController extends AbstractActionController
                 $c1= $c->getNewCriterion('producto.idproducto', '%'.$search_value.'%', \Criteria::LIKE);
 
                 $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
+                $c3= $c->getNewCriterion('marca.marca_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
-
-                $c1->addOr($c2);
+                $c1->addOr($c2)->addOr($c3);
 
                 $query->addAnd($c1);
                 $query->groupByIdproducto();
@@ -110,6 +113,7 @@ class EnReordenProductoController extends AbstractActionController
                 $tmp['DT_RowId'] = $value['idproducto'];
                 $tmp['idproducto'] = $value['idproducto'];
                 $tmp['producto_modelo'] = $value['producto_modelo'];
+                $tmp['marca_nombre'] = $value['marca_nombre'];
                 $tmp['options'] = '
                 <a href="/producto/enreorden/ver/' . $value['idproducto'] . '">
                 <button class="btn btn-info dropdown-toggle" aria-expanded="false" style="padding: 2px 6px;">
