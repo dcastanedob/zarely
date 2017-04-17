@@ -18,9 +18,11 @@ class TransferenciaController extends AbstractActionController
     public $column_map = array(
         0 => 'a.SucursalNombrecomercial',
         1 => 'b.SucursalNombrecomercial',
-        2 => 'TransferenciaFecha',
-        4 => 'TransferenciaFecharecepcion',
-        3 => 'TransferenciaEstatus',
+        2 => 'c.EmpleadoNombre',
+        3 => 'c.EmpleadoNombre',
+        4 => 'TransferenciaFecha',
+        5 => 'TransferenciaFecharecepcion',
+        6 => 'TransferenciaEstatus',
 
 
     );
@@ -39,8 +41,14 @@ class TransferenciaController extends AbstractActionController
             $query->useSucursalRelatedByIdsucursalorigenQuery('a')->endUse();
             $query->useSucursalRelatedByIdsucursaldestinoQuery('b')->endUse();
 
+            $query->useEmpleadoRelatedByIdempleadocreadorQuery('c')->endUse();
+            $query->useEmpleadoRelatedByIdempleadoreceptorQuery('d')->endUse();
+
             $query->withColumn('a.SucursalNombrecomercial', 'sucursal_origen');
             $query->withColumn('b.SucursalNombrecomercial', 'sucursal_destino');
+
+            $query->withColumn('c.EmpleadoNombre', 'empleado_creador');
+            $query->withColumn('d.EmpleadoNombre', 'empleado_receptor');
 
             $records_filtered = $query->count();
 
@@ -80,10 +88,14 @@ class TransferenciaController extends AbstractActionController
 
                 $c3= $c->getNewCriterion('sucursal.sucursal_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c4= $c->getNewCriterion('transferencia.transferencia_estatus', '%'.$search_value.'%', \Criteria::LIKE);
+                $c4= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+
+                $c5= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+
+                $c6= $c->getNewCriterion('transferencia.transferencia_estatus', '%'.$search_value.'%', \Criteria::LIKE);
 
 
-                $c1->addOr($c2)->addOr($c3)->addOr($c4);
+                $c1->addOr($c2)->addOr($c3)->addOr($c4)->addOr($c5)->addOr($c6);
 
                 $query->addAnd($c1);
                 $query->groupByTransferenciaFecha();
@@ -117,6 +129,15 @@ class TransferenciaController extends AbstractActionController
                 $tmp['idtransferencia'] = $value['idtransferencia'];
                 $tmp['sucursal_origen'] = $value['sucursal_origen'];
                 $tmp['sucursal_destino'] = $value['sucursal_destino'];
+                $tmp['empleado_creador'] = $value['empleado_creador'];
+                if($value['empleado_receptor'] == null)
+                {
+                    $tmp['empleado_receptor'] = "N/A";
+                }else
+                {
+                    $tmp['empleado_receptor'] = $value['empleado_receptor'];
+                }
+                
                 $tmp['transferencia_fecha'] = $value['transferencia_fecha'];
 
                 $tmp['transferencia_estatus'] = $value['transferencia_estatus'];
@@ -196,7 +217,6 @@ class TransferenciaController extends AbstractActionController
         
         if($request->isPost()){
             $post_data = $request->getPost();
-            
 
             $entity = new \Transferencia();
 
@@ -522,9 +542,18 @@ class TransferenciaController extends AbstractActionController
             $form = new \Application\Transferencia\Form\TransferenciaForm($empleados_array,$sucursales_array,$productosvariante_array,$productos_generales_array);
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            
+
             $form->get('transferencia_fecha')->setValue($entity->getTransferenciaFecha('d/m/Y'));
             $form->get('transferencia_fecharecepcion')->setValue($entity->getTransferenciaFecharecepcion('d/m/Y'));
+
+            $form->get('idempleadocreador')->setValue($entity->getEmpleadoRelatedByIdempleadocreador()->toArray()['EmpleadoNombre']);
+
+            //verificamos que ya tenga un receptor
+            if($entity->getEmpleadoRelatedByIdempleadoreceptor() != null)
+            {
+                $form->get('idempleadoreceptor')->setValue($entity->getEmpleadoRelatedByIdempleadoreceptor()->toArray()['EmpleadoNombre']);
+            }
+            
 
 
             $view_model = new ViewModel();

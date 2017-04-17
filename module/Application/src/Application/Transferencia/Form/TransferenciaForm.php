@@ -79,12 +79,13 @@ class TransferenciaForm extends Form
             'type' => 'Select',
             'options' => array(
               
-                'value_options' => $empleados_array,
+                'value_options' => null,
             ),
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
                 'tabindex' =>2,
+                'disabled' =>" ",
             ),
         ));
 

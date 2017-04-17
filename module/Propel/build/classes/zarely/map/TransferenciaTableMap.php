@@ -49,7 +49,7 @@ class TransferenciaTableMap extends TableMap
   2 => 'rechazada',
 ));
         $this->addForeignKey('idempleadocreador', 'Idempleadocreador', 'INTEGER', 'empleado', 'idempleado', true, null, null);
-        $this->addForeignKey('idempleadoreceptor', 'Idempleadoreceptor', 'INTEGER', 'empleado', 'idempleado', true, null, null);
+        $this->addForeignKey('idempleadoreceptor', 'Idempleadoreceptor', 'INTEGER', 'empleado', 'idempleado', false, null, null);
         $this->addColumn('transferencia_nota', 'TransferenciaNota', 'VARCHAR', false, 45, null);
         $this->addColumn('transferencia_fecharecepcion', 'TransferenciaFecharecepcion', 'TIMESTAMP', false, null, null);
         // validators

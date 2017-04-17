@@ -997,7 +997,7 @@ CREATE TABLE `transferencia`
     `transferencia_fecha` DATETIME NOT NULL,
     `transferencia_estatus` enum('creada','aceptada','rechazada') NOT NULL,
     `idempleadocreador` INTEGER NOT NULL,
-    `idempleadoreceptor` INTEGER NOT NULL,
+    `idempleadoreceptor` INTEGER,
     `transferencia_nota` VARCHAR(45),
     `transferencia_fecharecepcion` DATETIME,
     PRIMARY KEY (`idtransferencia`),

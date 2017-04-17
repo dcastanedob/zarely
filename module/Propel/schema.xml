@@ -770,7 +770,7 @@
     <column name="transferencia_fecha" phpName="TransferenciaFecha" type="TIMESTAMP" required="true"/>
     <column name="transferencia_estatus" phpName="TransferenciaEstatus" type="CHAR" sqlType="enum('creada','aceptada','rechazada')" required="true"/>
     <column name="idempleadocreador" phpName="Idempleadocreador" type="INTEGER" required="true"/>
-    <column name="idempleadoreceptor" phpName="Idempleadoreceptor" type="INTEGER" required="true"/>
+    <column name="idempleadoreceptor" phpName="Idempleadoreceptor" type="INTEGER" required="false"/>
     <column name="transferencia_nota" phpName="TransferenciaNota" type="VARCHAR" size="45" required="false"/>
     <column name="transferencia_fecharecepcion" phpName="TransferenciaFecharecepcion" type="TIMESTAMP" required="false"/>
     <foreign-key foreignTable="empleado" name="idempleadocreador_transferencia" onDelete="CASCADE" onUpdate="CASCADE">

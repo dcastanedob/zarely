@@ -3317,7 +3317,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion = clone $this->collTransferenciasRelatedByIdempleadoreceptor;
                 $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion->clear();
             }
-            $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion[]= clone $transferenciaRelatedByIdempleadoreceptor;
+            $this->transferenciasRelatedByIdempleadoreceptorScheduledForDeletion[]= $transferenciaRelatedByIdempleadoreceptor;
             $transferenciaRelatedByIdempleadoreceptor->setEmpleadoRelatedByIdempleadoreceptor(null);
         }
 

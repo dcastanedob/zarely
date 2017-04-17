@@ -739,7 +739,7 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      *
      * @return TransferenciaQuery The current query, for fluid interface
      */
-    public function joinEmpleadoRelatedByIdempleadoreceptor($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinEmpleadoRelatedByIdempleadoreceptor($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('EmpleadoRelatedByIdempleadoreceptor');
@@ -774,7 +774,7 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      *
      * @return   EmpleadoQuery A secondary query class using the current class as primary query
      */
-    public function useEmpleadoRelatedByIdempleadoreceptorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useEmpleadoRelatedByIdempleadoreceptorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinEmpleadoRelatedByIdempleadoreceptor($relationAlias, $joinType)

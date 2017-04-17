@@ -322,7 +322,6 @@ class PedidoMayoristaController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
             $post_files = $request->getFiles();
-            
 
             $entity = new \Pedidomayorista();
 
@@ -359,7 +358,7 @@ class PedidoMayoristaController extends AbstractActionController
                 $pedidomayoristadetalle->setIdpedidomayorista($entity->getIdpedidomayorista())
                               ->setIdproductovariante($variante["variante"])
                               ->setPedidomayoristadetalleCantidad($variante["valor"])
-                              ->setPedidomayoristadetalleEstatus($entity->getPedidomayoristaEstatus())
+                              ->setPedidomayoristadetalleEstatus($post_data['estatus' . $variante["variante"]])
                               ->setPedidomayoristadetalleFecha($entity->getPedidomayoristaFechasolicitud());
                               $pedidomayoristadetalle->setIdproducto($producto_variante->getIdproducto())->save();
             }
@@ -474,7 +473,7 @@ class PedidoMayoristaController extends AbstractActionController
                     $pedidomayoristadetalle->setIdpedidomayorista($entity->getIdpedidomayorista())
                                   ->setIdproductovariante($variante["variante"])
                                   ->setPedidomayoristadetalleCantidad($variante["valor"])
-                                  ->setPedidomayoristadetalleEstatus($entity->getPedidomayoristaEstatus())
+                                  ->setPedidomayoristadetalleEstatus($post_data['estatus' . $variante["variante"]])
                                   ->setPedidomayoristadetalleFecha($entity->getPedidomayoristaFechasolicitud());
                                   $pedidomayoristadetalle->setIdproducto($producto_variante->getIdproducto())->save();
                 }

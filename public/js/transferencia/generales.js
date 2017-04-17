@@ -158,15 +158,9 @@
                var id = $container.find('select[name*=idsucursalorigen] :selected').attr('value');
                $container.find('select[name*=idsucursaldestino] option[value='+id+']').hide();
             });
+
             $container.find('select[name*=idsucursalorigen]').val(1);
-            
-            $container.find('select[name*=idsucursaldestino]').on('change',function(){
-
-               $container.find('select[name*=idsucursalorigen] option[style*=display]').show();
-               var id = $container.find('select[name*=idsucursaldestino] :selected').attr('value');
-               $container.find('select[name*=idsucursalorigen] option[value='+id+']').hide();
-            });
-
+            $container.find('select[name*=idsucursalorigen]').change();
             $container.find('select[name*=idsucursaldestino]').val(2);
             var productosvariantes_added = [];
 

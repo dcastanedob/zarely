@@ -110,12 +110,14 @@
 
                           $container.find('#btn_add_productovariante').trigger('click');
                           productosvariantes_added = data.selects;  
-                          
+                          console.log(data);
                           for(var i = 0; i<data.selects.length;i++)
                           {
                             
                             $container.find('input[name=cantidad'+data.selects[i]+']').attr('value',data.cantidad[i].replace(".00",""));
-
+                            $container.find('select#'+data.selects[i]).val(1);
+                            $container.find('select#'+data.selects[i]).val(data.estatus[i]);
+                            $container.find('select#'+data.selects[i]).change();
                           }
                                             
                       }
@@ -245,9 +247,11 @@
                           }
 
                           variantesDisponibles = [];
+                          idVariantesDisponibles = [];
                           var referencia = 0;
                           $.each(value,function(indexVariante, valueVariante){
                             variantesDisponibles.push(valueVariante.talla*10);
+                            idVariantesDisponibles.push(valueVariante.variante);
 
                             $input = $('<input>');
                             $input.attr('id',valueVariante.variante);
@@ -261,6 +265,9 @@
                             
                           });
 
+                          $trSelect = $('<tr>');
+                          $trSelect.append('<td></td><td></td>');
+
                           for(var i = 70; i<=350;)
                           {
                             var bandera = false;
@@ -268,6 +275,49 @@
                             {
                               if(i == parseInt(variantesDisponibles[j]))
                               {
+                                $td = $('<td>');
+                                $select = $('<select>');
+                                $select.attr('id',idVariantesDisponibles[j]);
+                                $select.attr('name','estatus'+idVariantesDisponibles[j]);
+                                $select.attr('style',"width:40px;");
+
+                                $select.append('<option value="pendiente">Pendiente</option>');
+                                $select.append('<option value="solicitado">Solicitado</option>');
+                                $select.append('<option value="completado">Completado</option>');
+                                $select.append('<option value="transito">Tránsito</option>');
+                                $select.append('<option value="cancelado">Cancelado</option>');
+                                $td.append($select);
+
+                                $td.find('select').on('change',function(){
+                                  var id = $(this).closest('select').find(':selected').text();
+                                  
+                                  if(id == 'Completado')
+                                  {
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorCompletado');
+                                  }
+                                  else if(id == 'Solicitado')
+                                  {
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorSolicitado');
+                                  }
+                                  else if(id == 'Tránsito')
+                                  {
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorTransito');
+                                  }
+                                  else if(id == 'Cancelado')
+                                  {
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorCancelado');
+                                  }
+                                  else{
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorPendiente');
+                                  }
+                                });
+
+                                $trSelect.append($td);
                                 bandera = true;
                                 break;
                               }
@@ -286,6 +336,7 @@
                           
 
                           $information.find('#content').append($tr);
+                          $information.find('#content').append($trSelect);
 
                           $tr.find('a').on('click',function(){
                               var $information = $(this).closest('#details');
@@ -594,6 +645,8 @@
 
                                         $tr.append('<td><input id="modelo" disabled></input></td>');
                                         $tr.append('<td>'+index+'</td>');
+
+
                                         for(var i = 70; i<=350;)
                                         {
                                           $tr.append('<td id="'+i+'"></td>'); 
@@ -602,8 +655,10 @@
 
                                         variantesDisponibles = [];
                                         var referencia = 0;
+                                        idVariantesDisponibles = [];
                                         $.each(value,function(indexVariante, valueVariante){
                                           variantesDisponibles.push(valueVariante.talla*10);
+                                          idVariantesDisponibles.push(valueVariante.variante);
 
                                           $input = $('<input>');
                                           $input.attr('id',valueVariante.variante);
@@ -617,6 +672,9 @@
                                           
                                         });
 
+                                        $trSelect = $('<tr>');
+                                        $trSelect.append('<td></td><td></td>');
+
                                         for(var i = 70; i<=350;)
                                         {
                                           var bandera = false;
@@ -624,6 +682,21 @@
                                           {
                                             if(i == parseInt(variantesDisponibles[j]))
                                             {
+                                              $td = $('<td>');
+                                              $select = $('<select>');
+                                              $select.attr('id',idVariantesDisponibles[j]);
+                                              $select.attr('name','estatus'+idVariantesDisponibles[j]);
+                                              $select.attr('style',"width:40px;");
+                                              $select.append('<option value="pendiente">Pendiente</option>');
+                                              $select.append('<option value="solicitado">Solicitado</option>');
+                                              $select.append('<option value="completado">Completado</option>');
+                                              $select.append('<option value="transito">Tránsito</option>');
+                                              $select.append('<option value="cancelado">Cancelado</option>');
+                                              $td.append($select);
+
+
+                                              $trSelect.append($td);
+
                                               bandera = true;
                                               break;
                                             }
@@ -642,6 +715,7 @@
                                         
 
                                         $information.find('#content').append($tr);
+                                        $information.find('#content').append($trSelect);
 
                                         $tr.find('a').on('click',function(){
                                             var $information = $(this).closest('#details');

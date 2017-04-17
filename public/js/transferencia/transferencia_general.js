@@ -66,6 +66,8 @@
                     columns:[
                         {"data":"sucursal_origen","name":"sucursal_origen","orderable":true},
                         {"data":"sucursal_destino","name":"sucursal_destino","orderable":true},
+                        {"data":"empleado_creador","name":"empleado_creador","orderable":true},
+                        {"data":"empleado_receptor","name":"empleado_receptor","orderable":true},
                         {"data":"transferencia_fecha","name":"transferencia_fecha","orderable":true},
                         {"data":"transferencia_estatus","name":"transferencia_estatus","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},

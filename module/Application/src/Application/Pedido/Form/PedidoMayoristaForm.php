@@ -69,6 +69,7 @@ class PedidoMayoristaForm extends Form
                     'solicitado' => 'Solicitado',
                     'completado' => 'Completado',
                     'transito' => 'En tránsito',
+                    'cancelado' => 'Cancelado',
 
                 ),
             ),
