@@ -66,8 +66,8 @@
                     columns:[
                         {"data":"idproducto","name":"idproducto","orderable":true},
                         {"data":"producto_modelo","name":"producto_modelo","orderable":true},
-                        {"data":"idmarca","name":"idmarca","orderable":true},
-                        {"data":"idtemporada","name":"idtemporada","orderable":true},
+                        {"data":"marca_nombre","name":"marca_nombre","orderable":true},
+                        {"data":"temporada_nombre","name":"temporada_nombre","orderable":true},
                         {"data":"producto_precioventa","name":"producto_precioventa","orderable":true},
                         {"data":"producto_preciomayoreo","name":"producto_preciomayoreo","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},

@@ -66,6 +66,12 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
     protected $compradetalle_subtotal;
 
     /**
+     * The value for the compradetalle_costo field.
+     * @var        string
+     */
+    protected $compradetalle_costo;
+
+    /**
      * @var        Compra
      */
     protected $aCompra;
@@ -159,6 +165,17 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
     {
 
         return $this->compradetalle_subtotal;
+    }
+
+    /**
+     * Get the [compradetalle_costo] column value.
+     *
+     * @return string
+     */
+    public function getCompradetalleCosto()
+    {
+
+        return $this->compradetalle_costo;
     }
 
     /**
@@ -296,6 +313,27 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
     } // setCompradetalleSubtotal()
 
     /**
+     * Set the value of [compradetalle_costo] column.
+     *
+     * @param  string $v new value
+     * @return Compradetalle The current object (for fluent API support)
+     */
+    public function setCompradetalleCosto($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->compradetalle_costo !== $v) {
+            $this->compradetalle_costo = $v;
+            $this->modifiedColumns[] = CompradetallePeer::COMPRADETALLE_COSTO;
+        }
+
+
+        return $this;
+    } // setCompradetalleCosto()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -333,6 +371,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             $this->compradetalle_cantidad = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->compradetalle_preciounitario = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->compradetalle_subtotal = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->compradetalle_costo = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -342,7 +381,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 6; // 6 = CompradetallePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = CompradetallePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Compradetalle object", $e);
@@ -599,6 +638,9 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_SUBTOTAL)) {
             $modifiedColumns[':p' . $index++]  = '`compradetalle_subtotal`';
         }
+        if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_COSTO)) {
+            $modifiedColumns[':p' . $index++]  = '`compradetalle_costo`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `compradetalle` (%s) VALUES (%s)',
@@ -627,6 +669,9 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
                         break;
                     case '`compradetalle_subtotal`':
                         $stmt->bindValue($identifier, $this->compradetalle_subtotal, PDO::PARAM_STR);
+                        break;
+                    case '`compradetalle_costo`':
+                        $stmt->bindValue($identifier, $this->compradetalle_costo, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -798,6 +843,9 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             case 5:
                 return $this->getCompradetalleSubtotal();
                 break;
+            case 6:
+                return $this->getCompradetalleCosto();
+                break;
             default:
                 return null;
                 break;
@@ -833,6 +881,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             $keys[3] => $this->getCompradetalleCantidad(),
             $keys[4] => $this->getCompradetallePreciounitario(),
             $keys[5] => $this->getCompradetalleSubtotal(),
+            $keys[6] => $this->getCompradetalleCosto(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -898,6 +947,9 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             case 5:
                 $this->setCompradetalleSubtotal($value);
                 break;
+            case 6:
+                $this->setCompradetalleCosto($value);
+                break;
         } // switch()
     }
 
@@ -928,6 +980,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setCompradetalleCantidad($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setCompradetallePreciounitario($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setCompradetalleSubtotal($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCompradetalleCosto($arr[$keys[6]]);
     }
 
     /**
@@ -945,6 +998,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_CANTIDAD)) $criteria->add(CompradetallePeer::COMPRADETALLE_CANTIDAD, $this->compradetalle_cantidad);
         if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_PRECIOUNITARIO)) $criteria->add(CompradetallePeer::COMPRADETALLE_PRECIOUNITARIO, $this->compradetalle_preciounitario);
         if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_SUBTOTAL)) $criteria->add(CompradetallePeer::COMPRADETALLE_SUBTOTAL, $this->compradetalle_subtotal);
+        if ($this->isColumnModified(CompradetallePeer::COMPRADETALLE_COSTO)) $criteria->add(CompradetallePeer::COMPRADETALLE_COSTO, $this->compradetalle_costo);
 
         return $criteria;
     }
@@ -1013,6 +1067,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         $copyObj->setCompradetalleCantidad($this->getCompradetalleCantidad());
         $copyObj->setCompradetallePreciounitario($this->getCompradetallePreciounitario());
         $copyObj->setCompradetalleSubtotal($this->getCompradetalleSubtotal());
+        $copyObj->setCompradetalleCosto($this->getCompradetalleCosto());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1186,6 +1241,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         $this->compradetalle_cantidad = null;
         $this->compradetalle_preciounitario = null;
         $this->compradetalle_subtotal = null;
+        $this->compradetalle_costo = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

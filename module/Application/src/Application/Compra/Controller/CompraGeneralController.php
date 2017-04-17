@@ -219,6 +219,7 @@ class CompraGeneralController extends AbstractActionController
 
             $precios = [];
             $variantes = [];
+            $costos = [];
             foreach ($post_data as $key => $value){
                 if(\CompraPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
@@ -231,6 +232,15 @@ class CompraGeneralController extends AbstractActionController
                         "valor" => $value
                     );
                     array_push($precios, $temp);
+                }
+
+                if(substr( $key, 0, 5 ) === "costo")
+                {
+                    $temp = array(
+                        "variante" => str_replace("costounitario", "", $key),
+                        "valor" => $value
+                    );
+                    array_push($costos, $temp);
                 }
 
                 if(substr( $key, 0, 8 ) === "cantidad")
@@ -246,7 +256,6 @@ class CompraGeneralController extends AbstractActionController
                     
                 }
             }
-
             $entity->save();
 
             if(isset($post_files['compra_comprobante'])){
@@ -266,14 +275,15 @@ class CompraGeneralController extends AbstractActionController
             
             
             $total = 0;
+            $i = 0;
             foreach ($variantes as $variante) {
                 $compra_detalle = new \Compradetalle();
                 $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
-                //encontrar a que precio le corresponde
-                foreach ($precios as $key=>$precio) {
+                //encontrar a que costo le corresponde
+                foreach ($costos as $key=>$costo) {
 
                     //obtenemos la variante 
-                    $productovariante = \ProductovarianteQuery::create()->findPk($precio["variante"]);
+                    $productovariante = \ProductovarianteQuery::create()->findPk($costo["variante"]);
 
                     if($productovariante->getIdproducto() == $varianteTemp->getIdproducto() && $productovariante->getIdproductocolor() == $varianteTemp->getIdproductocolor() && $productovariante->getIdproductomaterial() == $varianteTemp->getIdproductomaterial())
                         {
@@ -288,14 +298,15 @@ class CompraGeneralController extends AbstractActionController
                             $inf = explode(" - ", $rango);
 
 
-                            //verificamos que este en el rango del precio asociado
+                            //verificamos que este en el rango del costo asociado
                             if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
                             {
                                 $compra_detalle->setIdcompra($entity->getIdcompra())
                                               ->setIdproductovariante($variante["variante"])
                                               ->setCompradetalleCantidad($variante["valor"])
-                                              ->setCompradetallePreciounitario($precio["valor"])
-                                              ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
+                                              ->setCompradetalleCosto($costo["valor"])
+                                              ->setCompradetallePreciounitario($precios[$i]['valor'])
+                                              ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($costo["valor"])))->save();
 
                                 $total+= $compra_detalle->getCompradetalleSubtotal();
                                 $boolean = true;
@@ -306,11 +317,11 @@ class CompraGeneralController extends AbstractActionController
                         $entity->setCompraTotal($total);
                         $entity->save();
 
-                        //unset($precios[$key]);
+                        //unset($costos[$key]);
                         if($boolean)
                             break;
                     }
-                    
+                    $i++;
                 }
             }
 
@@ -394,7 +405,7 @@ class CompraGeneralController extends AbstractActionController
                 
                 $precios = [];
                 $variantes = [];
-
+                $costos = [];
                 foreach ($post_data as $key => $value){
                     if(\CompraPeer::getTableMap()->hasColumn($key)){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
@@ -407,6 +418,15 @@ class CompraGeneralController extends AbstractActionController
                             "valor" => $value
                         );
                         array_push($precios, $temp);
+                    }
+
+                    if(substr( $key, 0, 5 ) === "costo")
+                    {
+                        $temp = array(
+                            "variante" => str_replace("costounitario", "", $key),
+                            "valor" => $value
+                        );
+                        array_push($costos, $temp);
                     }
 
                     if(substr( $key, 0, 8 ) === "cantidad")
@@ -440,14 +460,15 @@ class CompraGeneralController extends AbstractActionController
                 }
 
                 $total = 0;
+                $i = 0;
                 foreach ($variantes as $variante) {
                     $compra_detalle = new \Compradetalle();
                     $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
-                    //encontrar a que precio le corresponde
-                    foreach ($precios as $key=>$precio) {
+                    //encontrar a que costo le corresponde
+                    foreach ($costos as $key=>$costo) {
 
                         //obtenemos la variante 
-                        $productovariante = \ProductovarianteQuery::create()->findPk($precio["variante"]);
+                        $productovariante = \ProductovarianteQuery::create()->findPk($costo["variante"]);
 
                         if($productovariante->getIdproducto() == $varianteTemp->getIdproducto() && $productovariante->getIdproductocolor() == $varianteTemp->getIdproductocolor() && $productovariante->getIdproductomaterial() == $varianteTemp->getIdproductomaterial())
                             {
@@ -462,14 +483,15 @@ class CompraGeneralController extends AbstractActionController
                                 $inf = explode(" - ", $rango);
 
 
-                                //verificamos que este en el rango del precio asociado
+                                //verificamos que este en el rango del costo asociado
                                 if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
                                 {
                                     $compra_detalle->setIdcompra($entity->getIdcompra())
                                                   ->setIdproductovariante($variante["variante"])
                                                   ->setCompradetalleCantidad($variante["valor"])
-                                                  ->setCompradetallePreciounitario($precio["valor"])
-                                                  ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
+                                                  ->setCompradetalleCosto($costo["valor"])
+                                                  ->setCompradetallePreciounitario($precios[$i]['valor'])
+                                                  ->setCompradetalleSubtotal(floatval($variante["valor"] * floatval($costo["valor"])))->save();
 
                                     $total+= $compra_detalle->getCompradetalleSubtotal();
                                     $boolean = true;
@@ -480,11 +502,11 @@ class CompraGeneralController extends AbstractActionController
                             $entity->setCompraTotal($total);
                             $entity->save();
 
-                            //unset($precios[$key]);
+                            //unset($costos[$key]);
                             if($boolean)
                                 break;
                         }
-                        
+                        $i++;
                     }
                 }
 
@@ -565,6 +587,7 @@ class CompraGeneralController extends AbstractActionController
             'selects' => \CompradetalleQuery::create()->select('idproductovariante')->filterByIdcompra($data['idcompra'])->find()->toArray(),
             'cantidad' =>\CompradetalleQuery::create()->select('compradetalle_cantidad')->filterByIdcompra($data['idcompra'])->find()->toArray(),
             'precio' =>\CompradetalleQuery::create()->select('compradetalle_preciounitario')->filterByIdcompra($data['idcompra'])->find()->toArray(),
+            'costo' =>\CompradetalleQuery::create()->select('compradetalle_costo')->filterByIdcompra($data['idcompra'])->find()->toArray(),
         ];
 
         return $information;

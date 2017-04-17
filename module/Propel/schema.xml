@@ -65,8 +65,9 @@
     <column name="idcompra" phpName="Idcompra" type="INTEGER" required="true"/>
     <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
     <column name="compradetalle_cantidad" phpName="CompradetalleCantidad" type="DECIMAL" size="10" scale="2" required="true"/>
-    <column name="compradetalle_preciounitario" phpName="CompradetallePreciounitario" type="DECIMAL" size="10" scale="2" required="false"/>
-    <column name="compradetalle_subtotal" phpName="CompradetalleSubtotal" type="DECIMAL" size="10" scale="2" required="false"/>
+    <column name="compradetalle_preciounitario" phpName="CompradetallePreciounitario" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="compradetalle_subtotal" phpName="CompradetalleSubtotal" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="compradetalle_costo" phpName="CompradetalleCosto" type="VARCHAR" size="45" required="true"/>
     <foreign-key foreignTable="compra" name="idcompra_compradetalle" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idcompra" foreign="idcompra"/>
     </foreign-key>
@@ -350,7 +351,7 @@
     <column name="idproductovariante" phpName="Idproductovariante" type="INTEGER" required="true"/>
     <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
     <column name="pedidomayoristadetalle_cantidad" phpName="PedidomayoristadetalleCantidad" type="INTEGER" required="true"/>
-    <column name="pedidomayoristadetalle_estatus" phpName="PedidomayoristadetalleEstatus" type="CHAR" sqlType="enum('pendiente','solicitado','transito','completado')" required="true"/>
+    <column name="pedidomayoristadetalle_estatus" phpName="PedidomayoristadetalleEstatus" type="CHAR" sqlType="enum('pendiente','solicitado','transito','completado','cancelado')" required="true"/>
     <column name="pedidomayoristadetalle_fecha" phpName="PedidomayoristadetalleFecha" type="DATE" required="true"/>
     <foreign-key foreignTable="pedidomayorista" name="idpedidomayorista_pedidomayoristadetalle" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idpedidomayorista" foreign="idpedidomayorista"/>
@@ -389,6 +390,7 @@
     <column name="producto_maximo" phpName="ProductoMaximo" type="INTEGER" required="false"/>
     <column name="idtipocalzado" phpName="Idtipocalzado" type="INTEGER" required="true"/>
     <column name="producto_descripcion" phpName="ProductoDescripcion" type="VARCHAR" size="500" required="false"/>
+    <column name="producto_costo" phpName="ProductoCosto" type="DECIMAL" size="10" scale="5" required="true"/>
     <foreign-key foreignTable="marca" name="idmarca_producto" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idmarca" foreign="idmarca"/>
     </foreign-key>
@@ -488,6 +490,7 @@
     <column name="productosucursal_precioventa" phpName="ProductosucursalPrecioventa" type="DECIMAL" size="10" scale="5" required="true"/>
     <column name="productosucursal_preciomayoreo" phpName="ProductosucursalPreciomayoreo" type="DECIMAL" size="10" scale="5" required="true"/>
     <column name="productosucursal_estatus" phpName="ProductosucursalEstatus" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
+    <column name="productosucursal_costo" phpName="ProductosucursalCosto" type="DECIMAL" size="10" scale="5" required="true"/>
     <foreign-key foreignTable="productovariante" name="idproductovariante_productosucursal" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idproductovariante" foreign="idproductovariante"/>
     </foreign-key>

@@ -20,6 +20,7 @@
  * @method ProductoQuery orderByProductoMaximo($order = Criteria::ASC) Order by the producto_maximo column
  * @method ProductoQuery orderByIdtipocalzado($order = Criteria::ASC) Order by the idtipocalzado column
  * @method ProductoQuery orderByProductoDescripcion($order = Criteria::ASC) Order by the producto_descripcion column
+ * @method ProductoQuery orderByProductoCosto($order = Criteria::ASC) Order by the producto_costo column
  *
  * @method ProductoQuery groupByIdproducto() Group by the idproducto column
  * @method ProductoQuery groupByProductoModelo() Group by the producto_modelo column
@@ -35,6 +36,7 @@
  * @method ProductoQuery groupByProductoMaximo() Group by the producto_maximo column
  * @method ProductoQuery groupByIdtipocalzado() Group by the idtipocalzado column
  * @method ProductoQuery groupByProductoDescripcion() Group by the producto_descripcion column
+ * @method ProductoQuery groupByProductoCosto() Group by the producto_costo column
  *
  * @method ProductoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProductoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -112,6 +114,7 @@
  * @method Producto findOneByProductoMaximo(int $producto_maximo) Return the first Producto filtered by the producto_maximo column
  * @method Producto findOneByIdtipocalzado(int $idtipocalzado) Return the first Producto filtered by the idtipocalzado column
  * @method Producto findOneByProductoDescripcion(string $producto_descripcion) Return the first Producto filtered by the producto_descripcion column
+ * @method Producto findOneByProductoCosto(string $producto_costo) Return the first Producto filtered by the producto_costo column
  *
  * @method array findByIdproducto(int $idproducto) Return Producto objects filtered by the idproducto column
  * @method array findByProductoModelo(string $producto_modelo) Return Producto objects filtered by the producto_modelo column
@@ -127,6 +130,7 @@
  * @method array findByProductoMaximo(int $producto_maximo) Return Producto objects filtered by the producto_maximo column
  * @method array findByIdtipocalzado(int $idtipocalzado) Return Producto objects filtered by the idtipocalzado column
  * @method array findByProductoDescripcion(string $producto_descripcion) Return Producto objects filtered by the producto_descripcion column
+ * @method array findByProductoCosto(string $producto_costo) Return Producto objects filtered by the producto_costo column
  *
  * @package    propel.generator.zarely.om
  */
@@ -234,7 +238,7 @@ abstract class BaseProductoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproducto`, `producto_modelo`, `idmarca`, `idtemporada`, `producto_comisionable`, `idproveedor`, `producto_dirigidoa`, `producto_precioventa`, `producto_preciomayoreo`, `producto_minimo`, `producto_reorden`, `producto_maximo`, `idtipocalzado`, `producto_descripcion` FROM `producto` WHERE `idproducto` = :p0';
+        $sql = 'SELECT `idproducto`, `producto_modelo`, `idmarca`, `idtemporada`, `producto_comisionable`, `idproveedor`, `producto_dirigidoa`, `producto_precioventa`, `producto_preciomayoreo`, `producto_minimo`, `producto_reorden`, `producto_maximo`, `idtipocalzado`, `producto_descripcion`, `producto_costo` FROM `producto` WHERE `idproducto` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -878,6 +882,48 @@ abstract class BaseProductoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductoPeer::PRODUCTO_DESCRIPCION, $productoDescripcion, $comparison);
+    }
+
+    /**
+     * Filter the query on the producto_costo column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProductoCosto(1234); // WHERE producto_costo = 1234
+     * $query->filterByProductoCosto(array(12, 34)); // WHERE producto_costo IN (12, 34)
+     * $query->filterByProductoCosto(array('min' => 12)); // WHERE producto_costo >= 12
+     * $query->filterByProductoCosto(array('max' => 12)); // WHERE producto_costo <= 12
+     * </code>
+     *
+     * @param     mixed $productoCosto The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProductoQuery The current query, for fluid interface
+     */
+    public function filterByProductoCosto($productoCosto = null, $comparison = null)
+    {
+        if (is_array($productoCosto)) {
+            $useMinMax = false;
+            if (isset($productoCosto['min'])) {
+                $this->addUsingAlias(ProductoPeer::PRODUCTO_COSTO, $productoCosto['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($productoCosto['max'])) {
+                $this->addUsingAlias(ProductoPeer::PRODUCTO_COSTO, $productoCosto['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductoPeer::PRODUCTO_COSTO, $productoCosto, $comparison);
     }
 
     /**

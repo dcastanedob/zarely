@@ -72,8 +72,8 @@
 
           //var cantidad = parseFloat($row.find('input[name*=cantidad]').val());
           console.log($row);
-          var precio = parseFloat($row.find('input#precio').val());
-          var subtotal = cantidad * precio;
+          var costo = parseFloat($row.find('input#costo').val());
+          var subtotal = cantidad * costo;
 
           $row.find('input.compradetalle_subtotal').val(accounting.formatMoney(subtotal));
           calcularTotal();
@@ -144,6 +144,8 @@
                             $container.find('input[name=cantidad'+data.selects[i]+']').attr('value',data.cantidad[i].replace(".00",""));
                             $container.find('input[name=preciounitario'+data.selects[i]+']').attr('value',data.precio[i]);
                             $container.find('input[name=preciounitario'+data.selects[i]+']').keyup();
+                            $container.find('input[name=costounitario'+data.selects[i]+']').attr('value',data.costo[i]);
+                            $container.find('input[name=costounitario'+data.selects[i]+']').keyup();
                           }
                                             
                       }
@@ -251,6 +253,7 @@
                                       '<th id="tallaje345">34.5</th>',
                                       '<th id="tallaje350">35.0</th>',
                                       '<th >Precio</th>',
+                                      '<th >Costo</th>',
                                       '<th >Subtotal</th>',
                                       '<th>Acción</th>',
                                   '</thead>',
@@ -311,6 +314,7 @@
                           }
 
                           $tr.append('<td><input type="text" size="5" id="precio" value="1.0" name="preciounitario'+referencia+'"></input></td>');
+                          $tr.append('<td><input type="text" size="5" id="costo" value="1.0" name="costounitario'+referencia+'"></input></td>');
                           $tr.find('input').numeric();
                           $tr.append('<td><input type="text" size="5" class="compradetalle_subtotal" value="0.0" disabled></input></td>');
                           $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
@@ -673,6 +677,7 @@
                                         }
 
                                         $tr.append('<td><input type="text" size="5" id="precio" value="1.0" name="preciounitario'+referencia+'"></input></td>');
+                                        $tr.append('<td><input type="text" size="5" id="costo" value="1.0" name="costounitario'+referencia+'"></input></td>');
                                         $tr.find('input').numeric();
                                         $tr.append('<td><input type="text" size="5" class="compradetalle_subtotal" value="0.0" disabled></input></td>');
                                         $tr.append('<td><a href="javascript:;">Eliminar</a></td>');

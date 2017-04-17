@@ -171,8 +171,9 @@ class ProductosController extends AbstractActionController
                
                 $c1= $c->getNewCriterion('producto.idproducto', '%'.$search_value.'%', \Criteria::LIKE);
                 $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
-
-                $c1->addOr($c2);
+                $c3= $c->getNewCriterion('marca.marca_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c4= $c->getNewCriterion('temporada.temporada_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1->addOr($c2)->addOr($c3)->addOr($c4);
 
                 $query->addAnd($c1);
                 $query->groupByIdproducto();
@@ -209,8 +210,8 @@ class ProductosController extends AbstractActionController
                 $tmp['DT_RowId'] = $value['idproducto'];
                 $tmp['idproducto'] = $value['idproducto'];
                 $tmp['producto_modelo'] = $value['producto_modelo'];
-                $tmp['idmarca'] = $value['marca_nombre'];
-                $tmp['idtemporada'] = $value['temporada_nombre'];
+                $tmp['marca_nombre'] = $value['marca_nombre'];
+                $tmp['temporada_nombre'] = $value['temporada_nombre'];
                 $tmp['producto_precioventa'] = $value['producto_precioventa'];
                 $tmp['producto_preciomayoreo'] = $value['producto_preciomayoreo'];
 
@@ -374,7 +375,6 @@ class ProductosController extends AbstractActionController
 
             
 
-
             $entity = new \Producto();
 
             
@@ -523,6 +523,7 @@ class ProductosController extends AbstractActionController
                                     ->setProductosucursalMinimo($entity->getProductoMinimo())
                                     ->setProductosucursalPreciomayoreo($entity->getProductoPreciomayoreo())
                                     ->setProductosucursalEstatus(1)
+                                    ->setProductosucursalCosto($entity->getProductoCosto())
                                     ->save();
                 }
             }
@@ -768,7 +769,6 @@ class ProductosController extends AbstractActionController
                 }
 
                 $sucursales = \SucursalQuery::create()->find();
-
                 foreach ($sucursales as $sucursal) {
                     foreach ($productoVarianteId as $variante) {
                         $productosucursal = new \Productosucursal();
@@ -782,6 +782,7 @@ class ProductosController extends AbstractActionController
                                         ->setProductosucursalMinimo($entity->getProductoMinimo())
                                         ->setProductosucursalPreciomayoreo($entity->getProductoPreciomayoreo())
                                         ->setProductosucursalEstatus(1)
+                                        ->setProductosucursalCosto($entity->getProductoCosto())
                                         ->save();
                     }
                 }

@@ -42,8 +42,9 @@ class CompradetalleTableMap extends TableMap
         $this->addForeignKey('idcompra', 'Idcompra', 'INTEGER', 'compra', 'idcompra', true, null, null);
         $this->addForeignKey('idproductovariante', 'Idproductovariante', 'INTEGER', 'productovariante', 'idproductovariante', true, null, null);
         $this->addColumn('compradetalle_cantidad', 'CompradetalleCantidad', 'DECIMAL', true, 10, null);
-        $this->addColumn('compradetalle_preciounitario', 'CompradetallePreciounitario', 'DECIMAL', false, 10, null);
-        $this->addColumn('compradetalle_subtotal', 'CompradetalleSubtotal', 'DECIMAL', false, 10, null);
+        $this->addColumn('compradetalle_preciounitario', 'CompradetallePreciounitario', 'DECIMAL', true, 10, null);
+        $this->addColumn('compradetalle_subtotal', 'CompradetalleSubtotal', 'DECIMAL', true, 10, null);
+        $this->addColumn('compradetalle_costo', 'CompradetalleCosto', 'VARCHAR', true, 45, null);
         // validators
     } // initialize()
 

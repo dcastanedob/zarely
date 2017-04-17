@@ -59,6 +59,7 @@ class ProductoTableMap extends TableMap
         $this->addColumn('producto_maximo', 'ProductoMaximo', 'INTEGER', false, null, null);
         $this->addForeignKey('idtipocalzado', 'Idtipocalzado', 'INTEGER', 'tipocalzado', 'idtipocalzado', true, null, null);
         $this->addColumn('producto_descripcion', 'ProductoDescripcion', 'VARCHAR', false, 500, null);
+        $this->addColumn('producto_costo', 'ProductoCosto', 'DECIMAL', true, 10, null);
         // validators
     } // initialize()
 

@@ -66,6 +66,7 @@
                     columns:[
                         {"data":"idproducto","name":"idproducto","orderable":true},
                         {"data":"producto_modelo","name":"producto_modelo","orderable":true},
+                        {"data":"marca_nombre","name":"marca_nombre","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},
                     ],
                     proccesing: true,

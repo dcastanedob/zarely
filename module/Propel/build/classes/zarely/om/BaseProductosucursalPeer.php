@@ -24,13 +24,13 @@ abstract class BaseProductosucursalPeer
     const TM_CLASS = 'ProductosucursalTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the idproductosucursal field */
     const IDPRODUCTOSUCURSAL = 'productosucursal.idproductosucursal';
@@ -59,6 +59,9 @@ abstract class BaseProductosucursalPeer
     /** the column name for the productosucursal_estatus field */
     const PRODUCTOSUCURSAL_ESTATUS = 'productosucursal.productosucursal_estatus';
 
+    /** the column name for the productosucursal_costo field */
+    const PRODUCTOSUCURSAL_COSTO = 'productosucursal.productosucursal_costo';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -78,12 +81,12 @@ abstract class BaseProductosucursalPeer
      * e.g. ProductosucursalPeer::$fieldNames[ProductosucursalPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductosucursal', 'Idproductovariante', 'Idsucursal', 'ProductosucursalExistencia', 'ProductosucursalMinimo', 'ProductosucursalReorden', 'ProductosucursalPrecioventa', 'ProductosucursalPreciomayoreo', 'ProductosucursalEstatus', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductosucursal', 'idproductovariante', 'idsucursal', 'productosucursalExistencia', 'productosucursalMinimo', 'productosucursalReorden', 'productosucursalPrecioventa', 'productosucursalPreciomayoreo', 'productosucursalEstatus', ),
-        BasePeer::TYPE_COLNAME => array (ProductosucursalPeer::IDPRODUCTOSUCURSAL, ProductosucursalPeer::IDPRODUCTOVARIANTE, ProductosucursalPeer::IDSUCURSAL, ProductosucursalPeer::PRODUCTOSUCURSAL_EXISTENCIA, ProductosucursalPeer::PRODUCTOSUCURSAL_MINIMO, ProductosucursalPeer::PRODUCTOSUCURSAL_REORDEN, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTA, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO, ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOSUCURSAL', 'IDPRODUCTOVARIANTE', 'IDSUCURSAL', 'PRODUCTOSUCURSAL_EXISTENCIA', 'PRODUCTOSUCURSAL_MINIMO', 'PRODUCTOSUCURSAL_REORDEN', 'PRODUCTOSUCURSAL_PRECIOVENTA', 'PRODUCTOSUCURSAL_PRECIOMAYOREO', 'PRODUCTOSUCURSAL_ESTATUS', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductosucursal', 'idproductovariante', 'idsucursal', 'productosucursal_existencia', 'productosucursal_minimo', 'productosucursal_reorden', 'productosucursal_precioventa', 'productosucursal_preciomayoreo', 'productosucursal_estatus', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idproductosucursal', 'Idproductovariante', 'Idsucursal', 'ProductosucursalExistencia', 'ProductosucursalMinimo', 'ProductosucursalReorden', 'ProductosucursalPrecioventa', 'ProductosucursalPreciomayoreo', 'ProductosucursalEstatus', 'ProductosucursalCosto', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductosucursal', 'idproductovariante', 'idsucursal', 'productosucursalExistencia', 'productosucursalMinimo', 'productosucursalReorden', 'productosucursalPrecioventa', 'productosucursalPreciomayoreo', 'productosucursalEstatus', 'productosucursalCosto', ),
+        BasePeer::TYPE_COLNAME => array (ProductosucursalPeer::IDPRODUCTOSUCURSAL, ProductosucursalPeer::IDPRODUCTOVARIANTE, ProductosucursalPeer::IDSUCURSAL, ProductosucursalPeer::PRODUCTOSUCURSAL_EXISTENCIA, ProductosucursalPeer::PRODUCTOSUCURSAL_MINIMO, ProductosucursalPeer::PRODUCTOSUCURSAL_REORDEN, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTA, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO, ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS, ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOSUCURSAL', 'IDPRODUCTOVARIANTE', 'IDSUCURSAL', 'PRODUCTOSUCURSAL_EXISTENCIA', 'PRODUCTOSUCURSAL_MINIMO', 'PRODUCTOSUCURSAL_REORDEN', 'PRODUCTOSUCURSAL_PRECIOVENTA', 'PRODUCTOSUCURSAL_PRECIOMAYOREO', 'PRODUCTOSUCURSAL_ESTATUS', 'PRODUCTOSUCURSAL_COSTO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductosucursal', 'idproductovariante', 'idsucursal', 'productosucursal_existencia', 'productosucursal_minimo', 'productosucursal_reorden', 'productosucursal_precioventa', 'productosucursal_preciomayoreo', 'productosucursal_estatus', 'productosucursal_costo', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -93,12 +96,12 @@ abstract class BaseProductosucursalPeer
      * e.g. ProductosucursalPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductosucursal' => 0, 'Idproductovariante' => 1, 'Idsucursal' => 2, 'ProductosucursalExistencia' => 3, 'ProductosucursalMinimo' => 4, 'ProductosucursalReorden' => 5, 'ProductosucursalPrecioventa' => 6, 'ProductosucursalPreciomayoreo' => 7, 'ProductosucursalEstatus' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductosucursal' => 0, 'idproductovariante' => 1, 'idsucursal' => 2, 'productosucursalExistencia' => 3, 'productosucursalMinimo' => 4, 'productosucursalReorden' => 5, 'productosucursalPrecioventa' => 6, 'productosucursalPreciomayoreo' => 7, 'productosucursalEstatus' => 8, ),
-        BasePeer::TYPE_COLNAME => array (ProductosucursalPeer::IDPRODUCTOSUCURSAL => 0, ProductosucursalPeer::IDPRODUCTOVARIANTE => 1, ProductosucursalPeer::IDSUCURSAL => 2, ProductosucursalPeer::PRODUCTOSUCURSAL_EXISTENCIA => 3, ProductosucursalPeer::PRODUCTOSUCURSAL_MINIMO => 4, ProductosucursalPeer::PRODUCTOSUCURSAL_REORDEN => 5, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTA => 6, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO => 7, ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOSUCURSAL' => 0, 'IDPRODUCTOVARIANTE' => 1, 'IDSUCURSAL' => 2, 'PRODUCTOSUCURSAL_EXISTENCIA' => 3, 'PRODUCTOSUCURSAL_MINIMO' => 4, 'PRODUCTOSUCURSAL_REORDEN' => 5, 'PRODUCTOSUCURSAL_PRECIOVENTA' => 6, 'PRODUCTOSUCURSAL_PRECIOMAYOREO' => 7, 'PRODUCTOSUCURSAL_ESTATUS' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductosucursal' => 0, 'idproductovariante' => 1, 'idsucursal' => 2, 'productosucursal_existencia' => 3, 'productosucursal_minimo' => 4, 'productosucursal_reorden' => 5, 'productosucursal_precioventa' => 6, 'productosucursal_preciomayoreo' => 7, 'productosucursal_estatus' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idproductosucursal' => 0, 'Idproductovariante' => 1, 'Idsucursal' => 2, 'ProductosucursalExistencia' => 3, 'ProductosucursalMinimo' => 4, 'ProductosucursalReorden' => 5, 'ProductosucursalPrecioventa' => 6, 'ProductosucursalPreciomayoreo' => 7, 'ProductosucursalEstatus' => 8, 'ProductosucursalCosto' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductosucursal' => 0, 'idproductovariante' => 1, 'idsucursal' => 2, 'productosucursalExistencia' => 3, 'productosucursalMinimo' => 4, 'productosucursalReorden' => 5, 'productosucursalPrecioventa' => 6, 'productosucursalPreciomayoreo' => 7, 'productosucursalEstatus' => 8, 'productosucursalCosto' => 9, ),
+        BasePeer::TYPE_COLNAME => array (ProductosucursalPeer::IDPRODUCTOSUCURSAL => 0, ProductosucursalPeer::IDPRODUCTOVARIANTE => 1, ProductosucursalPeer::IDSUCURSAL => 2, ProductosucursalPeer::PRODUCTOSUCURSAL_EXISTENCIA => 3, ProductosucursalPeer::PRODUCTOSUCURSAL_MINIMO => 4, ProductosucursalPeer::PRODUCTOSUCURSAL_REORDEN => 5, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTA => 6, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO => 7, ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS => 8, ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOSUCURSAL' => 0, 'IDPRODUCTOVARIANTE' => 1, 'IDSUCURSAL' => 2, 'PRODUCTOSUCURSAL_EXISTENCIA' => 3, 'PRODUCTOSUCURSAL_MINIMO' => 4, 'PRODUCTOSUCURSAL_REORDEN' => 5, 'PRODUCTOSUCURSAL_PRECIOVENTA' => 6, 'PRODUCTOSUCURSAL_PRECIOMAYOREO' => 7, 'PRODUCTOSUCURSAL_ESTATUS' => 8, 'PRODUCTOSUCURSAL_COSTO' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductosucursal' => 0, 'idproductovariante' => 1, 'idsucursal' => 2, 'productosucursal_existencia' => 3, 'productosucursal_minimo' => 4, 'productosucursal_reorden' => 5, 'productosucursal_precioventa' => 6, 'productosucursal_preciomayoreo' => 7, 'productosucursal_estatus' => 8, 'productosucursal_costo' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -181,6 +184,7 @@ abstract class BaseProductosucursalPeer
             $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTA);
             $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO);
             $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS);
+            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO);
         } else {
             $criteria->addSelectColumn($alias . '.idproductosucursal');
             $criteria->addSelectColumn($alias . '.idproductovariante');
@@ -191,6 +195,7 @@ abstract class BaseProductosucursalPeer
             $criteria->addSelectColumn($alias . '.productosucursal_precioventa');
             $criteria->addSelectColumn($alias . '.productosucursal_preciomayoreo');
             $criteria->addSelectColumn($alias . '.productosucursal_estatus');
+            $criteria->addSelectColumn($alias . '.productosucursal_costo');
         }
     }
 
