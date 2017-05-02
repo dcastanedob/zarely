@@ -16,11 +16,11 @@ class CuentaPorPagarController extends AbstractActionController
 {
 
     public $column_map = array(
-        0 => 'CompraFechacompra',
-        1 => 'a.ProveedorNombrecomercial',
-        2 => 'CompraTotal',
-        4 => 'CompraEstatus',
-        3 => 'CompraComprobante',
+        0 => 'a.ProveedorNombrecomercial',
+        1 => 'Idcompra',
+        2 => 'CompraFechacompra',
+        3 => 'CompraTotal',
+        4 => 'CompraEstatuspago',
 
 
     );
@@ -77,7 +77,7 @@ class CuentaPorPagarController extends AbstractActionController
 
                 $c2= $c->getNewCriterion('proveedor.proveedor_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c3= $c->getNewCriterion('compra.compra_estatus', '%'.$search_value.'%', \Criteria::LIKE);
+                $c3= $c->getNewCriterion('compra.compra_fechacompra', '%'.$search_value.'%', \Criteria::LIKE);
 
 
                 $c1->addOr($c2)->addOr($c3);
@@ -115,12 +115,15 @@ class CuentaPorPagarController extends AbstractActionController
                 $tmp['compra_fechacompra'] = $value['compra_fechacompra'];
                 $tmp['proveedor_nombre'] = $value['proveedor_nombre'];
                 $tmp['compra_total'] = '$'.number_format($value['compra_total'],2);
-                $tmp['compra_comprobante'] = '<a href="'.$value['compra_comprobante'].'"    target="_blank"> 
-                        <span class="icon icon-file icon-lg ">
-                    </span>
-                </a>';
+                
 
-                $tmp['compra_estatus'] = $value['compra_estatus'];
+                if($value['compra_estatuspago'])
+                {
+                    $tmp['compra_estatuspago'] = "Sí";
+                }else{
+                    $tmp['compra_estatuspago'] = "No";
+                }
+                
 
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
@@ -130,7 +133,7 @@ class CuentaPorPagarController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/compras/generales/ver/' . $value['idcompra'] . '">
+                      <a href="/flujo-efectivo/porpagar/ver/' . $value['idcompra'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -178,7 +181,8 @@ class CuentaPorPagarController extends AbstractActionController
     }
     
     function get_extension($file) {
-         $extension = end(explode(".", $file));
+         $tmp = explode(".", $file);
+         $extension =end($tmp);
          return $extension ? $extension : false;
     }
 
@@ -194,118 +198,39 @@ class CuentaPorPagarController extends AbstractActionController
     }
 
 
-    public function nuevoAction(){
-        
+    public function initializeAction(){
         $request = $this->getRequest();
-        
-        if($request->isPost()){
+
+        if($request->isPost())
+        {
             $post_data = $request->getPost();
 
-            $post_files = $request->getFiles();
+            //obtenemos todos los movimientos de la compra
+            $movimientos = \CuentabancariamovimientoQuery::create()->filterByIdproceso($post_data['id'])->find();
+
+            //procesamos la informaciòn para recibirla como la queremos
+            $information = [];
+            foreach ($movimientos->toArray() as $movimiento) {
+                $entity = \CuentabancariaQuery::create()->findPk($movimiento['Idcuentabancaria']);
+
+                $data = array(
+                    "idCuentabancariamovimiento"=>$movimiento['Idcuentabancariamovimiento'],
+                    "fecha"=>$movimiento['CuentabancariamovimientoFechamovimiento'],
+                    "idCuentabancaria"=>$entity->getCuentabancariaBanco() . ' - '
+                                        . preg_replace('/(0|1|2|3|4|5|6|7|8|9)/', 'x', $entity->getCuentabancariaCuenta()),
+                    "cantidad"=>$movimiento['CuentabancariamovimientoCantidad'],
+                    "medio" => "???",
+                    "referencia" => "???",
+                    "comprobante"=>$movimiento['CuentabancariamovimientoComprobante'],
+                );
+
+                $information[] = $data;
+            }
             
-
-            $entity = new \Compra();
-
-            $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
-
-            $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
-
-            foreach ($post_data as $key => $value){
-                if(\CompraPeer::getTableMap()->hasColumn($key)){
-                    $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
-                }
-            }
-
-            $entity->save();
-
-            if(isset($post_files['compra_comprobante'])){
-
-                $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
-
-                move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
-
-
-                $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
-            }
-
-
-            $entity->setCompraFechacreacion(date("Y-n-j"));
-
-            $entity->save();
-            
-            $total = 0;
-
-            for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
-            {
-                $compradetalle = new \Compradetalle();
-                $compradetalle->setIdcompra($entity->getIdcompra())
-                              ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                              ->setCompradetalleCantidad($post_data['cantidad'][$variante])
-                              ->setCompradetallePreciounitario($post_data['preciounitario'][$variante])
-                              ->setCompradetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
-                              ->save();
-                $total+= $compradetalle->getCompradetalleSubtotal();
-
-            }
-            $entity->setCompraTotal($total);
-            $entity->save();
-
-
-            $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-            return $this->redirect()->toUrl('/compras/generales');
-        
-
+            return $this->getResponse()->setContent(json_encode(array('response' => true,'information'=>$information)));
         }
 
-        //traer los proveedores
-        $provedorees = \ProveedorQuery::create()->find();
-        $provedorees_array = array();
-
-        foreach ($provedorees as $value){
-            $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
-        }
-
-
-        //traer los productosvariantes
-        $variantes = \ProductovarianteQuery::create()->find();
-        $productosvariante_array = array();
-
-        foreach ($variantes as $value){
-            $producto = $value->getProducto();
-            $color = $value->getProductocolor();
-            $color = $color->getColor();
-            $material = $value->getProductomaterial();
-            $material = $material->getMaterial();
-
-
-            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre().' / '. $value->getProductovarianteTalla().'';
-
-            $productosvariante_array[$value->getIdproductovariante()] = $information;
-        }
-
-
-        //traer los productos generales
-        $generales = \ProductoQuery::create()->find();
-        $productos_generales_array = array();
-
-        foreach ($generales as $value){
-
-            $productos_generales_array[$value->getIdproducto()] = $value->getProductoModelo();
-        }
-
-
-
-        $form = new \Application\Compra\Form\CompraGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
-        
-        $view_model = new ViewModel();
-        $view_model->setTemplate('application/compra/generales/nuevo');
-        $view_model->setVariables(array(
-            'form' => $form
-        ));
-        return $view_model;
-        
     }
-
 
     public function verAction()
     {
@@ -319,194 +244,116 @@ class CuentaPorPagarController extends AbstractActionController
             
             $entity = \CompraQuery::create()->findPk($id);
             
-            if($request->isPost()){
-                $post_data = $request->getPost();
-                $post_files = $request->getFiles();
-
-                $post_data['compra_fechacompra'] = date_create_from_format('d/m/Y', $post_data['compra_fechacompra']);
-
-                $post_data['compra_fechaentrega'] = date_create_from_format('d/m/Y', $post_data['compra_fechaentrega']);
-                
-                foreach ($post_data as $key => $value){
-                    if(\CompraPeer::getTableMap()->hasColumn($key)){
-                        $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
-                    }
-                }
-
-                $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
-                //$entity->getProductotallajes()->delete();
-
-                $total = 0;
-                for($variante = 0; $variante < count($post_data['productosvariantes']); $variante++)
-                {
-                    $compradetalle = new \Compradetalle();
-                    $compradetalle->setIdcompra($entity->getIdcompra())
-                                  ->setIdproductovariante($post_data['productosvariantes'][$variante])
-                                  ->setCompradetalleCantidad($post_data['cantidad'][$variante])
-                                  ->setCompradetallePreciounitario($post_data['preciounitario'][$variante])
-                                  ->setCompradetalleSubtotal(intval($post_data['cantidad'][$variante]) * intval($post_data['preciounitario'][$variante]))
-                                  ->save();
-                    $total+= $compradetalle->getCompradetalleSubtotal();
-
-                }
-
-                if(isset($post_files['compra_comprobante'])){
-
-                    $file_type = $this->get_extension($post_files['compra_comprobante']['name']);
-
-                    move_uploaded_file($post_files['compra_comprobante']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/files/compras/'.$entity->getIdcompra().'.'.$file_type);
-
-
-                    $entity->setCompraComprobante('/files/compras/'.$entity->getIdcompra().'.'.$file_type)->save();
-                }
-
-                $entity->setCompraTotal($total);
-                $entity->save();
-
-
-                $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-                return $this->redirect()->toUrl('/compras/generales');
-            }
+            
             
                 
-            //traer los proveedores
-            $provedorees = \ProveedorQuery::create()->find();
-            $provedorees_array = array();
+            ///traer las cuentas bancarias
+            $cuentas = \CuentabancariaQuery::create()->find();
+            $cuentas_array = array();
 
-            foreach ($provedorees as $value){
-                $provedorees_array[$value->getIdproveedor()] = $value->getProveedorNombrecomercial();
+            foreach ($cuentas as $value){
+                $cuentas_array[$value->getIdcuentabancaria()] = $value->getCuentabancariaBanco() . ' - '
+                . preg_replace('/(0|1|2|3|4|5|6|7|8|9)/', 'x', $value->getCuentabancariaCuenta());
+
             }
 
+            //filtramos los movimientos de la ceunta  asociada
+            $movimientos = \CuentabancariamovimientoQuery::create()->filterByIdproceso($id)->find();
 
-            //traer los productosvariantes
-            $variantes = \ProductovarianteQuery::create()->find();
-            $productosvariante_array = array();
-
-            foreach ($variantes as $value){
-                $producto = $value->getProducto();
-                $color = $value->getProductocolor();
-                $color = $color->getColor();
-                $material = $value->getProductomaterial();
-                $material = $material->getMaterial();
-
-
-                $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre().' / '. $value->getProductovarianteTalla().'';
-
-                $productosvariante_array[$value->getIdproductovariante()] = $information;
+            //obtenemos el total de la cuenta bancaria
+            $totalAlMomento = 0;    
+            foreach ($movimientos->toArray() as $movimiento ) {
+                $totalAlMomento+=$movimiento['CuentabancariamovimientoCantidad'];
             }
+            $restante = floatval($entity->getCompraTotal() - floatval($totalAlMomento));
+            
+            $form = new \Application\FlujoEfectivo\Form\CuentaPorPagarForm($cuentas_array);
 
             
-            //traer los productos generales
-            $generales = \ProductoQuery::create()->find();
-            $productos_generales_array = array();
-
-            foreach ($generales as $value){
-
-                $productos_generales_array[$value->getIdproducto()] = $value->getProductoModelo();
-            }
-
-            
-            $form = new \Application\Compra\Form\CompraGeneralForm($provedorees_array,$productosvariante_array,$productos_generales_array);
-
-            $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            $form->get("compra_comprobante")->setAttribute('required',false);
             
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/compra/generales/ver');
+            $view_model->setTemplate('application/flujoefectivo/porpagar/ver');
             $view_model->setVariables(array(
                 'form' => $form,
                 'entity' => $entity,
+                'restante' => money_format('%.2n', $restante),
             ));
+
             return $view_model;
             
             
         }else{
             $this->flashMessenger()->addErrorMessage('Id Invalido.');
-            return $this->redirect()->toUrl('/compras/generales');
+            return $this->redirect()->toUrl('/flujo-efectivo/porpagar');
         }
         return $view_model;
     }
     
 
-
-
-    public function getProductovariantes($data){
-        $information = [
-            'selects' => \CompradetalleQuery::create()->select('idproductovariante')->filterByIdcompra($data['idcompra'])->find()->toArray(),
-            'cantidad' =>\CompradetalleQuery::create()->select('compradetalle_cantidad')->filterByIdcompra($data['idcompra'])->find()->toArray(),
-            'precio' =>\CompradetalleQuery::create()->select('compradetalle_preciounitario')->filterByIdcompra($data['idcompra'])->find()->toArray(),
-        ];
-
-        return $information;
-
-    }
-
-    public function getProductosvariantesAction(){
-        
+    public function pagoAction()
+    {
         $request = $this->getRequest();
         if($request->isPost()){
             
             $post_data = $request->getPost();
-            if($post_data['name'] == 'productosvariantes'){
-                $response = $this->getProductovariantes($post_data['data']);
 
-                return $this->getResponse()->setContent(json_encode($response));
-                
-            }
-            
+            $entity = \CompraQuery::create()->findPk($post_data['data']['idproceso']);
+
+            //verificamos que se manden los datos necesarios
+            if($post_data['data']['cuentabancariamovimiento_fechamovimiento'] != "" && $post_data['data']['cuentabancariamovimiento_cantidad'] != "" && $post_data['data']['idcuentabancaria'] !="" && $post_data['data']['cuentabancariamovimiento_medio'] != "")
+            {
+
+                //filtramos los movimientos de la ceunta  asociada
+                $movimientos = \CuentabancariamovimientoQuery::create()->filterByIdproceso($post_data['data']['idproceso'])->find();
+
+                //obtenemos el total de la cuenta bancaria
+                $totalAlMomento = $post_data['data']['cuentabancariamovimiento_cantidad'];    
+                foreach ($movimientos->toArray() as $movimiento ) {
+                    $totalAlMomento+=$movimiento['CuentabancariamovimientoCantidad'];
+                }
+
+                //verificamos que no se pase del pago
+                if($totalAlMomento > $entity->getCompraTotal())
+                {
+                    return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'no pagues tanto')));
+                }else{
+
+                    //obtenemos el usuario que está en sesión
+                    $user = new \Application\Session\AouthSession();
+                    $user = $user->getData();
+
+                    $cuentabancaria_movimiento = new \Cuentabancariamovimiento();
+                    $cuentabancaria_movimiento->setIdcuentabancaria($post_data['data']['idcuentabancaria'])
+                                                ->setIdempleado($user['idempleado'])
+                                                ->setCuentabancariamovimientoProceso("compra")
+                                                ->setIdproceso($entity->getIdcompra())
+                                                ->setCuentabancariamovimientoCantidad(intval($post_data['data']['cuentabancariamovimiento_cantidad']))
+                                                ->setCuentabancariamovimientoFechamovimiento($post_data['data']['cuentabancariamovimiento_fechamovimiento'])
+                                                ->setCuentabancariamovimientoFechacreacion(date("Y-n-j"))
+                                                ->setCuentabancariamovimientoBalance(floatval($entity->getCompraTotal() - floatval($totalAlMomento)))->save();
+                    if($cuentabancaria_movimiento->getCuentabancariamovimientoBalance() == 0)
+                    {
+                        $entity->setCompraEstatuspago(1)->save();
+                    }
+                    //verificamos que exista un comprobante
+                    if(isset($post_data['data']['cuentabancariamovimiento_comprobante'])){
+
+                        $file_type = $this->get_extension($post_data['data']['cuentabancariamovimiento_comprobante']);
+
+                        move_uploaded_file($post_data['data']['cuentabancariamovimiento_comprobante'], $_SERVER['DOCUMENT_ROOT'].'/files/flujoefectivo/porpagar/'.$cuentabancaria_movimiento->getIdcuentabancariamovimiento().'.'.$file_type);
+
+
+                        $cuentabancaria_movimiento->setCuentabancariamovimientoComprobante('/files/flujoefectivo/porpagar/'.$cuentabancaria_movimiento->getIdcuentabancariamovimiento().'.'.$file_type)->save();
+                    }
+
+                    return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'pago realizado','restante'=>floatval($entity->getCompraTotal() - floatval($totalAlMomento)),'id'=>$cuentabancaria_movimiento->getIdcuentabancariamovimiento())));
+                }  
+            }else{
+                return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'llena todos los campos')));
+            }      
         };
     }
 
-
-    public function getdetailsAction(){
-
-        $request = $this->getRequest();
-        if($request->isPost()){
-
-            $post_data = $request->getPost();
-            
-            //filtramos los productos variantes por producto
-            $variantes = \ProductovarianteQuery::create()->filterByIdproducto($post_data['idproductogeneral'])->find();
-            
-            $details = [];
-
-
-            //iteramos sobre todas als variantes
-            foreach ($variantes as $variante) {
-                $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
-
-
-                
-                //verificamos que la combinacion de material color n oexista
-                if($details[$indice] == null)
-                {
-
-                    //inicializamos las variantes de ese color y material
-                    $details[$indice] = [];
-                    $value = array(
-                                'talla' => $variante->getProductovarianteTalla(),
-                                'variante' => $variante->getIdproductovariante(),
-                             );
-
-                    array_push($details[$indice], $value);
-
-                }else{
-                    $value = array(
-                                'talla' => $variante->getProductovarianteTalla(),
-                                'variante' => $variante->getIdproductovariante(),
-                             );
-
-                    array_push($details[$indice], $value);
-                }
-                
-            }
-
-            return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
-
-            //echo '<pre>'; var_dump($details); echo '</pre>';exit();
-        }
-
-    } 
     
 
     public function eliminarAction(){
@@ -516,12 +363,10 @@ class CuentaPorPagarController extends AbstractActionController
         {
             $id = $this->params()->fromRoute('id');
             $entity = \CompraQuery::Create()->findPk($id);
-
-            unlink("/files/compras/19.");
             
             $entity->delete();
 
-            $detalles = \CompradetalleQuery::create()->filterByIdcompra($id)->delete();
+            $detalles = \CuentabancariamovimientoQuery::create()->filterByIdproceso($id)->delete();
             
             if($entity->isDeleted()){
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido eliminado satisfactoriamente.');
@@ -530,7 +375,47 @@ class CuentaPorPagarController extends AbstractActionController
             }
         }
 
-        return $this->redirect()->toUrl('/compras/generales');
+        return $this->redirect()->toUrl('/flujo-efectivo/porpagar');
+    }
+
+    public function eliminarmovimientoAction(){
+        $request = $this->getRequest();
+
+        if($request->isPost())
+        {
+            $post_data = $request->getPost();
+            $exist = \CuentabancariamovimientoQuery::create()->filterByIdcuentabancariamovimiento($post_data['data']['id'])->exists();
+            
+            if($exist){
+
+                //eliminamos el movimiento de la cuenta bancaria
+                $entity = \CuentabancariamovimientoQuery::create()->filterByIdcuentabancariamovimiento($post_data['data']['id'])->delete();
+
+                $compra = \CompraQuery::create()->findPk($post_data['data']['idcompra']);
+
+
+                //filtramos los movimientos de la cuenta  asociada
+                $movimientos = \CuentabancariamovimientoQuery::create()->filterByIdproceso($post_data['data']['idcompra'])->find();
+
+                //obtenemos el total de la cuenta bancaria
+                $totalAlMomento = 0;    
+                foreach ($movimientos->toArray() as $movimiento ) {
+                    $totalAlMomento+=$movimiento['CuentabancariamovimientoCantidad'];
+                }
+                $restante = floatval($compra->getCompraTotal() - floatval($totalAlMomento));
+
+                if($restante>0)
+                {
+                    $compra->setCompraEstatuspago(0)->save();
+                }
+                
+                return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'eliminado','restante' => $restante)));
+            }else{
+                return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'no se pudo eliminar')));
+            }
+            
+        }
+
     }
 
 }

@@ -256,8 +256,9 @@ class CompraGeneralController extends AbstractActionController
                     
                 }
             }
-            $entity->save();
 
+            $entity->save();
+            $entity->setCompraEstatuspago(0)->save();
             if(isset($post_files['compra_comprobante'])){
 
                 $file_type = $this->get_extension($post_files['compra_comprobante']['name']);

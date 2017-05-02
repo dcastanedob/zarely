@@ -64,11 +64,12 @@
                         url:'/flujo-efectivo/porpagar/serverside',
                     },
                     columns:[
-                        {"data":"compra_fechacompra","name":"compra_fechacompra","orderable":true},
+
                         {"data":"proveedor_nombre","name":"proveedor_nombre","orderable":true},
+                        {"data":"idcompra","name":"idcompra","orderable":true},
+                        {"data":"compra_fechacompra","name":"compra_fechacompra","orderable":true},
                         {"data":"compra_total","name":"compra_total","orderable":true},
-                        {"data":"compra_comprobante","name":"compra_comprobante","orderable":false},
-                        {"data":"compra_estatus","name":"compra_estatus","orderable":true},
+                        {"data":"compra_estatuspago","name":"compra_estatuspago","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},
                     ],
                     proccesing: true,
