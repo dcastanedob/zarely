@@ -111,6 +111,8 @@
     <column name="cuentabancariamovimiento_fechamovimiento" phpName="CuentabancariamovimientoFechamovimiento" type="TIMESTAMP" required="true"/>
     <column name="cuentabancariamovimiento_fechacreacion" phpName="CuentabancariamovimientoFechacreacion" type="TIMESTAMP" required="true"/>
     <column name="cuentabancariamovimiento_balance" phpName="CuentabancariamovimientoBalance" type="DECIMAL" size="10" scale="2" required="true"/>
+    <column name="cuentabancariamovimiento_referencia" phpName="CuentabancariamovimientoReferencia" type="VARCHAR" size="45" required="false"/>
+    <column name="cuentabancariamovimiento_medio" phpName="CuentabancariamovimientoMedio" type="CHAR" sqlType="enum('cheque','efectivo','transferencia')" required="false"/>
     <foreign-key foreignTable="cuentabancaria" name="idcuentabancaria_cuentabancariamovimiento" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idcuentabancaria" foreign="idcuentabancaria"/>
     </foreign-key>
