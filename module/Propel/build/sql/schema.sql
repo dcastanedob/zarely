@@ -154,6 +154,8 @@ CREATE TABLE `cuentabancariamovimiento`
     `cuentabancariamovimiento_fechamovimiento` DATETIME NOT NULL,
     `cuentabancariamovimiento_fechacreacion` DATETIME NOT NULL,
     `cuentabancariamovimiento_balance` DECIMAL(10,2) NOT NULL,
+    `cuentabancariamovimiento_referencia` VARCHAR(45),
+    `cuentabancariamovimiento_medio` enum('cheque','efectivo','transferencia'),
     PRIMARY KEY (`idcuentabancariamovimiento`),
     INDEX `idcuentabancaria` (`idcuentabancaria`),
     INDEX `idempleado` (`idempleado`),

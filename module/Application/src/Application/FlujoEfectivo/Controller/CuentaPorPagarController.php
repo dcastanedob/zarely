@@ -219,8 +219,8 @@ class CuentaPorPagarController extends AbstractActionController
                     "idCuentabancaria"=>$entity->getCuentabancariaBanco() . ' - '
                                         . preg_replace('/(0|1|2|3|4|5|6|7|8|9)/', 'x', $entity->getCuentabancariaCuenta()),
                     "cantidad"=>$movimiento['CuentabancariamovimientoCantidad'],
-                    "medio" => "???",
-                    "referencia" => "???",
+                    "medio" => $movimiento['CuentabancariamovimientoMedio'],
+                    "referencia" =>$movimiento['CuentabancariamovimientoReferencia'],
                     "comprobante"=>$movimiento['CuentabancariamovimientoComprobante'],
                 );
 
@@ -329,6 +329,8 @@ class CuentaPorPagarController extends AbstractActionController
                                                 ->setIdproceso($entity->getIdcompra())
                                                 ->setCuentabancariamovimientoCantidad(intval($post_data['data']['cuentabancariamovimiento_cantidad']))
                                                 ->setCuentabancariamovimientoFechamovimiento($post_data['data']['cuentabancariamovimiento_fechamovimiento'])
+                                                ->setCuentabancariamovimientoReferencia($post_data['data']['cuentabancariamovimiento_referencia'])
+                                                ->setCuentabancariamovimientoMedio($post_data['data']['cuentabancariamovimiento_medio'])
                                                 ->setCuentabancariamovimientoFechacreacion(date("Y-n-j"))
                                                 ->setCuentabancariamovimientoBalance(floatval($entity->getCompraTotal() - floatval($totalAlMomento)))->save();
                     if($cuentabancaria_movimiento->getCuentabancariamovimientoBalance() == 0)
@@ -346,7 +348,7 @@ class CuentaPorPagarController extends AbstractActionController
                         $cuentabancaria_movimiento->setCuentabancariamovimientoComprobante('/files/flujoefectivo/porpagar/'.$cuentabancaria_movimiento->getIdcuentabancariamovimiento().'.'.$file_type)->save();
                     }
 
-                    return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'pago realizado','restante'=>floatval($entity->getCompraTotal() - floatval($totalAlMomento)),'id'=>$cuentabancaria_movimiento->getIdcuentabancariamovimiento())));
+                    return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'pago realizado','restante'=>floatval($entity->getCompraTotal() - floatval($totalAlMomento)),'id'=>$cuentabancaria_movimiento->getIdcuentabancariamovimiento(),'comprobante' =>'/files/flujoefectivo/porpagar/'.$cuentabancaria_movimiento->getIdcuentabancariamovimiento().'.'.$file_type)));
                 }  
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'llena todos los campos')));
@@ -409,9 +411,9 @@ class CuentaPorPagarController extends AbstractActionController
                     $compra->setCompraEstatuspago(0)->save();
                 }
                 
-                return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'eliminado','restante' => $restante)));
+                return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'El pago ha sido eliminado','restante' => $restante)));
             }else{
-                return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'no se pudo eliminar')));
+                return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'No se pudo eliminar')));
             }
             
         }

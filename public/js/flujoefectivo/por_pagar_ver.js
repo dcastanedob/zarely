@@ -71,6 +71,7 @@
                 var cuenta = $('select[name=idcuentabancaria]').val();
                 var medio = $('select[name=cuentabancariamovimiento_medio]').val();
                 var comprobante = $('input[name=cuentabancariamovimiento_comprobante]').val();
+                comprobante = comprobante.substring(comprobante.lastIndexOf("\\") + 1, comprobante.length);
 
                 $.ajax({
                       url:'/flujo-efectivo/porpagar/pago',
@@ -93,7 +94,11 @@
                         console.log(data.response);
                           if(data.response)
                           {
-                            alert(data.message);
+                            swal("Éxito",data.message,"success");
+                            if(data.restante == 0)
+                            {
+                              swal("Felicidades","Has terminado de pagar","success");
+                            }
                             $container.find('#restante').text("$"+data.restante.toFixed(2));
 
                             var $tr = $('<tr>');
@@ -102,12 +107,17 @@
                             $tr.append('<td>'+$('select[name=idcuentabancaria] option:selected').text()+'</td>');
                             $tr.append('<td>$'+cantidad+'</td>');
                             $tr.append('<td>'+medio+'</td>');
-                            $tr.append('<td>'+referencia+'</td>');
+                            if(referencia== "")
+                            {
+                              $tr.append('<td>'+'No tiene'+'</td>');
+                            }else{
+                              $tr.append('<td>'+referencia+'</td>');
+                            }
                             if(comprobante== "")
                             {
                               $tr.append('<td>'+'No tiene'+'</td>');
                             }else{
-                              $tr.append('<td><a href="'+comprobante+'" target="_blank"><span class="icon icon-file icon-lg "></span></td>');
+                              $tr.append('<td><a href="'+data.comprobante+'" target="_blank"><span class="icon icon-file icon-lg "></span></td>');
                             }
                             $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
 
@@ -127,13 +137,13 @@
                                   success: function (data, textStatus, jqXHR) {
                                       if(data.response)
                                       {
-                                        alert(data.message);
+                                        swal("Éxito",data.message,"success");
                                         $tr.remove();
                                         $container.find('#restante').text("$"+data.restante.toFixed(2));
                                         
                                       }else
                                       {
-                                        alert(data.message);
+                                        swal("Oops...",data.message,"error");
                                         
                                       }
                                                         
@@ -148,7 +158,7 @@
                             
                           }else
                           {
-                            alert(data.message);
+                            swal("Oops...",data.message,"error");
                             
                           }
                                             
@@ -175,7 +185,15 @@
                       $tr.append('<td>'+movimiento['idCuentabancaria']+'</td>');
                       $tr.append('<td>$'+movimiento['cantidad']+'</td>');
                       $tr.append('<td>'+movimiento['medio']+'</td>');
-                      $tr.append('<td>'+movimiento['referencia']+'</td>');
+
+                      if(movimiento['referencia'] == null)
+                      {
+                        $tr.append('<td>'+'No tiene'+'</td>');
+                      }else{
+                        $tr.append('<td>'+movimiento['referencia']+'</td>');
+                      }
+
+
                       if(movimiento['comprobante'] == null)
                       {
                         $tr.append('<td>'+'No tiene'+'</td>');
@@ -201,13 +219,13 @@
                             success: function (data, textStatus, jqXHR) {
                                 if(data.response)
                                 {
-                                  alert(data.message);
+                                  swal("Felicidades","Has terminado de pagar","success");
                                   $tr.remove();
                                   $container.find('#restante').text("$"+data.restante.toFixed(2));
                                   
                                 }else
                                 {
-                                  alert(data.message);
+                                  swal("Oops...",data.message,"error");
                                   
                                 }
                                                   

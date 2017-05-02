@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-05-2017 a las 05:30:33
+-- Tiempo de generación: 02-05-2017 a las 16:50:59
 -- Versión del servidor: 5.6.31
 -- Versión de PHP: 5.4.42
 
@@ -124,7 +124,7 @@ TRUNCATE TABLE `compra`;
 --
 
 INSERT INTO `compra` (`idcompra`, `idproveedor`, `compra_fechacreacion`, `compra_fechacompra`, `compra_total`, `compra_estatuspago`, `compra_estatus`, `compra_nota`, `compra_comprobante`, `compra_fechaentrega`) VALUES
-(25, 12, '2017-05-02', '2017-05-04', 124.00000, 0, 'enviada', 'asdf', '/files/compras/25.', '2017-05-12');
+(25, 12, '2017-05-02', '2017-05-04', 124.00000, 1, 'enviada', 'asdf', '/files/compras/25.', '2017-05-12');
 
 -- --------------------------------------------------------
 
@@ -228,8 +228,10 @@ CREATE TABLE IF NOT EXISTS `cuentabancariamovimiento` (
   `cuentabancariamovimiento_comprobante` text,
   `cuentabancariamovimiento_fechamovimiento` datetime NOT NULL,
   `cuentabancariamovimiento_fechacreacion` datetime NOT NULL COMMENT 'este campo lo setea el sisteam',
-  `cuentabancariamovimiento_balance` decimal(10,2) NOT NULL COMMENT 'el balance de la cuenta afectada después del movmiento\n'
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8;
+  `cuentabancariamovimiento_balance` decimal(10,2) NOT NULL COMMENT 'el balance de la cuenta afectada después del movmiento\n',
+  `cuentabancariamovimiento_referencia` varchar(45) DEFAULT NULL,
+  `cuentabancariamovimiento_medio` enum('cheque','efectivo','transferencia') DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
 
 --
 -- Truncar tablas antes de insertar `cuentabancariamovimiento`
@@ -240,9 +242,11 @@ TRUNCATE TABLE `cuentabancariamovimiento`;
 -- Volcado de datos para la tabla `cuentabancariamovimiento`
 --
 
-INSERT INTO `cuentabancariamovimiento` (`idcuentabancariamovimiento`, `idcuentabancaria`, `idempleado`, `cuentabancariamovimiento_proceso`, `idproceso`, `cuentabancariamovimiento_cantidad`, `cuentabancariamovimiento_comprobante`, `cuentabancariamovimiento_fechamovimiento`, `cuentabancariamovimiento_fechacreacion`, `cuentabancariamovimiento_balance`) VALUES
-(69, 3, 4, 'compra', 25, 2.00, '/files/flujoefectivo/porpagar/69.js', '2017-05-11 00:00:00', '2017-05-02 00:00:00', 120.00),
-(73, 3, 4, 'compra', 25, 2.00, '/files/flujoefectivo/porpagar/73.js', '2017-05-10 00:00:00', '2017-05-02 00:00:00', 120.00);
+INSERT INTO `cuentabancariamovimiento` (`idcuentabancariamovimiento`, `idcuentabancaria`, `idempleado`, `cuentabancariamovimiento_proceso`, `idproceso`, `cuentabancariamovimiento_cantidad`, `cuentabancariamovimiento_comprobante`, `cuentabancariamovimiento_fechamovimiento`, `cuentabancariamovimiento_fechacreacion`, `cuentabancariamovimiento_balance`, `cuentabancariamovimiento_referencia`, `cuentabancariamovimiento_medio`) VALUES
+(85, 3, 4, 'compra', 25, 2.00, '/files/flujoefectivo/porpagar/85.', '2017-05-02 00:00:00', '2017-05-02 00:00:00', 112.00, 'asdf', 'cheque'),
+(87, 3, 4, 'compra', 25, 119.00, '/files/flujoefectivo/porpagar/87.', '2017-05-05 00:00:00', '2017-05-02 00:00:00', 0.00, 'asdf', 'cheque'),
+(90, 3, 4, 'compra', 25, 2.00, '/files/flujoefectivo/porpagar/90.', '2017-05-05 00:00:00', '2017-05-02 00:00:00', 0.01, 'asdf', 'cheque'),
+(93, 3, 4, 'compra', 25, 1.00, '/files/flujoefectivo/porpagar/93.', '2017-05-02 00:00:00', '2017-05-02 00:00:00', 0.00, 'asdf', 'cheque');
 
 -- --------------------------------------------------------
 
@@ -872,24 +876,24 @@ TRUNCATE TABLE `productosucursal`;
 --
 
 INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo`) VALUES
-(157, 6897, 1, 19, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(158, 6898, 1, 20, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(159, 6899, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(160, 6900, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(161, 6901, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(162, 6902, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(163, 6903, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(164, 6904, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(165, 6905, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(166, 6906, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(167, 6907, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(168, 6908, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(169, 6909, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(170, 6910, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(171, 6911, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(172, 6912, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(173, 6913, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(174, 6914, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
+(157, 6897, 1, 19, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(158, 6898, 1, 20, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(159, 6899, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(160, 6900, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(161, 6901, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(162, 6902, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(163, 6903, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(164, 6904, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(165, 6905, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(166, 6906, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(167, 6907, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(168, 6908, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(169, 6909, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(170, 6910, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(171, 6911, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(172, 6912, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(173, 6913, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(174, 6914, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
 (175, 6915, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
 (176, 6916, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
 (177, 6917, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
@@ -5352,7 +5356,7 @@ ALTER TABLE `cuentabancaria`
 -- AUTO_INCREMENT de la tabla `cuentabancariamovimiento`
 --
 ALTER TABLE `cuentabancariamovimiento`
-  MODIFY `idcuentabancariamovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=74;
+  MODIFY `idcuentabancariamovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=94;
 --
 -- AUTO_INCREMENT de la tabla `descuento`
 --
