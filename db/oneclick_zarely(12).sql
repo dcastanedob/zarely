@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-05-2017 a las 16:50:59
+-- Tiempo de generación: 08-05-2017 a las 17:31:31
 -- Versión del servidor: 5.6.31
 -- Versión de PHP: 5.4.42
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `oneclick_zarely`
 --
+CREATE DATABASE IF NOT EXISTS `oneclick_zarely` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `oneclick_zarely`;
 
 -- --------------------------------------------------------
 
@@ -124,7 +126,7 @@ TRUNCATE TABLE `compra`;
 --
 
 INSERT INTO `compra` (`idcompra`, `idproveedor`, `compra_fechacreacion`, `compra_fechacompra`, `compra_total`, `compra_estatuspago`, `compra_estatus`, `compra_nota`, `compra_comprobante`, `compra_fechaentrega`) VALUES
-(25, 12, '2017-05-02', '2017-05-04', 124.00000, 1, 'enviada', 'asdf', '/files/compras/25.', '2017-05-12');
+(25, 12, '2017-05-02', '2017-05-04', 124.00000, 0, 'enviada', 'asdf', '/files/compras/25.', '2017-05-12');
 
 -- --------------------------------------------------------
 
@@ -231,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `cuentabancariamovimiento` (
   `cuentabancariamovimiento_balance` decimal(10,2) NOT NULL COMMENT 'el balance de la cuenta afectada después del movmiento\n',
   `cuentabancariamovimiento_referencia` varchar(45) DEFAULT NULL,
   `cuentabancariamovimiento_medio` enum('cheque','efectivo','transferencia') DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
 
 --
 -- Truncar tablas antes de insertar `cuentabancariamovimiento`
@@ -243,10 +245,7 @@ TRUNCATE TABLE `cuentabancariamovimiento`;
 --
 
 INSERT INTO `cuentabancariamovimiento` (`idcuentabancariamovimiento`, `idcuentabancaria`, `idempleado`, `cuentabancariamovimiento_proceso`, `idproceso`, `cuentabancariamovimiento_cantidad`, `cuentabancariamovimiento_comprobante`, `cuentabancariamovimiento_fechamovimiento`, `cuentabancariamovimiento_fechacreacion`, `cuentabancariamovimiento_balance`, `cuentabancariamovimiento_referencia`, `cuentabancariamovimiento_medio`) VALUES
-(85, 3, 4, 'compra', 25, 2.00, '/files/flujoefectivo/porpagar/85.', '2017-05-02 00:00:00', '2017-05-02 00:00:00', 112.00, 'asdf', 'cheque'),
-(87, 3, 4, 'compra', 25, 119.00, '/files/flujoefectivo/porpagar/87.', '2017-05-05 00:00:00', '2017-05-02 00:00:00', 0.00, 'asdf', 'cheque'),
-(90, 3, 4, 'compra', 25, 2.00, '/files/flujoefectivo/porpagar/90.', '2017-05-05 00:00:00', '2017-05-02 00:00:00', 0.01, 'asdf', 'cheque'),
-(93, 3, 4, 'compra', 25, 1.00, '/files/flujoefectivo/porpagar/93.', '2017-05-02 00:00:00', '2017-05-02 00:00:00', 0.00, 'asdf', 'cheque');
+(117, 3, 4, 'compra', 25, 24.00, '/files/flujoefectivo/porpagar/117.js', '2017-05-10 00:00:00', '2017-05-08 00:00:00', 94.00, 'asdf', 'cheque');
 
 -- --------------------------------------------------------
 
@@ -410,7 +409,7 @@ CREATE TABLE IF NOT EXISTS `empleado` (
   `empleado_ciudad` varchar(45) DEFAULT NULL,
   `empleado_estado` varchar(45) DEFAULT NULL,
   `idrol` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Truncar tablas antes de insertar `empleado`
@@ -423,10 +422,11 @@ TRUNCATE TABLE `empleado`;
 
 INSERT INTO `empleado` (`idempleado`, `empleado_nombre`, `empleado_apaterno`, `empleado_amaterno`, `empleado_rfc`, `empleado_nss`, `empleado_curp`, `empleado_telefono`, `empleado_email`, `empleado_estatus`, `empleado_username`, `empleado_password`, `empleado_comision`, `empleado_fechaentrada`, `empleado_fechanacimiento`, `empleado_calle`, `empleado_numexterno`, `empleado_numinterno`, `empleado_colonia`, `empleado_codigopostal`, `empleado_ciudad`, `empleado_estado`, `idrol`) VALUES
 (1, 'Armando Caja', 'Alonso', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'arm_chiva@hotmail.com', 1, 'armandoalonso', 'asdf', 0, '2017-02-15 14:29:25', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 4),
-(2, 'Juan vendedor', 'Alonso', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'adsf', 1, 'armandoalonso', 'adsfads', 0, '2017-02-15 11:48:27', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 4),
-(3, 'Petra vendedor', 'Hernandez', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'asdf', 1, 'armandoalonso', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2017-02-15 12:34:39', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 5),
-(4, 'Armando ', 'Alonso', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'arm_chiva@hotmail.com', 1, 'armandoalonso18', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-02-15 10:43:34', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 4),
-(5, '', '', '', NULL, NULL, NULL, NULL, NULL, 0, '', 'd41d8cd98f00b204e9800998ecf8427e', 0, '2017-03-23 11:23:07', '2017-03-23', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(2, 'Juan vendedor', 'Alonso', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'adsf', 1, 'caja', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-02-15 11:48:27', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 4),
+(3, 'Petra vendedor', 'Hernandez', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'asdf', 1, 'secretaria a', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-02-15 12:34:39', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 2),
+(4, 'Armando ', 'Alonso', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'arm_chiva@hotmail.com', 1, 'administrador', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-02-15 10:43:34', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 1),
+(5, 'Armando ', 'Alonso', '-Orozco', NULL, NULL, NULL, NULL, NULL, 1, 'secretaria b', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-03-23 11:23:07', '2017-03-23', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3),
+(6, '', '', '', NULL, NULL, NULL, NULL, NULL, 0, 'vendedora', 'e10adc3949ba59abbe56e057f20f883e', 0, '0000-00-00 00:00:00', '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -4898,7 +4898,7 @@ DROP TABLE IF EXISTS `temporada`;
 CREATE TABLE IF NOT EXISTS `temporada` (
   `idtemporada` int(11) NOT NULL,
   `temporada_nombre` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Truncar tablas antes de insertar `temporada`
@@ -4912,7 +4912,8 @@ TRUNCATE TABLE `temporada`;
 INSERT INTO `temporada` (`idtemporada`, `temporada_nombre`) VALUES
 (1, 'Verano'),
 (2, 'OtoÃ±o'),
-(3, 'Primavera - Verano');
+(3, 'Primavera - Verano'),
+(4, 'Invierno');
 
 -- --------------------------------------------------------
 
@@ -5356,7 +5357,7 @@ ALTER TABLE `cuentabancaria`
 -- AUTO_INCREMENT de la tabla `cuentabancariamovimiento`
 --
 ALTER TABLE `cuentabancariamovimiento`
-  MODIFY `idcuentabancariamovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=94;
+  MODIFY `idcuentabancariamovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=118;
 --
 -- AUTO_INCREMENT de la tabla `descuento`
 --
@@ -5376,7 +5377,7 @@ ALTER TABLE `devoluciondetalle`
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `idempleado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `idempleado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `gasto`
 --
@@ -5496,7 +5497,7 @@ ALTER TABLE `tallaje`
 -- AUTO_INCREMENT de la tabla `temporada`
 --
 ALTER TABLE `temporada`
-  MODIFY `idtemporada` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `idtemporada` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `tipocalzado`
 --

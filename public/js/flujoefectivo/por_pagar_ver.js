@@ -119,9 +119,9 @@
                             }else{
                               $tr.append('<td><a href="'+data.comprobante+'" target="_blank"><span class="icon icon-file icon-lg "></span></td>');
                             }
-                            $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+                            $tr.append('<td><a id="eliminar" href="javascript:;">Eliminar</a></td>');
 
-                            $tr.find('a').on('click',function(){
+                            $tr.find('#eliminar').on('click',function(){
                               var id = $tr.attr('id');
                               var idcompra = $('input[name=idcompra]').val();
                               $.ajax({
@@ -201,9 +201,9 @@
                         $tr.append('<td><a href="'+movimiento['comprobante']+'" target="_blank"><span class="icon icon-file icon-lg "></span></td>');
                       }
                       
-                      $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+                      $tr.append('<td><a id="eliminar" href="javascript:;">Eliminar</a></td>');
 
-                      $tr.find('a').on('click',function(){
+                      $tr.find('#eliminar').on('click',function(){
                         var id = $tr.attr('id');
                         var idcompra = $('input[name=idcompra]').val();
                         $.ajax({
@@ -219,7 +219,7 @@
                             success: function (data, textStatus, jqXHR) {
                                 if(data.response)
                                 {
-                                  swal("Felicidades","Has terminado de pagar","success");
+                                  swal("Éxicto","Pago eliminado satisfactoriamente","success");
                                   $tr.remove();
                                   $container.find('#restante').text("$"+data.restante.toFixed(2));
                                   

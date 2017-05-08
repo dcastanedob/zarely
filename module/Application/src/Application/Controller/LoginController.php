@@ -38,7 +38,10 @@ class LoginController extends AbstractActionController
                         
                         
                         $session = new AouthSession();
-                        $session->Create($empleado->toArray(\BasePeer::TYPE_FIELDNAME));
+                        $sessionTemp = $empleado->toArray(\BasePeer::TYPE_FIELDNAME);
+                        $sessionTemp['rol_nombre'] = $empleado->getRol()->getRolNombre();
+
+                        $session->Create($sessionTemp);
                             
                             
                         if($empleado->getRol()->getRolNombre() == 'Caja'){
