@@ -49,3 +49,11 @@
 	var cuentas = $('.body_container').cuentas();
 	cuentas.initForm();
 </script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('form').on('submit', function(e) {
+	    $(this).find('button, input[type=button]').prop('disabled', true);
+	  });
+	});
+</script>

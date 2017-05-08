@@ -73,6 +73,8 @@ class Module
         if ($e -> getViewModel() -> acl -> isAllowed($userRole, $route)) {
           return;  
         }else{
+            
+
             $response = $e -> getResponse();
             //location to page or what ever
             $response -> getHeaders() -> addHeaderLine('Location', $e -> getRequest() -> getBaseUrl() . '/404');

@@ -33,3 +33,10 @@
     	</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('form').on('submit', function(e) {
+	    $(this).find('button, input[type=button]').prop('disabled', true);
+	  });
+	});
+</script>
