@@ -106,8 +106,9 @@ class CuentaPorPagarController extends AbstractActionController
             //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
             $data = array();
 
-
-
+            //obtenemos el usuario que está en sesión
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
 
             foreach ($query->find()->toArray(null, false, \BasePeer::TYPE_FIELDNAME) as $value) {
                 $tmp['DT_RowId'] = $value['idcompra'];
@@ -124,8 +125,11 @@ class CuentaPorPagarController extends AbstractActionController
                     $tmp['compra_estatuspago'] = "No";
                 }
                 
-
-                $tmp['options'] = '<td><div class="btn-group dropdown">
+                if($user['idrol'] == 2)
+                {
+                    $tmp['options'] ='<td>Desabilitadas</td>';
+                }else{
+                    $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
                     <span class="icon icon-gear icon-lg icon-fw"></span>
                     Opciones
@@ -159,8 +163,8 @@ class CuentaPorPagarController extends AbstractActionController
                       </a>
                     </li>
                   </ul>
-                </div></td>';
-
+                    </div></td>';
+                }
 
                 $data[] = $tmp;
             }
@@ -338,7 +342,7 @@ class CuentaPorPagarController extends AbstractActionController
                         $entity->setCompraEstatuspago(1)->save();
                     }
                     //verificamos que exista un comprobante
-                    if(isset($post_data['data']['cuentabancariamovimiento_comprobante'])){
+                    if($post_data['data']['cuentabancariamovimiento_comprobante'] != ""){
 
                         $file_type = $this->get_extension($post_data['data']['cuentabancariamovimiento_comprobante']);
 
