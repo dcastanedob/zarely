@@ -467,6 +467,9 @@ abstract class BaseProductovariantePeer
         // Invalidate objects in TransferenciadetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciadetallePeer::clearInstancePool();
+        // Invalidate objects in VentadetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VentadetallePeer::clearInstancePool();
     }
 
     /**
@@ -1813,6 +1816,12 @@ abstract class BaseProductovariantePeer
 
             $criteria->add(TransferenciadetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
             $affectedRows += TransferenciadetallePeer::doDelete($criteria, $con);
+
+            // delete related Ventadetalle objects
+            $criteria = new Criteria(VentadetallePeer::DATABASE_NAME);
+
+            $criteria->add(VentadetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
+            $affectedRows += VentadetallePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

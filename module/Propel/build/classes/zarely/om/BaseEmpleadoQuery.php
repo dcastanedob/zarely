@@ -78,6 +78,18 @@
  * @method EmpleadoQuery rightJoinTransferenciaRelatedByIdempleadoreceptor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TransferenciaRelatedByIdempleadoreceptor relation
  * @method EmpleadoQuery innerJoinTransferenciaRelatedByIdempleadoreceptor($relationAlias = null) Adds a INNER JOIN clause to the query using the TransferenciaRelatedByIdempleadoreceptor relation
  *
+ * @method EmpleadoQuery leftJoinVentaRelatedByIdempleadocajero($relationAlias = null) Adds a LEFT JOIN clause to the query using the VentaRelatedByIdempleadocajero relation
+ * @method EmpleadoQuery rightJoinVentaRelatedByIdempleadocajero($relationAlias = null) Adds a RIGHT JOIN clause to the query using the VentaRelatedByIdempleadocajero relation
+ * @method EmpleadoQuery innerJoinVentaRelatedByIdempleadocajero($relationAlias = null) Adds a INNER JOIN clause to the query using the VentaRelatedByIdempleadocajero relation
+ *
+ * @method EmpleadoQuery leftJoinVentaRelatedByIdempleadovendedor($relationAlias = null) Adds a LEFT JOIN clause to the query using the VentaRelatedByIdempleadovendedor relation
+ * @method EmpleadoQuery rightJoinVentaRelatedByIdempleadovendedor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the VentaRelatedByIdempleadovendedor relation
+ * @method EmpleadoQuery innerJoinVentaRelatedByIdempleadovendedor($relationAlias = null) Adds a INNER JOIN clause to the query using the VentaRelatedByIdempleadovendedor relation
+ *
+ * @method EmpleadoQuery leftJoinVentapago($relationAlias = null) Adds a LEFT JOIN clause to the query using the Ventapago relation
+ * @method EmpleadoQuery rightJoinVentapago($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Ventapago relation
+ * @method EmpleadoQuery innerJoinVentapago($relationAlias = null) Adds a INNER JOIN clause to the query using the Ventapago relation
+ *
  * @method Empleado findOne(PropelPDO $con = null) Return the first Empleado matching the query
  * @method Empleado findOneOrCreate(PropelPDO $con = null) Return the first Empleado matching the query, or a new Empleado object populated from the query conditions when no match is found
  *
@@ -1412,6 +1424,228 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
         return $this
             ->joinTransferenciaRelatedByIdempleadoreceptor($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'TransferenciaRelatedByIdempleadoreceptor', 'TransferenciaQuery');
+    }
+
+    /**
+     * Filter the query by a related Venta object
+     *
+     * @param   Venta|PropelObjectCollection $venta  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByVentaRelatedByIdempleadocajero($venta, $comparison = null)
+    {
+        if ($venta instanceof Venta) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $venta->getIdempleadocajero(), $comparison);
+        } elseif ($venta instanceof PropelObjectCollection) {
+            return $this
+                ->useVentaRelatedByIdempleadocajeroQuery()
+                ->filterByPrimaryKeys($venta->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByVentaRelatedByIdempleadocajero() only accepts arguments of type Venta or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the VentaRelatedByIdempleadocajero relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinVentaRelatedByIdempleadocajero($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('VentaRelatedByIdempleadocajero');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'VentaRelatedByIdempleadocajero');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the VentaRelatedByIdempleadocajero relation Venta object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   VentaQuery A secondary query class using the current class as primary query
+     */
+    public function useVentaRelatedByIdempleadocajeroQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinVentaRelatedByIdempleadocajero($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'VentaRelatedByIdempleadocajero', 'VentaQuery');
+    }
+
+    /**
+     * Filter the query by a related Venta object
+     *
+     * @param   Venta|PropelObjectCollection $venta  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByVentaRelatedByIdempleadovendedor($venta, $comparison = null)
+    {
+        if ($venta instanceof Venta) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $venta->getIdempleadovendedor(), $comparison);
+        } elseif ($venta instanceof PropelObjectCollection) {
+            return $this
+                ->useVentaRelatedByIdempleadovendedorQuery()
+                ->filterByPrimaryKeys($venta->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByVentaRelatedByIdempleadovendedor() only accepts arguments of type Venta or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the VentaRelatedByIdempleadovendedor relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinVentaRelatedByIdempleadovendedor($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('VentaRelatedByIdempleadovendedor');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'VentaRelatedByIdempleadovendedor');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the VentaRelatedByIdempleadovendedor relation Venta object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   VentaQuery A secondary query class using the current class as primary query
+     */
+    public function useVentaRelatedByIdempleadovendedorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinVentaRelatedByIdempleadovendedor($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'VentaRelatedByIdempleadovendedor', 'VentaQuery');
+    }
+
+    /**
+     * Filter the query by a related Ventapago object
+     *
+     * @param   Ventapago|PropelObjectCollection $ventapago  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByVentapago($ventapago, $comparison = null)
+    {
+        if ($ventapago instanceof Ventapago) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $ventapago->getIdempleado(), $comparison);
+        } elseif ($ventapago instanceof PropelObjectCollection) {
+            return $this
+                ->useVentapagoQuery()
+                ->filterByPrimaryKeys($ventapago->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByVentapago() only accepts arguments of type Ventapago or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Ventapago relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinVentapago($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Ventapago');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Ventapago');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Ventapago relation Ventapago object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   VentapagoQuery A secondary query class using the current class as primary query
+     */
+    public function useVentapagoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinVentapago($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Ventapago', 'VentapagoQuery');
     }
 
     /**

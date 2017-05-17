@@ -120,9 +120,9 @@ class CuentaPorPagarController extends AbstractActionController
 
                 if($value['compra_estatuspago'])
                 {
-                    $tmp['compra_estatuspago'] = "Sí";
+                    $tmp['compra_estatuspago'] = '<label class="label label-success">Sí</label>';
                 }else{
-                    $tmp['compra_estatuspago'] = "No";
+                    $tmp['compra_estatuspago'] = '<label class="label label-danger">No</label>';
                 }
                 
                 if($user['idrol'] == 2)
@@ -300,7 +300,6 @@ class CuentaPorPagarController extends AbstractActionController
         if($request->isPost()){
             
             $post_data = $request->getPost();
-
             $entity = \CompraQuery::create()->findPk($post_data['data']['idproceso']);
 
             //verificamos que se manden los datos necesarios
@@ -331,7 +330,7 @@ class CuentaPorPagarController extends AbstractActionController
                                                 ->setIdempleado($user['idempleado'])
                                                 ->setCuentabancariamovimientoProceso("compra")
                                                 ->setIdproceso($entity->getIdcompra())
-                                                ->setCuentabancariamovimientoCantidad(intval($post_data['data']['cuentabancariamovimiento_cantidad']))
+                                                ->setCuentabancariamovimientoCantidad(floatval($post_data['data']['cuentabancariamovimiento_cantidad']))
                                                 ->setCuentabancariamovimientoFechamovimiento($post_data['data']['cuentabancariamovimiento_fechamovimiento'])
                                                 ->setCuentabancariamovimientoReferencia($post_data['data']['cuentabancariamovimiento_referencia'])
                                                 ->setCuentabancariamovimientoMedio($post_data['data']['cuentabancariamovimiento_medio'])

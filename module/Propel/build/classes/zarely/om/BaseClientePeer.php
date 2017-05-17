@@ -525,6 +525,9 @@ abstract class BaseClientePeer
         // Invalidate objects in PedidomayoristaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidomayoristaPeer::clearInstancePool();
+        // Invalidate objects in VentaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VentaPeer::clearInstancePool();
     }
 
     /**
@@ -864,6 +867,12 @@ abstract class BaseClientePeer
 
             $criteria->add(PedidomayoristaPeer::IDCLIENTE, $obj->getIdcliente());
             $affectedRows += PedidomayoristaPeer::doDelete($criteria, $con);
+
+            // delete related Venta objects
+            $criteria = new Criteria(VentaPeer::DATABASE_NAME);
+
+            $criteria->add(VentaPeer::IDCLIENTE, $obj->getIdcliente());
+            $affectedRows += VentaPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

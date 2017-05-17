@@ -138,6 +138,9 @@ return array(
 
         //transferencias
         'transferencias',
+
+        //Punto de venta
+        'puntodeventa',
         
     ),
 );

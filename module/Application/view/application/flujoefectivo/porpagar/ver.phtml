@@ -38,11 +38,12 @@
 			           		<label  for="marca"> Medio de pago </label>
 			                <?php echo $this->formSelect($form->get('cuentabancariamovimiento_medio')) ?>
 		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="Temporada">Comprobante</label>
-			                <?php echo $this->formFile($form->get('cuentabancariamovimiento_comprobante')) ?>
-		        		</div>
+		        		<form id="comprobante" action="/flujo-efectivo/porpagar/getfile">
+			        		<div class="form-group">
+				           		<label  for="comprobante">Comprobante</label>
+				                <?php echo $this->formFile($form->get('cuentabancariamovimiento_comprobante')) ?>
+			        		</div>
+		        		</form>
 
 		        		
 		        	</div>

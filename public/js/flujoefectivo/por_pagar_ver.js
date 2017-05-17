@@ -60,9 +60,11 @@
             });
 
             $container.find('input[name=cuentabancariamovimiento_cantidad]').numeric();
+            
           
 
             $container.find('#guardarbtn').on('click',function(){
+                
 
                 var idcompra = $('input[name=idcompra]').val();
                 var cantidad = $('input[name=cuentabancariamovimiento_cantidad]').val();
@@ -70,8 +72,14 @@
                 var referencia = $('input[name=cuentabancariamovimiento_referencia]').val();
                 var cuenta = $('select[name=idcuentabancaria]').val();
                 var medio = $('select[name=cuentabancariamovimiento_medio]').val();
-                var comprobante = $('input[name=cuentabancariamovimiento_comprobante]').val();
-                comprobante = comprobante.substring(comprobante.lastIndexOf("\\") + 1, comprobante.length);
+                var comprobante = $('input[name=cuentabancariamovimiento_comprobante]')[0].files[0];
+                
+
+                if(comprobante !== undefined )
+                {
+                  comprobante = comprobante.name;
+                }
+
 
                 $.ajax({
                       url:'/flujo-efectivo/porpagar/pago',
@@ -86,7 +94,6 @@
                               idcuentabancaria:cuenta,
                               cuentabancariamovimiento_medio:medio,
                               cuentabancariamovimiento_comprobante:comprobante,
-
 
                           },
                       },

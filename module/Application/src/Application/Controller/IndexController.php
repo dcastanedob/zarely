@@ -18,21 +18,53 @@ class IndexController extends AbstractActionController
     {
         $session = new \Application\Session\AouthSession();
         $session = $session->getData();
+        $graphic = array(
+            'x' => json_encode(array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre", "noviembre", "diciembre")),
+            'y' => json_encode(array(10,20,15,15,23,15,23,12,19,28,10,32,0)),
+        );
+        $total = $this->getTotal();
+        $pedidos = $this->getPedidos();
+
         if($session['idsucursal'] != null)
         {
             $sucursal = \SucursalQuery::create()->findPK($session['idsucursal']); 
             return new ViewModel(array(
                 'session' => $session,
                 'sucursal' => $sucursal,
+                'graphic' => $graphic,
+                'total' => $total,
+                'pedidos'=>$pedidos
             ));
         }else{
             return new ViewModel(array(
                 'session' => $session,
+                'graphic' => $graphic,
+                'total' => $total,
+                'pedidos'=>$pedidos
             ));
         }
         
 
         
+    }
+
+    private function getTotal()
+    {
+        //traer las compras
+        $compras = \CompraQuery::create()->find();
+        $compras_array = array();
+        $total = 0 ;
+        foreach ($compras as $value){
+            $total += $value->getCompraTotal();
+        }
+        return $total;
+    }
+
+    private function getPedidos()
+    {
+        //traer los pedidos
+        $pedidos = \PedidoQuery::create()->find();
+        return count($pedidos);
     }
 
     public function getsucursalesAction(){

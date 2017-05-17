@@ -415,6 +415,9 @@ abstract class BaseSucursalPeer
         // Invalidate objects in TransferenciaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciaPeer::clearInstancePool();
+        // Invalidate objects in VentaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VentaPeer::clearInstancePool();
     }
 
     /**
@@ -778,6 +781,12 @@ abstract class BaseSucursalPeer
 
             $criteria->add(TransferenciaPeer::IDSUCURSALORIGEN, $obj->getIdsucursal());
             $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
+
+            // delete related Venta objects
+            $criteria = new Criteria(VentaPeer::DATABASE_NAME);
+
+            $criteria->add(VentaPeer::IDSUCURSAL, $obj->getIdsucursal());
+            $affectedRows += VentaPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

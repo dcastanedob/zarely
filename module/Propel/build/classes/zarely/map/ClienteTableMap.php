@@ -74,6 +74,7 @@ class ClienteTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Pedidomayorista', 'Pedidomayorista', RelationMap::ONE_TO_MANY, array('idcliente' => 'idcliente', ), 'CASCADE', 'CASCADE', 'Pedidomayoristas');
+        $this->addRelation('Venta', 'Venta', RelationMap::ONE_TO_MANY, array('idcliente' => 'idcliente', ), 'CASCADE', 'CASCADE', 'Ventas');
     } // buildRelations()
 
 } // ClienteTableMap

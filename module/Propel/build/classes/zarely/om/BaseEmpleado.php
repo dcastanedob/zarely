@@ -197,6 +197,24 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $collTransferenciasRelatedByIdempleadoreceptorPartial;
 
     /**
+     * @var        PropelObjectCollection|Venta[] Collection to store aggregation of Venta objects.
+     */
+    protected $collVentasRelatedByIdempleadocajero;
+    protected $collVentasRelatedByIdempleadocajeroPartial;
+
+    /**
+     * @var        PropelObjectCollection|Venta[] Collection to store aggregation of Venta objects.
+     */
+    protected $collVentasRelatedByIdempleadovendedor;
+    protected $collVentasRelatedByIdempleadovendedorPartial;
+
+    /**
+     * @var        PropelObjectCollection|Ventapago[] Collection to store aggregation of Ventapago objects.
+     */
+    protected $collVentapagos;
+    protected $collVentapagosPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -239,6 +257,24 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $transferenciasRelatedByIdempleadoreceptorScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $ventasRelatedByIdempleadocajeroScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $ventasRelatedByIdempleadovendedorScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $ventapagosScheduledForDeletion = null;
 
     /**
      * Get the [idempleado] column value.
@@ -1196,6 +1232,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
             $this->collTransferenciasRelatedByIdempleadoreceptor = null;
 
+            $this->collVentasRelatedByIdempleadocajero = null;
+
+            $this->collVentasRelatedByIdempleadovendedor = null;
+
+            $this->collVentapagos = null;
+
         } // if (deep)
     }
 
@@ -1394,6 +1436,57 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
             if ($this->collTransferenciasRelatedByIdempleadoreceptor !== null) {
                 foreach ($this->collTransferenciasRelatedByIdempleadoreceptor as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->ventasRelatedByIdempleadocajeroScheduledForDeletion !== null) {
+                if (!$this->ventasRelatedByIdempleadocajeroScheduledForDeletion->isEmpty()) {
+                    VentaQuery::create()
+                        ->filterByPrimaryKeys($this->ventasRelatedByIdempleadocajeroScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->ventasRelatedByIdempleadocajeroScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collVentasRelatedByIdempleadocajero !== null) {
+                foreach ($this->collVentasRelatedByIdempleadocajero as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->ventasRelatedByIdempleadovendedorScheduledForDeletion !== null) {
+                if (!$this->ventasRelatedByIdempleadovendedorScheduledForDeletion->isEmpty()) {
+                    VentaQuery::create()
+                        ->filterByPrimaryKeys($this->ventasRelatedByIdempleadovendedorScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->ventasRelatedByIdempleadovendedorScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collVentasRelatedByIdempleadovendedor !== null) {
+                foreach ($this->collVentasRelatedByIdempleadovendedor as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->ventapagosScheduledForDeletion !== null) {
+                if (!$this->ventapagosScheduledForDeletion->isEmpty()) {
+                    VentapagoQuery::create()
+                        ->filterByPrimaryKeys($this->ventapagosScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->ventapagosScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collVentapagos !== null) {
+                foreach ($this->collVentapagos as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1718,6 +1811,30 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collVentasRelatedByIdempleadocajero !== null) {
+                    foreach ($this->collVentasRelatedByIdempleadocajero as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collVentasRelatedByIdempleadovendedor !== null) {
+                    foreach ($this->collVentasRelatedByIdempleadovendedor as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collVentapagos !== null) {
+                    foreach ($this->collVentapagos as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1895,6 +2012,15 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             if (null !== $this->collTransferenciasRelatedByIdempleadoreceptor) {
                 $result['TransferenciasRelatedByIdempleadoreceptor'] = $this->collTransferenciasRelatedByIdempleadoreceptor->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collVentasRelatedByIdempleadocajero) {
+                $result['VentasRelatedByIdempleadocajero'] = $this->collVentasRelatedByIdempleadocajero->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collVentasRelatedByIdempleadovendedor) {
+                $result['VentasRelatedByIdempleadovendedor'] = $this->collVentasRelatedByIdempleadovendedor->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collVentapagos) {
+                $result['Ventapagos'] = $this->collVentapagos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2197,6 +2323,24 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getVentasRelatedByIdempleadocajero() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addVentaRelatedByIdempleadocajero($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getVentasRelatedByIdempleadovendedor() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addVentaRelatedByIdempleadovendedor($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getVentapagos() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addVentapago($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -2321,6 +2465,15 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         }
         if ('TransferenciaRelatedByIdempleadoreceptor' == $relationName) {
             $this->initTransferenciasRelatedByIdempleadoreceptor();
+        }
+        if ('VentaRelatedByIdempleadocajero' == $relationName) {
+            $this->initVentasRelatedByIdempleadocajero();
+        }
+        if ('VentaRelatedByIdempleadovendedor' == $relationName) {
+            $this->initVentasRelatedByIdempleadovendedor();
+        }
+        if ('Ventapago' == $relationName) {
+            $this->initVentapagos();
         }
     }
 
@@ -3375,6 +3528,806 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collVentasRelatedByIdempleadocajero collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addVentasRelatedByIdempleadocajero()
+     */
+    public function clearVentasRelatedByIdempleadocajero()
+    {
+        $this->collVentasRelatedByIdempleadocajero = null; // important to set this to null since that means it is uninitialized
+        $this->collVentasRelatedByIdempleadocajeroPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collVentasRelatedByIdempleadocajero collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialVentasRelatedByIdempleadocajero($v = true)
+    {
+        $this->collVentasRelatedByIdempleadocajeroPartial = $v;
+    }
+
+    /**
+     * Initializes the collVentasRelatedByIdempleadocajero collection.
+     *
+     * By default this just sets the collVentasRelatedByIdempleadocajero collection to an empty array (like clearcollVentasRelatedByIdempleadocajero());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initVentasRelatedByIdempleadocajero($overrideExisting = true)
+    {
+        if (null !== $this->collVentasRelatedByIdempleadocajero && !$overrideExisting) {
+            return;
+        }
+        $this->collVentasRelatedByIdempleadocajero = new PropelObjectCollection();
+        $this->collVentasRelatedByIdempleadocajero->setModel('Venta');
+    }
+
+    /**
+     * Gets an array of Venta objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     * @throws PropelException
+     */
+    public function getVentasRelatedByIdempleadocajero($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collVentasRelatedByIdempleadocajeroPartial && !$this->isNew();
+        if (null === $this->collVentasRelatedByIdempleadocajero || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collVentasRelatedByIdempleadocajero) {
+                // return empty collection
+                $this->initVentasRelatedByIdempleadocajero();
+            } else {
+                $collVentasRelatedByIdempleadocajero = VentaQuery::create(null, $criteria)
+                    ->filterByEmpleadoRelatedByIdempleadocajero($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collVentasRelatedByIdempleadocajeroPartial && count($collVentasRelatedByIdempleadocajero)) {
+                      $this->initVentasRelatedByIdempleadocajero(false);
+
+                      foreach ($collVentasRelatedByIdempleadocajero as $obj) {
+                        if (false == $this->collVentasRelatedByIdempleadocajero->contains($obj)) {
+                          $this->collVentasRelatedByIdempleadocajero->append($obj);
+                        }
+                      }
+
+                      $this->collVentasRelatedByIdempleadocajeroPartial = true;
+                    }
+
+                    $collVentasRelatedByIdempleadocajero->getInternalIterator()->rewind();
+
+                    return $collVentasRelatedByIdempleadocajero;
+                }
+
+                if ($partial && $this->collVentasRelatedByIdempleadocajero) {
+                    foreach ($this->collVentasRelatedByIdempleadocajero as $obj) {
+                        if ($obj->isNew()) {
+                            $collVentasRelatedByIdempleadocajero[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collVentasRelatedByIdempleadocajero = $collVentasRelatedByIdempleadocajero;
+                $this->collVentasRelatedByIdempleadocajeroPartial = false;
+            }
+        }
+
+        return $this->collVentasRelatedByIdempleadocajero;
+    }
+
+    /**
+     * Sets a collection of VentaRelatedByIdempleadocajero objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $ventasRelatedByIdempleadocajero A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setVentasRelatedByIdempleadocajero(PropelCollection $ventasRelatedByIdempleadocajero, PropelPDO $con = null)
+    {
+        $ventasRelatedByIdempleadocajeroToDelete = $this->getVentasRelatedByIdempleadocajero(new Criteria(), $con)->diff($ventasRelatedByIdempleadocajero);
+
+
+        $this->ventasRelatedByIdempleadocajeroScheduledForDeletion = $ventasRelatedByIdempleadocajeroToDelete;
+
+        foreach ($ventasRelatedByIdempleadocajeroToDelete as $ventaRelatedByIdempleadocajeroRemoved) {
+            $ventaRelatedByIdempleadocajeroRemoved->setEmpleadoRelatedByIdempleadocajero(null);
+        }
+
+        $this->collVentasRelatedByIdempleadocajero = null;
+        foreach ($ventasRelatedByIdempleadocajero as $ventaRelatedByIdempleadocajero) {
+            $this->addVentaRelatedByIdempleadocajero($ventaRelatedByIdempleadocajero);
+        }
+
+        $this->collVentasRelatedByIdempleadocajero = $ventasRelatedByIdempleadocajero;
+        $this->collVentasRelatedByIdempleadocajeroPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Venta objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Venta objects.
+     * @throws PropelException
+     */
+    public function countVentasRelatedByIdempleadocajero(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collVentasRelatedByIdempleadocajeroPartial && !$this->isNew();
+        if (null === $this->collVentasRelatedByIdempleadocajero || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collVentasRelatedByIdempleadocajero) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getVentasRelatedByIdempleadocajero());
+            }
+            $query = VentaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleadoRelatedByIdempleadocajero($this)
+                ->count($con);
+        }
+
+        return count($this->collVentasRelatedByIdempleadocajero);
+    }
+
+    /**
+     * Method called to associate a Venta object to this object
+     * through the Venta foreign key attribute.
+     *
+     * @param    Venta $l Venta
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addVentaRelatedByIdempleadocajero(Venta $l)
+    {
+        if ($this->collVentasRelatedByIdempleadocajero === null) {
+            $this->initVentasRelatedByIdempleadocajero();
+            $this->collVentasRelatedByIdempleadocajeroPartial = true;
+        }
+
+        if (!in_array($l, $this->collVentasRelatedByIdempleadocajero->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddVentaRelatedByIdempleadocajero($l);
+
+            if ($this->ventasRelatedByIdempleadocajeroScheduledForDeletion and $this->ventasRelatedByIdempleadocajeroScheduledForDeletion->contains($l)) {
+                $this->ventasRelatedByIdempleadocajeroScheduledForDeletion->remove($this->ventasRelatedByIdempleadocajeroScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	VentaRelatedByIdempleadocajero $ventaRelatedByIdempleadocajero The ventaRelatedByIdempleadocajero object to add.
+     */
+    protected function doAddVentaRelatedByIdempleadocajero($ventaRelatedByIdempleadocajero)
+    {
+        $this->collVentasRelatedByIdempleadocajero[]= $ventaRelatedByIdempleadocajero;
+        $ventaRelatedByIdempleadocajero->setEmpleadoRelatedByIdempleadocajero($this);
+    }
+
+    /**
+     * @param	VentaRelatedByIdempleadocajero $ventaRelatedByIdempleadocajero The ventaRelatedByIdempleadocajero object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeVentaRelatedByIdempleadocajero($ventaRelatedByIdempleadocajero)
+    {
+        if ($this->getVentasRelatedByIdempleadocajero()->contains($ventaRelatedByIdempleadocajero)) {
+            $this->collVentasRelatedByIdempleadocajero->remove($this->collVentasRelatedByIdempleadocajero->search($ventaRelatedByIdempleadocajero));
+            if (null === $this->ventasRelatedByIdempleadocajeroScheduledForDeletion) {
+                $this->ventasRelatedByIdempleadocajeroScheduledForDeletion = clone $this->collVentasRelatedByIdempleadocajero;
+                $this->ventasRelatedByIdempleadocajeroScheduledForDeletion->clear();
+            }
+            $this->ventasRelatedByIdempleadocajeroScheduledForDeletion[]= clone $ventaRelatedByIdempleadocajero;
+            $ventaRelatedByIdempleadocajero->setEmpleadoRelatedByIdempleadocajero(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related VentasRelatedByIdempleadocajero from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasRelatedByIdempleadocajeroJoinCliente($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('Cliente', $join_behavior);
+
+        return $this->getVentasRelatedByIdempleadocajero($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related VentasRelatedByIdempleadocajero from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasRelatedByIdempleadocajeroJoinSucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('Sucursal', $join_behavior);
+
+        return $this->getVentasRelatedByIdempleadocajero($query, $con);
+    }
+
+    /**
+     * Clears out the collVentasRelatedByIdempleadovendedor collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addVentasRelatedByIdempleadovendedor()
+     */
+    public function clearVentasRelatedByIdempleadovendedor()
+    {
+        $this->collVentasRelatedByIdempleadovendedor = null; // important to set this to null since that means it is uninitialized
+        $this->collVentasRelatedByIdempleadovendedorPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collVentasRelatedByIdempleadovendedor collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialVentasRelatedByIdempleadovendedor($v = true)
+    {
+        $this->collVentasRelatedByIdempleadovendedorPartial = $v;
+    }
+
+    /**
+     * Initializes the collVentasRelatedByIdempleadovendedor collection.
+     *
+     * By default this just sets the collVentasRelatedByIdempleadovendedor collection to an empty array (like clearcollVentasRelatedByIdempleadovendedor());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initVentasRelatedByIdempleadovendedor($overrideExisting = true)
+    {
+        if (null !== $this->collVentasRelatedByIdempleadovendedor && !$overrideExisting) {
+            return;
+        }
+        $this->collVentasRelatedByIdempleadovendedor = new PropelObjectCollection();
+        $this->collVentasRelatedByIdempleadovendedor->setModel('Venta');
+    }
+
+    /**
+     * Gets an array of Venta objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     * @throws PropelException
+     */
+    public function getVentasRelatedByIdempleadovendedor($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collVentasRelatedByIdempleadovendedorPartial && !$this->isNew();
+        if (null === $this->collVentasRelatedByIdempleadovendedor || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collVentasRelatedByIdempleadovendedor) {
+                // return empty collection
+                $this->initVentasRelatedByIdempleadovendedor();
+            } else {
+                $collVentasRelatedByIdempleadovendedor = VentaQuery::create(null, $criteria)
+                    ->filterByEmpleadoRelatedByIdempleadovendedor($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collVentasRelatedByIdempleadovendedorPartial && count($collVentasRelatedByIdempleadovendedor)) {
+                      $this->initVentasRelatedByIdempleadovendedor(false);
+
+                      foreach ($collVentasRelatedByIdempleadovendedor as $obj) {
+                        if (false == $this->collVentasRelatedByIdempleadovendedor->contains($obj)) {
+                          $this->collVentasRelatedByIdempleadovendedor->append($obj);
+                        }
+                      }
+
+                      $this->collVentasRelatedByIdempleadovendedorPartial = true;
+                    }
+
+                    $collVentasRelatedByIdempleadovendedor->getInternalIterator()->rewind();
+
+                    return $collVentasRelatedByIdempleadovendedor;
+                }
+
+                if ($partial && $this->collVentasRelatedByIdempleadovendedor) {
+                    foreach ($this->collVentasRelatedByIdempleadovendedor as $obj) {
+                        if ($obj->isNew()) {
+                            $collVentasRelatedByIdempleadovendedor[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collVentasRelatedByIdempleadovendedor = $collVentasRelatedByIdempleadovendedor;
+                $this->collVentasRelatedByIdempleadovendedorPartial = false;
+            }
+        }
+
+        return $this->collVentasRelatedByIdempleadovendedor;
+    }
+
+    /**
+     * Sets a collection of VentaRelatedByIdempleadovendedor objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $ventasRelatedByIdempleadovendedor A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setVentasRelatedByIdempleadovendedor(PropelCollection $ventasRelatedByIdempleadovendedor, PropelPDO $con = null)
+    {
+        $ventasRelatedByIdempleadovendedorToDelete = $this->getVentasRelatedByIdempleadovendedor(new Criteria(), $con)->diff($ventasRelatedByIdempleadovendedor);
+
+
+        $this->ventasRelatedByIdempleadovendedorScheduledForDeletion = $ventasRelatedByIdempleadovendedorToDelete;
+
+        foreach ($ventasRelatedByIdempleadovendedorToDelete as $ventaRelatedByIdempleadovendedorRemoved) {
+            $ventaRelatedByIdempleadovendedorRemoved->setEmpleadoRelatedByIdempleadovendedor(null);
+        }
+
+        $this->collVentasRelatedByIdempleadovendedor = null;
+        foreach ($ventasRelatedByIdempleadovendedor as $ventaRelatedByIdempleadovendedor) {
+            $this->addVentaRelatedByIdempleadovendedor($ventaRelatedByIdempleadovendedor);
+        }
+
+        $this->collVentasRelatedByIdempleadovendedor = $ventasRelatedByIdempleadovendedor;
+        $this->collVentasRelatedByIdempleadovendedorPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Venta objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Venta objects.
+     * @throws PropelException
+     */
+    public function countVentasRelatedByIdempleadovendedor(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collVentasRelatedByIdempleadovendedorPartial && !$this->isNew();
+        if (null === $this->collVentasRelatedByIdempleadovendedor || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collVentasRelatedByIdempleadovendedor) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getVentasRelatedByIdempleadovendedor());
+            }
+            $query = VentaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleadoRelatedByIdempleadovendedor($this)
+                ->count($con);
+        }
+
+        return count($this->collVentasRelatedByIdempleadovendedor);
+    }
+
+    /**
+     * Method called to associate a Venta object to this object
+     * through the Venta foreign key attribute.
+     *
+     * @param    Venta $l Venta
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addVentaRelatedByIdempleadovendedor(Venta $l)
+    {
+        if ($this->collVentasRelatedByIdempleadovendedor === null) {
+            $this->initVentasRelatedByIdempleadovendedor();
+            $this->collVentasRelatedByIdempleadovendedorPartial = true;
+        }
+
+        if (!in_array($l, $this->collVentasRelatedByIdempleadovendedor->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddVentaRelatedByIdempleadovendedor($l);
+
+            if ($this->ventasRelatedByIdempleadovendedorScheduledForDeletion and $this->ventasRelatedByIdempleadovendedorScheduledForDeletion->contains($l)) {
+                $this->ventasRelatedByIdempleadovendedorScheduledForDeletion->remove($this->ventasRelatedByIdempleadovendedorScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	VentaRelatedByIdempleadovendedor $ventaRelatedByIdempleadovendedor The ventaRelatedByIdempleadovendedor object to add.
+     */
+    protected function doAddVentaRelatedByIdempleadovendedor($ventaRelatedByIdempleadovendedor)
+    {
+        $this->collVentasRelatedByIdempleadovendedor[]= $ventaRelatedByIdempleadovendedor;
+        $ventaRelatedByIdempleadovendedor->setEmpleadoRelatedByIdempleadovendedor($this);
+    }
+
+    /**
+     * @param	VentaRelatedByIdempleadovendedor $ventaRelatedByIdempleadovendedor The ventaRelatedByIdempleadovendedor object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeVentaRelatedByIdempleadovendedor($ventaRelatedByIdempleadovendedor)
+    {
+        if ($this->getVentasRelatedByIdempleadovendedor()->contains($ventaRelatedByIdempleadovendedor)) {
+            $this->collVentasRelatedByIdempleadovendedor->remove($this->collVentasRelatedByIdempleadovendedor->search($ventaRelatedByIdempleadovendedor));
+            if (null === $this->ventasRelatedByIdempleadovendedorScheduledForDeletion) {
+                $this->ventasRelatedByIdempleadovendedorScheduledForDeletion = clone $this->collVentasRelatedByIdempleadovendedor;
+                $this->ventasRelatedByIdempleadovendedorScheduledForDeletion->clear();
+            }
+            $this->ventasRelatedByIdempleadovendedorScheduledForDeletion[]= clone $ventaRelatedByIdempleadovendedor;
+            $ventaRelatedByIdempleadovendedor->setEmpleadoRelatedByIdempleadovendedor(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related VentasRelatedByIdempleadovendedor from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasRelatedByIdempleadovendedorJoinCliente($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('Cliente', $join_behavior);
+
+        return $this->getVentasRelatedByIdempleadovendedor($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related VentasRelatedByIdempleadovendedor from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasRelatedByIdempleadovendedorJoinSucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('Sucursal', $join_behavior);
+
+        return $this->getVentasRelatedByIdempleadovendedor($query, $con);
+    }
+
+    /**
+     * Clears out the collVentapagos collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addVentapagos()
+     */
+    public function clearVentapagos()
+    {
+        $this->collVentapagos = null; // important to set this to null since that means it is uninitialized
+        $this->collVentapagosPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collVentapagos collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialVentapagos($v = true)
+    {
+        $this->collVentapagosPartial = $v;
+    }
+
+    /**
+     * Initializes the collVentapagos collection.
+     *
+     * By default this just sets the collVentapagos collection to an empty array (like clearcollVentapagos());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initVentapagos($overrideExisting = true)
+    {
+        if (null !== $this->collVentapagos && !$overrideExisting) {
+            return;
+        }
+        $this->collVentapagos = new PropelObjectCollection();
+        $this->collVentapagos->setModel('Ventapago');
+    }
+
+    /**
+     * Gets an array of Ventapago objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Ventapago[] List of Ventapago objects
+     * @throws PropelException
+     */
+    public function getVentapagos($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collVentapagosPartial && !$this->isNew();
+        if (null === $this->collVentapagos || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collVentapagos) {
+                // return empty collection
+                $this->initVentapagos();
+            } else {
+                $collVentapagos = VentapagoQuery::create(null, $criteria)
+                    ->filterByEmpleado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collVentapagosPartial && count($collVentapagos)) {
+                      $this->initVentapagos(false);
+
+                      foreach ($collVentapagos as $obj) {
+                        if (false == $this->collVentapagos->contains($obj)) {
+                          $this->collVentapagos->append($obj);
+                        }
+                      }
+
+                      $this->collVentapagosPartial = true;
+                    }
+
+                    $collVentapagos->getInternalIterator()->rewind();
+
+                    return $collVentapagos;
+                }
+
+                if ($partial && $this->collVentapagos) {
+                    foreach ($this->collVentapagos as $obj) {
+                        if ($obj->isNew()) {
+                            $collVentapagos[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collVentapagos = $collVentapagos;
+                $this->collVentapagosPartial = false;
+            }
+        }
+
+        return $this->collVentapagos;
+    }
+
+    /**
+     * Sets a collection of Ventapago objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $ventapagos A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setVentapagos(PropelCollection $ventapagos, PropelPDO $con = null)
+    {
+        $ventapagosToDelete = $this->getVentapagos(new Criteria(), $con)->diff($ventapagos);
+
+
+        $this->ventapagosScheduledForDeletion = $ventapagosToDelete;
+
+        foreach ($ventapagosToDelete as $ventapagoRemoved) {
+            $ventapagoRemoved->setEmpleado(null);
+        }
+
+        $this->collVentapagos = null;
+        foreach ($ventapagos as $ventapago) {
+            $this->addVentapago($ventapago);
+        }
+
+        $this->collVentapagos = $ventapagos;
+        $this->collVentapagosPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Ventapago objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Ventapago objects.
+     * @throws PropelException
+     */
+    public function countVentapagos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collVentapagosPartial && !$this->isNew();
+        if (null === $this->collVentapagos || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collVentapagos) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getVentapagos());
+            }
+            $query = VentapagoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleado($this)
+                ->count($con);
+        }
+
+        return count($this->collVentapagos);
+    }
+
+    /**
+     * Method called to associate a Ventapago object to this object
+     * through the Ventapago foreign key attribute.
+     *
+     * @param    Ventapago $l Ventapago
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addVentapago(Ventapago $l)
+    {
+        if ($this->collVentapagos === null) {
+            $this->initVentapagos();
+            $this->collVentapagosPartial = true;
+        }
+
+        if (!in_array($l, $this->collVentapagos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddVentapago($l);
+
+            if ($this->ventapagosScheduledForDeletion and $this->ventapagosScheduledForDeletion->contains($l)) {
+                $this->ventapagosScheduledForDeletion->remove($this->ventapagosScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Ventapago $ventapago The ventapago object to add.
+     */
+    protected function doAddVentapago($ventapago)
+    {
+        $this->collVentapagos[]= $ventapago;
+        $ventapago->setEmpleado($this);
+    }
+
+    /**
+     * @param	Ventapago $ventapago The ventapago object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeVentapago($ventapago)
+    {
+        if ($this->getVentapagos()->contains($ventapago)) {
+            $this->collVentapagos->remove($this->collVentapagos->search($ventapago));
+            if (null === $this->ventapagosScheduledForDeletion) {
+                $this->ventapagosScheduledForDeletion = clone $this->collVentapagos;
+                $this->ventapagosScheduledForDeletion->clear();
+            }
+            $this->ventapagosScheduledForDeletion[]= clone $ventapago;
+            $ventapago->setEmpleado(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related Ventapagos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Ventapago[] List of Ventapago objects
+     */
+    public function getVentapagosJoinVenta($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentapagoQuery::create(null, $criteria);
+        $query->joinWith('Venta', $join_behavior);
+
+        return $this->getVentapagos($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -3444,6 +4397,21 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collVentasRelatedByIdempleadocajero) {
+                foreach ($this->collVentasRelatedByIdempleadocajero as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collVentasRelatedByIdempleadovendedor) {
+                foreach ($this->collVentasRelatedByIdempleadovendedor as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collVentapagos) {
+                foreach ($this->collVentapagos as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aRol instanceof Persistent) {
               $this->aRol->clearAllReferences($deep);
             }
@@ -3467,6 +4435,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->collTransferenciasRelatedByIdempleadoreceptor->clearIterator();
         }
         $this->collTransferenciasRelatedByIdempleadoreceptor = null;
+        if ($this->collVentasRelatedByIdempleadocajero instanceof PropelCollection) {
+            $this->collVentasRelatedByIdempleadocajero->clearIterator();
+        }
+        $this->collVentasRelatedByIdempleadocajero = null;
+        if ($this->collVentasRelatedByIdempleadovendedor instanceof PropelCollection) {
+            $this->collVentasRelatedByIdempleadovendedor->clearIterator();
+        }
+        $this->collVentasRelatedByIdempleadovendedor = null;
+        if ($this->collVentapagos instanceof PropelCollection) {
+            $this->collVentapagos->clearIterator();
+        }
+        $this->collVentapagos = null;
         $this->aRol = null;
     }
 

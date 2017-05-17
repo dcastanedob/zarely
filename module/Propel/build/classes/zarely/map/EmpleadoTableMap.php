@@ -74,6 +74,9 @@ class EmpleadoTableMap extends TableMap
         $this->addRelation('Sucursalempleado', 'Sucursalempleado', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Sucursalempleados');
         $this->addRelation('TransferenciaRelatedByIdempleadocreador', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadocreador', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleadocreador');
         $this->addRelation('TransferenciaRelatedByIdempleadoreceptor', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadoreceptor', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleadoreceptor');
+        $this->addRelation('VentaRelatedByIdempleadocajero', 'Venta', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadocajero', ), 'CASCADE', 'CASCADE', 'VentasRelatedByIdempleadocajero');
+        $this->addRelation('VentaRelatedByIdempleadovendedor', 'Venta', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadovendedor', ), 'CASCADE', 'CASCADE', 'VentasRelatedByIdempleadovendedor');
+        $this->addRelation('Ventapago', 'Ventapago', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Ventapagos');
     } // buildRelations()
 
 } // EmpleadoTableMap

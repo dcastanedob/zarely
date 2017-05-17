@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-05-2017 a las 17:31:31
+-- Tiempo de generación: 17-05-2017 a las 19:23:57
 -- Versión del servidor: 5.6.31
 -- Versión de PHP: 5.4.42
 
@@ -54,19 +54,15 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `cliente_tipo` enum('mayorista','general') NOT NULL,
   `cliente_fecharegistro` date NOT NULL COMMENT 'se setea con la fecha del sistema',
   `cliente_estatus` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `cliente`
---
-
-TRUNCATE TABLE `cliente`;
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
 INSERT INTO `cliente` (`idcliente`, `cliente_nombre`, `cliente_apaterno`, `cliente_amaterno`, `cliente_rfc`, `cliente_razonsocial`, `cliente_callefiscal`, `cliente_numerofiscal`, `cliente_interiorfiscal`, `cliente_coloniafiscal`, `cliente_ciudadfiscal`, `cliente_cpfiscal`, `cliente_estadofiscal`, `cliente_calle`, `cliente_numero`, `cliente_interior`, `cliente_colonia`, `cliente_cp`, `cliente_ciudad`, `cliente_estado`, `cliente_tipo`, `cliente_fecharegistro`, `cliente_estatus`) VALUES
-(1, 'Armando', 'Alonso', 'Orozco', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0);
+(1, 'Venta', 'al ', 'publico', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0),
+(2, 'Armando', 'Alonso', 'Orozco', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0);
 
 -- --------------------------------------------------------
 
@@ -78,13 +74,8 @@ DROP TABLE IF EXISTS `color`;
 CREATE TABLE IF NOT EXISTS `color` (
   `idcolor` int(11) NOT NULL,
   `color_nombre` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `color`
---
-
-TRUNCATE TABLE `color`;
 --
 -- Volcado de datos para la tabla `color`
 --
@@ -94,7 +85,8 @@ INSERT INTO `color` (`idcolor`, `color_nombre`) VALUES
 (3, 'Verde'),
 (4, 'Azul'),
 (5, 'Negro'),
-(6, 'Blanco');
+(6, 'Blanco'),
+(7, 'VIOLETA');
 
 -- --------------------------------------------------------
 
@@ -117,16 +109,11 @@ CREATE TABLE IF NOT EXISTS `compra` (
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 --
--- Truncar tablas antes de insertar `compra`
---
-
-TRUNCATE TABLE `compra`;
---
 -- Volcado de datos para la tabla `compra`
 --
 
 INSERT INTO `compra` (`idcompra`, `idproveedor`, `compra_fechacreacion`, `compra_fechacompra`, `compra_total`, `compra_estatuspago`, `compra_estatus`, `compra_nota`, `compra_comprobante`, `compra_fechaentrega`) VALUES
-(25, 12, '2017-05-02', '2017-05-04', 124.00000, 0, 'enviada', 'asdf', '/files/compras/25.', '2017-05-12');
+(25, 12, '2017-05-02', '2017-05-04', 124.40000, 1, 'enviada', 'asdf', '/files/compras/25.', '2017-05-12');
 
 -- --------------------------------------------------------
 
@@ -145,11 +132,6 @@ CREATE TABLE IF NOT EXISTS `compradetalle` (
   `compradetalle_costo` varchar(45) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `compradetalle`
---
-
-TRUNCATE TABLE `compradetalle`;
 --
 -- Volcado de datos para la tabla `compradetalle`
 --
@@ -182,11 +164,6 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
   `configuracion_` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `configuracion`
---
-
-TRUNCATE TABLE `configuracion`;
 -- --------------------------------------------------------
 
 --
@@ -199,19 +176,15 @@ CREATE TABLE IF NOT EXISTS `cuentabancaria` (
   `cuentabancaria_banco` varchar(255) NOT NULL,
   `cuentabancaria_cuenta` varchar(45) NOT NULL,
   `cuentabancaria_saldo` decimal(15,5) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `cuentabancaria`
---
-
-TRUNCATE TABLE `cuentabancaria`;
 --
 -- Volcado de datos para la tabla `cuentabancaria`
 --
 
 INSERT INTO `cuentabancaria` (`idcuentabancaria`, `cuentabancaria_banco`, `cuentabancaria_cuenta`, `cuentabancaria_saldo`) VALUES
-(3, 'Bancomer', '34234234', 1000.00000);
+(3, 'Bancomer', '34234234', 1000.00000),
+(4, 'Santander', '909547858', 10000.00000);
 
 -- --------------------------------------------------------
 
@@ -233,19 +206,27 @@ CREATE TABLE IF NOT EXISTS `cuentabancariamovimiento` (
   `cuentabancariamovimiento_balance` decimal(10,2) NOT NULL COMMENT 'el balance de la cuenta afectada después del movmiento\n',
   `cuentabancariamovimiento_referencia` varchar(45) DEFAULT NULL,
   `cuentabancariamovimiento_medio` enum('cheque','efectivo','transferencia') DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `cuentabancariamovimiento`
---
-
-TRUNCATE TABLE `cuentabancariamovimiento`;
 --
 -- Volcado de datos para la tabla `cuentabancariamovimiento`
 --
 
 INSERT INTO `cuentabancariamovimiento` (`idcuentabancariamovimiento`, `idcuentabancaria`, `idempleado`, `cuentabancariamovimiento_proceso`, `idproceso`, `cuentabancariamovimiento_cantidad`, `cuentabancariamovimiento_comprobante`, `cuentabancariamovimiento_fechamovimiento`, `cuentabancariamovimiento_fechacreacion`, `cuentabancariamovimiento_balance`, `cuentabancariamovimiento_referencia`, `cuentabancariamovimiento_medio`) VALUES
-(117, 3, 4, 'compra', 25, 24.00, '/files/flujoefectivo/porpagar/117.js', '2017-05-10 00:00:00', '2017-05-08 00:00:00', 94.00, 'asdf', 'cheque');
+(117, 3, 4, 'compra', 25, 24.00, '/files/flujoefectivo/porpagar/117.js', '2017-05-10 00:00:00', '2017-05-08 00:00:00', 94.00, 'asdf', 'cheque'),
+(118, 3, 4, 'compra', 25, 54.00, NULL, '2017-05-01 00:00:00', '2017-05-08 00:00:00', 46.00, 'No hay', 'cheque'),
+(119, 4, 4, 'compra', 25, 20.00, NULL, '2017-05-02 00:00:00', '2017-05-08 00:00:00', 26.00, '', 'cheque'),
+(120, 3, 4, 'compra', 25, 20.00, NULL, '2017-05-02 00:00:00', '2017-05-08 00:00:00', 6.00, '', 'cheque'),
+(121, 3, 4, 'compra', 25, 1.00, NULL, '2017-05-10 00:00:00', '2017-05-12 00:00:00', 5.40, 'adsf', 'cheque'),
+(122, 3, 4, 'compra', 25, 2.00, '/files/flujoefectivo/porpagar/122.js', '2017-05-01 00:00:00', '2017-05-12 00:00:00', 3.40, 'sdf', 'cheque'),
+(123, 3, 4, 'compra', 25, 1.00, '/files/flujoefectivo/porpagar/123.js', '2017-05-01 00:00:00', '2017-05-12 00:00:00', 2.40, 'adf', 'cheque'),
+(131, 3, 4, 'compra', 25, 0.40, NULL, '2017-05-01 00:00:00', '2017-05-12 00:00:00', 2.00, 'asdf', 'cheque'),
+(132, 3, 4, 'compra', 25, 1.00, '/files/flujoefectivo/porpagar/132.js', '2017-05-03 00:00:00', '2017-05-12 00:00:00', 1.00, 'adsf', 'cheque'),
+(135, 3, 4, 'compra', 25, 0.20, NULL, '2017-05-01 00:00:00', '2017-05-12 00:00:00', 0.80, 'adsf', 'cheque'),
+(136, 3, 4, 'compra', 25, 0.20, '/files/flujoefectivo/porpagar/136.js', '2017-05-01 00:00:00', '2017-05-12 00:00:00', 0.60, 'adsf', 'cheque'),
+(137, 3, 4, 'compra', 25, 0.10, '/files/flujoefectivo/porpagar/137.js', '2017-05-01 00:00:00', '2017-05-12 00:00:00', 0.50, '', 'cheque'),
+(138, 3, 4, 'compra', 25, 0.25, NULL, '2017-05-09 00:00:00', '2017-05-12 00:00:00', 0.25, 'adsf', 'cheque'),
+(139, 3, 4, 'compra', 25, 0.25, '/files/flujoefectivo/porpagar/139.js', '2017-05-09 00:00:00', '2017-05-12 00:00:00', 0.00, 'adsf', 'cheque');
 
 -- --------------------------------------------------------
 
@@ -263,11 +244,6 @@ CREATE TABLE IF NOT EXISTS `descuento` (
   `descuento_tipo` enum('porcentaje','cantidad') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `descuento`
---
-
-TRUNCATE TABLE `descuento`;
 -- --------------------------------------------------------
 
 --
@@ -282,11 +258,6 @@ CREATE TABLE IF NOT EXISTS `descuentodetalle` (
   `idmarca` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `descuentodetalle`
---
-
-TRUNCATE TABLE `descuentodetalle`;
 -- --------------------------------------------------------
 
 --
@@ -305,16 +276,11 @@ CREATE TABLE IF NOT EXISTS `devolucion` (
 ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
 
 --
--- Truncar tablas antes de insertar `devolucion`
---
-
-TRUNCATE TABLE `devolucion`;
---
 -- Volcado de datos para la tabla `devolucion`
 --
 
 INSERT INTO `devolucion` (`iddevolucion`, `idproveedor`, `devolucion_fecha`, `devolucion_total`, `devolucion_estatus`, `devolucion_nota`, `devolucion_comprobante`) VALUES
-(56, 1, '2017-04-08', 8.00000, 'pendiente', 'sdfgasdfasdasdfadsf', '/files/devoluciones/56.');
+(56, 1, '2017-04-08', 6.00000, 'pendiente', 'sdfgasdfasdasdfadsf', '/files/devoluciones/56.');
 
 -- --------------------------------------------------------
 
@@ -330,53 +296,38 @@ CREATE TABLE IF NOT EXISTS `devoluciondetalle` (
   `devoluciondetalle_cantidad` decimal(10,2) NOT NULL,
   `devoluciondetalle_preciounitario` decimal(10,2) NOT NULL,
   `devoluciondetalle_subtotal` decimal(10,2) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1376 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1401 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `devoluciondetalle`
---
-
-TRUNCATE TABLE `devoluciondetalle`;
 --
 -- Volcado de datos para la tabla `devoluciondetalle`
 --
 
 INSERT INTO `devoluciondetalle` (`iddevoluciondetalle`, `iddevolucion`, `idproductovariante`, `devoluciondetalle_cantidad`, `devoluciondetalle_preciounitario`, `devoluciondetalle_subtotal`) VALUES
-(1341, 56, 6898, 1.00, 1.00, 1.00),
-(1342, 56, 6900, 0.00, 1.00, 0.00),
-(1343, 56, 6902, 0.00, 1.00, 0.00),
-(1344, 56, 6904, 0.00, 1.00, 0.00),
-(1345, 56, 6906, 0.00, 1.00, 0.00),
-(1346, 56, 6908, 0.00, 1.00, 0.00),
-(1347, 56, 6910, 0.00, 1.00, 0.00),
-(1348, 56, 6912, 0.00, 1.00, 0.00),
-(1349, 56, 6914, 0.00, 1.00, 0.00),
-(1350, 56, 6916, 0.00, 1.00, 0.00),
-(1351, 56, 6918, 0.00, 1.00, 0.00),
-(1352, 56, 6920, 0.00, 1.00, 0.00),
-(1353, 56, 6922, 0.00, 1.00, 0.00),
-(1354, 56, 6924, 0.00, 1.00, 0.00),
-(1355, 56, 6925, 0.00, 1.00, 0.00),
-(1356, 56, 6928, 0.00, 1.00, 0.00),
-(1357, 56, 6931, 0.00, 1.00, 0.00),
-(1358, 56, 6934, 0.00, 1.00, 0.00),
-(1359, 56, 6937, 0.00, 1.00, 0.00),
-(1360, 56, 6940, 2.00, 1.00, 2.00),
-(1361, 56, 6943, 0.00, 1.00, 0.00),
-(1362, 56, 6897, 0.00, 1.00, 0.00),
-(1363, 56, 6899, 0.00, 1.00, 0.00),
-(1364, 56, 6901, 0.00, 1.00, 0.00),
-(1365, 56, 6903, 3.00, 1.00, 3.00),
-(1366, 56, 6905, 0.00, 1.00, 0.00),
-(1367, 56, 6907, 0.00, 1.00, 0.00),
-(1368, 56, 6909, 0.00, 1.00, 0.00),
-(1369, 56, 6911, 0.00, 1.00, 0.00),
-(1370, 56, 6913, 0.00, 1.00, 0.00),
-(1371, 56, 6915, 0.00, 1.00, 0.00),
-(1372, 56, 6917, 0.00, 1.00, 0.00),
-(1373, 56, 6919, 0.00, 1.00, 0.00),
-(1374, 56, 6921, 0.00, 1.00, 0.00),
-(1375, 56, 6923, 0.00, 1.00, 0.00);
+(1376, 56, 6897, 0.00, 1.00, 0.00),
+(1377, 56, 6899, 0.00, 1.00, 0.00),
+(1378, 56, 6901, 0.00, 1.00, 0.00),
+(1379, 56, 6903, 3.00, 1.00, 3.00),
+(1380, 56, 6905, 0.00, 1.00, 0.00),
+(1381, 56, 6907, 0.00, 1.00, 0.00),
+(1382, 56, 6909, 0.00, 1.00, 0.00),
+(1383, 56, 6911, 0.00, 1.00, 0.00),
+(1384, 56, 6913, 0.00, 1.00, 0.00),
+(1385, 56, 6898, 1.00, 1.00, 1.00),
+(1386, 56, 6900, 0.00, 1.00, 0.00),
+(1387, 56, 6902, 0.00, 1.00, 0.00),
+(1388, 56, 6904, 0.00, 1.00, 0.00),
+(1389, 56, 6906, 0.00, 1.00, 0.00),
+(1390, 56, 6908, 0.00, 1.00, 0.00),
+(1391, 56, 6910, 0.00, 1.00, 0.00),
+(1392, 56, 6912, 0.00, 1.00, 0.00),
+(1393, 56, 6914, 0.00, 1.00, 0.00),
+(1394, 56, 6925, 0.00, 1.00, 0.00),
+(1395, 56, 6928, 0.00, 1.00, 0.00),
+(1396, 56, 6931, 0.00, 1.00, 0.00),
+(1397, 56, 6934, 0.00, 1.00, 0.00),
+(1398, 56, 6937, 0.00, 1.00, 0.00),
+(1399, 56, 6940, 2.00, 1.00, 2.00),
+(1400, 56, 6943, 0.00, 1.00, 0.00);
 
 -- --------------------------------------------------------
 
@@ -412,11 +363,6 @@ CREATE TABLE IF NOT EXISTS `empleado` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
--- Truncar tablas antes de insertar `empleado`
---
-
-TRUNCATE TABLE `empleado`;
---
 -- Volcado de datos para la tabla `empleado`
 --
 
@@ -426,7 +372,7 @@ INSERT INTO `empleado` (`idempleado`, `empleado_nombre`, `empleado_apaterno`, `e
 (3, 'Petra vendedor', 'Hernandez', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'asdf', 1, 'secretaria a', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-02-15 12:34:39', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 2),
 (4, 'Armando ', 'Alonso', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'arm_chiva@hotmail.com', 1, 'administrador', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-02-15 10:43:34', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 1),
 (5, 'Armando ', 'Alonso', '-Orozco', NULL, NULL, NULL, NULL, NULL, 1, 'secretaria b', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-03-23 11:23:07', '2017-03-23', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3),
-(6, '', '', '', NULL, NULL, NULL, NULL, NULL, 0, 'vendedora', 'e10adc3949ba59abbe56e057f20f883e', 0, '0000-00-00 00:00:00', '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5);
+(6, 'Vendedor', 'Juarez', '', NULL, NULL, NULL, NULL, NULL, 0, 'vendedora', 'e10adc3949ba59abbe56e057f20f883e', 0, '0000-00-00 00:00:00', '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -441,11 +387,6 @@ CREATE TABLE IF NOT EXISTS `gasto` (
   `gasto_descripcion` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `gasto`
---
-
-TRUNCATE TABLE `gasto`;
 --
 -- Volcado de datos para la tabla `gasto`
 --
@@ -465,11 +406,6 @@ CREATE TABLE IF NOT EXISTS `marca` (
   `marca_nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `marca`
---
-
-TRUNCATE TABLE `marca`;
 --
 -- Volcado de datos para la tabla `marca`
 --
@@ -495,11 +431,6 @@ CREATE TABLE IF NOT EXISTS `marcatallaje` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
--- Truncar tablas antes de insertar `marcatallaje`
---
-
-TRUNCATE TABLE `marcatallaje`;
---
 -- Volcado de datos para la tabla `marcatallaje`
 --
 
@@ -523,11 +454,6 @@ CREATE TABLE IF NOT EXISTS `material` (
   `material_nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `material`
---
-
-TRUNCATE TABLE `material`;
 --
 -- Volcado de datos para la tabla `material`
 --
@@ -557,11 +483,6 @@ CREATE TABLE IF NOT EXISTS `medida` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
--- Truncar tablas antes de insertar `medida`
---
-
-TRUNCATE TABLE `medida`;
---
 -- Volcado de datos para la tabla `medida`
 --
 
@@ -587,11 +508,6 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   `pedido_estatus` enum('pendiente','solicitado','transito','completado') NOT NULL DEFAULT 'pendiente'
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `pedido`
---
-
-TRUNCATE TABLE `pedido`;
 --
 -- Volcado de datos para la tabla `pedido`
 --
@@ -619,11 +535,6 @@ CREATE TABLE IF NOT EXISTS `pedidomayorista` (
 ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 --
--- Truncar tablas antes de insertar `pedidomayorista`
---
-
-TRUNCATE TABLE `pedidomayorista`;
---
 -- Volcado de datos para la tabla `pedidomayorista`
 --
 
@@ -647,11 +558,6 @@ CREATE TABLE IF NOT EXISTS `pedidomayoristadetalle` (
   `pedidomayoristadetalle_fecha` date NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `pedidomayoristadetalle`
---
-
-TRUNCATE TABLE `pedidomayoristadetalle`;
 --
 -- Volcado de datos para la tabla `pedidomayoristadetalle`
 --
@@ -695,20 +601,15 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `idtipocalzado` int(11) NOT NULL,
   `producto_descripcion` varchar(500) DEFAULT NULL,
   `producto_costo` decimal(10,5) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `producto`
---
-
-TRUNCATE TABLE `producto`;
 --
 -- Volcado de datos para la tabla `producto`
 --
 
 INSERT INTO `producto` (`idproducto`, `producto_modelo`, `idmarca`, `idtemporada`, `producto_comisionable`, `idproveedor`, `producto_dirigidoa`, `producto_precioventa`, `producto_preciomayoreo`, `producto_minimo`, `producto_reorden`, `producto_maximo`, `idtipocalzado`, `producto_descripcion`, `producto_costo`) VALUES
 (116, 'Nike Free Run', 3, 3, 0, 13, 'caballero', 899.00000, 800.00000, 10, 10, NULL, 4, NULL, 1323.00000),
-(117, 'Adidas Free Run', 2, 2, 0, 1, 'nino', 120.00000, 120.00000, 10, 4, NULL, 4, NULL, 0.00000),
+(117, 'Adidas Free Run', 2, 2, 0, 1, 'nino', 120.00000, 120.00000, 10, 4, NULL, 4, 'El mejor', 0.00000),
 (118, 'sdf', 1, 1, 0, 1, 'dama', 32.00000, 23.00000, 234, 23, NULL, 4, NULL, 0.00000),
 (119, 'sdf', 1, 1, 0, 1, 'dama', 32.00000, 23.00000, 234, 23, NULL, 4, NULL, 0.00000),
 (120, 'sdf', 1, 1, 0, 1, 'dama', 32.00000, 23.00000, 234, 23, NULL, 4, NULL, 0.00000),
@@ -722,7 +623,11 @@ INSERT INTO `producto` (`idproducto`, `producto_modelo`, `idmarca`, `idtemporada
 (128, 'PRODUCTO DEMO 4', 1, 1, 0, 1, 'dama', 500.00000, 400.00000, 100, 100, NULL, 4, NULL, 0.00000),
 (129, 'Nike Deportivo', 1, 1, 0, 1, 'dama', 234.00000, 423.00000, 123, 4, NULL, 4, NULL, 243.00000),
 (130, 'Nike Deportivo', 1, 1, 0, 1, 'dama', 234.00000, 423.00000, 123, 4, NULL, 4, NULL, 0.00000),
-(131, 'Puma', 4, 1, 0, 1, 'caballero', 234.00000, 343.00000, 23, 43, NULL, 4, NULL, 234.00000);
+(131, 'Puma', 4, 1, 0, 1, 'caballero', 234.00000, 343.00000, 23, 43, NULL, 4, NULL, 234.00000),
+(132, 'Pruena', 1, 1, 0, 1, 'jovenes', 120.00000, 120.00000, 5, 5, NULL, 4, NULL, 120.00000),
+(133, 'Pruena', 1, 1, 0, 1, 'jovenes', 120.00000, 120.00000, 5, 5, NULL, 4, NULL, 120.00000),
+(134, 'Pruena', 1, 1, 0, 1, 'jovenes', 120.00000, 120.00000, 5, 5, NULL, 4, NULL, 120.00000),
+(135, 'Prueba 2', 1, 1, 0, 1, 'dama', 120.00000, 120.00000, 5, 5, NULL, 4, NULL, 120.00000);
 
 -- --------------------------------------------------------
 
@@ -736,13 +641,8 @@ CREATE TABLE IF NOT EXISTS `productocolor` (
   `idproducto` int(11) NOT NULL,
   `idcolor` int(11) NOT NULL,
   `productocolor_foto` text
-) ENGINE=InnoDB AUTO_INCREMENT=349 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=356 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `productocolor`
---
-
-TRUNCATE TABLE `productocolor`;
 --
 -- Volcado de datos para la tabla `productocolor`
 --
@@ -768,7 +668,14 @@ INSERT INTO `productocolor` (`idproductocolor`, `idproducto`, `idcolor`, `produc
 (345, 116, 4, NULL),
 (346, 116, 5, NULL),
 (347, 116, 6, NULL),
-(348, 131, 3, '/img/productocolor/348.');
+(348, 131, 3, '/img/productocolor/348.'),
+(349, 132, 2, '/img/productocolor/349.'),
+(350, 132, 3, '/img/productocolor/350.'),
+(351, 133, 2, '/img/productocolor/351.'),
+(352, 133, 3, '/img/productocolor/352.'),
+(353, 134, 2, '/img/productocolor/353.'),
+(354, 134, 3, '/img/productocolor/354.'),
+(355, 135, 3, '/img/productocolor/355.js');
 
 -- --------------------------------------------------------
 
@@ -781,13 +688,8 @@ CREATE TABLE IF NOT EXISTS `productomaterial` (
   `idproductomaterial` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
   `idmaterial` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=256 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=260 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `productomaterial`
---
-
-TRUNCATE TABLE `productomaterial`;
 --
 -- Volcado de datos para la tabla `productomaterial`
 --
@@ -814,7 +716,11 @@ INSERT INTO `productomaterial` (`idproductomaterial`, `idproducto`, `idmaterial`
 (252, 129, 3),
 (253, 116, 2),
 (254, 116, 3),
-(255, 131, 3);
+(255, 131, 3),
+(256, 132, 2),
+(257, 133, 2),
+(258, 134, 2),
+(259, 135, 2);
 
 -- --------------------------------------------------------
 
@@ -829,11 +735,6 @@ CREATE TABLE IF NOT EXISTS `productomedida` (
   `idmedida` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `productomedida`
---
-
-TRUNCATE TABLE `productomedida`;
 --
 -- Volcado de datos para la tabla `productomedida`
 --
@@ -864,36 +765,31 @@ CREATE TABLE IF NOT EXISTS `productosucursal` (
   `productosucursal_preciomayoreo` decimal(10,5) NOT NULL,
   `productosucursal_estatus` tinyint(1) NOT NULL DEFAULT '1',
   `productosucursal_costo` decimal(10,5) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3193 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3263 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `productosucursal`
---
-
-TRUNCATE TABLE `productosucursal`;
 --
 -- Volcado de datos para la tabla `productosucursal`
 --
 
 INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo`) VALUES
-(157, 6897, 1, 19, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(158, 6898, 1, 20, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(159, 6899, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(160, 6900, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(161, 6901, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(162, 6902, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(163, 6903, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(164, 6904, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(165, 6905, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(166, 6906, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(167, 6907, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(168, 6908, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(169, 6909, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(170, 6910, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(171, 6911, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(172, 6912, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(173, 6913, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
-(174, 6914, 1, 0, 2, 2, 5.00000, 120.00000, 1, 0.00000),
+(157, 6897, 1, 19, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(158, 6898, 1, 20, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(159, 6899, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(160, 6900, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(161, 6901, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(162, 6902, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(163, 6903, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(164, 6904, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(165, 6905, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(166, 6906, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(167, 6907, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(168, 6908, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(169, 6909, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(170, 6910, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(171, 6911, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(172, 6912, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(173, 6913, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(174, 6914, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
 (175, 6915, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
 (176, 6916, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
 (177, 6917, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
@@ -904,34 +800,34 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (182, 6922, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
 (183, 6923, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
 (184, 6924, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(185, 6897, 2, 12, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(186, 6898, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(187, 6899, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(188, 6900, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(189, 6901, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(190, 6902, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(191, 6903, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(192, 6904, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(193, 6905, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(194, 6906, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(195, 6907, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(196, 6908, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(197, 6909, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(198, 6910, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(199, 6911, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(200, 6912, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(201, 6913, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(202, 6914, 2, 0, 1, 2, 4.00000, 120.00000, 1, 0.00000),
-(203, 6915, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
-(204, 6916, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
-(205, 6917, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
-(206, 6918, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
-(207, 6919, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
-(208, 6920, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
-(209, 6921, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
-(210, 6922, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
-(211, 6923, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
-(212, 6924, 2, 0, 10, 4, 6.00000, 120.00000, 1, 0.00000),
+(185, 6897, 2, 12, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(186, 6898, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(187, 6899, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(188, 6900, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(189, 6901, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(190, 6902, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(191, 6903, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(192, 6904, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(193, 6905, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(194, 6906, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(195, 6907, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(196, 6908, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(197, 6909, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(198, 6910, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(199, 6911, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(200, 6912, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(201, 6913, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(202, 6914, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(203, 6915, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
+(204, 6916, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
+(205, 6917, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
+(206, 6918, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
+(207, 6919, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
+(208, 6920, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
+(209, 6921, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
+(210, 6922, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
+(211, 6923, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
+(212, 6924, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
 (213, 6925, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
 (214, 6926, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
 (215, 6927, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
@@ -3022,7 +2918,7 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (2894, 8280, 2, 0, 123, 4, 234.00000, 423.00000, 1, 243.00000),
 (2895, 8281, 1, 1, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (2896, 8282, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
-(2897, 8283, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
+(2897, 8283, 1, 1, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (2898, 8284, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (2899, 8285, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (2900, 8286, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
@@ -3165,7 +3061,7 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (3037, 8423, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (3038, 8424, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (3039, 8281, 2, 2, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
-(3040, 8282, 2, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
+(3040, 8282, 2, 2, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (3041, 8283, 2, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (3042, 8284, 2, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (3043, 8285, 2, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
@@ -3317,7 +3213,78 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (3189, 8426, 2, 0, 23, 43, 234.00000, 343.00000, 1, 234.00000),
 (3190, 8427, 2, 0, 23, 43, 234.00000, 343.00000, 1, 234.00000),
 (3191, 8428, 2, 0, 23, 43, 234.00000, 343.00000, 1, 234.00000),
-(3192, 8429, 2, 0, 23, 43, 234.00000, 343.00000, 1, 234.00000);
+(3192, 8429, 2, 0, 23, 43, 234.00000, 343.00000, 1, 234.00000),
+(3193, 8430, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3194, 8431, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3195, 8432, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3196, 8433, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3197, 8434, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3198, 8435, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3199, 8436, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3200, 8437, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3201, 8438, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3202, 8439, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3203, 8430, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3204, 8431, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3205, 8432, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3206, 8433, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3207, 8434, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3208, 8435, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3209, 8436, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3210, 8437, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3211, 8438, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3212, 8439, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3213, 8440, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3214, 8441, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3215, 8442, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3216, 8443, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3217, 8444, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3218, 8445, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3219, 8446, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000);
+INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo`) VALUES
+(3220, 8447, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3221, 8448, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3222, 8449, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3223, 8440, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3224, 8441, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3225, 8442, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3226, 8443, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3227, 8444, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3228, 8445, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3229, 8446, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3230, 8447, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3231, 8448, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3232, 8449, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3233, 8450, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3234, 8451, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3235, 8452, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3236, 8453, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3237, 8454, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3238, 8455, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3239, 8456, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3240, 8457, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3241, 8458, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3242, 8459, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3243, 8450, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3244, 8451, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3245, 8452, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3246, 8453, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3247, 8454, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3248, 8455, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3249, 8456, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3250, 8457, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3251, 8458, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3252, 8459, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3253, 8460, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3254, 8461, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3255, 8462, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3256, 8463, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3257, 8464, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3258, 8460, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3259, 8461, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3260, 8462, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3261, 8463, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3262, 8464, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000);
 
 -- --------------------------------------------------------
 
@@ -3330,13 +3297,8 @@ CREATE TABLE IF NOT EXISTS `productotallaje` (
   `idproductotallaje` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
   `idtallaje` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `productotallaje`
---
-
-TRUNCATE TABLE `productotallaje`;
 --
 -- Volcado de datos para la tabla `productotallaje`
 --
@@ -3366,7 +3328,11 @@ INSERT INTO `productotallaje` (`idproductotallaje`, `idproducto`, `idtallaje`) V
 (36, 129, 6),
 (37, 116, 5),
 (38, 116, 6),
-(39, 131, 6);
+(39, 131, 6),
+(40, 132, 6),
+(41, 133, 6),
+(42, 134, 6),
+(43, 135, 6);
 
 -- --------------------------------------------------------
 
@@ -3384,13 +3350,8 @@ CREATE TABLE IF NOT EXISTS `productovariante` (
   `productovariante_talla` varchar(45) NOT NULL,
   `productovariante_tallatipo` enum('medida','numero','ninguno') DEFAULT NULL,
   `productovariante_estatus` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=8430 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8465 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `productovariante`
---
-
-TRUNCATE TABLE `productovariante`;
 --
 -- Volcado de datos para la tabla `productovariante`
 --
@@ -4616,7 +4577,42 @@ INSERT INTO `productovariante` (`idproductovariante`, `idproducto`, `idproductoc
 (8426, 131, 348, 255, NULL, '7.5', 'numero', 1),
 (8427, 131, 348, 255, NULL, '8', 'numero', 1),
 (8428, 131, 348, 255, NULL, '8.5', 'numero', 1),
-(8429, 131, 348, 255, NULL, '9', 'numero', 1);
+(8429, 131, 348, 255, NULL, '9', 'numero', 1),
+(8430, 132, 349, 256, NULL, '7', 'numero', 1),
+(8431, 132, 350, 256, NULL, '7', 'numero', 1),
+(8432, 132, 349, 256, NULL, '7.5', 'numero', 1),
+(8433, 132, 350, 256, NULL, '7.5', 'numero', 1),
+(8434, 132, 349, 256, NULL, '8', 'numero', 1),
+(8435, 132, 350, 256, NULL, '8', 'numero', 1),
+(8436, 132, 349, 256, NULL, '8.5', 'numero', 1),
+(8437, 132, 350, 256, NULL, '8.5', 'numero', 1),
+(8438, 132, 349, 256, NULL, '9', 'numero', 1),
+(8439, 132, 350, 256, NULL, '9', 'numero', 1),
+(8440, 133, 351, 257, NULL, '7', 'numero', 1),
+(8441, 133, 352, 257, NULL, '7', 'numero', 1),
+(8442, 133, 351, 257, NULL, '7.5', 'numero', 1),
+(8443, 133, 352, 257, NULL, '7.5', 'numero', 1),
+(8444, 133, 351, 257, NULL, '8', 'numero', 1),
+(8445, 133, 352, 257, NULL, '8', 'numero', 1),
+(8446, 133, 351, 257, NULL, '8.5', 'numero', 1),
+(8447, 133, 352, 257, NULL, '8.5', 'numero', 1),
+(8448, 133, 351, 257, NULL, '9', 'numero', 1),
+(8449, 133, 352, 257, NULL, '9', 'numero', 1),
+(8450, 134, 353, 258, NULL, '7', 'numero', 1),
+(8451, 134, 354, 258, NULL, '7', 'numero', 1),
+(8452, 134, 353, 258, NULL, '7.5', 'numero', 1),
+(8453, 134, 354, 258, NULL, '7.5', 'numero', 1),
+(8454, 134, 353, 258, NULL, '8', 'numero', 1),
+(8455, 134, 354, 258, NULL, '8', 'numero', 1),
+(8456, 134, 353, 258, NULL, '8.5', 'numero', 1),
+(8457, 134, 354, 258, NULL, '8.5', 'numero', 1),
+(8458, 134, 353, 258, NULL, '9', 'numero', 1),
+(8459, 134, 354, 258, NULL, '9', 'numero', 1),
+(8460, 135, 355, 259, NULL, '7', 'numero', 1),
+(8461, 135, 355, 259, NULL, '7.5', 'numero', 1),
+(8462, 135, 355, 259, NULL, '8', 'numero', 1),
+(8463, 135, 355, 259, NULL, '8.5', 'numero', 1),
+(8464, 135, 355, 259, NULL, '9', 'numero', 1);
 
 -- --------------------------------------------------------
 
@@ -4633,11 +4629,6 @@ CREATE TABLE IF NOT EXISTS `promocion` (
   `promocion_estatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `promocion`
---
-
-TRUNCATE TABLE `promocion`;
 -- --------------------------------------------------------
 
 --
@@ -4656,11 +4647,6 @@ CREATE TABLE IF NOT EXISTS `promociondetalle` (
   `promociondetalle_cantidadresultado` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `promociondetalle`
---
-
-TRUNCATE TABLE `promociondetalle`;
 -- --------------------------------------------------------
 
 --
@@ -4677,11 +4663,6 @@ CREATE TABLE IF NOT EXISTS `proveedor` (
   `proveedor_email` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `proveedor`
---
-
-TRUNCATE TABLE `proveedor`;
 --
 -- Volcado de datos para la tabla `proveedor`
 --
@@ -4704,11 +4685,6 @@ CREATE TABLE IF NOT EXISTS `proveedormarca` (
   `idmarca` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `proveedormarca`
---
-
-TRUNCATE TABLE `proveedormarca`;
 -- --------------------------------------------------------
 
 --
@@ -4722,11 +4698,6 @@ CREATE TABLE IF NOT EXISTS `rol` (
   `rol_descripcion` text NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `rol`
---
-
-TRUNCATE TABLE `rol`;
 --
 -- Volcado de datos para la tabla `rol`
 --
@@ -4759,11 +4730,6 @@ CREATE TABLE IF NOT EXISTS `sucursal` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
--- Truncar tablas antes de insertar `sucursal`
---
-
-TRUNCATE TABLE `sucursal`;
---
 -- Volcado de datos para la tabla `sucursal`
 --
 
@@ -4785,11 +4751,6 @@ CREATE TABLE IF NOT EXISTS `sucursalempleado` (
   `sucursalempleado_estatus` tinyint(1) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `sucursalempleado`
---
-
-TRUNCATE TABLE `sucursalempleado`;
 --
 -- Volcado de datos para la tabla `sucursalempleado`
 --
@@ -4873,11 +4834,6 @@ CREATE TABLE IF NOT EXISTS `tallaje` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
--- Truncar tablas antes de insertar `tallaje`
---
-
-TRUNCATE TABLE `tallaje`;
---
 -- Volcado de datos para la tabla `tallaje`
 --
 
@@ -4898,13 +4854,8 @@ DROP TABLE IF EXISTS `temporada`;
 CREATE TABLE IF NOT EXISTS `temporada` (
   `idtemporada` int(11) NOT NULL,
   `temporada_nombre` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `temporada`
---
-
-TRUNCATE TABLE `temporada`;
 --
 -- Volcado de datos para la tabla `temporada`
 --
@@ -4913,7 +4864,8 @@ INSERT INTO `temporada` (`idtemporada`, `temporada_nombre`) VALUES
 (1, 'Verano'),
 (2, 'OtoÃ±o'),
 (3, 'Primavera - Verano'),
-(4, 'Invierno');
+(4, 'Invierno'),
+(14, 'adsf');
 
 -- --------------------------------------------------------
 
@@ -4928,11 +4880,6 @@ CREATE TABLE IF NOT EXISTS `tipocalzado` (
   `tipocalzado_descripcion` text
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `tipocalzado`
---
-
-TRUNCATE TABLE `tipocalzado`;
 --
 -- Volcado de datos para la tabla `tipocalzado`
 --
@@ -4960,11 +4907,6 @@ CREATE TABLE IF NOT EXISTS `transferencia` (
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 --
--- Truncar tablas antes de insertar `transferencia`
---
-
-TRUNCATE TABLE `transferencia`;
---
 -- Volcado de datos para la tabla `transferencia`
 --
 
@@ -4988,11 +4930,6 @@ CREATE TABLE IF NOT EXISTS `transferenciadetalle` (
   `transferenciadetalle_subtotal` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8;
 
---
--- Truncar tablas antes de insertar `transferenciadetalle`
---
-
-TRUNCATE TABLE `transferenciadetalle`;
 --
 -- Volcado de datos para la tabla `transferenciadetalle`
 --
@@ -5026,6 +4963,136 @@ INSERT INTO `transferenciadetalle` (`idtransferenciadetalle`, `idtransferencia`,
 (110, 5, 6919, 2.00, 2.00, 4.00),
 (111, 5, 6921, 2.00, 2.00, 4.00),
 (112, 5, 6923, 2.00, 2.00, 4.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `venta`
+--
+
+DROP TABLE IF EXISTS `venta`;
+CREATE TABLE IF NOT EXISTS `venta` (
+  `idventa` int(11) NOT NULL,
+  `idempleadocajero` int(11) NOT NULL,
+  `idempleadovendedor` int(11) NOT NULL,
+  `idcliente` int(11) NOT NULL,
+  `venta_total` decimal(15,5) NOT NULL,
+  `venta_fecha` datetime NOT NULL,
+  `venta_comprobante` text,
+  `idsucursal` int(11) NOT NULL,
+  `venta_estatuspago` tinyint(1) NOT NULL,
+  `venta_tipo` enum('venta','credito','apartado') NOT NULL,
+  `venta_subtotal` decimal(15,5) NOT NULL,
+  `venta_iva` decimal(15,5) NOT NULL,
+  `venta_estatus` enum('cancelada','completada','procesando') NOT NULL,
+  `venta_facturacion` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=210 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `venta`
+--
+
+INSERT INTO `venta` (`idventa`, `idempleadocajero`, `idempleadovendedor`, `idcliente`, `venta_total`, `venta_fecha`, `venta_comprobante`, `idsucursal`, `venta_estatuspago`, `venta_tipo`, `venta_subtotal`, `venta_iva`, `venta_estatus`, `venta_facturacion`) VALUES
+(184, 4, 6, 1, 6.00000, '2017-05-17 13:37:46', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
+(185, 4, 6, 1, 905.00000, '2017-05-17 13:40:08', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
+(186, 4, 6, 1, 905.00000, '2017-05-17 13:40:08', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
+(188, 4, 6, 1, 905.00000, '2017-05-17 13:41:41', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
+(189, 4, 6, 1, 905.00000, '2017-05-17 13:44:44', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
+(190, 4, 6, 1, 0.00000, '2017-05-17 13:45:17', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
+(191, 4, 6, 1, 0.00000, '2017-05-17 13:46:52', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
+(192, 4, 6, 1, 0.00000, '2017-05-17 13:47:48', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
+(193, 4, 6, 1, 0.00000, '2017-05-17 13:48:11', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
+(194, 4, 6, 1, 0.00000, '2017-05-17 13:48:58', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
+(195, 4, 6, 1, 0.00000, '2017-05-17 13:50:46', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
+(196, 4, 6, 1, 0.00000, '2017-05-17 13:51:24', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
+(197, 4, 6, 1, 0.00000, '2017-05-17 13:52:20', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
+(198, 4, 6, 1, 6.00000, '2017-05-17 13:52:32', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
+(199, 4, 6, 1, 0.00000, '2017-05-17 13:53:10', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
+(200, 4, 6, 1, 6.00000, '2017-05-17 13:53:19', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
+(202, 4, 6, 1, 12.00000, '2017-05-17 13:54:59', NULL, 1, 0, 'venta', 10.34483, 1.65517, 'procesando', NULL),
+(203, 4, 6, 1, 6.00000, '2017-05-17 13:55:54', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
+(204, 4, 6, 1, 6.00000, '2017-05-17 13:57:03', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
+(205, 4, 6, 1, 6.00000, '2017-05-17 13:57:05', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
+(206, 4, 6, 1, 6.00000, '2017-05-17 13:57:22', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
+(208, 4, 6, 1, 6.00000, '2017-05-17 14:01:33', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
+(209, 4, 6, 1, 6.00000, '2017-05-17 14:02:24', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventadetalle`
+--
+
+DROP TABLE IF EXISTS `ventadetalle`;
+CREATE TABLE IF NOT EXISTS `ventadetalle` (
+  `idventadetalle` int(11) NOT NULL,
+  `idventa` int(11) NOT NULL,
+  `idproductovariante` int(11) NOT NULL,
+  `ventadetalle_cantidad` int(11) NOT NULL,
+  `ventadetalle_subtotal` decimal(15,5) NOT NULL,
+  `ventadetalle_preciounitario` decimal(15,5) NOT NULL,
+  `ventadetalle_estatus` enum('completo','defecto','cambio') NOT NULL,
+  `ventadetalle_descuento` float DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `ventadetalle`
+--
+
+INSERT INTO `ventadetalle` (`idventadetalle`, `idventa`, `idproductovariante`, `ventadetalle_cantidad`, `ventadetalle_subtotal`, `ventadetalle_preciounitario`, `ventadetalle_estatus`, `ventadetalle_descuento`) VALUES
+(21, 184, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(22, 185, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(23, 185, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(24, 186, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(25, 186, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(28, 188, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(29, 188, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(30, 189, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(31, 189, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(32, 198, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(33, 200, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(36, 202, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(37, 202, 6898, 1, 6.00000, 6.00000, 'completo', 0),
+(38, 203, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(39, 204, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(40, 205, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(41, 206, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(43, 208, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(44, 209, 6897, 1, 6.00000, 6.00000, 'completo', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventapago`
+--
+
+DROP TABLE IF EXISTS `ventapago`;
+CREATE TABLE IF NOT EXISTS `ventapago` (
+  `idventapago` int(11) NOT NULL,
+  `idventa` int(11) NOT NULL,
+  `venta_fecha` datetime NOT NULL,
+  `idempleado` int(11) NOT NULL,
+  `ventapago_metododepago` enum('efectivo','vales','tarjeta') NOT NULL,
+  `ventapago_cantidad` decimal(15,5) DEFAULT NULL,
+  `ventapago_referencia` varchar(50) DEFAULT NULL,
+  `ventapago_cuatrodigitos` varchar(4) DEFAULT NULL,
+  `idvale` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `ventapago`
+--
+
+INSERT INTO `ventapago` (`idventapago`, `idventa`, `venta_fecha`, `idempleado`, `ventapago_metododepago`, `ventapago_cantidad`, `ventapago_referencia`, `ventapago_cuatrodigitos`, `idvale`) VALUES
+(30, 186, '2017-05-17 13:40:08', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
+(31, 186, '2017-05-17 13:40:08', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
+(32, 188, '2017-05-17 13:41:41', 4, 'efectivo', 23.00000, NULL, NULL, NULL),
+(33, 195, '2017-05-17 13:50:46', 4, 'efectivo', 10.00000, NULL, NULL, NULL),
+(34, 195, '2017-05-17 13:50:46', 4, 'efectivo', 99.00000, NULL, NULL, NULL),
+(35, 206, '2017-05-17 13:57:22', 4, 'efectivo', 5.00000, NULL, NULL, NULL),
+(36, 206, '2017-05-17 13:57:22', 4, 'efectivo', 1.00000, NULL, NULL, NULL),
+(38, 209, '2017-05-17 14:02:24', 4, 'efectivo', 5.00000, NULL, NULL, NULL),
+(39, 209, '2017-05-17 14:02:24', 4, 'efectivo', 5.00000, NULL, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -5320,6 +5387,32 @@ ALTER TABLE `transferenciadetalle`
   ADD KEY `idproductovariante` (`idproductovariante`);
 
 --
+-- Indices de la tabla `venta`
+--
+ALTER TABLE `venta`
+  ADD PRIMARY KEY (`idventa`),
+  ADD KEY `idempleadocajero` (`idempleadocajero`),
+  ADD KEY `idempleadovendedor` (`idempleadovendedor`),
+  ADD KEY `idcliente` (`idcliente`),
+  ADD KEY `idsucursal` (`idsucursal`);
+
+--
+-- Indices de la tabla `ventadetalle`
+--
+ALTER TABLE `ventadetalle`
+  ADD PRIMARY KEY (`idventadetalle`),
+  ADD KEY `idventa` (`idventa`),
+  ADD KEY `idproductovariante` (`idproductovariante`);
+
+--
+-- Indices de la tabla `ventapago`
+--
+ALTER TABLE `ventapago`
+  ADD PRIMARY KEY (`idventapago`),
+  ADD KEY `idventa` (`idventa`),
+  ADD KEY `idempleado` (`idempleado`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -5327,12 +5420,12 @@ ALTER TABLE `transferenciadetalle`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idcliente` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `idcliente` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `color`
 --
 ALTER TABLE `color`
-  MODIFY `idcolor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `idcolor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `compra`
 --
@@ -5352,12 +5445,12 @@ ALTER TABLE `configuracion`
 -- AUTO_INCREMENT de la tabla `cuentabancaria`
 --
 ALTER TABLE `cuentabancaria`
-  MODIFY `idcuentabancaria` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `idcuentabancaria` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `cuentabancariamovimiento`
 --
 ALTER TABLE `cuentabancariamovimiento`
-  MODIFY `idcuentabancariamovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=118;
+  MODIFY `idcuentabancariamovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=140;
 --
 -- AUTO_INCREMENT de la tabla `descuento`
 --
@@ -5372,7 +5465,7 @@ ALTER TABLE `devolucion`
 -- AUTO_INCREMENT de la tabla `devoluciondetalle`
 --
 ALTER TABLE `devoluciondetalle`
-  MODIFY `iddevoluciondetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1376;
+  MODIFY `iddevoluciondetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1401;
 --
 -- AUTO_INCREMENT de la tabla `empleado`
 --
@@ -5422,17 +5515,17 @@ ALTER TABLE `pedidomayoristadetalle`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `idproducto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=132;
+  MODIFY `idproducto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=136;
 --
 -- AUTO_INCREMENT de la tabla `productocolor`
 --
 ALTER TABLE `productocolor`
-  MODIFY `idproductocolor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=349;
+  MODIFY `idproductocolor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=356;
 --
 -- AUTO_INCREMENT de la tabla `productomaterial`
 --
 ALTER TABLE `productomaterial`
-  MODIFY `idproductomaterial` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=256;
+  MODIFY `idproductomaterial` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=260;
 --
 -- AUTO_INCREMENT de la tabla `productomedida`
 --
@@ -5442,17 +5535,17 @@ ALTER TABLE `productomedida`
 -- AUTO_INCREMENT de la tabla `productosucursal`
 --
 ALTER TABLE `productosucursal`
-  MODIFY `idproductosucursal` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3193;
+  MODIFY `idproductosucursal` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3263;
 --
 -- AUTO_INCREMENT de la tabla `productotallaje`
 --
 ALTER TABLE `productotallaje`
-  MODIFY `idproductotallaje` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
+  MODIFY `idproductotallaje` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT de la tabla `productovariante`
 --
 ALTER TABLE `productovariante`
-  MODIFY `idproductovariante` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8430;
+  MODIFY `idproductovariante` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8465;
 --
 -- AUTO_INCREMENT de la tabla `promocion`
 --
@@ -5497,7 +5590,7 @@ ALTER TABLE `tallaje`
 -- AUTO_INCREMENT de la tabla `temporada`
 --
 ALTER TABLE `temporada`
-  MODIFY `idtemporada` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `idtemporada` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `tipocalzado`
 --
@@ -5513,6 +5606,21 @@ ALTER TABLE `transferencia`
 --
 ALTER TABLE `transferenciadetalle`
   MODIFY `idtransferenciadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=113;
+--
+-- AUTO_INCREMENT de la tabla `venta`
+--
+ALTER TABLE `venta`
+  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=210;
+--
+-- AUTO_INCREMENT de la tabla `ventadetalle`
+--
+ALTER TABLE `ventadetalle`
+  MODIFY `idventadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
+--
+-- AUTO_INCREMENT de la tabla `ventapago`
+--
+ALTER TABLE `ventapago`
+  MODIFY `idventapago` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
 --
 -- Restricciones para tablas volcadas
 --
@@ -5684,6 +5792,29 @@ ALTER TABLE `transferencia`
 ALTER TABLE `transferenciadetalle`
   ADD CONSTRAINT `idproductovariante_transferenciadetalle` FOREIGN KEY (`idproductovariante`) REFERENCES `productovariante` (`idproductovariante`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idtransferencia_transferenciadetalle` FOREIGN KEY (`idtransferencia`) REFERENCES `transferencia` (`idtransferencia`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `venta`
+--
+ALTER TABLE `venta`
+  ADD CONSTRAINT `idcliente_venta` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idempleadocajero_venta` FOREIGN KEY (`idempleadocajero`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idempleadovendedor_venta` FOREIGN KEY (`idempleadovendedor`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idsucursal_venta` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `ventadetalle`
+--
+ALTER TABLE `ventadetalle`
+  ADD CONSTRAINT `idproductovariante_ventadetalle` FOREIGN KEY (`idproductovariante`) REFERENCES `productovariante` (`idproductovariante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idventa_ventadetalle` FOREIGN KEY (`idventa`) REFERENCES `venta` (`idventa`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `ventapago`
+--
+ALTER TABLE `ventapago`
+  ADD CONSTRAINT `idempleado_ventapago` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idventa_ventapago` FOREIGN KEY (`idventa`) REFERENCES `venta` (`idventa`) ON DELETE CASCADE ON UPDATE CASCADE;
 SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

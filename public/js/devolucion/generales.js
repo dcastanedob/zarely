@@ -141,7 +141,15 @@
                             $container.find('input[name=preciounitario'+data.selects[i]+']').attr('value',data.precio[i]);
                             $container.find('input[name=preciounitario'+data.selects[i]+']').keyup();
                           }
-                                            
+                                    
+                          $container.find('#tables_information #details').filter(function(){
+                            $table = $(this).find(' table td input.devoluciondetalle_subtotal');
+
+                            if($table.val() == '$0.00')
+                            {
+                              $(this).remove();
+                            }
+                          });         
                       }
                   });
                                       
