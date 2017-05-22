@@ -65,6 +65,9 @@ class ClienteTableMap extends TableMap
 ));
         $this->addColumn('cliente_fecharegistro', 'ClienteFecharegistro', 'DATE', true, null, null);
         $this->addColumn('cliente_estatus', 'ClienteEstatus', 'BOOLEAN', true, 1, null);
+        $this->addColumn('cliente_credito', 'ClienteCredito', 'TINYINT', true, null, null);
+        $this->addColumn('cliente_limitecredito', 'ClienteLimitecredito', 'DECIMAL', false, 15, null);
+        $this->addColumn('cliente_creditorestante', 'ClienteCreditorestante', 'DECIMAL', false, 15, null);
         // validators
     } // initialize()
 

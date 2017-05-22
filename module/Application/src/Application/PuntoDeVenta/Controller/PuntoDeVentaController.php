@@ -222,7 +222,6 @@ class PuntoDeVentaController extends AbstractActionController
             
             $user = new \Application\Session\AouthSession();
             $user = $user->getData();
-
             $post_data['idempleadocajero'] = $user['idempleado'];
             $post_data['venta_estatuspago'] = 0;
             $post_data['venta_estatus'] = "procesando";
@@ -260,41 +259,60 @@ class PuntoDeVentaController extends AbstractActionController
      
                 }
             }
+            if(count($cantidades) != 0)
+            {
+                $entity->setVentaTipo = $post_data['venta_tipo'];
+                $entity->save();
 
-            $entity->save();
+                $total = 0;
+                foreach ($descuentos as $variante => $value) {
+                    //traemos la informacion del producto de la sucursal que estamos
+                    $producto_sucursal = \ProductosucursalQuery::create()->filterByIdproductovariante($variante)->filterByIdsucursal($user['idsucursal'])->find()->toArray();
 
-            $total = 0;
-            foreach ($descuentos as $variante => $value) {
-                //traemos la informacion del producto de la sucursal que estamos
-                $producto_sucursal = \ProductosucursalQuery::create()->filterByIdproductovariante($variante)->filterByIdsucursal($user['idsucursal'])->find()->toArray();
+                    if($producto_sucursal != null)
+                    {
+                        $precioUnitario = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
+                        $cantidad = $cantidades[$variante][0]['valor'];
+                        $descuento = $value[0]['valor'];
+                        $subtotal = ($precioUnitario * $cantidad);
+                        $subtotal = $subtotal - ($subtotal * ($descuento/100));
+                        
+                        $venta_detalle = new \Ventadetalle();
+                        $venta_detalle->setIdventa($entity->getIdventa())
+                                        ->setIdproductovariante($variante)
+                                        ->setVentadetalleCantidad($cantidad)
+                                        ->setVentadetalleSubtotal($subtotal)
+                                        ->setVentadetallePreciounitario($precioUnitario)
+                                        ->setVentadetalleEstatus('completo')
+                                        ->setVentadetalleDescuento($descuento)
+                                        ->save();
+                        $total += $venta_detalle->getVentadetalleSubtotal();
+                    }
 
-                if($producto_sucursal != null)
-                {
-                    $precioUnitario = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
-                    $cantidad = $cantidades[$variante][0]['valor'];
-                    $descuento = $value[0]['valor'];
-                    $subtotal = ($precioUnitario * $cantidad);
-                    $subtotal = $subtotal - ($subtotal * ($descuento/100));
-                    
-                    $venta_detalle = new \Ventadetalle();
-                    $venta_detalle->setIdventa($entity->getIdventa())
-                                    ->setIdproductovariante($variante)
-                                    ->setVentadetalleCantidad($cantidad)
-                                    ->setVentadetalleSubtotal($subtotal)
-                                    ->setVentadetallePreciounitario($precioUnitario)
-                                    ->setVentadetalleEstatus('completo')
-                                    ->setVentadetalleDescuento($descuento)
-                                    ->save();
-                    $total += $venta_detalle->getVentadetalleSubtotal();
                 }
 
+                $subtotal = $total / 1.16;
+                $iva = $total- $subtotal;
+                $entity->setVentaTotal($total)->setVentaSubtotal($subtotal)->setVentaIva($iva)->save();
+
+                
+
+                if($post_data['venta_tipo'] == "credito")
+                {
+                    //obtenemos el credito del cliente
+                    $cliente = \ClienteQuery::create()->findPk($post_data['idcliente']);
+                    $credito = $cliente->getClienteCreditorestante();
+                    return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Venta realizada','id' =>$entity->getIdventa(),"credito" =>true,"cantidadCredito" => $credito)));
+
+                }else
+                {
+                    return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Venta realizada','id' =>$entity->getIdventa(),"credito" =>false)));
+                }
+                
+            }else{
+                return $this->getResponse()->setContent(json_encode(array('response' => false)));
             }
-
-            $subtotal = $total / 1.16;
-            $iva = $total- $subtotal;
-            $entity->setVentaTotal($total)->setVentaSubtotal($subtotal)->setVentaIva($iva)->save();
-
-            return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Venta realizada','id' =>$entity->getIdventa())));
+            
         
 
         }
@@ -795,6 +813,65 @@ class PuntoDeVentaController extends AbstractActionController
         }
 
          return $this->getResponse()->setContent(json_encode(array('response' => true)));
+    }
+
+
+    public function getClientesAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+            
+            if($post_data['tipo'] == "venta")
+            {
+                //traer los clientes
+                $clientes = \ClienteQuery::create()->find();
+                $clientes_array = array();
+
+                foreach ($clientes as $value){
+                    $clientes_array[$value->getIdcliente()] = $value->getClienteNombre() ." ". $value->getClienteApaterno() ." ". $value->getClienteAmaterno() ;
+                }
+                return $this->getResponse()->setContent(json_encode(array('response' => true,'clientes',$clientes_array)));
+
+
+            }else if($post_data['tipo'] == "apartada")
+            {
+                //traer los clientes
+                $clientes = \ClienteQuery::create()->find();
+                $clientes_array = array();
+
+                foreach ($clientes as $value){
+                    if($value->getClienteNombre() != 'Venta')
+                    {
+                        $clientes_array[$value->getIdcliente()] = $value->getClienteNombre() ." ". $value->getClienteApaterno() ." ". $value->getClienteAmaterno() ;
+                    }
+                    
+                }
+                return $this->getResponse()->setContent(json_encode(array('response' => true,'clientes',$clientes_array)));
+            
+
+            }else
+            {
+                //traer los clientes
+                $clientes = \ClienteQuery::create()->find();
+                $clientes_array = array();
+
+                foreach ($clientes as $value){
+                    if($value->getClienteNombre() != 'Venta')
+                    {
+                        if($value->getClienteCredito())
+                        {
+                            $clientes_array[$value->getIdcliente()] = $value->getClienteNombre() ." ". $value->getClienteApaterno() ." ". $value->getClienteAmaterno() ;
+                        }
+                        
+                    }
+                    
+                }
+                return $this->getResponse()->setContent(json_encode(array('response' => true,'clientes',$clientes_array)));
+            }
+        }
+
     }
 
 }

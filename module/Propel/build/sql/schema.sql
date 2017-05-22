@@ -34,6 +34,9 @@ CREATE TABLE `cliente`
     `cliente_tipo` enum('mayorista','general') NOT NULL,
     `cliente_fecharegistro` DATE NOT NULL,
     `cliente_estatus` TINYINT(1) NOT NULL,
+    `cliente_credito` TINYINT NOT NULL,
+    `cliente_limitecredito` DECIMAL(15,5),
+    `cliente_creditorestante` DECIMAL(15,5),
     PRIMARY KEY (`idcliente`)
 ) ENGINE=InnoDB;
 

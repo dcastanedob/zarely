@@ -25,6 +25,9 @@
     <column name="cliente_tipo" phpName="ClienteTipo" type="CHAR" sqlType="enum('mayorista','general')" required="true"/>
     <column name="cliente_fecharegistro" phpName="ClienteFecharegistro" type="DATE" required="true"/>
     <column name="cliente_estatus" phpName="ClienteEstatus" type="BOOLEAN" size="1" required="true"/>
+    <column name="cliente_credito" phpName="ClienteCredito" type="TINYINT" required="true"/>
+    <column name="cliente_limitecredito" phpName="ClienteLimitecredito" type="DECIMAL" size="15" scale="5" required="false"/>
+    <column name="cliente_creditorestante" phpName="ClienteCreditorestante" type="DECIMAL" size="15" scale="5" required="false"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

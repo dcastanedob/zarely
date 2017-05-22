@@ -120,41 +120,103 @@ class ClientesController extends AbstractActionController
                 $tmp['cliente_nombre'] = $value['cliente_nombre']." ".$value['cliente_apaterno']." ".$value['cliente_amaterno'];
                 $tmp['cliente_rfc'] = $value['cliente_rfc'];
                 $tmp['cliente_tipo'] = $value['cliente_tipo'];
-                $tmp['options'] = '<td><div class="btn-group dropdown">
-                  <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
-                    <span class="icon icon-gear icon-lg icon-fw"></span>
-                    Opciones
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a href="/catalogo/clientes/ver/' . $value['idcliente'] . '">
-                        <div class="media">
-                          <div class="media-left">
-                            <span class="icon icon-edit icon-lg icon-fw"></span>
-                          </div>
-                          <div class="media-body">
-                            <span class="d-b">Editar</span>
+
+                if($value['cliente_credito']){
+                    $tmp['cliente_credito'] = 'Si';
+                    $tmp['options'] = '<td><div class="btn-group dropdown">
+                      <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
+                        <span class="icon icon-gear icon-lg icon-fw"></span>
+                        Opciones
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a href="/catalogo/clientes/ver/' . $value['idcliente'] . '">
+                            <div class="media">
+                              <div class="media-left">
+                                <span class="icon icon-edit icon-lg icon-fw"></span>
+                              </div>
+                              <div class="media-body">
+                                <span class="d-b">Editar</span>
+                               
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+
+                        <li>
+                          <a href="/catalogo/clientes/credito/' . $value['idcliente'] . '">
+                            <div class="media">
+                              <div class="media-left">
+                                <span class="icon icon-money icon-lg icon-fw"></span>
+                              </div>
+                              <div class="media-body">
+                                <span class="d-b">Modificar crédito</span>
                            
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:;" class="delete_modal">
-                        <div class="media">
-                          <div class="media-left">
-                            <span class="icon icon-trash icon-lg icon-fw"></span>
-                          </div>
-                          <div class="media-body">
-                            <span class="d-b">Eliminar</span>
-                       
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </div></td>';
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+
+
+                        <li>
+                          <a href="javascript:;" class="delete_modal">
+                            <div class="media">
+                              <div class="media-left">
+                                <span class="icon icon-trash icon-lg icon-fw"></span>
+                              </div>
+                              <div class="media-body">
+                                <span class="d-b">Eliminar</span>
+                           
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div></td>';
+                }else{
+                    $tmp['cliente_credito'] = "No";
+                    $tmp['options'] = '<td><div class="btn-group dropdown">
+                      <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
+                        <span class="icon icon-gear icon-lg icon-fw"></span>
+                        Opciones
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a href="/catalogo/clientes/ver/' . $value['idcliente'] . '">
+                            <div class="media">
+                              <div class="media-left">
+                                <span class="icon icon-edit icon-lg icon-fw"></span>
+                              </div>
+                              <div class="media-body">
+                                <span class="d-b">Editar</span>
+                               
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+
+                        
+
+                        <li>
+                          <a href="javascript:;" class="delete_modal">
+                            <div class="media">
+                              <div class="media-left">
+                                <span class="icon icon-trash icon-lg icon-fw"></span>
+                              </div>
+                              <div class="media-body">
+                                <span class="d-b">Eliminar</span>
+                           
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div></td>';
+                }
+
+                
                 
                 $data[] = $tmp;
  
@@ -207,7 +269,8 @@ class ClientesController extends AbstractActionController
                     $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                 }
             }
-            
+                
+            $entity->setClienteCreditorestante($post_data['cliente_limitecredito']);
             $entity->save();
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
            
@@ -250,6 +313,7 @@ class ClientesController extends AbstractActionController
                         $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                     }
                 }
+                $entity->setClienteCreditorestante($post_data['cliente_limitecredito']);
                 $entity->save();
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
@@ -297,5 +361,51 @@ class ClientesController extends AbstractActionController
         return $this->redirect()->toUrl('/catalogo/clientes');
     }
 
+
+    public function creditoAction()
+    {
+
+        $request = $this->getRequest();
+
+        $id = $this->params()->fromRoute('id');
+
+        $exists = \ClienteQuery::create()->filterByIdcliente($id)->exists();
+        if($exists)
+        {
+            $entity = \ClienteQuery::create()->findPk($id);
+
+            if($request->isPost())
+            {
+                $post_data = $request->getPost();
+
+                $entity->setClienteLimitecredito($post_data['cliente_limitecredito'])
+                        ->setClienteCreditorestante($post_data['cliente_creditorestante']);
+
+                $entity->save();
+                $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
+
+                return $this->redirect()->toUrl('/catalogo/clientes');
+            }
+           
+            $form = new \Application\Catalogo\Form\CreditoForm();
+            $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
+            
+            
+            
+            $view_model = new ViewModel();
+            $view_model->setTemplate('application/catalogo/clientes/credito');
+
+            $view_model->setVariables(array(
+                'form' => $form,
+                'entity' =>$entity
+            ));
+
+            return $view_model;
+        }else
+        {
+            $this->flashMessenger()->addErrorMessage('Id inválido');
+            return $this->redirect()->toUrl('/catalogo/clientes');   
+        }
+    }
 
 }

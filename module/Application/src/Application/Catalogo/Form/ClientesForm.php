@@ -175,6 +175,16 @@ class ClientesForm extends Form
             ),
         ));
 
+        $this->add(array(
+            'name' => 'cliente_limitecredito',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => true,
+                'class' => 'form-control infput-thick',
+                'tabindex' => 21,
+            ),
+        ));
+
 
         $this->add(array(
             'name' => 'cliente_colonia',
@@ -256,6 +266,25 @@ class ClientesForm extends Form
                 'required' => true,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 6,
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'cliente_credito',
+            'type' => 'Select',
+            'options' => array(
+              
+                'value_options' => array(
+                    1 => 'Si',
+                    0 => 'No',
+                ),
+            ),
+
+            'attributes' => array(
+                'required' => true,
+                'class' => 'form-control infput-thick',
+                'tabindex' => 20,
             ),
         ));
 

@@ -168,6 +168,24 @@ abstract class BaseCliente extends BaseObject implements Persistent
     protected $cliente_estatus;
 
     /**
+     * The value for the cliente_credito field.
+     * @var        int
+     */
+    protected $cliente_credito;
+
+    /**
+     * The value for the cliente_limitecredito field.
+     * @var        string
+     */
+    protected $cliente_limitecredito;
+
+    /**
+     * The value for the cliente_creditorestante field.
+     * @var        string
+     */
+    protected $cliente_creditorestante;
+
+    /**
      * @var        PropelObjectCollection|Pedidomayorista[] Collection to store aggregation of Pedidomayorista objects.
      */
     protected $collPedidomayoristas;
@@ -491,6 +509,39 @@ abstract class BaseCliente extends BaseObject implements Persistent
     {
 
         return $this->cliente_estatus;
+    }
+
+    /**
+     * Get the [cliente_credito] column value.
+     *
+     * @return int
+     */
+    public function getClienteCredito()
+    {
+
+        return $this->cliente_credito;
+    }
+
+    /**
+     * Get the [cliente_limitecredito] column value.
+     *
+     * @return string
+     */
+    public function getClienteLimitecredito()
+    {
+
+        return $this->cliente_limitecredito;
+    }
+
+    /**
+     * Get the [cliente_creditorestante] column value.
+     *
+     * @return string
+     */
+    public function getClienteCreditorestante()
+    {
+
+        return $this->cliente_creditorestante;
     }
 
     /**
@@ -987,6 +1038,69 @@ abstract class BaseCliente extends BaseObject implements Persistent
     } // setClienteEstatus()
 
     /**
+     * Set the value of [cliente_credito] column.
+     *
+     * @param  int $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCredito($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->cliente_credito !== $v) {
+            $this->cliente_credito = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CREDITO;
+        }
+
+
+        return $this;
+    } // setClienteCredito()
+
+    /**
+     * Set the value of [cliente_limitecredito] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteLimitecredito($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_limitecredito !== $v) {
+            $this->cliente_limitecredito = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_LIMITECREDITO;
+        }
+
+
+        return $this;
+    } // setClienteLimitecredito()
+
+    /**
+     * Set the value of [cliente_creditorestante] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCreditorestante($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_creditorestante !== $v) {
+            $this->cliente_creditorestante = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CREDITORESTANTE;
+        }
+
+
+        return $this;
+    } // setClienteCreditorestante()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1041,6 +1155,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
             $this->cliente_tipo = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
             $this->cliente_fecharegistro = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
             $this->cliente_estatus = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
+            $this->cliente_credito = ($row[$startcol + 23] !== null) ? (int) $row[$startcol + 23] : null;
+            $this->cliente_limitecredito = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->cliente_creditorestante = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1050,7 +1167,7 @@ abstract class BaseCliente extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 23; // 23 = ClientePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 26; // 26 = ClientePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Cliente object", $e);
@@ -1369,6 +1486,15 @@ abstract class BaseCliente extends BaseObject implements Persistent
         if ($this->isColumnModified(ClientePeer::CLIENTE_ESTATUS)) {
             $modifiedColumns[':p' . $index++]  = '`cliente_estatus`';
         }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CREDITO)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_credito`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_LIMITECREDITO)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_limitecredito`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CREDITORESTANTE)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_creditorestante`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `cliente` (%s) VALUES (%s)',
@@ -1448,6 +1574,15 @@ abstract class BaseCliente extends BaseObject implements Persistent
                         break;
                     case '`cliente_estatus`':
                         $stmt->bindValue($identifier, (int) $this->cliente_estatus, PDO::PARAM_INT);
+                        break;
+                    case '`cliente_credito`':
+                        $stmt->bindValue($identifier, $this->cliente_credito, PDO::PARAM_INT);
+                        break;
+                    case '`cliente_limitecredito`':
+                        $stmt->bindValue($identifier, $this->cliente_limitecredito, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_creditorestante`':
+                        $stmt->bindValue($identifier, $this->cliente_creditorestante, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1668,6 +1803,15 @@ abstract class BaseCliente extends BaseObject implements Persistent
             case 22:
                 return $this->getClienteEstatus();
                 break;
+            case 23:
+                return $this->getClienteCredito();
+                break;
+            case 24:
+                return $this->getClienteLimitecredito();
+                break;
+            case 25:
+                return $this->getClienteCreditorestante();
+                break;
             default:
                 return null;
                 break;
@@ -1720,6 +1864,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
             $keys[20] => $this->getClienteTipo(),
             $keys[21] => $this->getClienteFecharegistro(),
             $keys[22] => $this->getClienteEstatus(),
+            $keys[23] => $this->getClienteCredito(),
+            $keys[24] => $this->getClienteLimitecredito(),
+            $keys[25] => $this->getClienteCreditorestante(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1836,6 +1983,15 @@ abstract class BaseCliente extends BaseObject implements Persistent
             case 22:
                 $this->setClienteEstatus($value);
                 break;
+            case 23:
+                $this->setClienteCredito($value);
+                break;
+            case 24:
+                $this->setClienteLimitecredito($value);
+                break;
+            case 25:
+                $this->setClienteCreditorestante($value);
+                break;
         } // switch()
     }
 
@@ -1883,6 +2039,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
         if (array_key_exists($keys[20], $arr)) $this->setClienteTipo($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setClienteFecharegistro($arr[$keys[21]]);
         if (array_key_exists($keys[22], $arr)) $this->setClienteEstatus($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setClienteCredito($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setClienteLimitecredito($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setClienteCreditorestante($arr[$keys[25]]);
     }
 
     /**
@@ -1917,6 +2076,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
         if ($this->isColumnModified(ClientePeer::CLIENTE_TIPO)) $criteria->add(ClientePeer::CLIENTE_TIPO, $this->cliente_tipo);
         if ($this->isColumnModified(ClientePeer::CLIENTE_FECHAREGISTRO)) $criteria->add(ClientePeer::CLIENTE_FECHAREGISTRO, $this->cliente_fecharegistro);
         if ($this->isColumnModified(ClientePeer::CLIENTE_ESTATUS)) $criteria->add(ClientePeer::CLIENTE_ESTATUS, $this->cliente_estatus);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CREDITO)) $criteria->add(ClientePeer::CLIENTE_CREDITO, $this->cliente_credito);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_LIMITECREDITO)) $criteria->add(ClientePeer::CLIENTE_LIMITECREDITO, $this->cliente_limitecredito);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CREDITORESTANTE)) $criteria->add(ClientePeer::CLIENTE_CREDITORESTANTE, $this->cliente_creditorestante);
 
         return $criteria;
     }
@@ -2002,6 +2164,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
         $copyObj->setClienteTipo($this->getClienteTipo());
         $copyObj->setClienteFecharegistro($this->getClienteFecharegistro());
         $copyObj->setClienteEstatus($this->getClienteEstatus());
+        $copyObj->setClienteCredito($this->getClienteCredito());
+        $copyObj->setClienteLimitecredito($this->getClienteLimitecredito());
+        $copyObj->setClienteCreditorestante($this->getClienteCreditorestante());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2644,6 +2809,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
         $this->cliente_tipo = null;
         $this->cliente_fecharegistro = null;
         $this->cliente_estatus = null;
+        $this->cliente_credito = null;
+        $this->cliente_limitecredito = null;
+        $this->cliente_creditorestante = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

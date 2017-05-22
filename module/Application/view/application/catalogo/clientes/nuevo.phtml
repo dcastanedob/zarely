@@ -21,6 +21,13 @@
 			           		<label  for="tipo">Tipo</label>
 			                <?php echo $this->formSelect($form->get('cliente_tipo')) ?>
 		        		</div>
+
+		        		<div class="form-group">
+			           		<label  for="tipo">Crédito?</label>
+			                <?php echo $this->formSelect($form->get('cliente_credito')) ?>
+		        		</div>
+
+
 		        		<div class="form-group">
 			           		<h3  for="razon"><b>Dirección</b></h3>
 		        		</div>
@@ -91,6 +98,12 @@
 			           		<label  for="estatus">Estatus</label>
 			                <?php echo $this->formSelect($form->get('cliente_estatus')) ?>
 		        		</div>
+
+		        		<div class="form-group">
+			           		<label  for="limite">Límite de crédito</label>
+			                <?php echo $this->formText($form->get('cliente_limitecredito')) ?>
+		        		</div>
+
 		        		<br>
 		        		<br>
 		        		<br>

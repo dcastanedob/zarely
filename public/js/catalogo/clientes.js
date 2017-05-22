@@ -56,7 +56,25 @@
                 language:'es',
             });
             
-            
+            $container.find('select[name=cliente_credito]').on('change',function()
+              {
+                var option = $(this).find('option:selected').val();
+                if(option == 1)
+                {
+                   $container.find('input[name=cliente_limitecredito]').removeAttr('disabled');
+                }else{
+                   $container.find('input[name=cliente_limitecredito]').attr('disabled',"");
+                }
+              }
+            );
+
+            var optionCredit = $container.find('select[name=cliente_credito] option:selected').val();
+            if(optionCredit == 1)
+            {
+               $container.find('input[name=cliente_limitecredito]').removeAttr('disabled');
+            }else{
+               $container.find('input[name=cliente_limitecredito]').attr('disabled',"");
+            }
         }
         
         plugin.list =function(){
@@ -78,6 +96,7 @@
                         {"data":"cliente_rfc","name":"cliente_rfc","orderable":true},
                         {"data":"cliente_tipo","name":"cliente_tipo","orderable":true},
                         {"data":"cliente_estatus","name":"cliente_estatus","orderable":true},
+                        {"data":"cliente_credito","name":"cliente_credito","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},
                     ],
                     proccesing: true,
