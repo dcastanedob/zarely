@@ -64,6 +64,14 @@
  * @method ClienteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method ClienteQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method ClienteQuery leftJoinClienterelacionadoRelatedByIdcliente($relationAlias = null) Adds a LEFT JOIN clause to the query using the ClienterelacionadoRelatedByIdcliente relation
+ * @method ClienteQuery rightJoinClienterelacionadoRelatedByIdcliente($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ClienterelacionadoRelatedByIdcliente relation
+ * @method ClienteQuery innerJoinClienterelacionadoRelatedByIdcliente($relationAlias = null) Adds a INNER JOIN clause to the query using the ClienterelacionadoRelatedByIdcliente relation
+ *
+ * @method ClienteQuery leftJoinClienterelacionadoRelatedByIdclienteasociado($relationAlias = null) Adds a LEFT JOIN clause to the query using the ClienterelacionadoRelatedByIdclienteasociado relation
+ * @method ClienteQuery rightJoinClienterelacionadoRelatedByIdclienteasociado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ClienterelacionadoRelatedByIdclienteasociado relation
+ * @method ClienteQuery innerJoinClienterelacionadoRelatedByIdclienteasociado($relationAlias = null) Adds a INNER JOIN clause to the query using the ClienterelacionadoRelatedByIdclienteasociado relation
+ *
  * @method ClienteQuery leftJoinPedidomayorista($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedidomayorista relation
  * @method ClienteQuery rightJoinPedidomayorista($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedidomayorista relation
  * @method ClienteQuery innerJoinPedidomayorista($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedidomayorista relation
@@ -1139,6 +1147,154 @@ abstract class BaseClienteQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ClientePeer::CLIENTE_CREDITORESTANTE, $clienteCreditorestante, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Clienterelacionado object
+     *
+     * @param   Clienterelacionado|PropelObjectCollection $clienterelacionado  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ClienteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByClienterelacionadoRelatedByIdcliente($clienterelacionado, $comparison = null)
+    {
+        if ($clienterelacionado instanceof Clienterelacionado) {
+            return $this
+                ->addUsingAlias(ClientePeer::IDCLIENTE, $clienterelacionado->getIdcliente(), $comparison);
+        } elseif ($clienterelacionado instanceof PropelObjectCollection) {
+            return $this
+                ->useClienterelacionadoRelatedByIdclienteQuery()
+                ->filterByPrimaryKeys($clienterelacionado->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByClienterelacionadoRelatedByIdcliente() only accepts arguments of type Clienterelacionado or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the ClienterelacionadoRelatedByIdcliente relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ClienteQuery The current query, for fluid interface
+     */
+    public function joinClienterelacionadoRelatedByIdcliente($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('ClienterelacionadoRelatedByIdcliente');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'ClienterelacionadoRelatedByIdcliente');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the ClienterelacionadoRelatedByIdcliente relation Clienterelacionado object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ClienterelacionadoQuery A secondary query class using the current class as primary query
+     */
+    public function useClienterelacionadoRelatedByIdclienteQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinClienterelacionadoRelatedByIdcliente($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ClienterelacionadoRelatedByIdcliente', 'ClienterelacionadoQuery');
+    }
+
+    /**
+     * Filter the query by a related Clienterelacionado object
+     *
+     * @param   Clienterelacionado|PropelObjectCollection $clienterelacionado  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ClienteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByClienterelacionadoRelatedByIdclienteasociado($clienterelacionado, $comparison = null)
+    {
+        if ($clienterelacionado instanceof Clienterelacionado) {
+            return $this
+                ->addUsingAlias(ClientePeer::IDCLIENTE, $clienterelacionado->getIdclienteasociado(), $comparison);
+        } elseif ($clienterelacionado instanceof PropelObjectCollection) {
+            return $this
+                ->useClienterelacionadoRelatedByIdclienteasociadoQuery()
+                ->filterByPrimaryKeys($clienterelacionado->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByClienterelacionadoRelatedByIdclienteasociado() only accepts arguments of type Clienterelacionado or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the ClienterelacionadoRelatedByIdclienteasociado relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ClienteQuery The current query, for fluid interface
+     */
+    public function joinClienterelacionadoRelatedByIdclienteasociado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('ClienterelacionadoRelatedByIdclienteasociado');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'ClienterelacionadoRelatedByIdclienteasociado');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the ClienterelacionadoRelatedByIdclienteasociado relation Clienterelacionado object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ClienterelacionadoQuery A secondary query class using the current class as primary query
+     */
+    public function useClienterelacionadoRelatedByIdclienteasociadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinClienterelacionadoRelatedByIdclienteasociado($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ClienterelacionadoRelatedByIdclienteasociado', 'ClienterelacionadoQuery');
     }
 
     /**

@@ -32,6 +32,26 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="clienterelacionado" phpName="Clienterelacionado" idMethod="native">
+    <column name="idclienterelacionado" phpName="Idclienterelacionado" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idcliente" phpName="Idcliente" type="INTEGER" required="true"/>
+    <column name="idclienteasociado" phpName="Idclienteasociado" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="cliente" name="idcliente_clienterelacionado" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idcliente" foreign="idcliente"/>
+    </foreign-key>
+    <foreign-key foreignTable="cliente" name="idclienteasociado_clienterelacionado" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idclienteasociado" foreign="idcliente"/>
+    </foreign-key>
+    <index name="idcliente">
+      <index-column name="idcliente"/>
+    </index>
+    <index name="idclienteasociado">
+      <index-column name="idclienteasociado"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="color" phpName="Color" idMethod="native">
     <column name="idcolor" phpName="Idcolor" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="color_nombre" phpName="ColorNombre" type="LONGVARCHAR" required="true"/>
@@ -90,6 +110,32 @@
   <table name="configuracion" phpName="Configuracion" idMethod="native">
     <column name="idconfiguracion" phpName="Idconfiguracion" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="configuracion_" phpName="Configuracion" type="VARCHAR" size="45" required="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="cortecaja" phpName="Cortecaja" idMethod="native">
+    <column name="idcortecaja" phpName="Idcortecaja" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idsucursal" phpName="Idsucursal" type="INTEGER" required="true"/>
+    <column name="idempleadoenvia" phpName="Idempleadoenvia" type="INTEGER" required="true"/>
+    <column name="cortecaja_fecha" phpName="CortecajaFecha" type="DATE" required="true"/>
+    <column name="cortecaja_total" phpName="CortecajaTotal" type="DECIMAL" size="15" scale="5" required="true"/>
+    <column name="cortecaja_efectivo" phpName="CortecajaEfectivo" type="DECIMAL" size="15" scale="5" required="true"/>
+    <column name="cortecaja_tarjetas" phpName="CortecajaTarjetas" type="DECIMAL" size="15" scale="5" required="true"/>
+    <column name="cortecaja_vales" phpName="CortecajaVales" type="DECIMAL" size="15" scale="5" required="true"/>
+    <column name="cortecaja_enviado" phpName="CortecajaEnviado" type="BOOLEAN" size="1" required="true"/>
+    <foreign-key foreignTable="empleado" name="idempleadoenvia_cortecaja" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleadoenvia" foreign="idempleado"/>
+    </foreign-key>
+    <foreign-key foreignTable="sucursal" name="idsucursal_cortecaja" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idsucursal" foreign="idsucursal"/>
+    </foreign-key>
+    <index name="idsucursal">
+      <index-column name="idsucursal"/>
+    </index>
+    <index name="idempleadoenvia">
+      <index-column name="idempleadoenvia"/>
+    </index>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

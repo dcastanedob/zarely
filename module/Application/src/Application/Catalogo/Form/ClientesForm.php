@@ -6,7 +6,9 @@ use Zend\Form\Form;
 
 class ClientesForm extends Form
 {
-    public function __construct()
+    public function __construct(
+        $clientes_array = array()
+    )
     {
         // we want to ignore the name passed
         parent::__construct('ClientesForm');
@@ -301,6 +303,22 @@ class ClientesForm extends Form
             ),
         ));
 
+
+        $this->add(array(
+            'name' => 'idclientes[]',
+            'type' => 'Select',
+            'options' => array(
+              
+            'value_options' => $clientes_array,   
+            ),
+            'attributes' => array(
+                'required' => true,
+                'class' => '',
+                
+
+               
+            ),
+        ));
         
     }
 }

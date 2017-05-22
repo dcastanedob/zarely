@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-05-2017 a las 19:23:57
+-- Tiempo de generación: 22-05-2017 a las 20:17:06
 -- Versión del servidor: 5.6.31
 -- Versión de PHP: 5.4.42
 
@@ -53,16 +53,41 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `cliente_estado` varchar(45) DEFAULT NULL,
   `cliente_tipo` enum('mayorista','general') NOT NULL,
   `cliente_fecharegistro` date NOT NULL COMMENT 'se setea con la fecha del sistema',
-  `cliente_estatus` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `cliente_estatus` tinyint(1) NOT NULL,
+  `cliente_credito` tinyint(4) NOT NULL,
+  `cliente_limitecredito` decimal(15,5) DEFAULT NULL,
+  `cliente_creditorestante` decimal(15,5) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`idcliente`, `cliente_nombre`, `cliente_apaterno`, `cliente_amaterno`, `cliente_rfc`, `cliente_razonsocial`, `cliente_callefiscal`, `cliente_numerofiscal`, `cliente_interiorfiscal`, `cliente_coloniafiscal`, `cliente_ciudadfiscal`, `cliente_cpfiscal`, `cliente_estadofiscal`, `cliente_calle`, `cliente_numero`, `cliente_interior`, `cliente_colonia`, `cliente_cp`, `cliente_ciudad`, `cliente_estado`, `cliente_tipo`, `cliente_fecharegistro`, `cliente_estatus`) VALUES
-(1, 'Venta', 'al ', 'publico', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0),
-(2, 'Armando', 'Alonso', 'Orozco', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0);
+INSERT INTO `cliente` (`idcliente`, `cliente_nombre`, `cliente_apaterno`, `cliente_amaterno`, `cliente_rfc`, `cliente_razonsocial`, `cliente_callefiscal`, `cliente_numerofiscal`, `cliente_interiorfiscal`, `cliente_coloniafiscal`, `cliente_ciudadfiscal`, `cliente_cpfiscal`, `cliente_estadofiscal`, `cliente_calle`, `cliente_numero`, `cliente_interior`, `cliente_colonia`, `cliente_cp`, `cliente_ciudad`, `cliente_estado`, `cliente_tipo`, `cliente_fecharegistro`, `cliente_estatus`, `cliente_credito`, `cliente_limitecredito`, `cliente_creditorestante`) VALUES
+(1, 'Venta', 'al ', 'publico', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0, 0, 1000.00000, NULL),
+(2, 'Armando', 'Alonso', 'Orozco', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0, 1, 1000.00000, 51.00000),
+(4, 'ToÃ±o', 'Garcia', 'Perez', '73', '3897834734897', '89374', '83749', '837489374983748979847', '3894789', '37498', '73489', '7389478', 'asdf', '234', '234', '79834', '324', '78933', '7894793887', 'mayorista', '2017-04-27', 0, 1, 2500.00000, 2500.00000);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clienterelacionado`
+--
+
+DROP TABLE IF EXISTS `clienterelacionado`;
+CREATE TABLE IF NOT EXISTS `clienterelacionado` (
+  `idclienterelacionado` int(11) NOT NULL,
+  `idcliente` int(11) NOT NULL,
+  `idclienteasociado` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `clienterelacionado`
+--
+
+INSERT INTO `clienterelacionado` (`idclienterelacionado`, `idcliente`, `idclienteasociado`) VALUES
+(12, 4, 1),
+(13, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -162,6 +187,25 @@ DROP TABLE IF EXISTS `configuracion`;
 CREATE TABLE IF NOT EXISTS `configuracion` (
   `idconfiguracion` int(11) NOT NULL,
   `configuracion_` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cortecaja`
+--
+
+DROP TABLE IF EXISTS `cortecaja`;
+CREATE TABLE IF NOT EXISTS `cortecaja` (
+  `idcortecaja` int(11) NOT NULL,
+  `idsucursal` int(11) NOT NULL,
+  `idempleadoenvia` int(11) NOT NULL,
+  `cortecaja_fecha` date NOT NULL,
+  `cortecaja_total` decimal(15,5) NOT NULL,
+  `cortecaja_efectivo` decimal(15,5) NOT NULL,
+  `cortecaja_tarjetas` decimal(15,5) NOT NULL,
+  `cortecaja_vales` decimal(15,5) NOT NULL,
+  `cortecaja_enviado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -4986,36 +5030,32 @@ CREATE TABLE IF NOT EXISTS `venta` (
   `venta_iva` decimal(15,5) NOT NULL,
   `venta_estatus` enum('cancelada','completada','procesando') NOT NULL,
   `venta_facturacion` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=210 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `venta`
 --
 
 INSERT INTO `venta` (`idventa`, `idempleadocajero`, `idempleadovendedor`, `idcliente`, `venta_total`, `venta_fecha`, `venta_comprobante`, `idsucursal`, `venta_estatuspago`, `venta_tipo`, `venta_subtotal`, `venta_iva`, `venta_estatus`, `venta_facturacion`) VALUES
-(184, 4, 6, 1, 6.00000, '2017-05-17 13:37:46', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
-(185, 4, 6, 1, 905.00000, '2017-05-17 13:40:08', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
-(186, 4, 6, 1, 905.00000, '2017-05-17 13:40:08', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
-(188, 4, 6, 1, 905.00000, '2017-05-17 13:41:41', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
-(189, 4, 6, 1, 905.00000, '2017-05-17 13:44:44', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
-(190, 4, 6, 1, 0.00000, '2017-05-17 13:45:17', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
-(191, 4, 6, 1, 0.00000, '2017-05-17 13:46:52', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
-(192, 4, 6, 1, 0.00000, '2017-05-17 13:47:48', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
-(193, 4, 6, 1, 0.00000, '2017-05-17 13:48:11', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
-(194, 4, 6, 1, 0.00000, '2017-05-17 13:48:58', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
-(195, 4, 6, 1, 0.00000, '2017-05-17 13:50:46', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
-(196, 4, 6, 1, 0.00000, '2017-05-17 13:51:24', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
-(197, 4, 6, 1, 0.00000, '2017-05-17 13:52:20', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
-(198, 4, 6, 1, 6.00000, '2017-05-17 13:52:32', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
-(199, 4, 6, 1, 0.00000, '2017-05-17 13:53:10', NULL, 1, 0, 'venta', 0.00000, 0.00000, 'procesando', NULL),
-(200, 4, 6, 1, 6.00000, '2017-05-17 13:53:19', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
-(202, 4, 6, 1, 12.00000, '2017-05-17 13:54:59', NULL, 1, 0, 'venta', 10.34483, 1.65517, 'procesando', NULL),
-(203, 4, 6, 1, 6.00000, '2017-05-17 13:55:54', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
-(204, 4, 6, 1, 6.00000, '2017-05-17 13:57:03', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
-(205, 4, 6, 1, 6.00000, '2017-05-17 13:57:05', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
-(206, 4, 6, 1, 6.00000, '2017-05-17 13:57:22', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
-(208, 4, 6, 1, 6.00000, '2017-05-17 14:01:33', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL),
-(209, 4, 6, 1, 6.00000, '2017-05-17 14:02:24', NULL, 1, 0, 'venta', 5.17241, 0.82759, 'procesando', NULL);
+(256, 4, 6, 1, 12.00000, '2017-05-22 11:00:23', NULL, 1, 1, 'venta', 10.34483, 1.65517, 'procesando', NULL),
+(260, 4, 6, 2, 899.00000, '2017-05-22 13:42:27', NULL, 1, 0, 'credito', 775.00000, 124.00000, 'procesando', NULL),
+(270, 4, 6, 2, 899.00000, '2017-05-22 13:53:37', NULL, 1, 1, 'credito', 775.00000, 124.00000, 'procesando', NULL),
+(271, 4, 6, 2, 899.00000, '2017-05-22 14:00:31', NULL, 1, 1, 'credito', 775.00000, 124.00000, 'procesando', NULL),
+(273, 4, 6, 1, 905.00000, '2017-05-22 14:11:54', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
+(274, 4, 6, 1, 905.00000, '2017-05-22 14:12:46', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
+(275, 4, 6, 1, 905.00000, '2017-05-22 14:12:50', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
+(276, 4, 6, 2, 899.00000, '2017-05-22 14:13:46', NULL, 1, 0, 'credito', 775.00000, 124.00000, 'procesando', NULL),
+(277, 4, 6, 2, 899.00000, '2017-05-22 14:14:51', NULL, 1, 0, 'credito', 775.00000, 124.00000, 'procesando', NULL),
+(278, 4, 6, 2, 899.00000, '2017-05-22 14:15:31', NULL, 1, 0, 'credito', 775.00000, 124.00000, 'procesando', NULL),
+(279, 4, 6, 2, 899.00000, '2017-05-22 14:15:53', NULL, 1, 0, 'credito', 775.00000, 124.00000, 'procesando', NULL),
+(280, 4, 6, 1, 905.00000, '2017-05-22 14:27:20', NULL, 1, 0, 'venta', 780.17241, 124.82759, 'procesando', NULL),
+(281, 4, 6, 2, 905.00000, '2017-05-22 14:28:07', NULL, 1, 1, 'credito', 780.17241, 124.82759, 'procesando', NULL),
+(282, 4, 6, 2, 905.00000, '2017-05-22 14:30:25', NULL, 1, 1, 'credito', 780.17241, 124.82759, 'procesando', NULL),
+(283, 4, 6, 2, 905.00000, '2017-05-22 14:31:34', NULL, 1, 1, 'credito', 780.17241, 124.82759, 'procesando', NULL),
+(284, 4, 6, 2, 905.00000, '2017-05-22 14:37:37', NULL, 1, 1, 'credito', 780.17241, 124.82759, 'procesando', NULL),
+(286, 4, 6, 1, 905.00000, '2017-05-22 14:38:27', NULL, 1, 1, 'venta', 780.17241, 124.82759, 'procesando', NULL),
+(289, 4, 6, 2, 899.00000, '2017-05-22 14:40:13', NULL, 1, 1, 'credito', 775.00000, 124.00000, 'procesando', NULL),
+(290, 4, 6, 2, 899.00000, '2017-05-22 15:07:35', NULL, 1, 1, 'credito', 775.00000, 124.00000, 'procesando', NULL);
 
 -- --------------------------------------------------------
 
@@ -5033,32 +5073,42 @@ CREATE TABLE IF NOT EXISTS `ventadetalle` (
   `ventadetalle_preciounitario` decimal(15,5) NOT NULL,
   `ventadetalle_estatus` enum('completo','defecto','cambio') NOT NULL,
   `ventadetalle_descuento` float DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `ventadetalle`
 --
 
 INSERT INTO `ventadetalle` (`idventadetalle`, `idventa`, `idproductovariante`, `ventadetalle_cantidad`, `ventadetalle_subtotal`, `ventadetalle_preciounitario`, `ventadetalle_estatus`, `ventadetalle_descuento`) VALUES
-(21, 184, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(22, 185, 8281, 1, 899.00000, 899.00000, 'completo', 0),
-(23, 185, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(24, 186, 8281, 1, 899.00000, 899.00000, 'completo', 0),
-(25, 186, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(28, 188, 8281, 1, 899.00000, 899.00000, 'completo', 0),
-(29, 188, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(30, 189, 8281, 1, 899.00000, 899.00000, 'completo', 0),
-(31, 189, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(32, 198, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(33, 200, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(36, 202, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(37, 202, 6898, 1, 6.00000, 6.00000, 'completo', 0),
-(38, 203, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(39, 204, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(40, 205, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(41, 206, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(43, 208, 6897, 1, 6.00000, 6.00000, 'completo', 0),
-(44, 209, 6897, 1, 6.00000, 6.00000, 'completo', 0);
+(56, 256, 6898, 1, 6.00000, 6.00000, 'completo', 0),
+(57, 256, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(61, 260, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(72, 270, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(73, 271, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(75, 273, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(76, 273, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(77, 274, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(78, 274, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(79, 275, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(80, 275, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(81, 276, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(82, 277, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(83, 278, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(84, 279, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(85, 280, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(86, 280, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(87, 281, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(88, 281, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(89, 282, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(90, 282, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(91, 283, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(92, 283, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(93, 284, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(94, 284, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(97, 286, 6897, 1, 6.00000, 6.00000, 'completo', 0),
+(98, 286, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(102, 289, 8281, 1, 899.00000, 899.00000, 'completo', 0),
+(103, 290, 8281, 1, 899.00000, 899.00000, 'completo', 0);
 
 -- --------------------------------------------------------
 
@@ -5077,22 +5127,51 @@ CREATE TABLE IF NOT EXISTS `ventapago` (
   `ventapago_referencia` varchar(50) DEFAULT NULL,
   `ventapago_cuatrodigitos` varchar(4) DEFAULT NULL,
   `idvale` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `ventapago`
 --
 
 INSERT INTO `ventapago` (`idventapago`, `idventa`, `venta_fecha`, `idempleado`, `ventapago_metododepago`, `ventapago_cantidad`, `ventapago_referencia`, `ventapago_cuatrodigitos`, `idvale`) VALUES
-(30, 186, '2017-05-17 13:40:08', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
-(31, 186, '2017-05-17 13:40:08', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
-(32, 188, '2017-05-17 13:41:41', 4, 'efectivo', 23.00000, NULL, NULL, NULL),
-(33, 195, '2017-05-17 13:50:46', 4, 'efectivo', 10.00000, NULL, NULL, NULL),
-(34, 195, '2017-05-17 13:50:46', 4, 'efectivo', 99.00000, NULL, NULL, NULL),
-(35, 206, '2017-05-17 13:57:22', 4, 'efectivo', 5.00000, NULL, NULL, NULL),
-(36, 206, '2017-05-17 13:57:22', 4, 'efectivo', 1.00000, NULL, NULL, NULL),
-(38, 209, '2017-05-17 14:02:24', 4, 'efectivo', 5.00000, NULL, NULL, NULL),
-(39, 209, '2017-05-17 14:02:24', 4, 'efectivo', 5.00000, NULL, NULL, NULL);
+(13, 256, '2017-05-22 11:00:23', 4, 'efectivo', 12.00000, NULL, NULL, NULL),
+(14, 270, '2017-05-22 13:53:37', 4, 'efectivo', 664.00000, NULL, NULL, NULL),
+(15, 270, '2017-05-22 13:53:37', 4, 'efectivo', 2.00000, NULL, NULL, NULL),
+(16, 270, '2017-05-22 13:53:37', 4, 'efectivo', 2.00000, NULL, NULL, NULL),
+(17, 270, '2017-05-22 13:53:37', 4, 'efectivo', 664.00000, NULL, NULL, NULL),
+(18, 270, '2017-05-22 13:53:37', 4, 'efectivo', 2.00000, NULL, NULL, NULL),
+(19, 270, '2017-05-22 13:53:37', 4, 'efectivo', 664.00000, NULL, NULL, NULL),
+(20, 270, '2017-05-22 13:53:37', 4, 'efectivo', 664.00000, NULL, NULL, NULL),
+(21, 270, '2017-05-22 13:53:37', 4, 'efectivo', 2.00000, NULL, NULL, NULL),
+(22, 270, '2017-05-22 13:53:37', 4, 'efectivo', 664.00000, NULL, NULL, NULL),
+(23, 270, '2017-05-22 13:53:37', 4, 'efectivo', 2.00000, NULL, NULL, NULL),
+(24, 271, '2017-05-22 14:00:31', 4, 'efectivo', 34.00000, NULL, NULL, NULL),
+(25, 271, '2017-05-22 14:00:31', 4, 'vales', 234.00000, '234', NULL, NULL),
+(26, 271, '2017-05-22 14:00:31', 4, 'vales', 100.00000, '234', NULL, NULL),
+(27, 271, '2017-05-22 14:00:31', 4, 'efectivo', 500.00000, NULL, NULL, NULL),
+(28, 273, '2017-05-22 14:11:54', 4, 'efectivo', 234.00000, NULL, NULL, NULL),
+(29, 273, '2017-05-22 14:11:54', 4, 'efectivo', 671.00000, NULL, NULL, NULL),
+(30, 275, '2017-05-22 14:12:50', 4, 'efectivo', 905.00000, NULL, NULL, NULL),
+(31, 276, '2017-05-22 14:13:46', 4, 'efectivo', 800.00000, NULL, NULL, NULL),
+(32, 277, '2017-05-22 14:14:51', 4, 'efectivo', 899.00000, NULL, NULL, NULL),
+(33, 278, '2017-05-22 14:15:31', 4, 'efectivo', 899.00000, NULL, NULL, NULL),
+(34, 279, '2017-05-22 14:15:53', 4, 'efectivo', 899.00000, NULL, NULL, NULL),
+(35, 280, '2017-05-22 14:27:20', 4, 'efectivo', 500.00000, NULL, NULL, NULL),
+(36, 280, '2017-05-22 14:27:20', 4, 'efectivo', 34.00000, NULL, NULL, NULL),
+(37, 280, '2017-05-22 14:27:20', 4, 'efectivo', 132.00000, NULL, NULL, NULL),
+(38, 280, '2017-05-22 14:27:20', 4, 'efectivo', 239.00000, NULL, NULL, NULL),
+(39, 281, '2017-05-22 14:28:07', 4, 'efectivo', 324.00000, NULL, NULL, NULL),
+(40, 281, '2017-05-22 14:28:07', 4, 'efectivo', 500.00000, NULL, NULL, NULL),
+(41, 282, '2017-05-22 14:30:25', 4, 'efectivo', 230.00000, NULL, NULL, NULL),
+(42, 282, '2017-05-22 14:30:25', 4, 'efectivo', 345.00000, NULL, NULL, NULL),
+(43, 283, '2017-05-22 14:31:34', 4, 'efectivo', 500.00000, NULL, NULL, NULL),
+(44, 284, '2017-05-22 14:37:37', 4, 'efectivo', 904.00000, NULL, NULL, NULL),
+(45, 286, '2017-05-22 14:38:27', 4, 'efectivo', 904.00000, NULL, NULL, NULL),
+(46, 286, '2017-05-22 14:38:27', 4, 'efectivo', 1.00000, NULL, NULL, NULL),
+(47, 286, '2017-05-22 14:38:27', 4, 'efectivo', 904.00000, NULL, NULL, NULL),
+(48, 286, '2017-05-22 14:38:27', 4, 'efectivo', 1.00000, NULL, NULL, NULL),
+(49, 289, '2017-05-22 14:40:13', 4, 'efectivo', 850.00000, NULL, NULL, NULL),
+(50, 290, '2017-05-22 15:07:35', 4, 'efectivo', 850.00000, NULL, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -5103,6 +5182,14 @@ INSERT INTO `ventapago` (`idventapago`, `idventa`, `venta_fecha`, `idempleado`, 
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`idcliente`);
+
+--
+-- Indices de la tabla `clienterelacionado`
+--
+ALTER TABLE `clienterelacionado`
+  ADD PRIMARY KEY (`idclienterelacionado`),
+  ADD KEY `idcliente` (`idcliente`),
+  ADD KEY `idclienteasociado` (`idclienteasociado`);
 
 --
 -- Indices de la tabla `color`
@@ -5131,6 +5218,14 @@ ALTER TABLE `compradetalle`
 --
 ALTER TABLE `configuracion`
   ADD PRIMARY KEY (`idconfiguracion`);
+
+--
+-- Indices de la tabla `cortecaja`
+--
+ALTER TABLE `cortecaja`
+  ADD PRIMARY KEY (`idcortecaja`),
+  ADD KEY `idsucursal` (`idsucursal`),
+  ADD KEY `idempleadoenvia` (`idempleadoenvia`);
 
 --
 -- Indices de la tabla `cuentabancaria`
@@ -5420,7 +5515,12 @@ ALTER TABLE `ventapago`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idcliente` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `idcliente` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT de la tabla `clienterelacionado`
+--
+ALTER TABLE `clienterelacionado`
+  MODIFY `idclienterelacionado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `color`
 --
@@ -5441,6 +5541,11 @@ ALTER TABLE `compradetalle`
 --
 ALTER TABLE `configuracion`
   MODIFY `idconfiguracion` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `cortecaja`
+--
+ALTER TABLE `cortecaja`
+  MODIFY `idcortecaja` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `cuentabancaria`
 --
@@ -5610,20 +5715,27 @@ ALTER TABLE `transferenciadetalle`
 -- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=210;
+  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=291;
 --
 -- AUTO_INCREMENT de la tabla `ventadetalle`
 --
 ALTER TABLE `ventadetalle`
-  MODIFY `idventadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
+  MODIFY `idventadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=104;
 --
 -- AUTO_INCREMENT de la tabla `ventapago`
 --
 ALTER TABLE `ventapago`
-  MODIFY `idventapago` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
+  MODIFY `idventapago` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=51;
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `clienterelacionado`
+--
+ALTER TABLE `clienterelacionado`
+  ADD CONSTRAINT `idcliente_clienterelacionado` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idclienteasociado_clienterelacionado` FOREIGN KEY (`idclienteasociado`) REFERENCES `cliente` (`idcliente`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `compra`
@@ -5637,6 +5749,13 @@ ALTER TABLE `compra`
 ALTER TABLE `compradetalle`
   ADD CONSTRAINT `idcompra_compradetalle` FOREIGN KEY (`idcompra`) REFERENCES `compra` (`idcompra`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idproductovariante_compradetalle` FOREIGN KEY (`idproductovariante`) REFERENCES `productovariante` (`idproductovariante`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `cortecaja`
+--
+ALTER TABLE `cortecaja`
+  ADD CONSTRAINT `idempleadoenvia_cortecaja` FOREIGN KEY (`idempleadoenvia`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idsucursal_cortecaja` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `cuentabancariamovimiento`

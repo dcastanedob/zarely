@@ -392,10 +392,12 @@
                 {
                   var id = JSON.parse(e).id;
                   var totalAlMomento = 0;
-
+                  var creditoCliente = 0;
+                  var id_cliente = null;
                   if(JSON.parse(e).credito)
                   {
-                    totalAlMomento+=parseFloat(JSON.parse(e).cantidadCredito);
+                    creditoCliente=parseFloat(JSON.parse(e).cantidadCredito);
+                    id_cliente = JSON.parse(e).idcliente;
                   }
                   var tmpl = [
                               '<div id="modalBounceInLeft" tabindex="-1" role="dialog" class="modal fade bs-example-modal-lg">',
@@ -598,16 +600,24 @@
 
                       $tr.find('a').on('click',function(){
                         var $information = $(this).closest('#row_data');
-
+                        var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
+                        totalAlMomento-= cantEliminiar;
                         $information.remove();
+
+                        if((totalAlMomento + creditoCliente) < totalDeVenta)
+                        {
+                          $modal.find('#btn_hacer_pago').attr('disabled',"");
+                        }
                       });
 
                       $modal.find('#detalles_de_venta').append($tr);
                     }
 
+                    $modal.find('#cantidad_met').val(0);
 
 
-                    if(totalAlMomento >= totalDeVenta)
+
+                    if((totalAlMomento + creditoCliente) >= totalDeVenta)
                     {
                       $modal.find('#btn_hacer_pago').removeAttr('disabled');
                       $modal.find('#btn_hacer_pago').on('click',function(){
@@ -630,6 +640,8 @@
                                   referencia:referenciaRow,
                                   digitos:digitosRow,
                                   metodo:metodoRow,
+                                  credito:creditoCliente,
+                                  cliente:id_cliente,
                                 }
                             
                             });

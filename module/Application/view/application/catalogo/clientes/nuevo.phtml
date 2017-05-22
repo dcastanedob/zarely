@@ -155,7 +155,63 @@
 
 		        	</div>
 
-		     
+		     		<br>
+		        	<br>
+
+		        	<div class="row">
+
+      					<div class="col-md-11 alineamiento" >
+
+	        				<div id="medidasInformation">
+
+	        					<h3  for="clientes"><b>Clientes asociados</b></h3>
+	        					<div id="variantes">
+			        				<div class="col-md-9 ">
+					                    <div class="form-group">
+							                <?php echo $this->formSelect($form->get('idclientes[]')) ?>
+						        		</div>
+			        				</div>
+			        				<div class="col-md-1 "></div>
+
+					        		<div class="col-md-2 ">		
+					        			<div class="form-group" style="margin-top: -23px">
+							           		<label  for="guardar"></label>
+		                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_cliente">			Agregar
+		                                    </a>
+						        		</div>
+						        	</div>	
+					        	</div>
+
+					        	
+
+	                            <div class="row">
+		                            <div class="col-md-12" >
+		                            	<table class="table table-bordered" id="table_venta">
+		                            		<thead>
+			                            		<tr>
+			                            			<th>Nombre</th>
+			                            			<th>Apellido paterno</th>
+			                            			<th>Apellido materno</th>
+			                            			<th>Dirección</th>
+			                            			<th>Opciones</th>
+			                            		</tr>
+		                            			
+		                            		</thead>
+
+		                            		<tbody id="tables_information">
+		                            			
+		                            		</tbody>
+		                            	</table>
+		                            </div>
+	                            </div>
+	                            	
+		        					<br>
+		        					<br>
+		        			
+	        				</div>
+
+	        			</div>	
+      				</div>
 
 		        	<div class="form-group">
 		           		<label  for="guardar"></label>

@@ -537,6 +537,12 @@ abstract class BaseClientePeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in ClienterelacionadoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ClienterelacionadoPeer::clearInstancePool();
+        // Invalidate objects in ClienterelacionadoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ClienterelacionadoPeer::clearInstancePool();
         // Invalidate objects in PedidomayoristaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidomayoristaPeer::clearInstancePool();
@@ -876,6 +882,18 @@ abstract class BaseClientePeer
         $objects = ClientePeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
+
+            // delete related Clienterelacionado objects
+            $criteria = new Criteria(ClienterelacionadoPeer::DATABASE_NAME);
+
+            $criteria->add(ClienterelacionadoPeer::IDCLIENTE, $obj->getIdcliente());
+            $affectedRows += ClienterelacionadoPeer::doDelete($criteria, $con);
+
+            // delete related Clienterelacionado objects
+            $criteria = new Criteria(ClienterelacionadoPeer::DATABASE_NAME);
+
+            $criteria->add(ClienterelacionadoPeer::IDCLIENTEASOCIADO, $obj->getIdcliente());
+            $affectedRows += ClienterelacionadoPeer::doDelete($criteria, $con);
 
             // delete related Pedidomayorista objects
             $criteria = new Criteria(PedidomayoristaPeer::DATABASE_NAME);

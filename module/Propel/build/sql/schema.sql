@@ -41,6 +41,32 @@ CREATE TABLE `cliente`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- clienterelacionado
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `clienterelacionado`;
+
+CREATE TABLE `clienterelacionado`
+(
+    `idclienterelacionado` INTEGER NOT NULL AUTO_INCREMENT,
+    `idcliente` INTEGER NOT NULL,
+    `idclienteasociado` INTEGER NOT NULL,
+    PRIMARY KEY (`idclienterelacionado`),
+    INDEX `idcliente` (`idcliente`),
+    INDEX `idclienteasociado` (`idclienteasociado`),
+    CONSTRAINT `idcliente_clienterelacionado`
+        FOREIGN KEY (`idcliente`)
+        REFERENCES `cliente` (`idcliente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idclienteasociado_clienterelacionado`
+        FOREIGN KEY (`idclienteasociado`)
+        REFERENCES `cliente` (`idcliente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- color
 -- ---------------------------------------------------------------------
 
@@ -122,6 +148,38 @@ CREATE TABLE `configuracion`
     `idconfiguracion` INTEGER NOT NULL AUTO_INCREMENT,
     `configuracion_` VARCHAR(45),
     PRIMARY KEY (`idconfiguracion`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- cortecaja
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cortecaja`;
+
+CREATE TABLE `cortecaja`
+(
+    `idcortecaja` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `idempleadoenvia` INTEGER NOT NULL,
+    `cortecaja_fecha` DATE NOT NULL,
+    `cortecaja_total` DECIMAL(15,5) NOT NULL,
+    `cortecaja_efectivo` DECIMAL(15,5) NOT NULL,
+    `cortecaja_tarjetas` DECIMAL(15,5) NOT NULL,
+    `cortecaja_vales` DECIMAL(15,5) NOT NULL,
+    `cortecaja_enviado` TINYINT(1) NOT NULL,
+    PRIMARY KEY (`idcortecaja`),
+    INDEX `idsucursal` (`idsucursal`),
+    INDEX `idempleadoenvia` (`idempleadoenvia`),
+    CONSTRAINT `idempleadoenvia_cortecaja`
+        FOREIGN KEY (`idempleadoenvia`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursal_cortecaja`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

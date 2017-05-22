@@ -302,7 +302,7 @@ class PuntoDeVentaController extends AbstractActionController
                     //obtenemos el credito del cliente
                     $cliente = \ClienteQuery::create()->findPk($post_data['idcliente']);
                     $credito = $cliente->getClienteCreditorestante();
-                    return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Venta realizada','id' =>$entity->getIdventa(),"credito" =>true,"cantidadCredito" => $credito)));
+                    return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Venta realizada','id' =>$entity->getIdventa(),"credito" =>true,"cantidadCredito" => $credito ,'idcliente' => $post_data['idcliente'])));
 
                 }else
                 {
@@ -633,6 +633,16 @@ class PuntoDeVentaController extends AbstractActionController
                 //guardamos la entidad
                 $venta_pago->save();
 
+                $temp = $this->totalAlMomento($post_data['id'],$post_data['credito']);
+                if($temp != 0)
+                {
+                    //completamos la compra y actualizamos el saldo del cliente
+                    $entity->setVentaEstatuspago(1)->save();
+                    $cliente = \ClienteQuery::Create()->findPk($post_data['cliente']);
+                    $cliente->setClienteCreditorestante( $temp)->save();
+
+                }
+                
                 return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Pago realizado')));
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'No se pudo realizar el pago')));
@@ -642,6 +652,26 @@ class PuntoDeVentaController extends AbstractActionController
         }
     }
 
+    private function totalAlMomento($id, $credito)
+    {
+        $entity = \VentaQuery::Create()->findPk($id);
+        $pagos = \VentapagoQuery::create()->filterByIdventa($id)->find();
+        $totalAlMomento = 0;
+        if($pagos != null)
+        {
+            
+            foreach ($pagos->toArray() as $index => $value) {
+                $totalAlMomento+=$value['VentapagoCantidad'];
+            }
+        }
+
+        if(($totalAlMomento + $credito) >= $entity->getVentatotal())
+        {
+            return ($totalAlMomento + $credito) - $entity->getVentatotal();
+        }
+
+        return 0;
+    }
 
     public function getProductovariantes($data){
         $information = [

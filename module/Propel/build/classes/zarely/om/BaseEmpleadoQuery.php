@@ -62,6 +62,10 @@
  * @method EmpleadoQuery rightJoinRol($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Rol relation
  * @method EmpleadoQuery innerJoinRol($relationAlias = null) Adds a INNER JOIN clause to the query using the Rol relation
  *
+ * @method EmpleadoQuery leftJoinCortecaja($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cortecaja relation
+ * @method EmpleadoQuery rightJoinCortecaja($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cortecaja relation
+ * @method EmpleadoQuery innerJoinCortecaja($relationAlias = null) Adds a INNER JOIN clause to the query using the Cortecaja relation
+ *
  * @method EmpleadoQuery leftJoinCuentabancariamovimiento($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cuentabancariamovimiento relation
  * @method EmpleadoQuery rightJoinCuentabancariamovimiento($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cuentabancariamovimiento relation
  * @method EmpleadoQuery innerJoinCuentabancariamovimiento($relationAlias = null) Adds a INNER JOIN clause to the query using the Cuentabancariamovimiento relation
@@ -1128,6 +1132,80 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
         return $this
             ->joinRol($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Rol', 'RolQuery');
+    }
+
+    /**
+     * Filter the query by a related Cortecaja object
+     *
+     * @param   Cortecaja|PropelObjectCollection $cortecaja  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByCortecaja($cortecaja, $comparison = null)
+    {
+        if ($cortecaja instanceof Cortecaja) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $cortecaja->getIdempleadoenvia(), $comparison);
+        } elseif ($cortecaja instanceof PropelObjectCollection) {
+            return $this
+                ->useCortecajaQuery()
+                ->filterByPrimaryKeys($cortecaja->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCortecaja() only accepts arguments of type Cortecaja or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Cortecaja relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinCortecaja($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Cortecaja');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Cortecaja');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Cortecaja relation Cortecaja object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   CortecajaQuery A secondary query class using the current class as primary query
+     */
+    public function useCortecajaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCortecaja($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Cortecaja', 'CortecajaQuery');
     }
 
     /**

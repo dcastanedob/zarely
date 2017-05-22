@@ -37,4 +37,14 @@
 
 <script type="text/javascript">
 	$('div').find('input').numeric();
+	$('input[name=cliente_creditorestante]').on('keyup',function(){
+		var comparable = parseFloat($(this).val());
+		var total = $('input[name=cliente_limitecredito]').val();
+		
+        if(total < comparable )
+        {
+          $(this).val(total);
+        }
+	});
 </script>
+

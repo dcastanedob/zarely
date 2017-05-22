@@ -465,6 +465,9 @@ abstract class BaseEmpleadoPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in CortecajaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        CortecajaPeer::clearInstancePool();
         // Invalidate objects in CuentabancariamovimientoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CuentabancariamovimientoPeer::clearInstancePool();
@@ -1057,6 +1060,12 @@ abstract class BaseEmpleadoPeer
         $objects = EmpleadoPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
+
+            // delete related Cortecaja objects
+            $criteria = new Criteria(CortecajaPeer::DATABASE_NAME);
+
+            $criteria->add(CortecajaPeer::IDEMPLEADOENVIA, $obj->getIdempleado());
+            $affectedRows += CortecajaPeer::doDelete($criteria, $con);
 
             // delete related Cuentabancariamovimiento objects
             $criteria = new Criteria(CuentabancariamovimientoPeer::DATABASE_NAME);
