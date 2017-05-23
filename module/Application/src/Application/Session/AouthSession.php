@@ -31,6 +31,10 @@ class AouthSession extends AbstractActionController {
             $session_data->idsucursal   = $session["idsucursal"];
             $session_data->idrol   = $session["idrol"];
             $session_data->rol_nombre   = $session["rol_nombre"];
+            if($session['idsucursal'] == null)
+            {
+                $session_data->idsucursal = 1;
+            }
     }
     
     /**

@@ -168,10 +168,46 @@ abstract class BaseCliente extends BaseObject implements Persistent
     protected $cliente_estatus;
 
     /**
+     * The value for the cliente_credito field.
+     * @var        int
+     */
+    protected $cliente_credito;
+
+    /**
+     * The value for the cliente_limitecredito field.
+     * @var        string
+     */
+    protected $cliente_limitecredito;
+
+    /**
+     * The value for the cliente_creditorestante field.
+     * @var        string
+     */
+    protected $cliente_creditorestante;
+
+    /**
+     * @var        PropelObjectCollection|Clienterelacionado[] Collection to store aggregation of Clienterelacionado objects.
+     */
+    protected $collClienterelacionadosRelatedByIdcliente;
+    protected $collClienterelacionadosRelatedByIdclientePartial;
+
+    /**
+     * @var        PropelObjectCollection|Clienterelacionado[] Collection to store aggregation of Clienterelacionado objects.
+     */
+    protected $collClienterelacionadosRelatedByIdclienteasociado;
+    protected $collClienterelacionadosRelatedByIdclienteasociadoPartial;
+
+    /**
      * @var        PropelObjectCollection|Pedidomayorista[] Collection to store aggregation of Pedidomayorista objects.
      */
     protected $collPedidomayoristas;
     protected $collPedidomayoristasPartial;
+
+    /**
+     * @var        PropelObjectCollection|Venta[] Collection to store aggregation of Venta objects.
+     */
+    protected $collVentas;
+    protected $collVentasPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -197,7 +233,25 @@ abstract class BaseCliente extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $clienterelacionadosRelatedByIdclienteScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $pedidomayoristasScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $ventasScheduledForDeletion = null;
 
     /**
      * Get the [idcliente] column value.
@@ -479,6 +533,39 @@ abstract class BaseCliente extends BaseObject implements Persistent
     {
 
         return $this->cliente_estatus;
+    }
+
+    /**
+     * Get the [cliente_credito] column value.
+     *
+     * @return int
+     */
+    public function getClienteCredito()
+    {
+
+        return $this->cliente_credito;
+    }
+
+    /**
+     * Get the [cliente_limitecredito] column value.
+     *
+     * @return string
+     */
+    public function getClienteLimitecredito()
+    {
+
+        return $this->cliente_limitecredito;
+    }
+
+    /**
+     * Get the [cliente_creditorestante] column value.
+     *
+     * @return string
+     */
+    public function getClienteCreditorestante()
+    {
+
+        return $this->cliente_creditorestante;
     }
 
     /**
@@ -975,6 +1062,69 @@ abstract class BaseCliente extends BaseObject implements Persistent
     } // setClienteEstatus()
 
     /**
+     * Set the value of [cliente_credito] column.
+     *
+     * @param  int $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCredito($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->cliente_credito !== $v) {
+            $this->cliente_credito = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CREDITO;
+        }
+
+
+        return $this;
+    } // setClienteCredito()
+
+    /**
+     * Set the value of [cliente_limitecredito] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteLimitecredito($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_limitecredito !== $v) {
+            $this->cliente_limitecredito = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_LIMITECREDITO;
+        }
+
+
+        return $this;
+    } // setClienteLimitecredito()
+
+    /**
+     * Set the value of [cliente_creditorestante] column.
+     *
+     * @param  string $v new value
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienteCreditorestante($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->cliente_creditorestante !== $v) {
+            $this->cliente_creditorestante = $v;
+            $this->modifiedColumns[] = ClientePeer::CLIENTE_CREDITORESTANTE;
+        }
+
+
+        return $this;
+    } // setClienteCreditorestante()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1029,6 +1179,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
             $this->cliente_tipo = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
             $this->cliente_fecharegistro = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
             $this->cliente_estatus = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
+            $this->cliente_credito = ($row[$startcol + 23] !== null) ? (int) $row[$startcol + 23] : null;
+            $this->cliente_limitecredito = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
+            $this->cliente_creditorestante = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1038,7 +1191,7 @@ abstract class BaseCliente extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 23; // 23 = ClientePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 26; // 26 = ClientePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Cliente object", $e);
@@ -1100,7 +1253,13 @@ abstract class BaseCliente extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collClienterelacionadosRelatedByIdcliente = null;
+
+            $this->collClienterelacionadosRelatedByIdclienteasociado = null;
+
             $this->collPedidomayoristas = null;
+
+            $this->collVentas = null;
 
         } // if (deep)
     }
@@ -1226,6 +1385,40 @@ abstract class BaseCliente extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->clienterelacionadosRelatedByIdclienteScheduledForDeletion !== null) {
+                if (!$this->clienterelacionadosRelatedByIdclienteScheduledForDeletion->isEmpty()) {
+                    ClienterelacionadoQuery::create()
+                        ->filterByPrimaryKeys($this->clienterelacionadosRelatedByIdclienteScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->clienterelacionadosRelatedByIdclienteScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collClienterelacionadosRelatedByIdcliente !== null) {
+                foreach ($this->collClienterelacionadosRelatedByIdcliente as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion !== null) {
+                if (!$this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion->isEmpty()) {
+                    ClienterelacionadoQuery::create()
+                        ->filterByPrimaryKeys($this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collClienterelacionadosRelatedByIdclienteasociado !== null) {
+                foreach ($this->collClienterelacionadosRelatedByIdclienteasociado as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->pedidomayoristasScheduledForDeletion !== null) {
                 if (!$this->pedidomayoristasScheduledForDeletion->isEmpty()) {
                     PedidomayoristaQuery::create()
@@ -1237,6 +1430,23 @@ abstract class BaseCliente extends BaseObject implements Persistent
 
             if ($this->collPedidomayoristas !== null) {
                 foreach ($this->collPedidomayoristas as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->ventasScheduledForDeletion !== null) {
+                if (!$this->ventasScheduledForDeletion->isEmpty()) {
+                    VentaQuery::create()
+                        ->filterByPrimaryKeys($this->ventasScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->ventasScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collVentas !== null) {
+                foreach ($this->collVentas as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1338,6 +1548,15 @@ abstract class BaseCliente extends BaseObject implements Persistent
         if ($this->isColumnModified(ClientePeer::CLIENTE_ESTATUS)) {
             $modifiedColumns[':p' . $index++]  = '`cliente_estatus`';
         }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CREDITO)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_credito`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_LIMITECREDITO)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_limitecredito`';
+        }
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CREDITORESTANTE)) {
+            $modifiedColumns[':p' . $index++]  = '`cliente_creditorestante`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `cliente` (%s) VALUES (%s)',
@@ -1417,6 +1636,15 @@ abstract class BaseCliente extends BaseObject implements Persistent
                         break;
                     case '`cliente_estatus`':
                         $stmt->bindValue($identifier, (int) $this->cliente_estatus, PDO::PARAM_INT);
+                        break;
+                    case '`cliente_credito`':
+                        $stmt->bindValue($identifier, $this->cliente_credito, PDO::PARAM_INT);
+                        break;
+                    case '`cliente_limitecredito`':
+                        $stmt->bindValue($identifier, $this->cliente_limitecredito, PDO::PARAM_STR);
+                        break;
+                    case '`cliente_creditorestante`':
+                        $stmt->bindValue($identifier, $this->cliente_creditorestante, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1517,8 +1745,32 @@ abstract class BaseCliente extends BaseObject implements Persistent
             }
 
 
+                if ($this->collClienterelacionadosRelatedByIdcliente !== null) {
+                    foreach ($this->collClienterelacionadosRelatedByIdcliente as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collClienterelacionadosRelatedByIdclienteasociado !== null) {
+                    foreach ($this->collClienterelacionadosRelatedByIdclienteasociado as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPedidomayoristas !== null) {
                     foreach ($this->collPedidomayoristas as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collVentas !== null) {
+                    foreach ($this->collVentas as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1629,6 +1881,15 @@ abstract class BaseCliente extends BaseObject implements Persistent
             case 22:
                 return $this->getClienteEstatus();
                 break;
+            case 23:
+                return $this->getClienteCredito();
+                break;
+            case 24:
+                return $this->getClienteLimitecredito();
+                break;
+            case 25:
+                return $this->getClienteCreditorestante();
+                break;
             default:
                 return null;
                 break;
@@ -1681,6 +1942,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
             $keys[20] => $this->getClienteTipo(),
             $keys[21] => $this->getClienteFecharegistro(),
             $keys[22] => $this->getClienteEstatus(),
+            $keys[23] => $this->getClienteCredito(),
+            $keys[24] => $this->getClienteLimitecredito(),
+            $keys[25] => $this->getClienteCreditorestante(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1688,8 +1952,17 @@ abstract class BaseCliente extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collClienterelacionadosRelatedByIdcliente) {
+                $result['ClienterelacionadosRelatedByIdcliente'] = $this->collClienterelacionadosRelatedByIdcliente->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collClienterelacionadosRelatedByIdclienteasociado) {
+                $result['ClienterelacionadosRelatedByIdclienteasociado'] = $this->collClienterelacionadosRelatedByIdclienteasociado->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPedidomayoristas) {
                 $result['Pedidomayoristas'] = $this->collPedidomayoristas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collVentas) {
+                $result['Ventas'] = $this->collVentas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1794,6 +2067,15 @@ abstract class BaseCliente extends BaseObject implements Persistent
             case 22:
                 $this->setClienteEstatus($value);
                 break;
+            case 23:
+                $this->setClienteCredito($value);
+                break;
+            case 24:
+                $this->setClienteLimitecredito($value);
+                break;
+            case 25:
+                $this->setClienteCreditorestante($value);
+                break;
         } // switch()
     }
 
@@ -1841,6 +2123,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
         if (array_key_exists($keys[20], $arr)) $this->setClienteTipo($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setClienteFecharegistro($arr[$keys[21]]);
         if (array_key_exists($keys[22], $arr)) $this->setClienteEstatus($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setClienteCredito($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setClienteLimitecredito($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setClienteCreditorestante($arr[$keys[25]]);
     }
 
     /**
@@ -1875,6 +2160,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
         if ($this->isColumnModified(ClientePeer::CLIENTE_TIPO)) $criteria->add(ClientePeer::CLIENTE_TIPO, $this->cliente_tipo);
         if ($this->isColumnModified(ClientePeer::CLIENTE_FECHAREGISTRO)) $criteria->add(ClientePeer::CLIENTE_FECHAREGISTRO, $this->cliente_fecharegistro);
         if ($this->isColumnModified(ClientePeer::CLIENTE_ESTATUS)) $criteria->add(ClientePeer::CLIENTE_ESTATUS, $this->cliente_estatus);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CREDITO)) $criteria->add(ClientePeer::CLIENTE_CREDITO, $this->cliente_credito);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_LIMITECREDITO)) $criteria->add(ClientePeer::CLIENTE_LIMITECREDITO, $this->cliente_limitecredito);
+        if ($this->isColumnModified(ClientePeer::CLIENTE_CREDITORESTANTE)) $criteria->add(ClientePeer::CLIENTE_CREDITORESTANTE, $this->cliente_creditorestante);
 
         return $criteria;
     }
@@ -1960,6 +2248,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
         $copyObj->setClienteTipo($this->getClienteTipo());
         $copyObj->setClienteFecharegistro($this->getClienteFecharegistro());
         $copyObj->setClienteEstatus($this->getClienteEstatus());
+        $copyObj->setClienteCredito($this->getClienteCredito());
+        $copyObj->setClienteLimitecredito($this->getClienteLimitecredito());
+        $copyObj->setClienteCreditorestante($this->getClienteCreditorestante());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1968,9 +2259,27 @@ abstract class BaseCliente extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getClienterelacionadosRelatedByIdcliente() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addClienterelacionadoRelatedByIdcliente($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getClienterelacionadosRelatedByIdclienteasociado() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addClienterelacionadoRelatedByIdclienteasociado($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPedidomayoristas() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPedidomayorista($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getVentas() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addVenta($relObj->copy($deepCopy));
                 }
             }
 
@@ -2035,9 +2344,468 @@ abstract class BaseCliente extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('ClienterelacionadoRelatedByIdcliente' == $relationName) {
+            $this->initClienterelacionadosRelatedByIdcliente();
+        }
+        if ('ClienterelacionadoRelatedByIdclienteasociado' == $relationName) {
+            $this->initClienterelacionadosRelatedByIdclienteasociado();
+        }
         if ('Pedidomayorista' == $relationName) {
             $this->initPedidomayoristas();
         }
+        if ('Venta' == $relationName) {
+            $this->initVentas();
+        }
+    }
+
+    /**
+     * Clears out the collClienterelacionadosRelatedByIdcliente collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Cliente The current object (for fluent API support)
+     * @see        addClienterelacionadosRelatedByIdcliente()
+     */
+    public function clearClienterelacionadosRelatedByIdcliente()
+    {
+        $this->collClienterelacionadosRelatedByIdcliente = null; // important to set this to null since that means it is uninitialized
+        $this->collClienterelacionadosRelatedByIdclientePartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collClienterelacionadosRelatedByIdcliente collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialClienterelacionadosRelatedByIdcliente($v = true)
+    {
+        $this->collClienterelacionadosRelatedByIdclientePartial = $v;
+    }
+
+    /**
+     * Initializes the collClienterelacionadosRelatedByIdcliente collection.
+     *
+     * By default this just sets the collClienterelacionadosRelatedByIdcliente collection to an empty array (like clearcollClienterelacionadosRelatedByIdcliente());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initClienterelacionadosRelatedByIdcliente($overrideExisting = true)
+    {
+        if (null !== $this->collClienterelacionadosRelatedByIdcliente && !$overrideExisting) {
+            return;
+        }
+        $this->collClienterelacionadosRelatedByIdcliente = new PropelObjectCollection();
+        $this->collClienterelacionadosRelatedByIdcliente->setModel('Clienterelacionado');
+    }
+
+    /**
+     * Gets an array of Clienterelacionado objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Cliente is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Clienterelacionado[] List of Clienterelacionado objects
+     * @throws PropelException
+     */
+    public function getClienterelacionadosRelatedByIdcliente($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collClienterelacionadosRelatedByIdclientePartial && !$this->isNew();
+        if (null === $this->collClienterelacionadosRelatedByIdcliente || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collClienterelacionadosRelatedByIdcliente) {
+                // return empty collection
+                $this->initClienterelacionadosRelatedByIdcliente();
+            } else {
+                $collClienterelacionadosRelatedByIdcliente = ClienterelacionadoQuery::create(null, $criteria)
+                    ->filterByClienteRelatedByIdcliente($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collClienterelacionadosRelatedByIdclientePartial && count($collClienterelacionadosRelatedByIdcliente)) {
+                      $this->initClienterelacionadosRelatedByIdcliente(false);
+
+                      foreach ($collClienterelacionadosRelatedByIdcliente as $obj) {
+                        if (false == $this->collClienterelacionadosRelatedByIdcliente->contains($obj)) {
+                          $this->collClienterelacionadosRelatedByIdcliente->append($obj);
+                        }
+                      }
+
+                      $this->collClienterelacionadosRelatedByIdclientePartial = true;
+                    }
+
+                    $collClienterelacionadosRelatedByIdcliente->getInternalIterator()->rewind();
+
+                    return $collClienterelacionadosRelatedByIdcliente;
+                }
+
+                if ($partial && $this->collClienterelacionadosRelatedByIdcliente) {
+                    foreach ($this->collClienterelacionadosRelatedByIdcliente as $obj) {
+                        if ($obj->isNew()) {
+                            $collClienterelacionadosRelatedByIdcliente[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collClienterelacionadosRelatedByIdcliente = $collClienterelacionadosRelatedByIdcliente;
+                $this->collClienterelacionadosRelatedByIdclientePartial = false;
+            }
+        }
+
+        return $this->collClienterelacionadosRelatedByIdcliente;
+    }
+
+    /**
+     * Sets a collection of ClienterelacionadoRelatedByIdcliente objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $clienterelacionadosRelatedByIdcliente A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienterelacionadosRelatedByIdcliente(PropelCollection $clienterelacionadosRelatedByIdcliente, PropelPDO $con = null)
+    {
+        $clienterelacionadosRelatedByIdclienteToDelete = $this->getClienterelacionadosRelatedByIdcliente(new Criteria(), $con)->diff($clienterelacionadosRelatedByIdcliente);
+
+
+        $this->clienterelacionadosRelatedByIdclienteScheduledForDeletion = $clienterelacionadosRelatedByIdclienteToDelete;
+
+        foreach ($clienterelacionadosRelatedByIdclienteToDelete as $clienterelacionadoRelatedByIdclienteRemoved) {
+            $clienterelacionadoRelatedByIdclienteRemoved->setClienteRelatedByIdcliente(null);
+        }
+
+        $this->collClienterelacionadosRelatedByIdcliente = null;
+        foreach ($clienterelacionadosRelatedByIdcliente as $clienterelacionadoRelatedByIdcliente) {
+            $this->addClienterelacionadoRelatedByIdcliente($clienterelacionadoRelatedByIdcliente);
+        }
+
+        $this->collClienterelacionadosRelatedByIdcliente = $clienterelacionadosRelatedByIdcliente;
+        $this->collClienterelacionadosRelatedByIdclientePartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Clienterelacionado objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Clienterelacionado objects.
+     * @throws PropelException
+     */
+    public function countClienterelacionadosRelatedByIdcliente(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collClienterelacionadosRelatedByIdclientePartial && !$this->isNew();
+        if (null === $this->collClienterelacionadosRelatedByIdcliente || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collClienterelacionadosRelatedByIdcliente) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getClienterelacionadosRelatedByIdcliente());
+            }
+            $query = ClienterelacionadoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByClienteRelatedByIdcliente($this)
+                ->count($con);
+        }
+
+        return count($this->collClienterelacionadosRelatedByIdcliente);
+    }
+
+    /**
+     * Method called to associate a Clienterelacionado object to this object
+     * through the Clienterelacionado foreign key attribute.
+     *
+     * @param    Clienterelacionado $l Clienterelacionado
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function addClienterelacionadoRelatedByIdcliente(Clienterelacionado $l)
+    {
+        if ($this->collClienterelacionadosRelatedByIdcliente === null) {
+            $this->initClienterelacionadosRelatedByIdcliente();
+            $this->collClienterelacionadosRelatedByIdclientePartial = true;
+        }
+
+        if (!in_array($l, $this->collClienterelacionadosRelatedByIdcliente->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddClienterelacionadoRelatedByIdcliente($l);
+
+            if ($this->clienterelacionadosRelatedByIdclienteScheduledForDeletion and $this->clienterelacionadosRelatedByIdclienteScheduledForDeletion->contains($l)) {
+                $this->clienterelacionadosRelatedByIdclienteScheduledForDeletion->remove($this->clienterelacionadosRelatedByIdclienteScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	ClienterelacionadoRelatedByIdcliente $clienterelacionadoRelatedByIdcliente The clienterelacionadoRelatedByIdcliente object to add.
+     */
+    protected function doAddClienterelacionadoRelatedByIdcliente($clienterelacionadoRelatedByIdcliente)
+    {
+        $this->collClienterelacionadosRelatedByIdcliente[]= $clienterelacionadoRelatedByIdcliente;
+        $clienterelacionadoRelatedByIdcliente->setClienteRelatedByIdcliente($this);
+    }
+
+    /**
+     * @param	ClienterelacionadoRelatedByIdcliente $clienterelacionadoRelatedByIdcliente The clienterelacionadoRelatedByIdcliente object to remove.
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function removeClienterelacionadoRelatedByIdcliente($clienterelacionadoRelatedByIdcliente)
+    {
+        if ($this->getClienterelacionadosRelatedByIdcliente()->contains($clienterelacionadoRelatedByIdcliente)) {
+            $this->collClienterelacionadosRelatedByIdcliente->remove($this->collClienterelacionadosRelatedByIdcliente->search($clienterelacionadoRelatedByIdcliente));
+            if (null === $this->clienterelacionadosRelatedByIdclienteScheduledForDeletion) {
+                $this->clienterelacionadosRelatedByIdclienteScheduledForDeletion = clone $this->collClienterelacionadosRelatedByIdcliente;
+                $this->clienterelacionadosRelatedByIdclienteScheduledForDeletion->clear();
+            }
+            $this->clienterelacionadosRelatedByIdclienteScheduledForDeletion[]= clone $clienterelacionadoRelatedByIdcliente;
+            $clienterelacionadoRelatedByIdcliente->setClienteRelatedByIdcliente(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collClienterelacionadosRelatedByIdclienteasociado collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Cliente The current object (for fluent API support)
+     * @see        addClienterelacionadosRelatedByIdclienteasociado()
+     */
+    public function clearClienterelacionadosRelatedByIdclienteasociado()
+    {
+        $this->collClienterelacionadosRelatedByIdclienteasociado = null; // important to set this to null since that means it is uninitialized
+        $this->collClienterelacionadosRelatedByIdclienteasociadoPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collClienterelacionadosRelatedByIdclienteasociado collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialClienterelacionadosRelatedByIdclienteasociado($v = true)
+    {
+        $this->collClienterelacionadosRelatedByIdclienteasociadoPartial = $v;
+    }
+
+    /**
+     * Initializes the collClienterelacionadosRelatedByIdclienteasociado collection.
+     *
+     * By default this just sets the collClienterelacionadosRelatedByIdclienteasociado collection to an empty array (like clearcollClienterelacionadosRelatedByIdclienteasociado());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initClienterelacionadosRelatedByIdclienteasociado($overrideExisting = true)
+    {
+        if (null !== $this->collClienterelacionadosRelatedByIdclienteasociado && !$overrideExisting) {
+            return;
+        }
+        $this->collClienterelacionadosRelatedByIdclienteasociado = new PropelObjectCollection();
+        $this->collClienterelacionadosRelatedByIdclienteasociado->setModel('Clienterelacionado');
+    }
+
+    /**
+     * Gets an array of Clienterelacionado objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Cliente is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Clienterelacionado[] List of Clienterelacionado objects
+     * @throws PropelException
+     */
+    public function getClienterelacionadosRelatedByIdclienteasociado($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collClienterelacionadosRelatedByIdclienteasociadoPartial && !$this->isNew();
+        if (null === $this->collClienterelacionadosRelatedByIdclienteasociado || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collClienterelacionadosRelatedByIdclienteasociado) {
+                // return empty collection
+                $this->initClienterelacionadosRelatedByIdclienteasociado();
+            } else {
+                $collClienterelacionadosRelatedByIdclienteasociado = ClienterelacionadoQuery::create(null, $criteria)
+                    ->filterByClienteRelatedByIdclienteasociado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collClienterelacionadosRelatedByIdclienteasociadoPartial && count($collClienterelacionadosRelatedByIdclienteasociado)) {
+                      $this->initClienterelacionadosRelatedByIdclienteasociado(false);
+
+                      foreach ($collClienterelacionadosRelatedByIdclienteasociado as $obj) {
+                        if (false == $this->collClienterelacionadosRelatedByIdclienteasociado->contains($obj)) {
+                          $this->collClienterelacionadosRelatedByIdclienteasociado->append($obj);
+                        }
+                      }
+
+                      $this->collClienterelacionadosRelatedByIdclienteasociadoPartial = true;
+                    }
+
+                    $collClienterelacionadosRelatedByIdclienteasociado->getInternalIterator()->rewind();
+
+                    return $collClienterelacionadosRelatedByIdclienteasociado;
+                }
+
+                if ($partial && $this->collClienterelacionadosRelatedByIdclienteasociado) {
+                    foreach ($this->collClienterelacionadosRelatedByIdclienteasociado as $obj) {
+                        if ($obj->isNew()) {
+                            $collClienterelacionadosRelatedByIdclienteasociado[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collClienterelacionadosRelatedByIdclienteasociado = $collClienterelacionadosRelatedByIdclienteasociado;
+                $this->collClienterelacionadosRelatedByIdclienteasociadoPartial = false;
+            }
+        }
+
+        return $this->collClienterelacionadosRelatedByIdclienteasociado;
+    }
+
+    /**
+     * Sets a collection of ClienterelacionadoRelatedByIdclienteasociado objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $clienterelacionadosRelatedByIdclienteasociado A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setClienterelacionadosRelatedByIdclienteasociado(PropelCollection $clienterelacionadosRelatedByIdclienteasociado, PropelPDO $con = null)
+    {
+        $clienterelacionadosRelatedByIdclienteasociadoToDelete = $this->getClienterelacionadosRelatedByIdclienteasociado(new Criteria(), $con)->diff($clienterelacionadosRelatedByIdclienteasociado);
+
+
+        $this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion = $clienterelacionadosRelatedByIdclienteasociadoToDelete;
+
+        foreach ($clienterelacionadosRelatedByIdclienteasociadoToDelete as $clienterelacionadoRelatedByIdclienteasociadoRemoved) {
+            $clienterelacionadoRelatedByIdclienteasociadoRemoved->setClienteRelatedByIdclienteasociado(null);
+        }
+
+        $this->collClienterelacionadosRelatedByIdclienteasociado = null;
+        foreach ($clienterelacionadosRelatedByIdclienteasociado as $clienterelacionadoRelatedByIdclienteasociado) {
+            $this->addClienterelacionadoRelatedByIdclienteasociado($clienterelacionadoRelatedByIdclienteasociado);
+        }
+
+        $this->collClienterelacionadosRelatedByIdclienteasociado = $clienterelacionadosRelatedByIdclienteasociado;
+        $this->collClienterelacionadosRelatedByIdclienteasociadoPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Clienterelacionado objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Clienterelacionado objects.
+     * @throws PropelException
+     */
+    public function countClienterelacionadosRelatedByIdclienteasociado(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collClienterelacionadosRelatedByIdclienteasociadoPartial && !$this->isNew();
+        if (null === $this->collClienterelacionadosRelatedByIdclienteasociado || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collClienterelacionadosRelatedByIdclienteasociado) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getClienterelacionadosRelatedByIdclienteasociado());
+            }
+            $query = ClienterelacionadoQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByClienteRelatedByIdclienteasociado($this)
+                ->count($con);
+        }
+
+        return count($this->collClienterelacionadosRelatedByIdclienteasociado);
+    }
+
+    /**
+     * Method called to associate a Clienterelacionado object to this object
+     * through the Clienterelacionado foreign key attribute.
+     *
+     * @param    Clienterelacionado $l Clienterelacionado
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function addClienterelacionadoRelatedByIdclienteasociado(Clienterelacionado $l)
+    {
+        if ($this->collClienterelacionadosRelatedByIdclienteasociado === null) {
+            $this->initClienterelacionadosRelatedByIdclienteasociado();
+            $this->collClienterelacionadosRelatedByIdclienteasociadoPartial = true;
+        }
+
+        if (!in_array($l, $this->collClienterelacionadosRelatedByIdclienteasociado->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddClienterelacionadoRelatedByIdclienteasociado($l);
+
+            if ($this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion and $this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion->contains($l)) {
+                $this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion->remove($this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	ClienterelacionadoRelatedByIdclienteasociado $clienterelacionadoRelatedByIdclienteasociado The clienterelacionadoRelatedByIdclienteasociado object to add.
+     */
+    protected function doAddClienterelacionadoRelatedByIdclienteasociado($clienterelacionadoRelatedByIdclienteasociado)
+    {
+        $this->collClienterelacionadosRelatedByIdclienteasociado[]= $clienterelacionadoRelatedByIdclienteasociado;
+        $clienterelacionadoRelatedByIdclienteasociado->setClienteRelatedByIdclienteasociado($this);
+    }
+
+    /**
+     * @param	ClienterelacionadoRelatedByIdclienteasociado $clienterelacionadoRelatedByIdclienteasociado The clienterelacionadoRelatedByIdclienteasociado object to remove.
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function removeClienterelacionadoRelatedByIdclienteasociado($clienterelacionadoRelatedByIdclienteasociado)
+    {
+        if ($this->getClienterelacionadosRelatedByIdclienteasociado()->contains($clienterelacionadoRelatedByIdclienteasociado)) {
+            $this->collClienterelacionadosRelatedByIdclienteasociado->remove($this->collClienterelacionadosRelatedByIdclienteasociado->search($clienterelacionadoRelatedByIdclienteasociado));
+            if (null === $this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion) {
+                $this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion = clone $this->collClienterelacionadosRelatedByIdclienteasociado;
+                $this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion->clear();
+            }
+            $this->clienterelacionadosRelatedByIdclienteasociadoScheduledForDeletion[]= clone $clienterelacionadoRelatedByIdclienteasociado;
+            $clienterelacionadoRelatedByIdclienteasociado->setClienteRelatedByIdclienteasociado(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -2266,6 +3034,306 @@ abstract class BaseCliente extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collVentas collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Cliente The current object (for fluent API support)
+     * @see        addVentas()
+     */
+    public function clearVentas()
+    {
+        $this->collVentas = null; // important to set this to null since that means it is uninitialized
+        $this->collVentasPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collVentas collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialVentas($v = true)
+    {
+        $this->collVentasPartial = $v;
+    }
+
+    /**
+     * Initializes the collVentas collection.
+     *
+     * By default this just sets the collVentas collection to an empty array (like clearcollVentas());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initVentas($overrideExisting = true)
+    {
+        if (null !== $this->collVentas && !$overrideExisting) {
+            return;
+        }
+        $this->collVentas = new PropelObjectCollection();
+        $this->collVentas->setModel('Venta');
+    }
+
+    /**
+     * Gets an array of Venta objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Cliente is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     * @throws PropelException
+     */
+    public function getVentas($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collVentasPartial && !$this->isNew();
+        if (null === $this->collVentas || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collVentas) {
+                // return empty collection
+                $this->initVentas();
+            } else {
+                $collVentas = VentaQuery::create(null, $criteria)
+                    ->filterByCliente($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collVentasPartial && count($collVentas)) {
+                      $this->initVentas(false);
+
+                      foreach ($collVentas as $obj) {
+                        if (false == $this->collVentas->contains($obj)) {
+                          $this->collVentas->append($obj);
+                        }
+                      }
+
+                      $this->collVentasPartial = true;
+                    }
+
+                    $collVentas->getInternalIterator()->rewind();
+
+                    return $collVentas;
+                }
+
+                if ($partial && $this->collVentas) {
+                    foreach ($this->collVentas as $obj) {
+                        if ($obj->isNew()) {
+                            $collVentas[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collVentas = $collVentas;
+                $this->collVentasPartial = false;
+            }
+        }
+
+        return $this->collVentas;
+    }
+
+    /**
+     * Sets a collection of Venta objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $ventas A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function setVentas(PropelCollection $ventas, PropelPDO $con = null)
+    {
+        $ventasToDelete = $this->getVentas(new Criteria(), $con)->diff($ventas);
+
+
+        $this->ventasScheduledForDeletion = $ventasToDelete;
+
+        foreach ($ventasToDelete as $ventaRemoved) {
+            $ventaRemoved->setCliente(null);
+        }
+
+        $this->collVentas = null;
+        foreach ($ventas as $venta) {
+            $this->addVenta($venta);
+        }
+
+        $this->collVentas = $ventas;
+        $this->collVentasPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Venta objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Venta objects.
+     * @throws PropelException
+     */
+    public function countVentas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collVentasPartial && !$this->isNew();
+        if (null === $this->collVentas || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collVentas) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getVentas());
+            }
+            $query = VentaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCliente($this)
+                ->count($con);
+        }
+
+        return count($this->collVentas);
+    }
+
+    /**
+     * Method called to associate a Venta object to this object
+     * through the Venta foreign key attribute.
+     *
+     * @param    Venta $l Venta
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function addVenta(Venta $l)
+    {
+        if ($this->collVentas === null) {
+            $this->initVentas();
+            $this->collVentasPartial = true;
+        }
+
+        if (!in_array($l, $this->collVentas->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddVenta($l);
+
+            if ($this->ventasScheduledForDeletion and $this->ventasScheduledForDeletion->contains($l)) {
+                $this->ventasScheduledForDeletion->remove($this->ventasScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Venta $venta The venta object to add.
+     */
+    protected function doAddVenta($venta)
+    {
+        $this->collVentas[]= $venta;
+        $venta->setCliente($this);
+    }
+
+    /**
+     * @param	Venta $venta The venta object to remove.
+     * @return Cliente The current object (for fluent API support)
+     */
+    public function removeVenta($venta)
+    {
+        if ($this->getVentas()->contains($venta)) {
+            $this->collVentas->remove($this->collVentas->search($venta));
+            if (null === $this->ventasScheduledForDeletion) {
+                $this->ventasScheduledForDeletion = clone $this->collVentas;
+                $this->ventasScheduledForDeletion->clear();
+            }
+            $this->ventasScheduledForDeletion[]= clone $venta;
+            $venta->setCliente(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Cliente is new, it will return
+     * an empty collection; or if this Cliente has previously
+     * been saved, it will retrieve related Ventas from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Cliente.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasJoinEmpleadoRelatedByIdempleadocajero($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadocajero', $join_behavior);
+
+        return $this->getVentas($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Cliente is new, it will return
+     * an empty collection; or if this Cliente has previously
+     * been saved, it will retrieve related Ventas from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Cliente.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasJoinEmpleadoRelatedByIdempleadovendedor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadovendedor', $join_behavior);
+
+        return $this->getVentas($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Cliente is new, it will return
+     * an empty collection; or if this Cliente has previously
+     * been saved, it will retrieve related Ventas from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Cliente.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasJoinSucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('Sucursal', $join_behavior);
+
+        return $this->getVentas($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -2293,6 +3361,9 @@ abstract class BaseCliente extends BaseObject implements Persistent
         $this->cliente_tipo = null;
         $this->cliente_fecharegistro = null;
         $this->cliente_estatus = null;
+        $this->cliente_credito = null;
+        $this->cliente_limitecredito = null;
+        $this->cliente_creditorestante = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -2315,8 +3386,23 @@ abstract class BaseCliente extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collClienterelacionadosRelatedByIdcliente) {
+                foreach ($this->collClienterelacionadosRelatedByIdcliente as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collClienterelacionadosRelatedByIdclienteasociado) {
+                foreach ($this->collClienterelacionadosRelatedByIdclienteasociado as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPedidomayoristas) {
                 foreach ($this->collPedidomayoristas as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collVentas) {
+                foreach ($this->collVentas as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2324,10 +3410,22 @@ abstract class BaseCliente extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collClienterelacionadosRelatedByIdcliente instanceof PropelCollection) {
+            $this->collClienterelacionadosRelatedByIdcliente->clearIterator();
+        }
+        $this->collClienterelacionadosRelatedByIdcliente = null;
+        if ($this->collClienterelacionadosRelatedByIdclienteasociado instanceof PropelCollection) {
+            $this->collClienterelacionadosRelatedByIdclienteasociado->clearIterator();
+        }
+        $this->collClienterelacionadosRelatedByIdclienteasociado = null;
         if ($this->collPedidomayoristas instanceof PropelCollection) {
             $this->collPedidomayoristas->clearIterator();
         }
         $this->collPedidomayoristas = null;
+        if ($this->collVentas instanceof PropelCollection) {
+            $this->collVentas->clearIterator();
+        }
+        $this->collVentas = null;
     }
 
     /**

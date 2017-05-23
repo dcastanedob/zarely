@@ -1,0 +1,50 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title">Crédito de <?php echo $entity->getClientenombre() ?> <?php echo $entity->getClienteapaterno() ?> <?php echo $entity->getClienteamaterno() ?>
+	    	
+	    </h1>
+	</div>
+    <div class="row">
+        <div class="col-md-8">
+    		<div class="demo-form-wrapper">
+    			<form class="form form-horizontal" action="/catalogo/clientes/credito/<?php echo $entity->getIdcliente() ?>" method="POST">
+	       			<div class="form-group">
+		           		<label class="col-sm-3 control-label" for="form-control-18">Límite de crédito</label>
+		            	<div class="col-sm-9">
+		                	<?php echo $this->formText($form->get('cliente_limitecredito')) ?>
+		            	</div>
+	        		</div>
+
+	        		<div class="form-group">
+		           		<label class="col-sm-3 control-label" for="form-control-18">Crédito restante</label>
+		            	<div class="col-sm-9">
+		                	<?php echo $this->formText($form->get('cliente_creditorestante')) ?>
+		            	</div>
+	        		</div>
+
+		        	<div class="form-group">
+		       			<label class="col-sm-3 control-label" for="form-control-18"></label>
+		    			<div class="col-sm-9">
+		        			<button class="btn btn-primary btn-block btn-next" type="submit">Guardar</button>
+		    			</div>
+		        	</div>
+ 
+    			</form>
+    		</div>
+    	</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$('div').find('input').numeric();
+	$('input[name=cliente_creditorestante]').on('keyup',function(){
+		var comparable = parseFloat($(this).val());
+		var total = $('input[name=cliente_limitecredito]').val();
+		
+        if(total < comparable )
+        {
+          $(this).val(total);
+        }
+	});
+</script>
+

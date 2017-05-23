@@ -90,6 +90,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     protected $sucursal_estado;
 
     /**
+     * @var        PropelObjectCollection|Cortecaja[] Collection to store aggregation of Cortecaja objects.
+     */
+    protected $collCortecajas;
+    protected $collCortecajasPartial;
+
+    /**
      * @var        PropelObjectCollection|Pedido[] Collection to store aggregation of Pedido objects.
      */
     protected $collPedidos;
@@ -120,6 +126,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     protected $collTransferenciasRelatedByIdsucursalorigenPartial;
 
     /**
+     * @var        PropelObjectCollection|Venta[] Collection to store aggregation of Venta objects.
+     */
+    protected $collVentas;
+    protected $collVentasPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -138,6 +150,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $cortecajasScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -168,6 +186,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $transferenciasRelatedByIdsucursalorigenScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $ventasScheduledForDeletion = null;
 
     /**
      * Get the [idsucursal] column value.
@@ -602,6 +626,8 @@ abstract class BaseSucursal extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collCortecajas = null;
+
             $this->collPedidos = null;
 
             $this->collProductosucursals = null;
@@ -611,6 +637,8 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $this->collTransferenciasRelatedByIdsucursaldestino = null;
 
             $this->collTransferenciasRelatedByIdsucursalorigen = null;
+
+            $this->collVentas = null;
 
         } // if (deep)
     }
@@ -736,6 +764,23 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
+            if ($this->cortecajasScheduledForDeletion !== null) {
+                if (!$this->cortecajasScheduledForDeletion->isEmpty()) {
+                    CortecajaQuery::create()
+                        ->filterByPrimaryKeys($this->cortecajasScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->cortecajasScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCortecajas !== null) {
+                foreach ($this->collCortecajas as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->pedidosScheduledForDeletion !== null) {
                 if (!$this->pedidosScheduledForDeletion->isEmpty()) {
                     PedidoQuery::create()
@@ -815,6 +860,23 @@ abstract class BaseSucursal extends BaseObject implements Persistent
 
             if ($this->collTransferenciasRelatedByIdsucursalorigen !== null) {
                 foreach ($this->collTransferenciasRelatedByIdsucursalorigen as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->ventasScheduledForDeletion !== null) {
+                if (!$this->ventasScheduledForDeletion->isEmpty()) {
+                    VentaQuery::create()
+                        ->filterByPrimaryKeys($this->ventasScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->ventasScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collVentas !== null) {
+                foreach ($this->collVentas as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1017,6 +1079,14 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             }
 
 
+                if ($this->collCortecajas !== null) {
+                    foreach ($this->collCortecajas as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collPedidos !== null) {
                     foreach ($this->collPedidos as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1051,6 +1121,14 @@ abstract class BaseSucursal extends BaseObject implements Persistent
 
                 if ($this->collTransferenciasRelatedByIdsucursalorigen !== null) {
                     foreach ($this->collTransferenciasRelatedByIdsucursalorigen as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collVentas !== null) {
+                    foreach ($this->collVentas as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1168,6 +1246,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->collCortecajas) {
+                $result['Cortecajas'] = $this->collCortecajas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPedidos) {
                 $result['Pedidos'] = $this->collPedidos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1182,6 +1263,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             }
             if (null !== $this->collTransferenciasRelatedByIdsucursalorigen) {
                 $result['TransferenciasRelatedByIdsucursalorigen'] = $this->collTransferenciasRelatedByIdsucursalorigen->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collVentas) {
+                $result['Ventas'] = $this->collVentas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1382,6 +1466,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getCortecajas() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCortecaja($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPedidos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPedido($relObj->copy($deepCopy));
@@ -1409,6 +1499,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             foreach ($this->getTransferenciasRelatedByIdsucursalorigen() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addTransferenciaRelatedByIdsucursalorigen($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getVentas() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addVenta($relObj->copy($deepCopy));
                 }
             }
 
@@ -1473,6 +1569,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('Cortecaja' == $relationName) {
+            $this->initCortecajas();
+        }
         if ('Pedido' == $relationName) {
             $this->initPedidos();
         }
@@ -1488,6 +1587,259 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         if ('TransferenciaRelatedByIdsucursalorigen' == $relationName) {
             $this->initTransferenciasRelatedByIdsucursalorigen();
         }
+        if ('Venta' == $relationName) {
+            $this->initVentas();
+        }
+    }
+
+    /**
+     * Clears out the collCortecajas collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Sucursal The current object (for fluent API support)
+     * @see        addCortecajas()
+     */
+    public function clearCortecajas()
+    {
+        $this->collCortecajas = null; // important to set this to null since that means it is uninitialized
+        $this->collCortecajasPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collCortecajas collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialCortecajas($v = true)
+    {
+        $this->collCortecajasPartial = $v;
+    }
+
+    /**
+     * Initializes the collCortecajas collection.
+     *
+     * By default this just sets the collCortecajas collection to an empty array (like clearcollCortecajas());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCortecajas($overrideExisting = true)
+    {
+        if (null !== $this->collCortecajas && !$overrideExisting) {
+            return;
+        }
+        $this->collCortecajas = new PropelObjectCollection();
+        $this->collCortecajas->setModel('Cortecaja');
+    }
+
+    /**
+     * Gets an array of Cortecaja objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Sucursal is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Cortecaja[] List of Cortecaja objects
+     * @throws PropelException
+     */
+    public function getCortecajas($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collCortecajasPartial && !$this->isNew();
+        if (null === $this->collCortecajas || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCortecajas) {
+                // return empty collection
+                $this->initCortecajas();
+            } else {
+                $collCortecajas = CortecajaQuery::create(null, $criteria)
+                    ->filterBySucursal($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collCortecajasPartial && count($collCortecajas)) {
+                      $this->initCortecajas(false);
+
+                      foreach ($collCortecajas as $obj) {
+                        if (false == $this->collCortecajas->contains($obj)) {
+                          $this->collCortecajas->append($obj);
+                        }
+                      }
+
+                      $this->collCortecajasPartial = true;
+                    }
+
+                    $collCortecajas->getInternalIterator()->rewind();
+
+                    return $collCortecajas;
+                }
+
+                if ($partial && $this->collCortecajas) {
+                    foreach ($this->collCortecajas as $obj) {
+                        if ($obj->isNew()) {
+                            $collCortecajas[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCortecajas = $collCortecajas;
+                $this->collCortecajasPartial = false;
+            }
+        }
+
+        return $this->collCortecajas;
+    }
+
+    /**
+     * Sets a collection of Cortecaja objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $cortecajas A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function setCortecajas(PropelCollection $cortecajas, PropelPDO $con = null)
+    {
+        $cortecajasToDelete = $this->getCortecajas(new Criteria(), $con)->diff($cortecajas);
+
+
+        $this->cortecajasScheduledForDeletion = $cortecajasToDelete;
+
+        foreach ($cortecajasToDelete as $cortecajaRemoved) {
+            $cortecajaRemoved->setSucursal(null);
+        }
+
+        $this->collCortecajas = null;
+        foreach ($cortecajas as $cortecaja) {
+            $this->addCortecaja($cortecaja);
+        }
+
+        $this->collCortecajas = $cortecajas;
+        $this->collCortecajasPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Cortecaja objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Cortecaja objects.
+     * @throws PropelException
+     */
+    public function countCortecajas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collCortecajasPartial && !$this->isNew();
+        if (null === $this->collCortecajas || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCortecajas) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCortecajas());
+            }
+            $query = CortecajaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySucursal($this)
+                ->count($con);
+        }
+
+        return count($this->collCortecajas);
+    }
+
+    /**
+     * Method called to associate a Cortecaja object to this object
+     * through the Cortecaja foreign key attribute.
+     *
+     * @param    Cortecaja $l Cortecaja
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function addCortecaja(Cortecaja $l)
+    {
+        if ($this->collCortecajas === null) {
+            $this->initCortecajas();
+            $this->collCortecajasPartial = true;
+        }
+
+        if (!in_array($l, $this->collCortecajas->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddCortecaja($l);
+
+            if ($this->cortecajasScheduledForDeletion and $this->cortecajasScheduledForDeletion->contains($l)) {
+                $this->cortecajasScheduledForDeletion->remove($this->cortecajasScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Cortecaja $cortecaja The cortecaja object to add.
+     */
+    protected function doAddCortecaja($cortecaja)
+    {
+        $this->collCortecajas[]= $cortecaja;
+        $cortecaja->setSucursal($this);
+    }
+
+    /**
+     * @param	Cortecaja $cortecaja The cortecaja object to remove.
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function removeCortecaja($cortecaja)
+    {
+        if ($this->getCortecajas()->contains($cortecaja)) {
+            $this->collCortecajas->remove($this->collCortecajas->search($cortecaja));
+            if (null === $this->cortecajasScheduledForDeletion) {
+                $this->cortecajasScheduledForDeletion = clone $this->collCortecajas;
+                $this->cortecajasScheduledForDeletion->clear();
+            }
+            $this->cortecajasScheduledForDeletion[]= clone $cortecaja;
+            $cortecaja->setSucursal(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related Cortecajas from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Cortecaja[] List of Cortecaja objects
+     */
+    public function getCortecajasJoinEmpleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = CortecajaQuery::create(null, $criteria);
+        $query->joinWith('Empleado', $join_behavior);
+
+        return $this->getCortecajas($query, $con);
     }
 
     /**
@@ -2816,6 +3168,306 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collVentas collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Sucursal The current object (for fluent API support)
+     * @see        addVentas()
+     */
+    public function clearVentas()
+    {
+        $this->collVentas = null; // important to set this to null since that means it is uninitialized
+        $this->collVentasPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collVentas collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialVentas($v = true)
+    {
+        $this->collVentasPartial = $v;
+    }
+
+    /**
+     * Initializes the collVentas collection.
+     *
+     * By default this just sets the collVentas collection to an empty array (like clearcollVentas());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initVentas($overrideExisting = true)
+    {
+        if (null !== $this->collVentas && !$overrideExisting) {
+            return;
+        }
+        $this->collVentas = new PropelObjectCollection();
+        $this->collVentas->setModel('Venta');
+    }
+
+    /**
+     * Gets an array of Venta objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Sucursal is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     * @throws PropelException
+     */
+    public function getVentas($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collVentasPartial && !$this->isNew();
+        if (null === $this->collVentas || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collVentas) {
+                // return empty collection
+                $this->initVentas();
+            } else {
+                $collVentas = VentaQuery::create(null, $criteria)
+                    ->filterBySucursal($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collVentasPartial && count($collVentas)) {
+                      $this->initVentas(false);
+
+                      foreach ($collVentas as $obj) {
+                        if (false == $this->collVentas->contains($obj)) {
+                          $this->collVentas->append($obj);
+                        }
+                      }
+
+                      $this->collVentasPartial = true;
+                    }
+
+                    $collVentas->getInternalIterator()->rewind();
+
+                    return $collVentas;
+                }
+
+                if ($partial && $this->collVentas) {
+                    foreach ($this->collVentas as $obj) {
+                        if ($obj->isNew()) {
+                            $collVentas[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collVentas = $collVentas;
+                $this->collVentasPartial = false;
+            }
+        }
+
+        return $this->collVentas;
+    }
+
+    /**
+     * Sets a collection of Venta objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $ventas A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function setVentas(PropelCollection $ventas, PropelPDO $con = null)
+    {
+        $ventasToDelete = $this->getVentas(new Criteria(), $con)->diff($ventas);
+
+
+        $this->ventasScheduledForDeletion = $ventasToDelete;
+
+        foreach ($ventasToDelete as $ventaRemoved) {
+            $ventaRemoved->setSucursal(null);
+        }
+
+        $this->collVentas = null;
+        foreach ($ventas as $venta) {
+            $this->addVenta($venta);
+        }
+
+        $this->collVentas = $ventas;
+        $this->collVentasPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Venta objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Venta objects.
+     * @throws PropelException
+     */
+    public function countVentas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collVentasPartial && !$this->isNew();
+        if (null === $this->collVentas || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collVentas) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getVentas());
+            }
+            $query = VentaQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySucursal($this)
+                ->count($con);
+        }
+
+        return count($this->collVentas);
+    }
+
+    /**
+     * Method called to associate a Venta object to this object
+     * through the Venta foreign key attribute.
+     *
+     * @param    Venta $l Venta
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function addVenta(Venta $l)
+    {
+        if ($this->collVentas === null) {
+            $this->initVentas();
+            $this->collVentasPartial = true;
+        }
+
+        if (!in_array($l, $this->collVentas->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddVenta($l);
+
+            if ($this->ventasScheduledForDeletion and $this->ventasScheduledForDeletion->contains($l)) {
+                $this->ventasScheduledForDeletion->remove($this->ventasScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Venta $venta The venta object to add.
+     */
+    protected function doAddVenta($venta)
+    {
+        $this->collVentas[]= $venta;
+        $venta->setSucursal($this);
+    }
+
+    /**
+     * @param	Venta $venta The venta object to remove.
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function removeVenta($venta)
+    {
+        if ($this->getVentas()->contains($venta)) {
+            $this->collVentas->remove($this->collVentas->search($venta));
+            if (null === $this->ventasScheduledForDeletion) {
+                $this->ventasScheduledForDeletion = clone $this->collVentas;
+                $this->ventasScheduledForDeletion->clear();
+            }
+            $this->ventasScheduledForDeletion[]= clone $venta;
+            $venta->setSucursal(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related Ventas from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasJoinCliente($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('Cliente', $join_behavior);
+
+        return $this->getVentas($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related Ventas from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasJoinEmpleadoRelatedByIdempleadocajero($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadocajero', $join_behavior);
+
+        return $this->getVentas($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Sucursal is new, it will return
+     * an empty collection; or if this Sucursal has previously
+     * been saved, it will retrieve related Ventas from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Sucursal.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Venta[] List of Venta objects
+     */
+    public function getVentasJoinEmpleadoRelatedByIdempleadovendedor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentaQuery::create(null, $criteria);
+        $query->joinWith('EmpleadoRelatedByIdempleadovendedor', $join_behavior);
+
+        return $this->getVentas($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -2852,6 +3504,11 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collCortecajas) {
+                foreach ($this->collCortecajas as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPedidos) {
                 foreach ($this->collPedidos as $o) {
                     $o->clearAllReferences($deep);
@@ -2877,10 +3534,19 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collVentas) {
+                foreach ($this->collVentas as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
+        if ($this->collCortecajas instanceof PropelCollection) {
+            $this->collCortecajas->clearIterator();
+        }
+        $this->collCortecajas = null;
         if ($this->collPedidos instanceof PropelCollection) {
             $this->collPedidos->clearIterator();
         }
@@ -2901,6 +3567,10 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $this->collTransferenciasRelatedByIdsucursalorigen->clearIterator();
         }
         $this->collTransferenciasRelatedByIdsucursalorigen = null;
+        if ($this->collVentas instanceof PropelCollection) {
+            $this->collVentas->clearIterator();
+        }
+        $this->collVentas = null;
     }
 
     /**

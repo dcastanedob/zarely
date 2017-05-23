@@ -399,6 +399,17 @@ return array(
                 ),
             ),
 
+            'puntodeventa' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/puntodeventa[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\PuntoDeVenta\Controller\PuntoDeVenta',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
 
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
@@ -505,6 +516,7 @@ return array(
 
             'Application\FlujoEfectivo\Controller\CuentaPorPagar' => 'Application\FlujoEfectivo\Controller\CuentaPorPagarController',
             'Application\Transferencia\Controller\Transferencia' => 'Application\Transferencia\Controller\TransferenciaController',
+            'Application\PuntoDeVenta\Controller\PuntoDeVenta' => 'Application\PuntoDeVenta\Controller\PuntoDeVentaController',
 
 
         ),

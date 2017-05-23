@@ -65,6 +65,9 @@ class ClienteTableMap extends TableMap
 ));
         $this->addColumn('cliente_fecharegistro', 'ClienteFecharegistro', 'DATE', true, null, null);
         $this->addColumn('cliente_estatus', 'ClienteEstatus', 'BOOLEAN', true, 1, null);
+        $this->addColumn('cliente_credito', 'ClienteCredito', 'TINYINT', true, null, null);
+        $this->addColumn('cliente_limitecredito', 'ClienteLimitecredito', 'DECIMAL', false, 15, null);
+        $this->addColumn('cliente_creditorestante', 'ClienteCreditorestante', 'DECIMAL', false, 15, null);
         // validators
     } // initialize()
 
@@ -73,7 +76,10 @@ class ClienteTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('ClienterelacionadoRelatedByIdcliente', 'Clienterelacionado', RelationMap::ONE_TO_MANY, array('idcliente' => 'idcliente', ), 'CASCADE', 'CASCADE', 'ClienterelacionadosRelatedByIdcliente');
+        $this->addRelation('ClienterelacionadoRelatedByIdclienteasociado', 'Clienterelacionado', RelationMap::ONE_TO_MANY, array('idcliente' => 'idclienteasociado', ), 'CASCADE', 'CASCADE', 'ClienterelacionadosRelatedByIdclienteasociado');
         $this->addRelation('Pedidomayorista', 'Pedidomayorista', RelationMap::ONE_TO_MANY, array('idcliente' => 'idcliente', ), 'CASCADE', 'CASCADE', 'Pedidomayoristas');
+        $this->addRelation('Venta', 'Venta', RelationMap::ONE_TO_MANY, array('idcliente' => 'idcliente', ), 'CASCADE', 'CASCADE', 'Ventas');
     } // buildRelations()
 
 } // ClienteTableMap

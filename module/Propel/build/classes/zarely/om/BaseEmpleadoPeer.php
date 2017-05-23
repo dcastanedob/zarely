@@ -465,6 +465,9 @@ abstract class BaseEmpleadoPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in CortecajaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        CortecajaPeer::clearInstancePool();
         // Invalidate objects in CuentabancariamovimientoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CuentabancariamovimientoPeer::clearInstancePool();
@@ -477,6 +480,15 @@ abstract class BaseEmpleadoPeer
         // Invalidate objects in TransferenciaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciaPeer::clearInstancePool();
+        // Invalidate objects in VentaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VentaPeer::clearInstancePool();
+        // Invalidate objects in VentaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VentaPeer::clearInstancePool();
+        // Invalidate objects in VentapagoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VentapagoPeer::clearInstancePool();
     }
 
     /**
@@ -1049,6 +1061,12 @@ abstract class BaseEmpleadoPeer
         foreach ($objects as $obj) {
 
 
+            // delete related Cortecaja objects
+            $criteria = new Criteria(CortecajaPeer::DATABASE_NAME);
+
+            $criteria->add(CortecajaPeer::IDEMPLEADOENVIA, $obj->getIdempleado());
+            $affectedRows += CortecajaPeer::doDelete($criteria, $con);
+
             // delete related Cuentabancariamovimiento objects
             $criteria = new Criteria(CuentabancariamovimientoPeer::DATABASE_NAME);
 
@@ -1072,6 +1090,24 @@ abstract class BaseEmpleadoPeer
 
             $criteria->add(TransferenciaPeer::IDEMPLEADORECEPTOR, $obj->getIdempleado());
             $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
+
+            // delete related Venta objects
+            $criteria = new Criteria(VentaPeer::DATABASE_NAME);
+
+            $criteria->add(VentaPeer::IDEMPLEADOCAJERO, $obj->getIdempleado());
+            $affectedRows += VentaPeer::doDelete($criteria, $con);
+
+            // delete related Venta objects
+            $criteria = new Criteria(VentaPeer::DATABASE_NAME);
+
+            $criteria->add(VentaPeer::IDEMPLEADOVENDEDOR, $obj->getIdempleado());
+            $affectedRows += VentaPeer::doDelete($criteria, $con);
+
+            // delete related Ventapago objects
+            $criteria = new Criteria(VentapagoPeer::DATABASE_NAME);
+
+            $criteria->add(VentapagoPeer::IDEMPLEADO, $obj->getIdempleado());
+            $affectedRows += VentapagoPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

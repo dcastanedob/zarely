@@ -400,6 +400,9 @@ abstract class BaseSucursalPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in CortecajaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        CortecajaPeer::clearInstancePool();
         // Invalidate objects in PedidoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidoPeer::clearInstancePool();
@@ -415,6 +418,9 @@ abstract class BaseSucursalPeer
         // Invalidate objects in TransferenciaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciaPeer::clearInstancePool();
+        // Invalidate objects in VentaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VentaPeer::clearInstancePool();
     }
 
     /**
@@ -749,6 +755,12 @@ abstract class BaseSucursalPeer
         foreach ($objects as $obj) {
 
 
+            // delete related Cortecaja objects
+            $criteria = new Criteria(CortecajaPeer::DATABASE_NAME);
+
+            $criteria->add(CortecajaPeer::IDSUCURSAL, $obj->getIdsucursal());
+            $affectedRows += CortecajaPeer::doDelete($criteria, $con);
+
             // delete related Pedido objects
             $criteria = new Criteria(PedidoPeer::DATABASE_NAME);
 
@@ -778,6 +790,12 @@ abstract class BaseSucursalPeer
 
             $criteria->add(TransferenciaPeer::IDSUCURSALORIGEN, $obj->getIdsucursal());
             $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
+
+            // delete related Venta objects
+            $criteria = new Criteria(VentaPeer::DATABASE_NAME);
+
+            $criteria->add(VentaPeer::IDSUCURSAL, $obj->getIdsucursal());
+            $affectedRows += VentaPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

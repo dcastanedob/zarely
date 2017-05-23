@@ -130,6 +130,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     protected $collTransferenciadetallesPartial;
 
     /**
+     * @var        PropelObjectCollection|Ventadetalle[] Collection to store aggregation of Ventadetalle objects.
+     */
+    protected $collVentadetalles;
+    protected $collVentadetallesPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -184,6 +190,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $transferenciadetallesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $ventadetallesScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -621,6 +633,8 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
 
             $this->collTransferenciadetalles = null;
 
+            $this->collVentadetalles = null;
+
         } // if (deep)
     }
 
@@ -867,6 +881,23 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
 
             if ($this->collTransferenciadetalles !== null) {
                 foreach ($this->collTransferenciadetalles as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->ventadetallesScheduledForDeletion !== null) {
+                if (!$this->ventadetallesScheduledForDeletion->isEmpty()) {
+                    VentadetalleQuery::create()
+                        ->filterByPrimaryKeys($this->ventadetallesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->ventadetallesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collVentadetalles !== null) {
+                foreach ($this->collVentadetalles as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1129,6 +1160,14 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collVentadetalles !== null) {
+                    foreach ($this->collVentadetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1258,6 +1297,9 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             }
             if (null !== $this->collTransferenciadetalles) {
                 $result['Transferenciadetalles'] = $this->collTransferenciadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collVentadetalles) {
+                $result['Ventadetalles'] = $this->collVentadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1479,6 +1521,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             foreach ($this->getTransferenciadetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addTransferenciadetalle($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getVentadetalles() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addVentadetalle($relObj->copy($deepCopy));
                 }
             }
 
@@ -1716,6 +1764,9 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
         }
         if ('Transferenciadetalle' == $relationName) {
             $this->initTransferenciadetalles();
+        }
+        if ('Ventadetalle' == $relationName) {
+            $this->initVentadetalles();
         }
     }
 
@@ -3270,6 +3321,256 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collVentadetalles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Productovariante The current object (for fluent API support)
+     * @see        addVentadetalles()
+     */
+    public function clearVentadetalles()
+    {
+        $this->collVentadetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collVentadetallesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collVentadetalles collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialVentadetalles($v = true)
+    {
+        $this->collVentadetallesPartial = $v;
+    }
+
+    /**
+     * Initializes the collVentadetalles collection.
+     *
+     * By default this just sets the collVentadetalles collection to an empty array (like clearcollVentadetalles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initVentadetalles($overrideExisting = true)
+    {
+        if (null !== $this->collVentadetalles && !$overrideExisting) {
+            return;
+        }
+        $this->collVentadetalles = new PropelObjectCollection();
+        $this->collVentadetalles->setModel('Ventadetalle');
+    }
+
+    /**
+     * Gets an array of Ventadetalle objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Productovariante is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Ventadetalle[] List of Ventadetalle objects
+     * @throws PropelException
+     */
+    public function getVentadetalles($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collVentadetallesPartial && !$this->isNew();
+        if (null === $this->collVentadetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collVentadetalles) {
+                // return empty collection
+                $this->initVentadetalles();
+            } else {
+                $collVentadetalles = VentadetalleQuery::create(null, $criteria)
+                    ->filterByProductovariante($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collVentadetallesPartial && count($collVentadetalles)) {
+                      $this->initVentadetalles(false);
+
+                      foreach ($collVentadetalles as $obj) {
+                        if (false == $this->collVentadetalles->contains($obj)) {
+                          $this->collVentadetalles->append($obj);
+                        }
+                      }
+
+                      $this->collVentadetallesPartial = true;
+                    }
+
+                    $collVentadetalles->getInternalIterator()->rewind();
+
+                    return $collVentadetalles;
+                }
+
+                if ($partial && $this->collVentadetalles) {
+                    foreach ($this->collVentadetalles as $obj) {
+                        if ($obj->isNew()) {
+                            $collVentadetalles[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collVentadetalles = $collVentadetalles;
+                $this->collVentadetallesPartial = false;
+            }
+        }
+
+        return $this->collVentadetalles;
+    }
+
+    /**
+     * Sets a collection of Ventadetalle objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $ventadetalles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function setVentadetalles(PropelCollection $ventadetalles, PropelPDO $con = null)
+    {
+        $ventadetallesToDelete = $this->getVentadetalles(new Criteria(), $con)->diff($ventadetalles);
+
+
+        $this->ventadetallesScheduledForDeletion = $ventadetallesToDelete;
+
+        foreach ($ventadetallesToDelete as $ventadetalleRemoved) {
+            $ventadetalleRemoved->setProductovariante(null);
+        }
+
+        $this->collVentadetalles = null;
+        foreach ($ventadetalles as $ventadetalle) {
+            $this->addVentadetalle($ventadetalle);
+        }
+
+        $this->collVentadetalles = $ventadetalles;
+        $this->collVentadetallesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Ventadetalle objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Ventadetalle objects.
+     * @throws PropelException
+     */
+    public function countVentadetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collVentadetallesPartial && !$this->isNew();
+        if (null === $this->collVentadetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collVentadetalles) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getVentadetalles());
+            }
+            $query = VentadetalleQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProductovariante($this)
+                ->count($con);
+        }
+
+        return count($this->collVentadetalles);
+    }
+
+    /**
+     * Method called to associate a Ventadetalle object to this object
+     * through the Ventadetalle foreign key attribute.
+     *
+     * @param    Ventadetalle $l Ventadetalle
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function addVentadetalle(Ventadetalle $l)
+    {
+        if ($this->collVentadetalles === null) {
+            $this->initVentadetalles();
+            $this->collVentadetallesPartial = true;
+        }
+
+        if (!in_array($l, $this->collVentadetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddVentadetalle($l);
+
+            if ($this->ventadetallesScheduledForDeletion and $this->ventadetallesScheduledForDeletion->contains($l)) {
+                $this->ventadetallesScheduledForDeletion->remove($this->ventadetallesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Ventadetalle $ventadetalle The ventadetalle object to add.
+     */
+    protected function doAddVentadetalle($ventadetalle)
+    {
+        $this->collVentadetalles[]= $ventadetalle;
+        $ventadetalle->setProductovariante($this);
+    }
+
+    /**
+     * @param	Ventadetalle $ventadetalle The ventadetalle object to remove.
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function removeVentadetalle($ventadetalle)
+    {
+        if ($this->getVentadetalles()->contains($ventadetalle)) {
+            $this->collVentadetalles->remove($this->collVentadetalles->search($ventadetalle));
+            if (null === $this->ventadetallesScheduledForDeletion) {
+                $this->ventadetallesScheduledForDeletion = clone $this->collVentadetalles;
+                $this->ventadetallesScheduledForDeletion->clear();
+            }
+            $this->ventadetallesScheduledForDeletion[]= clone $ventadetalle;
+            $ventadetalle->setProductovariante(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Productovariante is new, it will return
+     * an empty collection; or if this Productovariante has previously
+     * been saved, it will retrieve related Ventadetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Productovariante.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Ventadetalle[] List of Ventadetalle objects
+     */
+    public function getVentadetallesJoinVenta($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentadetalleQuery::create(null, $criteria);
+        $query->joinWith('Venta', $join_behavior);
+
+        return $this->getVentadetalles($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -3335,6 +3636,11 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collVentadetalles) {
+                foreach ($this->collVentadetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aProducto instanceof Persistent) {
               $this->aProducto->clearAllReferences($deep);
             }
@@ -3372,6 +3678,10 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             $this->collTransferenciadetalles->clearIterator();
         }
         $this->collTransferenciadetalles = null;
+        if ($this->collVentadetalles instanceof PropelCollection) {
+            $this->collVentadetalles->clearIterator();
+        }
+        $this->collVentadetalles = null;
         $this->aProducto = null;
         $this->aProductocolor = null;
         $this->aProductomaterial = null;

@@ -24,13 +24,13 @@ abstract class BaseClientePeer
     const TM_CLASS = 'ClienteTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 23;
+    const NUM_COLUMNS = 26;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 23;
+    const NUM_HYDRATE_COLUMNS = 26;
 
     /** the column name for the idcliente field */
     const IDCLIENTE = 'cliente.idcliente';
@@ -101,6 +101,15 @@ abstract class BaseClientePeer
     /** the column name for the cliente_estatus field */
     const CLIENTE_ESTATUS = 'cliente.cliente_estatus';
 
+    /** the column name for the cliente_credito field */
+    const CLIENTE_CREDITO = 'cliente.cliente_credito';
+
+    /** the column name for the cliente_limitecredito field */
+    const CLIENTE_LIMITECREDITO = 'cliente.cliente_limitecredito';
+
+    /** the column name for the cliente_creditorestante field */
+    const CLIENTE_CREDITORESTANTE = 'cliente.cliente_creditorestante';
+
     /** The enumerated values for the cliente_tipo field */
     const CLIENTE_TIPO_MAYORISTA = 'mayorista';
     const CLIENTE_TIPO_GENERAL = 'general';
@@ -124,12 +133,12 @@ abstract class BaseClientePeer
      * e.g. ClientePeer::$fieldNames[ClientePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcliente', 'ClienteNombre', 'ClienteApaterno', 'ClienteAmaterno', 'ClienteRfc', 'ClienteRazonsocial', 'ClienteCallefiscal', 'ClienteNumerofiscal', 'ClienteInteriorfiscal', 'ClienteColoniafiscal', 'ClienteCiudadfiscal', 'ClienteCpfiscal', 'ClienteEstadofiscal', 'ClienteCalle', 'ClienteNumero', 'ClienteInterior', 'ClienteColonia', 'ClienteCp', 'ClienteCiudad', 'ClienteEstado', 'ClienteTipo', 'ClienteFecharegistro', 'ClienteEstatus', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcliente', 'clienteNombre', 'clienteApaterno', 'clienteAmaterno', 'clienteRfc', 'clienteRazonsocial', 'clienteCallefiscal', 'clienteNumerofiscal', 'clienteInteriorfiscal', 'clienteColoniafiscal', 'clienteCiudadfiscal', 'clienteCpfiscal', 'clienteEstadofiscal', 'clienteCalle', 'clienteNumero', 'clienteInterior', 'clienteColonia', 'clienteCp', 'clienteCiudad', 'clienteEstado', 'clienteTipo', 'clienteFecharegistro', 'clienteEstatus', ),
-        BasePeer::TYPE_COLNAME => array (ClientePeer::IDCLIENTE, ClientePeer::CLIENTE_NOMBRE, ClientePeer::CLIENTE_APATERNO, ClientePeer::CLIENTE_AMATERNO, ClientePeer::CLIENTE_RFC, ClientePeer::CLIENTE_RAZONSOCIAL, ClientePeer::CLIENTE_CALLEFISCAL, ClientePeer::CLIENTE_NUMEROFISCAL, ClientePeer::CLIENTE_INTERIORFISCAL, ClientePeer::CLIENTE_COLONIAFISCAL, ClientePeer::CLIENTE_CIUDADFISCAL, ClientePeer::CLIENTE_CPFISCAL, ClientePeer::CLIENTE_ESTADOFISCAL, ClientePeer::CLIENTE_CALLE, ClientePeer::CLIENTE_NUMERO, ClientePeer::CLIENTE_INTERIOR, ClientePeer::CLIENTE_COLONIA, ClientePeer::CLIENTE_CP, ClientePeer::CLIENTE_CIUDAD, ClientePeer::CLIENTE_ESTADO, ClientePeer::CLIENTE_TIPO, ClientePeer::CLIENTE_FECHAREGISTRO, ClientePeer::CLIENTE_ESTATUS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCLIENTE', 'CLIENTE_NOMBRE', 'CLIENTE_APATERNO', 'CLIENTE_AMATERNO', 'CLIENTE_RFC', 'CLIENTE_RAZONSOCIAL', 'CLIENTE_CALLEFISCAL', 'CLIENTE_NUMEROFISCAL', 'CLIENTE_INTERIORFISCAL', 'CLIENTE_COLONIAFISCAL', 'CLIENTE_CIUDADFISCAL', 'CLIENTE_CPFISCAL', 'CLIENTE_ESTADOFISCAL', 'CLIENTE_CALLE', 'CLIENTE_NUMERO', 'CLIENTE_INTERIOR', 'CLIENTE_COLONIA', 'CLIENTE_CP', 'CLIENTE_CIUDAD', 'CLIENTE_ESTADO', 'CLIENTE_TIPO', 'CLIENTE_FECHAREGISTRO', 'CLIENTE_ESTATUS', ),
-        BasePeer::TYPE_FIELDNAME => array ('idcliente', 'cliente_nombre', 'cliente_apaterno', 'cliente_amaterno', 'cliente_rfc', 'cliente_razonsocial', 'cliente_callefiscal', 'cliente_numerofiscal', 'cliente_interiorfiscal', 'cliente_coloniafiscal', 'cliente_ciudadfiscal', 'cliente_cpfiscal', 'cliente_estadofiscal', 'cliente_calle', 'cliente_numero', 'cliente_interior', 'cliente_colonia', 'cliente_cp', 'cliente_ciudad', 'cliente_estado', 'cliente_tipo', 'cliente_fecharegistro', 'cliente_estatus', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
+        BasePeer::TYPE_PHPNAME => array ('Idcliente', 'ClienteNombre', 'ClienteApaterno', 'ClienteAmaterno', 'ClienteRfc', 'ClienteRazonsocial', 'ClienteCallefiscal', 'ClienteNumerofiscal', 'ClienteInteriorfiscal', 'ClienteColoniafiscal', 'ClienteCiudadfiscal', 'ClienteCpfiscal', 'ClienteEstadofiscal', 'ClienteCalle', 'ClienteNumero', 'ClienteInterior', 'ClienteColonia', 'ClienteCp', 'ClienteCiudad', 'ClienteEstado', 'ClienteTipo', 'ClienteFecharegistro', 'ClienteEstatus', 'ClienteCredito', 'ClienteLimitecredito', 'ClienteCreditorestante', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcliente', 'clienteNombre', 'clienteApaterno', 'clienteAmaterno', 'clienteRfc', 'clienteRazonsocial', 'clienteCallefiscal', 'clienteNumerofiscal', 'clienteInteriorfiscal', 'clienteColoniafiscal', 'clienteCiudadfiscal', 'clienteCpfiscal', 'clienteEstadofiscal', 'clienteCalle', 'clienteNumero', 'clienteInterior', 'clienteColonia', 'clienteCp', 'clienteCiudad', 'clienteEstado', 'clienteTipo', 'clienteFecharegistro', 'clienteEstatus', 'clienteCredito', 'clienteLimitecredito', 'clienteCreditorestante', ),
+        BasePeer::TYPE_COLNAME => array (ClientePeer::IDCLIENTE, ClientePeer::CLIENTE_NOMBRE, ClientePeer::CLIENTE_APATERNO, ClientePeer::CLIENTE_AMATERNO, ClientePeer::CLIENTE_RFC, ClientePeer::CLIENTE_RAZONSOCIAL, ClientePeer::CLIENTE_CALLEFISCAL, ClientePeer::CLIENTE_NUMEROFISCAL, ClientePeer::CLIENTE_INTERIORFISCAL, ClientePeer::CLIENTE_COLONIAFISCAL, ClientePeer::CLIENTE_CIUDADFISCAL, ClientePeer::CLIENTE_CPFISCAL, ClientePeer::CLIENTE_ESTADOFISCAL, ClientePeer::CLIENTE_CALLE, ClientePeer::CLIENTE_NUMERO, ClientePeer::CLIENTE_INTERIOR, ClientePeer::CLIENTE_COLONIA, ClientePeer::CLIENTE_CP, ClientePeer::CLIENTE_CIUDAD, ClientePeer::CLIENTE_ESTADO, ClientePeer::CLIENTE_TIPO, ClientePeer::CLIENTE_FECHAREGISTRO, ClientePeer::CLIENTE_ESTATUS, ClientePeer::CLIENTE_CREDITO, ClientePeer::CLIENTE_LIMITECREDITO, ClientePeer::CLIENTE_CREDITORESTANTE, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCLIENTE', 'CLIENTE_NOMBRE', 'CLIENTE_APATERNO', 'CLIENTE_AMATERNO', 'CLIENTE_RFC', 'CLIENTE_RAZONSOCIAL', 'CLIENTE_CALLEFISCAL', 'CLIENTE_NUMEROFISCAL', 'CLIENTE_INTERIORFISCAL', 'CLIENTE_COLONIAFISCAL', 'CLIENTE_CIUDADFISCAL', 'CLIENTE_CPFISCAL', 'CLIENTE_ESTADOFISCAL', 'CLIENTE_CALLE', 'CLIENTE_NUMERO', 'CLIENTE_INTERIOR', 'CLIENTE_COLONIA', 'CLIENTE_CP', 'CLIENTE_CIUDAD', 'CLIENTE_ESTADO', 'CLIENTE_TIPO', 'CLIENTE_FECHAREGISTRO', 'CLIENTE_ESTATUS', 'CLIENTE_CREDITO', 'CLIENTE_LIMITECREDITO', 'CLIENTE_CREDITORESTANTE', ),
+        BasePeer::TYPE_FIELDNAME => array ('idcliente', 'cliente_nombre', 'cliente_apaterno', 'cliente_amaterno', 'cliente_rfc', 'cliente_razonsocial', 'cliente_callefiscal', 'cliente_numerofiscal', 'cliente_interiorfiscal', 'cliente_coloniafiscal', 'cliente_ciudadfiscal', 'cliente_cpfiscal', 'cliente_estadofiscal', 'cliente_calle', 'cliente_numero', 'cliente_interior', 'cliente_colonia', 'cliente_cp', 'cliente_ciudad', 'cliente_estado', 'cliente_tipo', 'cliente_fecharegistro', 'cliente_estatus', 'cliente_credito', 'cliente_limitecredito', 'cliente_creditorestante', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
     );
 
     /**
@@ -139,12 +148,12 @@ abstract class BaseClientePeer
      * e.g. ClientePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcliente' => 0, 'ClienteNombre' => 1, 'ClienteApaterno' => 2, 'ClienteAmaterno' => 3, 'ClienteRfc' => 4, 'ClienteRazonsocial' => 5, 'ClienteCallefiscal' => 6, 'ClienteNumerofiscal' => 7, 'ClienteInteriorfiscal' => 8, 'ClienteColoniafiscal' => 9, 'ClienteCiudadfiscal' => 10, 'ClienteCpfiscal' => 11, 'ClienteEstadofiscal' => 12, 'ClienteCalle' => 13, 'ClienteNumero' => 14, 'ClienteInterior' => 15, 'ClienteColonia' => 16, 'ClienteCp' => 17, 'ClienteCiudad' => 18, 'ClienteEstado' => 19, 'ClienteTipo' => 20, 'ClienteFecharegistro' => 21, 'ClienteEstatus' => 22, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcliente' => 0, 'clienteNombre' => 1, 'clienteApaterno' => 2, 'clienteAmaterno' => 3, 'clienteRfc' => 4, 'clienteRazonsocial' => 5, 'clienteCallefiscal' => 6, 'clienteNumerofiscal' => 7, 'clienteInteriorfiscal' => 8, 'clienteColoniafiscal' => 9, 'clienteCiudadfiscal' => 10, 'clienteCpfiscal' => 11, 'clienteEstadofiscal' => 12, 'clienteCalle' => 13, 'clienteNumero' => 14, 'clienteInterior' => 15, 'clienteColonia' => 16, 'clienteCp' => 17, 'clienteCiudad' => 18, 'clienteEstado' => 19, 'clienteTipo' => 20, 'clienteFecharegistro' => 21, 'clienteEstatus' => 22, ),
-        BasePeer::TYPE_COLNAME => array (ClientePeer::IDCLIENTE => 0, ClientePeer::CLIENTE_NOMBRE => 1, ClientePeer::CLIENTE_APATERNO => 2, ClientePeer::CLIENTE_AMATERNO => 3, ClientePeer::CLIENTE_RFC => 4, ClientePeer::CLIENTE_RAZONSOCIAL => 5, ClientePeer::CLIENTE_CALLEFISCAL => 6, ClientePeer::CLIENTE_NUMEROFISCAL => 7, ClientePeer::CLIENTE_INTERIORFISCAL => 8, ClientePeer::CLIENTE_COLONIAFISCAL => 9, ClientePeer::CLIENTE_CIUDADFISCAL => 10, ClientePeer::CLIENTE_CPFISCAL => 11, ClientePeer::CLIENTE_ESTADOFISCAL => 12, ClientePeer::CLIENTE_CALLE => 13, ClientePeer::CLIENTE_NUMERO => 14, ClientePeer::CLIENTE_INTERIOR => 15, ClientePeer::CLIENTE_COLONIA => 16, ClientePeer::CLIENTE_CP => 17, ClientePeer::CLIENTE_CIUDAD => 18, ClientePeer::CLIENTE_ESTADO => 19, ClientePeer::CLIENTE_TIPO => 20, ClientePeer::CLIENTE_FECHAREGISTRO => 21, ClientePeer::CLIENTE_ESTATUS => 22, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCLIENTE' => 0, 'CLIENTE_NOMBRE' => 1, 'CLIENTE_APATERNO' => 2, 'CLIENTE_AMATERNO' => 3, 'CLIENTE_RFC' => 4, 'CLIENTE_RAZONSOCIAL' => 5, 'CLIENTE_CALLEFISCAL' => 6, 'CLIENTE_NUMEROFISCAL' => 7, 'CLIENTE_INTERIORFISCAL' => 8, 'CLIENTE_COLONIAFISCAL' => 9, 'CLIENTE_CIUDADFISCAL' => 10, 'CLIENTE_CPFISCAL' => 11, 'CLIENTE_ESTADOFISCAL' => 12, 'CLIENTE_CALLE' => 13, 'CLIENTE_NUMERO' => 14, 'CLIENTE_INTERIOR' => 15, 'CLIENTE_COLONIA' => 16, 'CLIENTE_CP' => 17, 'CLIENTE_CIUDAD' => 18, 'CLIENTE_ESTADO' => 19, 'CLIENTE_TIPO' => 20, 'CLIENTE_FECHAREGISTRO' => 21, 'CLIENTE_ESTATUS' => 22, ),
-        BasePeer::TYPE_FIELDNAME => array ('idcliente' => 0, 'cliente_nombre' => 1, 'cliente_apaterno' => 2, 'cliente_amaterno' => 3, 'cliente_rfc' => 4, 'cliente_razonsocial' => 5, 'cliente_callefiscal' => 6, 'cliente_numerofiscal' => 7, 'cliente_interiorfiscal' => 8, 'cliente_coloniafiscal' => 9, 'cliente_ciudadfiscal' => 10, 'cliente_cpfiscal' => 11, 'cliente_estadofiscal' => 12, 'cliente_calle' => 13, 'cliente_numero' => 14, 'cliente_interior' => 15, 'cliente_colonia' => 16, 'cliente_cp' => 17, 'cliente_ciudad' => 18, 'cliente_estado' => 19, 'cliente_tipo' => 20, 'cliente_fecharegistro' => 21, 'cliente_estatus' => 22, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
+        BasePeer::TYPE_PHPNAME => array ('Idcliente' => 0, 'ClienteNombre' => 1, 'ClienteApaterno' => 2, 'ClienteAmaterno' => 3, 'ClienteRfc' => 4, 'ClienteRazonsocial' => 5, 'ClienteCallefiscal' => 6, 'ClienteNumerofiscal' => 7, 'ClienteInteriorfiscal' => 8, 'ClienteColoniafiscal' => 9, 'ClienteCiudadfiscal' => 10, 'ClienteCpfiscal' => 11, 'ClienteEstadofiscal' => 12, 'ClienteCalle' => 13, 'ClienteNumero' => 14, 'ClienteInterior' => 15, 'ClienteColonia' => 16, 'ClienteCp' => 17, 'ClienteCiudad' => 18, 'ClienteEstado' => 19, 'ClienteTipo' => 20, 'ClienteFecharegistro' => 21, 'ClienteEstatus' => 22, 'ClienteCredito' => 23, 'ClienteLimitecredito' => 24, 'ClienteCreditorestante' => 25, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcliente' => 0, 'clienteNombre' => 1, 'clienteApaterno' => 2, 'clienteAmaterno' => 3, 'clienteRfc' => 4, 'clienteRazonsocial' => 5, 'clienteCallefiscal' => 6, 'clienteNumerofiscal' => 7, 'clienteInteriorfiscal' => 8, 'clienteColoniafiscal' => 9, 'clienteCiudadfiscal' => 10, 'clienteCpfiscal' => 11, 'clienteEstadofiscal' => 12, 'clienteCalle' => 13, 'clienteNumero' => 14, 'clienteInterior' => 15, 'clienteColonia' => 16, 'clienteCp' => 17, 'clienteCiudad' => 18, 'clienteEstado' => 19, 'clienteTipo' => 20, 'clienteFecharegistro' => 21, 'clienteEstatus' => 22, 'clienteCredito' => 23, 'clienteLimitecredito' => 24, 'clienteCreditorestante' => 25, ),
+        BasePeer::TYPE_COLNAME => array (ClientePeer::IDCLIENTE => 0, ClientePeer::CLIENTE_NOMBRE => 1, ClientePeer::CLIENTE_APATERNO => 2, ClientePeer::CLIENTE_AMATERNO => 3, ClientePeer::CLIENTE_RFC => 4, ClientePeer::CLIENTE_RAZONSOCIAL => 5, ClientePeer::CLIENTE_CALLEFISCAL => 6, ClientePeer::CLIENTE_NUMEROFISCAL => 7, ClientePeer::CLIENTE_INTERIORFISCAL => 8, ClientePeer::CLIENTE_COLONIAFISCAL => 9, ClientePeer::CLIENTE_CIUDADFISCAL => 10, ClientePeer::CLIENTE_CPFISCAL => 11, ClientePeer::CLIENTE_ESTADOFISCAL => 12, ClientePeer::CLIENTE_CALLE => 13, ClientePeer::CLIENTE_NUMERO => 14, ClientePeer::CLIENTE_INTERIOR => 15, ClientePeer::CLIENTE_COLONIA => 16, ClientePeer::CLIENTE_CP => 17, ClientePeer::CLIENTE_CIUDAD => 18, ClientePeer::CLIENTE_ESTADO => 19, ClientePeer::CLIENTE_TIPO => 20, ClientePeer::CLIENTE_FECHAREGISTRO => 21, ClientePeer::CLIENTE_ESTATUS => 22, ClientePeer::CLIENTE_CREDITO => 23, ClientePeer::CLIENTE_LIMITECREDITO => 24, ClientePeer::CLIENTE_CREDITORESTANTE => 25, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCLIENTE' => 0, 'CLIENTE_NOMBRE' => 1, 'CLIENTE_APATERNO' => 2, 'CLIENTE_AMATERNO' => 3, 'CLIENTE_RFC' => 4, 'CLIENTE_RAZONSOCIAL' => 5, 'CLIENTE_CALLEFISCAL' => 6, 'CLIENTE_NUMEROFISCAL' => 7, 'CLIENTE_INTERIORFISCAL' => 8, 'CLIENTE_COLONIAFISCAL' => 9, 'CLIENTE_CIUDADFISCAL' => 10, 'CLIENTE_CPFISCAL' => 11, 'CLIENTE_ESTADOFISCAL' => 12, 'CLIENTE_CALLE' => 13, 'CLIENTE_NUMERO' => 14, 'CLIENTE_INTERIOR' => 15, 'CLIENTE_COLONIA' => 16, 'CLIENTE_CP' => 17, 'CLIENTE_CIUDAD' => 18, 'CLIENTE_ESTADO' => 19, 'CLIENTE_TIPO' => 20, 'CLIENTE_FECHAREGISTRO' => 21, 'CLIENTE_ESTATUS' => 22, 'CLIENTE_CREDITO' => 23, 'CLIENTE_LIMITECREDITO' => 24, 'CLIENTE_CREDITORESTANTE' => 25, ),
+        BasePeer::TYPE_FIELDNAME => array ('idcliente' => 0, 'cliente_nombre' => 1, 'cliente_apaterno' => 2, 'cliente_amaterno' => 3, 'cliente_rfc' => 4, 'cliente_razonsocial' => 5, 'cliente_callefiscal' => 6, 'cliente_numerofiscal' => 7, 'cliente_interiorfiscal' => 8, 'cliente_coloniafiscal' => 9, 'cliente_ciudadfiscal' => 10, 'cliente_cpfiscal' => 11, 'cliente_estadofiscal' => 12, 'cliente_calle' => 13, 'cliente_numero' => 14, 'cliente_interior' => 15, 'cliente_colonia' => 16, 'cliente_cp' => 17, 'cliente_ciudad' => 18, 'cliente_estado' => 19, 'cliente_tipo' => 20, 'cliente_fecharegistro' => 21, 'cliente_estatus' => 22, 'cliente_credito' => 23, 'cliente_limitecredito' => 24, 'cliente_creditorestante' => 25, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
     );
 
     /** The enumerated values for this table */
@@ -294,6 +303,9 @@ abstract class BaseClientePeer
             $criteria->addSelectColumn(ClientePeer::CLIENTE_TIPO);
             $criteria->addSelectColumn(ClientePeer::CLIENTE_FECHAREGISTRO);
             $criteria->addSelectColumn(ClientePeer::CLIENTE_ESTATUS);
+            $criteria->addSelectColumn(ClientePeer::CLIENTE_CREDITO);
+            $criteria->addSelectColumn(ClientePeer::CLIENTE_LIMITECREDITO);
+            $criteria->addSelectColumn(ClientePeer::CLIENTE_CREDITORESTANTE);
         } else {
             $criteria->addSelectColumn($alias . '.idcliente');
             $criteria->addSelectColumn($alias . '.cliente_nombre');
@@ -318,6 +330,9 @@ abstract class BaseClientePeer
             $criteria->addSelectColumn($alias . '.cliente_tipo');
             $criteria->addSelectColumn($alias . '.cliente_fecharegistro');
             $criteria->addSelectColumn($alias . '.cliente_estatus');
+            $criteria->addSelectColumn($alias . '.cliente_credito');
+            $criteria->addSelectColumn($alias . '.cliente_limitecredito');
+            $criteria->addSelectColumn($alias . '.cliente_creditorestante');
         }
     }
 
@@ -522,9 +537,18 @@ abstract class BaseClientePeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in ClienterelacionadoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ClienterelacionadoPeer::clearInstancePool();
+        // Invalidate objects in ClienterelacionadoPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        ClienterelacionadoPeer::clearInstancePool();
         // Invalidate objects in PedidomayoristaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidomayoristaPeer::clearInstancePool();
+        // Invalidate objects in VentaPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VentaPeer::clearInstancePool();
     }
 
     /**
@@ -859,11 +883,29 @@ abstract class BaseClientePeer
         foreach ($objects as $obj) {
 
 
+            // delete related Clienterelacionado objects
+            $criteria = new Criteria(ClienterelacionadoPeer::DATABASE_NAME);
+
+            $criteria->add(ClienterelacionadoPeer::IDCLIENTE, $obj->getIdcliente());
+            $affectedRows += ClienterelacionadoPeer::doDelete($criteria, $con);
+
+            // delete related Clienterelacionado objects
+            $criteria = new Criteria(ClienterelacionadoPeer::DATABASE_NAME);
+
+            $criteria->add(ClienterelacionadoPeer::IDCLIENTEASOCIADO, $obj->getIdcliente());
+            $affectedRows += ClienterelacionadoPeer::doDelete($criteria, $con);
+
             // delete related Pedidomayorista objects
             $criteria = new Criteria(PedidomayoristaPeer::DATABASE_NAME);
 
             $criteria->add(PedidomayoristaPeer::IDCLIENTE, $obj->getIdcliente());
             $affectedRows += PedidomayoristaPeer::doDelete($criteria, $con);
+
+            // delete related Venta objects
+            $criteria = new Criteria(VentaPeer::DATABASE_NAME);
+
+            $criteria->add(VentaPeer::IDCLIENTE, $obj->getIdcliente());
+            $affectedRows += VentaPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

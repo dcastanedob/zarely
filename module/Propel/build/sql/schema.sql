@@ -34,7 +34,36 @@ CREATE TABLE `cliente`
     `cliente_tipo` enum('mayorista','general') NOT NULL,
     `cliente_fecharegistro` DATE NOT NULL,
     `cliente_estatus` TINYINT(1) NOT NULL,
+    `cliente_credito` TINYINT NOT NULL,
+    `cliente_limitecredito` DECIMAL(15,5),
+    `cliente_creditorestante` DECIMAL(15,5),
     PRIMARY KEY (`idcliente`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- clienterelacionado
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `clienterelacionado`;
+
+CREATE TABLE `clienterelacionado`
+(
+    `idclienterelacionado` INTEGER NOT NULL AUTO_INCREMENT,
+    `idcliente` INTEGER NOT NULL,
+    `idclienteasociado` INTEGER NOT NULL,
+    PRIMARY KEY (`idclienterelacionado`),
+    INDEX `idcliente` (`idcliente`),
+    INDEX `idclienteasociado` (`idclienteasociado`),
+    CONSTRAINT `idcliente_clienterelacionado`
+        FOREIGN KEY (`idcliente`)
+        REFERENCES `cliente` (`idcliente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idclienteasociado_clienterelacionado`
+        FOREIGN KEY (`idclienteasociado`)
+        REFERENCES `cliente` (`idcliente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -119,6 +148,38 @@ CREATE TABLE `configuracion`
     `idconfiguracion` INTEGER NOT NULL AUTO_INCREMENT,
     `configuracion_` VARCHAR(45),
     PRIMARY KEY (`idconfiguracion`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- cortecaja
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `cortecaja`;
+
+CREATE TABLE `cortecaja`
+(
+    `idcortecaja` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `idempleadoenvia` INTEGER NOT NULL,
+    `cortecaja_fecha` DATE NOT NULL,
+    `cortecaja_total` DECIMAL(15,5) NOT NULL,
+    `cortecaja_efectivo` DECIMAL(15,5) NOT NULL,
+    `cortecaja_tarjetas` DECIMAL(15,5) NOT NULL,
+    `cortecaja_vales` DECIMAL(15,5) NOT NULL,
+    `cortecaja_enviado` TINYINT(1) NOT NULL,
+    PRIMARY KEY (`idcortecaja`),
+    INDEX `idsucursal` (`idsucursal`),
+    INDEX `idempleadoenvia` (`idempleadoenvia`),
+    CONSTRAINT `idempleadoenvia_cortecaja`
+        FOREIGN KEY (`idempleadoenvia`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursal_cortecaja`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -1057,6 +1118,118 @@ CREATE TABLE `transferenciadetalle`
     CONSTRAINT `idtransferencia_transferenciadetalle`
         FOREIGN KEY (`idtransferencia`)
         REFERENCES `transferencia` (`idtransferencia`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- venta
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `venta`;
+
+CREATE TABLE `venta`
+(
+    `idventa` INTEGER NOT NULL AUTO_INCREMENT,
+    `idempleadocajero` INTEGER NOT NULL,
+    `idempleadovendedor` INTEGER NOT NULL,
+    `idcliente` INTEGER NOT NULL,
+    `venta_total` DECIMAL(15,5) NOT NULL,
+    `venta_fecha` DATETIME NOT NULL,
+    `venta_comprobante` TEXT,
+    `idsucursal` INTEGER NOT NULL,
+    `venta_estatuspago` TINYINT(1) NOT NULL,
+    `venta_tipo` enum('venta','credito','apartado') NOT NULL,
+    `venta_subtotal` DECIMAL(15,5) NOT NULL,
+    `venta_iva` DECIMAL(15,5) NOT NULL,
+    `venta_estatus` enum('cancelada','completada','procesando') NOT NULL,
+    `venta_facturacion` TINYINT(1),
+    PRIMARY KEY (`idventa`),
+    INDEX `idempleadocajero` (`idempleadocajero`),
+    INDEX `idempleadovendedor` (`idempleadovendedor`),
+    INDEX `idcliente` (`idcliente`),
+    INDEX `idsucursal` (`idsucursal`),
+    CONSTRAINT `idcliente_venta`
+        FOREIGN KEY (`idcliente`)
+        REFERENCES `cliente` (`idcliente`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idempleadocajero_venta`
+        FOREIGN KEY (`idempleadocajero`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idempleadovendedor_venta`
+        FOREIGN KEY (`idempleadovendedor`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursal_venta`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- ventadetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ventadetalle`;
+
+CREATE TABLE `ventadetalle`
+(
+    `idventadetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idventa` INTEGER NOT NULL,
+    `idproductovariante` INTEGER NOT NULL,
+    `ventadetalle_cantidad` INTEGER NOT NULL,
+    `ventadetalle_subtotal` DECIMAL(15,5) NOT NULL,
+    `ventadetalle_preciounitario` DECIMAL(15,5) NOT NULL,
+    `ventadetalle_estatus` enum('completo','defecto','cambio') NOT NULL,
+    `ventadetalle_descuento` FLOAT,
+    PRIMARY KEY (`idventadetalle`),
+    INDEX `idventa` (`idventa`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    CONSTRAINT `idproductovariante_ventadetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idventa_ventadetalle`
+        FOREIGN KEY (`idventa`)
+        REFERENCES `venta` (`idventa`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- ventapago
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ventapago`;
+
+CREATE TABLE `ventapago`
+(
+    `idventapago` INTEGER NOT NULL AUTO_INCREMENT,
+    `idventa` INTEGER NOT NULL,
+    `venta_fecha` DATETIME NOT NULL,
+    `idempleado` INTEGER NOT NULL,
+    `ventapago_metododepago` enum('efectivo','vales','tarjeta') NOT NULL,
+    `ventapago_cantidad` DECIMAL(15,5),
+    `ventapago_referencia` VARCHAR(50),
+    `ventapago_cuatrodigitos` VARCHAR(4),
+    `idvale` VARCHAR(45),
+    PRIMARY KEY (`idventapago`),
+    INDEX `idventa` (`idventa`),
+    INDEX `idempleado` (`idempleado`),
+    CONSTRAINT `idempleado_ventapago`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idventa_ventapago`
+        FOREIGN KEY (`idventa`)
+        REFERENCES `venta` (`idventa`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;

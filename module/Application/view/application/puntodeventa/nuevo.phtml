@@ -1,0 +1,391 @@
+<style type="text/css">
+	.hide{
+  		display:none;  
+	}
+</style>
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title"> Punto de venta - Registro </h1>
+	</div>
+
+    <div class="row">
+    	<div class="container">
+    	  <ul class="nav nav-tabs">
+    	    <li id="compra1" class="active"><a data-toggle="tab" id="compra1_link" href="#compra_1">Compra 1</a></li>
+    	    <li id="compra2" class="hide"><a data-toggle="tab" id="compra2_link" href="#compra_2">Compra 2</a></li>
+    	    <li id="compra3" class="hide"><a data-toggle="tab" id="compra3_link" href="#compra_3">Compra 3</a></li>
+    	    <li id="compra4" class="hide"><a data-toggle="tab" id="compra4_link" href="#compra_4">Compra 4</a></li>
+    	    <li id="compra5" class="hide"><a data-toggle="tab" id="compra5_link" href="#compra_5">Compra 5</a></li>
+    	    <li id="compra_agregar"><a id="agregarcompra" data-toggle="tab" href="#agregarcompra">Nueva venta</a></li>
+    	  </ul>
+
+    	  <div class="tab-content">
+    	    <div id="compra_1" class="tab-pane fade in active">
+    	    	<h1>Venta <?php echo $id; ?></h1>
+    	      	<div class="col-md-offset-1 col-md-10">
+	          		<div class="demo-form-wrapper">
+	          			<form id="venta1" class="form form-horizontal" name="formulario" action="/puntodeventa/nuevo" method="POST" enctype="multipart/form-data"">
+
+
+	          				<div class="row">
+				    			<div class="col-md-5">
+					       			<div class="form-group">
+						           		<label  for="fecha">Fecha </label>
+						                <?php echo $this->formText($form->get('venta_fecha')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="cajero"> Cajero</label>
+						                <?php echo $this->formText($form->get('idempleadocajero')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="vendedor">Vendedor</label>
+						                <?php echo $this->formSelect($form->get('idempleadovendedor')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+							           		<label  for="cliente">Cliente</label>
+							           		<div id="clientes_select">
+							                	<?php echo $this->formSelect($form->get('idcliente')) ?>
+						        			</div>
+					        		</div>
+
+					        	</div>
+					        	<div class="col-md-1"></div>
+				        		<div class="col-md-5">
+					       			<div class="form-group">
+						           		<label  for="folio">Folio </label>
+						                <?php echo $this->formText($form->get('folio')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="tipo"> Tipo </label>
+						                <?php echo $this->formSelect($form->get('venta_tipo')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="pago">Pago</label>
+						                <?php echo $this->formSelect($form->get('venta_estatuspago')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="estatus">Estatus</label>
+						                <?php echo $this->formSelect($form->get('venta_estatus')) ?>
+					        		</div>
+
+					        		
+					        	</div>
+				        	
+		 					</div> <!--end class row-->
+		 					<br><br>
+	          				<div class="row">
+
+	          					<div class="col-md-11 alineamiento" >
+
+			        				<div id="medidasInformation">
+			        					<div id="variantes">
+					        				<div class="col-md-9 ">
+							                    <div class="form-group">
+									                <?php echo $this->formSelect($form->get('idproductovariante1[]')) ?>
+								        		</div>
+					        				</div>
+					        				<div class="col-md-1 "></div>
+
+							        		<div class="col-md-2 ">		
+							        			<div class="form-group" style="margin-top: -23px">
+									           		<label  for="guardar"></label>
+				                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_productovariante1">			Agregar
+				                                    </a>
+								        		</div>
+								        	</div>	
+							        	</div>
+
+							        	
+
+			                            <div class="row">
+				                            <div class="col-md-12" >
+				                            	<table class="table table-bordered" id="table_venta1">
+				                            		<thead>
+					                            		<tr>
+					                            			<th>Cantidad</th>
+					                            			<th>Nombre del producto</th>
+					                            			<th>Descripción</th>
+					                            			<th>Precio unitario</th>
+					                            			<th>Descuento</th>
+					                            			<th>Subtotal</th>
+					                            			<th>Opciones</th>
+					                            		</tr>
+				                            			
+				                            		</thead>
+
+				                            		<tbody id="tables_information1">
+				                            			
+				                            		</tbody>
+				                            	</table>
+				                            </div>
+			                            </div>
+			                            	<div id="informacion_venta1">
+					        					<div class="row">
+					        						<div class="col-md-12">
+					        							<label  class="pull-right" >
+					        				              SUBTOTAL:
+					        				              	<input id="total_transferencia" type="text" name="transferencia_subtotal" disabled>
+					        				              
+					        				              </span>
+					        				            </label>
+					        						</div>
+					        					</div>
+
+					        					<div class="row">
+					        						<div class="col-md-12">
+					        							<label  class="pull-right" >
+					        				              IVA:
+					        				              	<input id="total_transferencia" type="text" name="transferencia_iva"  disabled>
+					        				              
+					        				              </span>
+					        				            </label>
+					        						</div>
+					        					</div>
+
+					        					<div class="row">
+					        						<div class="col-md-12">
+					        							<label  class="pull-right" >
+					        				              TOTAL:
+					        				              	<input id="total_transferencia" type="text" name="transferencia_total" disabled>
+					        				              
+					        				              </span>
+					        				            </label>
+					        						</div>
+					        					</div>
+				        					</div>
+				        					<br>
+				        					<br>
+				        			
+			        				</div>
+
+			        			</div>	
+	          				</div>
+				        	<div class="row">
+				        		<div class="col-md-11 alineamiento" >
+		 							<div class="form-group" style="margin-top: -23px">
+						           		<label  for="guardar"></label>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_venta_1">			Terminar venta
+	                                    </a>
+					        		</div>
+				                </div>
+			        		</div>
+	          			</form>
+	          		</div>
+	          	</div>
+    	    </div>
+
+
+    	    <div id="compra_2" class="tab-pane fade">
+    	    	<h1>Venta <?php echo $id+1; ?></h1>
+    	      	<div class="col-md-offset-1 col-md-10">
+	          		<div class="demo-form-wrapper">
+	          			<form id="venta2" class="form form-horizontal" name="formulario" action="/puntodeventa/nuevo" method="POST" enctype="multipart/form-data"">
+
+
+	          				<div class="row">
+				    			<div class="col-md-5">
+					       			<div class="form-group">
+						           		<label  for="fecha">Fecha </label>
+						                <?php echo $this->formText($form->get('venta_fecha')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="cajero"> Cajero</label>
+						                <?php echo $this->formText($form->get('idempleadocajero')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="vendedor">Vendedor</label>
+						                <?php echo $this->formSelect($form->get('idempleadovendedor')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="cliente">Cliente</label>
+						                <?php echo $this->formSelect($form->get('idcliente')) ?>
+					        		</div>
+					        		
+					        	</div>
+					        	<div class="col-md-1"></div>
+				        		<div class="col-md-5">
+					       			<div class="form-group">
+						           		<label  for="folio">Folio </label>
+						                <?php echo $this->formText($form->get('folio')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="tipo"> Tipo </label>
+						                <?php echo $this->formSelect($form->get('venta_tipo')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="pago">Pago</label>
+						                <?php echo $this->formSelect($form->get('venta_estatuspago')) ?>
+					        		</div>
+
+					        		<div class="form-group">
+						           		<label  for="estatus">Estatus</label>
+						                <?php echo $this->formSelect($form->get('venta_estatus')) ?>
+					        		</div>
+
+					        		
+					        	</div>
+				        	
+		 					</div> <!--end class row-->
+		 					<br><br>
+	          				<div class="row">
+
+	          					<div class="col-md-11 alineamiento" >
+
+			        				<div id="medidasInformation">
+			        					<div id="variantes">
+					        				<div class="col-md-9 ">
+							                    <div class="form-group">
+									                <?php echo $this->formSelect($form->get('idproductovariante2[]')) ?>
+								        		</div>
+					        				</div>
+					        				<div class="col-md-1 "></div>
+
+							        		<div class="col-md-2 ">		
+							        			<div class="form-group" style="margin-top: -23px">
+									           		<label  for="guardar"></label>
+				                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_productovariante2">			Agregar
+				                                    </a>
+								        		</div>
+								        	</div>	
+							        	</div>
+
+							        	
+
+			                            <div class="row">
+				                            <div class="col-md-12" >
+				                            	<table class="table table-bordered">
+				                            		<thead>
+					                            		<tr>
+					                            			<th>Cantidad</th>
+					                            			<th>Nombre del producto</th>
+					                            			<th>Descripción</th>
+					                            			<th>Precio unitario</th>
+					                            			<th>Descuento</th>
+					                            			<th>Subtotal</th>
+					                            			<th>Opciones</th>
+					                            		</tr>
+				                            			
+				                            		</thead>
+
+				                            		<tbody id="tables_information2">
+				                            			
+				                            		</tbody>
+				                            	</table>
+				                            </div>
+			                            </div>
+				        					<div class="row">
+				        						<div class="col-md-12">
+				        							<label  class="pull-right" >
+				        				              SUBTOTAL:
+				        				              	<input id="total_transferencia2" type="text" name="transferencia_subtotal2" disabled>
+				        				              
+				        				              </span>
+				        				            </label>
+				        						</div>
+				        					</div>
+
+				        					<div class="row">
+				        						<div class="col-md-12">
+				        							<label  class="pull-right" >
+				        				              IVA:
+				        				              	<input id="total_transferencia2" type="text" name="transferencia_iva2" value="15" disabled>
+				        				              
+				        				              </span>
+				        				            </label>
+				        						</div>
+				        					</div>
+
+				        					<div class="row">
+				        						<div class="col-md-12">
+				        							<label  class="pull-right" >
+				        				              TOTAL:
+				        				              	<input id="total_transferencia2" type="text" name="transferencia_total2" disabled>
+				        				              
+				        				              </span>
+				        				            </label>
+				        						</div>
+				        					</div>
+				        					<br>
+				        					<br>
+				        			
+			        				</div>
+
+			        			</div>	
+	          				</div>
+				        	<div class="row">
+				        		<div class="col-md-11 alineamiento" >
+		 							<div class="form-group" style="margin-top: -23px">
+						           		<label  for="guardar"></label>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_venta_2">			Terminar venta
+	                                    </a>
+					        		</div>
+				                </div>
+			        		</div>
+	          			</form>
+	          		</div>
+	          	</div>
+    	    </div>
+
+
+    	    <div id="compra_3" class="tab-pane fade">
+    	      <h1>Venta <?php echo $id+2; ?></h1>
+    	      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    	    </div>
+
+
+    	    <div id="compra_4" class="tab-pane fade">
+    	      <h3>Menu 3</h3>
+    	      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    	    </div>
+
+
+    	    <div id="compra_5" class="tab-pane fade">
+    	      <h3>Menu 4</h3>
+    	      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    	    </div>
+
+
+    	  </div>
+    	</div>
+
+        
+	</div>
+
+
+	
+
+   
+
+</div>
+<link rel="stylesheet"  href="/css/tableScroll.css">
+
+<link rel="stylesheet"  href="/plugins/Select2/select2.min.css">
+<script src="/plugins/Select2/select2.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.4.2/sweetalert2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/sweetalert2/6.4.2/sweetalert2.min.css">
+
+<script src="/js/puntodeventa/generales.js"></script>
+<script>
+	var generales = $('.body_container').generales();
+	generales.initForm();
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('form').on('submit', function(e) {
+	    $(this).find('button, input[type=button]').prop('disabled', true);
+	  });
+	});
+</script>
+

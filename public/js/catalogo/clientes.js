@@ -55,8 +55,126 @@
             $container.find('input[name=cliente_fecharegistro]').datepicker({
                 language:'es',
             });
+
+            $container.find('select[name*=idclientes]').multipleSelect({
+                filter:true,
+                selectAllText: 'Seleccionar Todos',
+                width: '100%',
+                allSelected: 'Todos seleccionados',
+                countSelected: '# de % Seleccionados',
+                //multiple: true,
+                //multipleWidth: 100
+            });
+
+
+            //aqui se cargan los clientes asociados
+            var idcliente = $('input[name=idcliente]').val();
+            $.ajax({
+                url:'/catalogo/clientes/getClientes',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    name: 'clientes',
+                    data: {
+                        idcliente:idcliente,
+                    },
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $container.find('select[name*=idclientes]').multipleSelect("setSelects", data.selects);
+
+                    $container.find('#btn_add_cliente').trigger('click');
+                }
+
+              });
             
-            
+            $container.find('select[name=cliente_credito]').on('change',function()
+              {
+                var option = $(this).find('option:selected').val();
+                if(option == 1)
+                {
+                   $container.find('input[name=cliente_limitecredito]').removeAttr('disabled');
+                }else{
+                   $container.find('input[name=cliente_limitecredito]').attr('disabled',"");
+                }
+              }
+            );
+
+            var optionCredit = $container.find('select[name=cliente_credito] option:selected').val();
+            if(optionCredit == 1)
+            {
+               $container.find('input[name=cliente_limitecredito]').removeAttr('disabled');
+            }else{
+               $container.find('input[name=cliente_limitecredito]').attr('disabled',"");
+            }
+
+
+
+
+            //inicia funcionalidad de clientes asociados
+            var clientes_added = [];
+
+            $container.find('#btn_add_cliente').on('click',function(){
+                 
+              var clientes = $container.find('select[name*=idclientes]').multipleSelect("getSelects");
+
+              var clientes_text =  $container.find('select[name*=idclientes]').multipleSelect("getSelects", "text");
+
+              clientes_text.forEach(function(value,index){
+
+                var id =  clientes[index];
+
+                if($.inArray(id,clientes_added) < 0)
+                {
+                  $.ajax({
+                    method: 'POST',
+                    url:'/catalogo/clientes/initializetable',
+                    dataType:'JSON',
+                    data:{
+                      id:id,
+                    },success:function(data){
+                      if(data.response)
+                      {
+                        $tr = $('<tr>');
+                        $tr.attr('id','details');
+                        $tr.append('<td><input name="clientes[]" hidden value="'+data.data['id']+'"></input>'+data.data['nombre']+'</td>');
+                        $tr.append('<td>'+data.data['apaterno']+'</td>');
+                        $tr.append('<td>'+data.data['amaterno']+'</td>');
+                        $tr.append('<td>'+data.data['domicilio']+'</td>');
+                        $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+
+                        $tr.find('a').on('click',function(){
+                            var $information = $(this).closest('#details');
+
+                            $information.remove();
+
+                            var index = clientes.indexOf(id);
+                            if (index > -1) {
+                               clientes.splice(index, 1);
+                            }
+                            var index =clientes_added.indexOf(id);
+                            if(index> -1)
+                            {
+                             clientes_added.splice(index,1);
+                            }
+                            $container.find('select[name*=idclientes]') .multipleSelect("setSelects", clientes);
+                        });
+
+                        $container.find('#tables_information').append($tr);
+
+                        clientes_added.push(id);
+                      }
+                        
+                      }
+                    });
+                }
+
+              });
+
+            });
+
+
+
+
         }
         
         plugin.list =function(){
@@ -78,6 +196,7 @@
                         {"data":"cliente_rfc","name":"cliente_rfc","orderable":true},
                         {"data":"cliente_tipo","name":"cliente_tipo","orderable":true},
                         {"data":"cliente_estatus","name":"cliente_estatus","orderable":true},
+                        {"data":"cliente_credito","name":"cliente_credito","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},
                     ],
                     proccesing: true,
