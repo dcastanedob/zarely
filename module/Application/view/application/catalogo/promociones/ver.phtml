@@ -1,47 +1,40 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title"><?php echo $entity->getDescuentoNombre() ?></h1>
+	    <h1 class="title-bar-title"><?php echo $entity->getPromocionNombre() ?></h1>
 	</div>
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
     		<div class="demo-form-wrapper">
-    			<form class="form form-horizontal" action="/catalogo/descuentos/ver/<?php echo $entity->getIddescuento() ?>" method="POST">
+    			<form class="form form-horizontal" action="/catalogo/promociones/ver/<?php echo $entity->getIdpromocion() ?>" method="POST">
     				<div class="row">
 		    			<div class="col-md-5">
-		    				<input type="hidden" name="iddescuento" value="<?php echo $entity->getIddescuento()?>">
+		    				<input type="hidden" name="idpromocion" value="<?php echo $entity->getIdpromocion()?>">
 			       			<div class="form-group">
 				           		<label  for="Nombre">Nombre </label>
-				                <?php echo $this->formText($form->get('descuento_nombre')) ?>
+				                <?php echo $this->formText($form->get('promocion_nombre')) ?>
 			        		</div>
 
 			        		<div class="form-group">
 				           		<label  for="Fecha de inicio">Fecha de inicio</label>
-				                <?php echo $this->formText($form->get('descuento_fechainicio')) ?>
+				                <?php echo $this->formText($form->get('promocion_fechainicio')) ?>
 			        		</div>
 
-			        		<div class="form-group">
-				           		<label  for="Tipo">Tipo</label>
-				                <?php echo $this->formSelect($form->get('descuento_tipo')) ?>
-			        		</div>
+			        		
 			        		
 			        	</div>
 			        	<div class="col-md-1"></div>
 		        		<div class="col-md-5">
 			       			<div class="form-group">
 				           		<label  for="Estatus">Estatus </label>
-				                <?php echo $this->formSelect($form->get('descuento_estatus')) ?>
+				                <?php echo $this->formSelect($form->get('promocion_estatus')) ?>
 			        		</div>
 
 			        		<div class="form-group">
 				           		<label  for="Fecha de fin"> Fecha de fin</label>
-				                <?php echo $this->formText($form->get('descuento_fechafin')) ?>
+				                <?php echo $this->formText($form->get('promocion_fechafin')) ?>
 			        		</div>
 
-			        		<div class="form-group">
-				           		<label  for="Cantidad">Cantidad </label>
-				                <?php echo $this->formText($form->get('descuento_cantidad')) ?>
-			        		</div>
-
+			        		
 			        		
 			        	</div>
 		        	
@@ -51,7 +44,7 @@
  						<div class="col-md-11">
 			       			<div class="form-group">
 				           		<label  for="Descripcion">Descripción </label>
-				                <?php echo $this->formTextarea($form->get('descuento_descripcion')) ?>
+				                <?php echo $this->formTextarea($form->get('promocion_descripcion')) ?>
 			        		</div>
 			        	</div>
  					</div>
@@ -183,10 +176,10 @@
 </div>
 
 
-<script src="/js/catalogo/descuentos.js"></script>
+<script src="/js/catalogo/promociones.js"></script>
 <script>
-	var descuentos = $('.body_container').descuentos();
-	descuentos.initForm();
+	var promociones = $('.body_container').promociones();
+	promociones.initForm();
 </script>
 <script type="text/javascript">
 	$(document).ready(function() {

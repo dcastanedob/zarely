@@ -18,10 +18,9 @@ class PromocionesController extends AbstractActionController
     public $column_map = array(
         0 => 'Idpromocion',
         1 => 'PromocionNombre',
-        2 => 'PromocionTipo',
-        3 => 'PromocionEstatus',
-        4 => 'PromocionFechainicio',
-        5=> 'PromocionFechafin',
+        2 => 'PromocionEstatus',
+        3 => 'PromocionFechainicio',
+        4=> 'PromocionFechafin',
     );
 
 
@@ -115,7 +114,6 @@ class PromocionesController extends AbstractActionController
                 $tmp['DT_RowId'] = $value['idpromocion'];
                 $tmp['idpromocion'] = $value['idpromocion'];
                 $tmp['promocion_nombre'] = $value['promocion_nombre'];
-                $tmp['promocion_tipo'] = $value['promocion_tipo'];
                 if($value['promocion_estatus'])
                 {
                     $tmp['promocion_esatus'] = "Sí";
@@ -201,13 +199,13 @@ class PromocionesController extends AbstractActionController
         if($request->isPost()){
             $post_data = $request->getPost();
 
-            $entity = new \Descuento();
+            $entity = new \Promocion();
 
-            $post_data['descuento_fechainicio'] = date_create_from_format('d/m/Y', $post_data['descuento_fechainicio']);
-            $post_data['descuento_fechafin'] = date_create_from_format('d/m/Y', $post_data['descuento_fechafin']);
+            $post_data['promocion_fechainicio'] = date_create_from_format('d/m/Y', $post_data['promocion_fechainicio']);
+            $post_data['promocion_fechafin'] = date_create_from_format('d/m/Y', $post_data['promocion_fechafin']);
 
             foreach ($post_data as $key => $value){
-                if(\DescuentoPeer::getTableMap()->hasColumn($key)){
+                if(\PromocionPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                 }
             }
@@ -215,24 +213,24 @@ class PromocionesController extends AbstractActionController
             $entity->save();
 
             foreach ($post_data['variante'] as $variante) {
-                $detalle = new \Descuentodetalle();
-                $detalle->setIddescuento($entity->getIddescuento())
+                $detalle = new \Promociondetalle();
+                $detalle->setIdpromocion($entity->getIdpromocion())
                         ->setIdproductovariante($variante)
                         ->save();
                 
             }
 
             foreach ($post_data['producto'] as $variante) {
-                $detalle = new \Descuentodetalle();
-                $detalle->setIddescuento($entity->getIddescuento())
+                $detalle = new \Promociondetalle();
+                $detalle->setIdpromocion($entity->getIdpromocion())
                         ->setIdproducto($variante)
                         ->save();
                 
             }
 
             foreach ($post_data['marca'] as $variante) {
-                $detalle = new \Descuentodetalle();
-                $detalle->setIddescuento($entity->getIddescuento())
+                $detalle = new \Promociondetalle();
+                $detalle->setIdpromocion($entity->getIdpromocion())
                         ->setIdmarca($variante)
                         ->save();
                 
@@ -302,47 +300,47 @@ class PromocionesController extends AbstractActionController
         
         $id = $this->params()->fromRoute('id');
         
-        $exist = \DescuentoQuery::create()->filterByIddescuento($id)->exists();
+        $exist = \PromocionQuery::create()->filterByIdpromocion($id)->exists();
         
         if($exist){
             
-            $entity = \DescuentoQuery::create()->findPk($id);
+            $entity = \PromocionQuery::create()->findPk($id);
             
             if($reqest->isPost()){
                 $post_data = $reqest->getPost();
                 
-                $post_data['descuento_fechainicio'] = date_create_from_format('d/m/Y', $post_data['descuento_fechainicio']);
-                $post_data['descuento_fechafin'] = date_create_from_format('d/m/Y', $post_data['descuento_fechafin']);
+                $post_data['promocion_fechainicio'] = date_create_from_format('d/m/Y', $post_data['promocion_fechainicio']);
+                $post_data['promocion_fechafin'] = date_create_from_format('d/m/Y', $post_data['promocion_fechafin']);
 
                 foreach ($post_data as $key => $value){
-                    if(\DescuentoPeer::getTableMap()->hasColumn($key)){
+                    if(\PromocionPeer::getTableMap()->hasColumn($key)){
                         $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
                     }
                 }
 
                 $entity->save();
                 
-                $detalles = \DescuentodetalleQuery::create()->filterByIddescuento($id)->delete();
+                $detalles = \PromociondetalleQuery::create()->filterByIdpromocion($id)->delete();
 
                 foreach ($post_data['variante'] as $variante) {
-                    $detalle = new \Descuentodetalle();
-                    $detalle->setIddescuento($entity->getIddescuento())
+                    $detalle = new \Promociondetalle();
+                    $detalle->setIdpromocion($entity->getIdpromocion())
                             ->setIdproductovariante($variante)
                             ->save();
                     
                 }
 
                 foreach ($post_data['producto'] as $variante) {
-                    $detalle = new \Descuentodetalle();
-                    $detalle->setIddescuento($entity->getIddescuento())
+                    $detalle = new \Promociondetalle();
+                    $detalle->setIdpromocion($entity->getIdpromocion())
                             ->setIdproducto($variante)
                             ->save();
                     
                 }
 
                 foreach ($post_data['marca'] as $variante) {
-                    $detalle = new \Descuentodetalle();
-                    $detalle->setIddescuento($entity->getIddescuento())
+                    $detalle = new \Promociondetalle();
+                    $detalle->setIdpromocion($entity->getIdpromocion())
                             ->setIdmarca($variante)
                             ->save();
                     
@@ -391,7 +389,10 @@ class PromocionesController extends AbstractActionController
             $form = new \Application\Catalogo\Form\promocionesForm($productos_array,$marcas_array,$variantes_array);
             
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            
+            $form->get('promocion_fechafin')->setValue($entity->getPromocionFechafin('d/m/Y'));
+            $form->get('promocion_fechainicio')->setValue($entity->getPromocionFechainicio('d/m/Y'));
+
+
             $view_model = new ViewModel();
             $view_model->setTemplate('application/catalogo/promociones/ver'); 
             $view_model->setVariables(array(
@@ -414,10 +415,10 @@ class PromocionesController extends AbstractActionController
         if($request->isPost())
         {
             $id = $this->params()->fromRoute('id');
-            $entity = \DescuentoQuery::Create()->findPk($id);
+            $entity = \PromocionQuery::Create()->findPk($id);
             $entity->delete();
 
-            $detalles = \DescuentodetalleQuery::create()->filterByIddescuento($id)->delete();
+            $detalles = \PromociondetalleQuery::create()->filterByIdpromocion($id)->delete();
 
             if($entity->isDeleted()){
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido eliminado satisfactoriamente.');
@@ -431,7 +432,7 @@ class PromocionesController extends AbstractActionController
 
 
     public function getProductos($data){
-        $productos = \DescuentodetalleQuery::create()->select('idproducto')->filterByIddescuento($data['iddescuento'])->find()->toArray();
+        $productos = \PromociondetalleQuery::create()->select('idproducto')->filterByIdpromocion($data['idpromocion'])->find()->toArray();
         return $productos;
 
     }
@@ -456,7 +457,7 @@ class PromocionesController extends AbstractActionController
 
 
     public function getVariantes($data){
-        $variantes = \DescuentodetalleQuery::create()->select('idproductovariante')->filterByIddescuento($data['iddescuento'])->find()->toArray();
+        $variantes = \PromociondetalleQuery::create()->select('idproductovariante')->filterByIdpromocion($data['idpromocion'])->find()->toArray();
         return $variantes;
 
     }
@@ -480,7 +481,7 @@ class PromocionesController extends AbstractActionController
 
 
     public function getMarcas($data){
-        $marcas = \DescuentodetalleQuery::create()->select('idmarca')->filterByIddescuento($data['iddescuento'])->find()->toArray();
+        $marcas = \PromociondetalleQuery::create()->select('idmarca')->filterByIdpromocion($data['idpromocion'])->find()->toArray();
         return $marcas;
 
     }

@@ -393,7 +393,9 @@ class DescuentosController extends AbstractActionController
             $form = new \Application\Catalogo\Form\DescuentosForm($productos_array,$marcas_array,$variantes_array);
             
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            
+            $form->get('descuento_fechafin')->setValue($entity->getDescuentoFechafin('d/m/Y'));
+            $form->get('descuento_fechainicio')->setValue($entity->getDescuentoFechainicio('d/m/Y'));
+
             $view_model = new ViewModel();
             $view_model->setTemplate('application/catalogo/descuentos/ver'); 
             $view_model->setVariables(array(
