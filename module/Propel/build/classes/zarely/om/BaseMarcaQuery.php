@@ -28,13 +28,9 @@
  * @method MarcaQuery rightJoinProducto($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Producto relation
  * @method MarcaQuery innerJoinProducto($relationAlias = null) Adds a INNER JOIN clause to the query using the Producto relation
  *
- * @method MarcaQuery leftJoinPromociondetalleRelatedByIdmarcaoperando($relationAlias = null) Adds a LEFT JOIN clause to the query using the PromociondetalleRelatedByIdmarcaoperando relation
- * @method MarcaQuery rightJoinPromociondetalleRelatedByIdmarcaoperando($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PromociondetalleRelatedByIdmarcaoperando relation
- * @method MarcaQuery innerJoinPromociondetalleRelatedByIdmarcaoperando($relationAlias = null) Adds a INNER JOIN clause to the query using the PromociondetalleRelatedByIdmarcaoperando relation
- *
- * @method MarcaQuery leftJoinPromociondetalleRelatedByIdmarcaresultado($relationAlias = null) Adds a LEFT JOIN clause to the query using the PromociondetalleRelatedByIdmarcaresultado relation
- * @method MarcaQuery rightJoinPromociondetalleRelatedByIdmarcaresultado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PromociondetalleRelatedByIdmarcaresultado relation
- * @method MarcaQuery innerJoinPromociondetalleRelatedByIdmarcaresultado($relationAlias = null) Adds a INNER JOIN clause to the query using the PromociondetalleRelatedByIdmarcaresultado relation
+ * @method MarcaQuery leftJoinPromociondetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Promociondetalle relation
+ * @method MarcaQuery rightJoinPromociondetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Promociondetalle relation
+ * @method MarcaQuery innerJoinPromociondetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Promociondetalle relation
  *
  * @method MarcaQuery leftJoinProveedormarca($relationAlias = null) Adds a LEFT JOIN clause to the query using the Proveedormarca relation
  * @method MarcaQuery rightJoinProveedormarca($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Proveedormarca relation
@@ -545,33 +541,33 @@ abstract class BaseMarcaQuery extends ModelCriteria
      * @return                 MarcaQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByPromociondetalleRelatedByIdmarcaoperando($promociondetalle, $comparison = null)
+    public function filterByPromociondetalle($promociondetalle, $comparison = null)
     {
         if ($promociondetalle instanceof Promociondetalle) {
             return $this
-                ->addUsingAlias(MarcaPeer::IDMARCA, $promociondetalle->getIdmarcaoperando(), $comparison);
+                ->addUsingAlias(MarcaPeer::IDMARCA, $promociondetalle->getIdmarca(), $comparison);
         } elseif ($promociondetalle instanceof PropelObjectCollection) {
             return $this
-                ->usePromociondetalleRelatedByIdmarcaoperandoQuery()
+                ->usePromociondetalleQuery()
                 ->filterByPrimaryKeys($promociondetalle->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByPromociondetalleRelatedByIdmarcaoperando() only accepts arguments of type Promociondetalle or PropelCollection');
+            throw new PropelException('filterByPromociondetalle() only accepts arguments of type Promociondetalle or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the PromociondetalleRelatedByIdmarcaoperando relation
+     * Adds a JOIN clause to the query using the Promociondetalle relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return MarcaQuery The current query, for fluid interface
      */
-    public function joinPromociondetalleRelatedByIdmarcaoperando($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPromociondetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PromociondetalleRelatedByIdmarcaoperando');
+        $relationMap = $tableMap->getRelation('Promociondetalle');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -586,14 +582,14 @@ abstract class BaseMarcaQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'PromociondetalleRelatedByIdmarcaoperando');
+            $this->addJoinObject($join, 'Promociondetalle');
         }
 
         return $this;
     }
 
     /**
-     * Use the PromociondetalleRelatedByIdmarcaoperando relation Promociondetalle object
+     * Use the Promociondetalle relation Promociondetalle object
      *
      * @see       useQuery()
      *
@@ -603,85 +599,11 @@ abstract class BaseMarcaQuery extends ModelCriteria
      *
      * @return   PromociondetalleQuery A secondary query class using the current class as primary query
      */
-    public function usePromociondetalleRelatedByIdmarcaoperandoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function usePromociondetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinPromociondetalleRelatedByIdmarcaoperando($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PromociondetalleRelatedByIdmarcaoperando', 'PromociondetalleQuery');
-    }
-
-    /**
-     * Filter the query by a related Promociondetalle object
-     *
-     * @param   Promociondetalle|PropelObjectCollection $promociondetalle  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 MarcaQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPromociondetalleRelatedByIdmarcaresultado($promociondetalle, $comparison = null)
-    {
-        if ($promociondetalle instanceof Promociondetalle) {
-            return $this
-                ->addUsingAlias(MarcaPeer::IDMARCA, $promociondetalle->getIdmarcaresultado(), $comparison);
-        } elseif ($promociondetalle instanceof PropelObjectCollection) {
-            return $this
-                ->usePromociondetalleRelatedByIdmarcaresultadoQuery()
-                ->filterByPrimaryKeys($promociondetalle->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPromociondetalleRelatedByIdmarcaresultado() only accepts arguments of type Promociondetalle or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PromociondetalleRelatedByIdmarcaresultado relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return MarcaQuery The current query, for fluid interface
-     */
-    public function joinPromociondetalleRelatedByIdmarcaresultado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PromociondetalleRelatedByIdmarcaresultado');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PromociondetalleRelatedByIdmarcaresultado');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PromociondetalleRelatedByIdmarcaresultado relation Promociondetalle object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   PromociondetalleQuery A secondary query class using the current class as primary query
-     */
-    public function usePromociondetalleRelatedByIdmarcaresultadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPromociondetalleRelatedByIdmarcaresultado($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PromociondetalleRelatedByIdmarcaresultado', 'PromociondetalleQuery');
+            ->joinPromociondetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Promociondetalle', 'PromociondetalleQuery');
     }
 
     /**

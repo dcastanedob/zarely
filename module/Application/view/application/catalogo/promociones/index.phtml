@@ -1,0 +1,71 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title">Promociones</h1>
+	    
+	</div>
+
+	<?php foreach ($messages->getSuccessMessages() as $message):?>
+	        <div class="alert alert-success alert-dismissable">
+	            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+	            <strong>Éxito!</strong>
+	            <?php echo $message?>
+	        </div>
+	<?php endforeach;?>
+
+	<?php foreach ($messages->geterrorMessages() as $message):?>
+	        <div class="alert alert-danger alert-dismissable">
+	            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+	            <strong>Error!</strong>
+	            <?php echo $message?>
+	        </div>
+	<?php endforeach;?>
+
+
+	<div class="row">
+		<div class="col-md-12">
+			<a class="btn btn-bg btn-success btn-labeled pull-right" href="/catalogo/promociones/nuevo">
+              Agregar
+              <span class="btn-label btn-label-right">
+                <span class="icon icon-plus-square icon-lg icon-fw"></span>
+              </span>
+            </a>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="card-body">
+		    <table id="" class="table table-striped table-nowrap dataTable" cellspacing="0" width="100%">
+		        <thead>
+		            <tr>
+		                <th>Nombre</th>
+		                <th>Tipo</th>
+		                <th>Estatus</th>
+		                <th>Fecha de inicio</th>
+		                <th>Fecha de fin</th>
+		                <th>Opciones</th>
+		            </tr>
+		        </thead>
+		        <tfoot>
+		            <tr>
+		                <th>Nombre</th>
+		                <th>Tipo</th>
+		                <th>Estatus</th>
+		                <th>Fecha de inicio</th>
+		                <th>Fecha de fin</th>
+		                <th>Opciones</th>
+		            </tr>
+		        </tfoot>
+		        <tbody>
+		            
+		        </tbody>
+		    </table>
+		</div>
+	</div>
+
+</div>
+<script src="/js/catalogo/promociones.js"></script>
+
+<script>
+	var promociones = $('.body_container').promociones();
+	promociones.list();
+</script>

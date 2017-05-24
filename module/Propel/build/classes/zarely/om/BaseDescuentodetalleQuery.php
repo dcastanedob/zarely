@@ -10,11 +10,13 @@
  * @method DescuentodetalleQuery orderByIddescuento($order = Criteria::ASC) Order by the iddescuento column
  * @method DescuentodetalleQuery orderByIdproducto($order = Criteria::ASC) Order by the idproducto column
  * @method DescuentodetalleQuery orderByIdmarca($order = Criteria::ASC) Order by the idmarca column
+ * @method DescuentodetalleQuery orderByIdproductovariante($order = Criteria::ASC) Order by the idproductovariante column
  *
  * @method DescuentodetalleQuery groupByIddescuentodetalle() Group by the iddescuentodetalle column
  * @method DescuentodetalleQuery groupByIddescuento() Group by the iddescuento column
  * @method DescuentodetalleQuery groupByIdproducto() Group by the idproducto column
  * @method DescuentodetalleQuery groupByIdmarca() Group by the idmarca column
+ * @method DescuentodetalleQuery groupByIdproductovariante() Group by the idproductovariante column
  *
  * @method DescuentodetalleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method DescuentodetalleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -32,17 +34,23 @@
  * @method DescuentodetalleQuery rightJoinProducto($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Producto relation
  * @method DescuentodetalleQuery innerJoinProducto($relationAlias = null) Adds a INNER JOIN clause to the query using the Producto relation
  *
+ * @method DescuentodetalleQuery leftJoinProductovariante($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productovariante relation
+ * @method DescuentodetalleQuery rightJoinProductovariante($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productovariante relation
+ * @method DescuentodetalleQuery innerJoinProductovariante($relationAlias = null) Adds a INNER JOIN clause to the query using the Productovariante relation
+ *
  * @method Descuentodetalle findOne(PropelPDO $con = null) Return the first Descuentodetalle matching the query
  * @method Descuentodetalle findOneOrCreate(PropelPDO $con = null) Return the first Descuentodetalle matching the query, or a new Descuentodetalle object populated from the query conditions when no match is found
  *
  * @method Descuentodetalle findOneByIddescuento(int $iddescuento) Return the first Descuentodetalle filtered by the iddescuento column
  * @method Descuentodetalle findOneByIdproducto(int $idproducto) Return the first Descuentodetalle filtered by the idproducto column
  * @method Descuentodetalle findOneByIdmarca(int $idmarca) Return the first Descuentodetalle filtered by the idmarca column
+ * @method Descuentodetalle findOneByIdproductovariante(int $idproductovariante) Return the first Descuentodetalle filtered by the idproductovariante column
  *
  * @method array findByIddescuentodetalle(int $iddescuentodetalle) Return Descuentodetalle objects filtered by the iddescuentodetalle column
  * @method array findByIddescuento(int $iddescuento) Return Descuentodetalle objects filtered by the iddescuento column
  * @method array findByIdproducto(int $idproducto) Return Descuentodetalle objects filtered by the idproducto column
  * @method array findByIdmarca(int $idmarca) Return Descuentodetalle objects filtered by the idmarca column
+ * @method array findByIdproductovariante(int $idproductovariante) Return Descuentodetalle objects filtered by the idproductovariante column
  *
  * @package    propel.generator.zarely.om
  */
@@ -150,7 +158,7 @@ abstract class BaseDescuentodetalleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `iddescuentodetalle`, `iddescuento`, `idproducto`, `idmarca` FROM `descuentodetalle` WHERE `iddescuentodetalle` = :p0';
+        $sql = 'SELECT `iddescuentodetalle`, `iddescuento`, `idproducto`, `idmarca`, `idproductovariante` FROM `descuentodetalle` WHERE `iddescuentodetalle` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -414,6 +422,50 @@ abstract class BaseDescuentodetalleQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the idproductovariante column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdproductovariante(1234); // WHERE idproductovariante = 1234
+     * $query->filterByIdproductovariante(array(12, 34)); // WHERE idproductovariante IN (12, 34)
+     * $query->filterByIdproductovariante(array('min' => 12)); // WHERE idproductovariante >= 12
+     * $query->filterByIdproductovariante(array('max' => 12)); // WHERE idproductovariante <= 12
+     * </code>
+     *
+     * @see       filterByProductovariante()
+     *
+     * @param     mixed $idproductovariante The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return DescuentodetalleQuery The current query, for fluid interface
+     */
+    public function filterByIdproductovariante($idproductovariante = null, $comparison = null)
+    {
+        if (is_array($idproductovariante)) {
+            $useMinMax = false;
+            if (isset($idproductovariante['min'])) {
+                $this->addUsingAlias(DescuentodetallePeer::IDPRODUCTOVARIANTE, $idproductovariante['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idproductovariante['max'])) {
+                $this->addUsingAlias(DescuentodetallePeer::IDPRODUCTOVARIANTE, $idproductovariante['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(DescuentodetallePeer::IDPRODUCTOVARIANTE, $idproductovariante, $comparison);
+    }
+
+    /**
      * Filter the query by a related Descuento object
      *
      * @param   Descuento|PropelObjectCollection $descuento The related object(s) to use as filter
@@ -639,6 +691,82 @@ abstract class BaseDescuentodetalleQuery extends ModelCriteria
         return $this
             ->joinProducto($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Producto', 'ProductoQuery');
+    }
+
+    /**
+     * Filter the query by a related Productovariante object
+     *
+     * @param   Productovariante|PropelObjectCollection $productovariante The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 DescuentodetalleQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByProductovariante($productovariante, $comparison = null)
+    {
+        if ($productovariante instanceof Productovariante) {
+            return $this
+                ->addUsingAlias(DescuentodetallePeer::IDPRODUCTOVARIANTE, $productovariante->getIdproductovariante(), $comparison);
+        } elseif ($productovariante instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(DescuentodetallePeer::IDPRODUCTOVARIANTE, $productovariante->toKeyValue('PrimaryKey', 'Idproductovariante'), $comparison);
+        } else {
+            throw new PropelException('filterByProductovariante() only accepts arguments of type Productovariante or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Productovariante relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return DescuentodetalleQuery The current query, for fluid interface
+     */
+    public function joinProductovariante($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Productovariante');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Productovariante');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Productovariante relation Productovariante object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ProductovarianteQuery A secondary query class using the current class as primary query
+     */
+    public function useProductovarianteQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinProductovariante($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Productovariante', 'ProductovarianteQuery');
     }
 
     /**

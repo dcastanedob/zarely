@@ -24,13 +24,13 @@ abstract class BasePromociondetallePeer
     const TM_CLASS = 'PromociondetalleTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the idpromociondetalle field */
     const IDPROMOCIONDETALLE = 'promociondetalle.idpromociondetalle';
@@ -38,23 +38,14 @@ abstract class BasePromociondetallePeer
     /** the column name for the idpromocion field */
     const IDPROMOCION = 'promociondetalle.idpromocion';
 
-    /** the column name for the idmarcaoperando field */
-    const IDMARCAOPERANDO = 'promociondetalle.idmarcaoperando';
+    /** the column name for the idmarca field */
+    const IDMARCA = 'promociondetalle.idmarca';
 
-    /** the column name for the idproductooperando field */
-    const IDPRODUCTOOPERANDO = 'promociondetalle.idproductooperando';
+    /** the column name for the idproducto field */
+    const IDPRODUCTO = 'promociondetalle.idproducto';
 
-    /** the column name for the promociondetalle_cantidadoperando field */
-    const PROMOCIONDETALLE_CANTIDADOPERANDO = 'promociondetalle.promociondetalle_cantidadoperando';
-
-    /** the column name for the idmarcaresultado field */
-    const IDMARCARESULTADO = 'promociondetalle.idmarcaresultado';
-
-    /** the column name for the idproductoresultado field */
-    const IDPRODUCTORESULTADO = 'promociondetalle.idproductoresultado';
-
-    /** the column name for the promociondetalle_cantidadresultado field */
-    const PROMOCIONDETALLE_CANTIDADRESULTADO = 'promociondetalle.promociondetalle_cantidadresultado';
+    /** the column name for the idproductovariante field */
+    const IDPRODUCTOVARIANTE = 'promociondetalle.idproductovariante';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -75,12 +66,12 @@ abstract class BasePromociondetallePeer
      * e.g. PromociondetallePeer::$fieldNames[PromociondetallePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idpromociondetalle', 'Idpromocion', 'Idmarcaoperando', 'Idproductooperando', 'PromociondetalleCantidadoperando', 'Idmarcaresultado', 'Idproductoresultado', 'PromociondetalleCantidadresultado', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idpromociondetalle', 'idpromocion', 'idmarcaoperando', 'idproductooperando', 'promociondetalleCantidadoperando', 'idmarcaresultado', 'idproductoresultado', 'promociondetalleCantidadresultado', ),
-        BasePeer::TYPE_COLNAME => array (PromociondetallePeer::IDPROMOCIONDETALLE, PromociondetallePeer::IDPROMOCION, PromociondetallePeer::IDMARCAOPERANDO, PromociondetallePeer::IDPRODUCTOOPERANDO, PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO, PromociondetallePeer::IDMARCARESULTADO, PromociondetallePeer::IDPRODUCTORESULTADO, PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPROMOCIONDETALLE', 'IDPROMOCION', 'IDMARCAOPERANDO', 'IDPRODUCTOOPERANDO', 'PROMOCIONDETALLE_CANTIDADOPERANDO', 'IDMARCARESULTADO', 'IDPRODUCTORESULTADO', 'PROMOCIONDETALLE_CANTIDADRESULTADO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idpromociondetalle', 'idpromocion', 'idmarcaoperando', 'idproductooperando', 'promociondetalle_cantidadoperando', 'idmarcaresultado', 'idproductoresultado', 'promociondetalle_cantidadresultado', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idpromociondetalle', 'Idpromocion', 'Idmarca', 'Idproducto', 'Idproductovariante', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idpromociondetalle', 'idpromocion', 'idmarca', 'idproducto', 'idproductovariante', ),
+        BasePeer::TYPE_COLNAME => array (PromociondetallePeer::IDPROMOCIONDETALLE, PromociondetallePeer::IDPROMOCION, PromociondetallePeer::IDMARCA, PromociondetallePeer::IDPRODUCTO, PromociondetallePeer::IDPRODUCTOVARIANTE, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPROMOCIONDETALLE', 'IDPROMOCION', 'IDMARCA', 'IDPRODUCTO', 'IDPRODUCTOVARIANTE', ),
+        BasePeer::TYPE_FIELDNAME => array ('idpromociondetalle', 'idpromocion', 'idmarca', 'idproducto', 'idproductovariante', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -90,12 +81,12 @@ abstract class BasePromociondetallePeer
      * e.g. PromociondetallePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idpromociondetalle' => 0, 'Idpromocion' => 1, 'Idmarcaoperando' => 2, 'Idproductooperando' => 3, 'PromociondetalleCantidadoperando' => 4, 'Idmarcaresultado' => 5, 'Idproductoresultado' => 6, 'PromociondetalleCantidadresultado' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idpromociondetalle' => 0, 'idpromocion' => 1, 'idmarcaoperando' => 2, 'idproductooperando' => 3, 'promociondetalleCantidadoperando' => 4, 'idmarcaresultado' => 5, 'idproductoresultado' => 6, 'promociondetalleCantidadresultado' => 7, ),
-        BasePeer::TYPE_COLNAME => array (PromociondetallePeer::IDPROMOCIONDETALLE => 0, PromociondetallePeer::IDPROMOCION => 1, PromociondetallePeer::IDMARCAOPERANDO => 2, PromociondetallePeer::IDPRODUCTOOPERANDO => 3, PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO => 4, PromociondetallePeer::IDMARCARESULTADO => 5, PromociondetallePeer::IDPRODUCTORESULTADO => 6, PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPROMOCIONDETALLE' => 0, 'IDPROMOCION' => 1, 'IDMARCAOPERANDO' => 2, 'IDPRODUCTOOPERANDO' => 3, 'PROMOCIONDETALLE_CANTIDADOPERANDO' => 4, 'IDMARCARESULTADO' => 5, 'IDPRODUCTORESULTADO' => 6, 'PROMOCIONDETALLE_CANTIDADRESULTADO' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('idpromociondetalle' => 0, 'idpromocion' => 1, 'idmarcaoperando' => 2, 'idproductooperando' => 3, 'promociondetalle_cantidadoperando' => 4, 'idmarcaresultado' => 5, 'idproductoresultado' => 6, 'promociondetalle_cantidadresultado' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Idpromociondetalle' => 0, 'Idpromocion' => 1, 'Idmarca' => 2, 'Idproducto' => 3, 'Idproductovariante' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idpromociondetalle' => 0, 'idpromocion' => 1, 'idmarca' => 2, 'idproducto' => 3, 'idproductovariante' => 4, ),
+        BasePeer::TYPE_COLNAME => array (PromociondetallePeer::IDPROMOCIONDETALLE => 0, PromociondetallePeer::IDPROMOCION => 1, PromociondetallePeer::IDMARCA => 2, PromociondetallePeer::IDPRODUCTO => 3, PromociondetallePeer::IDPRODUCTOVARIANTE => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPROMOCIONDETALLE' => 0, 'IDPROMOCION' => 1, 'IDMARCA' => 2, 'IDPRODUCTO' => 3, 'IDPRODUCTOVARIANTE' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('idpromociondetalle' => 0, 'idpromocion' => 1, 'idmarca' => 2, 'idproducto' => 3, 'idproductovariante' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -171,21 +162,15 @@ abstract class BasePromociondetallePeer
         if (null === $alias) {
             $criteria->addSelectColumn(PromociondetallePeer::IDPROMOCIONDETALLE);
             $criteria->addSelectColumn(PromociondetallePeer::IDPROMOCION);
-            $criteria->addSelectColumn(PromociondetallePeer::IDMARCAOPERANDO);
-            $criteria->addSelectColumn(PromociondetallePeer::IDPRODUCTOOPERANDO);
-            $criteria->addSelectColumn(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO);
-            $criteria->addSelectColumn(PromociondetallePeer::IDMARCARESULTADO);
-            $criteria->addSelectColumn(PromociondetallePeer::IDPRODUCTORESULTADO);
-            $criteria->addSelectColumn(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO);
+            $criteria->addSelectColumn(PromociondetallePeer::IDMARCA);
+            $criteria->addSelectColumn(PromociondetallePeer::IDPRODUCTO);
+            $criteria->addSelectColumn(PromociondetallePeer::IDPRODUCTOVARIANTE);
         } else {
             $criteria->addSelectColumn($alias . '.idpromociondetalle');
             $criteria->addSelectColumn($alias . '.idpromocion');
-            $criteria->addSelectColumn($alias . '.idmarcaoperando');
-            $criteria->addSelectColumn($alias . '.idproductooperando');
-            $criteria->addSelectColumn($alias . '.promociondetalle_cantidadoperando');
-            $criteria->addSelectColumn($alias . '.idmarcaresultado');
-            $criteria->addSelectColumn($alias . '.idproductoresultado');
-            $criteria->addSelectColumn($alias . '.promociondetalle_cantidadresultado');
+            $criteria->addSelectColumn($alias . '.idmarca');
+            $criteria->addSelectColumn($alias . '.idproducto');
+            $criteria->addSelectColumn($alias . '.idproductovariante');
         }
     }
 
@@ -488,7 +473,7 @@ abstract class BasePromociondetallePeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related MarcaRelatedByIdmarcaoperando table
+     * Returns the number of rows matching criteria, joining the related Marca table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -496,7 +481,7 @@ abstract class BasePromociondetallePeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinMarcaRelatedByIdmarcaoperando(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinMarca(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -523,7 +508,7 @@ abstract class BasePromociondetallePeer
             $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -539,7 +524,7 @@ abstract class BasePromociondetallePeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related MarcaRelatedByIdmarcaresultado table
+     * Returns the number of rows matching criteria, joining the related Producto table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -547,7 +532,7 @@ abstract class BasePromociondetallePeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinMarcaRelatedByIdmarcaresultado(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinProducto(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -574,7 +559,7 @@ abstract class BasePromociondetallePeer
             $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -590,7 +575,7 @@ abstract class BasePromociondetallePeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related ProductoRelatedByIdproductooperando table
+     * Returns the number of rows matching criteria, joining the related Productovariante table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -598,7 +583,7 @@ abstract class BasePromociondetallePeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinProductoRelatedByIdproductooperando(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinProductovariante(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -625,58 +610,7 @@ abstract class BasePromociondetallePeer
             $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related ProductoRelatedByIdproductoresultado table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinProductoRelatedByIdproductoresultado(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PromociondetallePeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PromociondetallePeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(PromociondetallePeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -751,7 +685,7 @@ abstract class BasePromociondetallePeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinMarcaRelatedByIdmarcaoperando(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinMarca(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -764,7 +698,7 @@ abstract class BasePromociondetallePeer
         $startcol = PromociondetallePeer::NUM_HYDRATE_COLUMNS;
         MarcaPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -797,74 +731,7 @@ abstract class BasePromociondetallePeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (Promociondetalle) to $obj2 (Marca)
-                $obj2->addPromociondetalleRelatedByIdmarcaoperando($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Promociondetalle objects pre-filled with their Marca objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Promociondetalle objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinMarcaRelatedByIdmarcaresultado(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PromociondetallePeer::DATABASE_NAME);
-        }
-
-        PromociondetallePeer::addSelectColumns($criteria);
-        $startcol = PromociondetallePeer::NUM_HYDRATE_COLUMNS;
-        MarcaPeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PromociondetallePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PromociondetallePeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = PromociondetallePeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PromociondetallePeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = MarcaPeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = MarcaPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    MarcaPeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (Promociondetalle) to $obj2 (Marca)
-                $obj2->addPromociondetalleRelatedByIdmarcaresultado($obj1);
+                $obj2->addPromociondetalle($obj1);
 
             } // if joined row was not null
 
@@ -885,7 +752,7 @@ abstract class BasePromociondetallePeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinProductoRelatedByIdproductooperando(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinProducto(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -898,7 +765,7 @@ abstract class BasePromociondetallePeer
         $startcol = PromociondetallePeer::NUM_HYDRATE_COLUMNS;
         ProductoPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -931,7 +798,7 @@ abstract class BasePromociondetallePeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (Promociondetalle) to $obj2 (Producto)
-                $obj2->addPromociondetalleRelatedByIdproductooperando($obj1);
+                $obj2->addPromociondetalle($obj1);
 
             } // if joined row was not null
 
@@ -944,7 +811,7 @@ abstract class BasePromociondetallePeer
 
 
     /**
-     * Selects a collection of Promociondetalle objects pre-filled with their Producto objects.
+     * Selects a collection of Promociondetalle objects pre-filled with their Productovariante objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -952,7 +819,7 @@ abstract class BasePromociondetallePeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinProductoRelatedByIdproductoresultado(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinProductovariante(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -963,9 +830,9 @@ abstract class BasePromociondetallePeer
 
         PromociondetallePeer::addSelectColumns($criteria);
         $startcol = PromociondetallePeer::NUM_HYDRATE_COLUMNS;
-        ProductoPeer::addSelectColumns($criteria);
+        ProductovariantePeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -985,20 +852,20 @@ abstract class BasePromociondetallePeer
                 PromociondetallePeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
-            $key2 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            $key2 = ProductovariantePeer::getPrimaryKeyHashFromRow($row, $startcol);
             if ($key2 !== null) {
-                $obj2 = ProductoPeer::getInstanceFromPool($key2);
+                $obj2 = ProductovariantePeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = ProductoPeer::getOMClass();
+                    $cls = ProductovariantePeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol);
-                    ProductoPeer::addInstanceToPool($obj2, $key2);
+                    ProductovariantePeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (Promociondetalle) to $obj2 (Producto)
-                $obj2->addPromociondetalleRelatedByIdproductoresultado($obj1);
+                // Add the $obj1 (Promociondetalle) to $obj2 (Productovariante)
+                $obj2->addPromociondetalle($obj1);
 
             } // if joined row was not null
 
@@ -1113,13 +980,11 @@ abstract class BasePromociondetallePeer
             $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
 
         $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
 
@@ -1160,25 +1025,20 @@ abstract class BasePromociondetallePeer
         MarcaPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + MarcaPeer::NUM_HYDRATE_COLUMNS;
 
-        MarcaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + MarcaPeer::NUM_HYDRATE_COLUMNS;
-
         ProductoPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + ProductoPeer::NUM_HYDRATE_COLUMNS;
 
-        ProductoPeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+        ProductovariantePeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + ProductovariantePeer::NUM_HYDRATE_COLUMNS;
 
         PromocionPeer::addSelectColumns($criteria);
-        $startcol7 = $startcol6 + PromocionPeer::NUM_HYDRATE_COLUMNS;
+        $startcol6 = $startcol5 + PromocionPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
 
         $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
 
@@ -1214,79 +1074,61 @@ abstract class BasePromociondetallePeer
                 } // if obj2 loaded
 
                 // Add the $obj1 (Promociondetalle) to the collection in $obj2 (Marca)
-                $obj2->addPromociondetalleRelatedByIdmarcaoperando($obj1);
+                $obj2->addPromociondetalle($obj1);
             } // if joined row not null
 
-            // Add objects for joined Marca rows
+            // Add objects for joined Producto rows
 
-            $key3 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            $key3 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
             if ($key3 !== null) {
-                $obj3 = MarcaPeer::getInstanceFromPool($key3);
+                $obj3 = ProductoPeer::getInstanceFromPool($key3);
                 if (!$obj3) {
 
-                    $cls = MarcaPeer::getOMClass();
+                    $cls = ProductoPeer::getOMClass();
 
                     $obj3 = new $cls();
                     $obj3->hydrate($row, $startcol3);
-                    MarcaPeer::addInstanceToPool($obj3, $key3);
+                    ProductoPeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Marca)
-                $obj3->addPromociondetalleRelatedByIdmarcaresultado($obj1);
+                // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Producto)
+                $obj3->addPromociondetalle($obj1);
             } // if joined row not null
 
-            // Add objects for joined Producto rows
+            // Add objects for joined Productovariante rows
 
-            $key4 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            $key4 = ProductovariantePeer::getPrimaryKeyHashFromRow($row, $startcol4);
             if ($key4 !== null) {
-                $obj4 = ProductoPeer::getInstanceFromPool($key4);
+                $obj4 = ProductovariantePeer::getInstanceFromPool($key4);
                 if (!$obj4) {
 
-                    $cls = ProductoPeer::getOMClass();
+                    $cls = ProductovariantePeer::getOMClass();
 
                     $obj4 = new $cls();
                     $obj4->hydrate($row, $startcol4);
-                    ProductoPeer::addInstanceToPool($obj4, $key4);
+                    ProductovariantePeer::addInstanceToPool($obj4, $key4);
                 } // if obj4 loaded
 
-                // Add the $obj1 (Promociondetalle) to the collection in $obj4 (Producto)
-                $obj4->addPromociondetalleRelatedByIdproductooperando($obj1);
-            } // if joined row not null
-
-            // Add objects for joined Producto rows
-
-            $key5 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-            if ($key5 !== null) {
-                $obj5 = ProductoPeer::getInstanceFromPool($key5);
-                if (!$obj5) {
-
-                    $cls = ProductoPeer::getOMClass();
-
-                    $obj5 = new $cls();
-                    $obj5->hydrate($row, $startcol5);
-                    ProductoPeer::addInstanceToPool($obj5, $key5);
-                } // if obj5 loaded
-
-                // Add the $obj1 (Promociondetalle) to the collection in $obj5 (Producto)
-                $obj5->addPromociondetalleRelatedByIdproductoresultado($obj1);
+                // Add the $obj1 (Promociondetalle) to the collection in $obj4 (Productovariante)
+                $obj4->addPromociondetalle($obj1);
             } // if joined row not null
 
             // Add objects for joined Promocion rows
 
-            $key6 = PromocionPeer::getPrimaryKeyHashFromRow($row, $startcol6);
-            if ($key6 !== null) {
-                $obj6 = PromocionPeer::getInstanceFromPool($key6);
-                if (!$obj6) {
+            $key5 = PromocionPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+            if ($key5 !== null) {
+                $obj5 = PromocionPeer::getInstanceFromPool($key5);
+                if (!$obj5) {
 
                     $cls = PromocionPeer::getOMClass();
 
-                    $obj6 = new $cls();
-                    $obj6->hydrate($row, $startcol6);
-                    PromocionPeer::addInstanceToPool($obj6, $key6);
-                } // if obj6 loaded
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PromocionPeer::addInstanceToPool($obj5, $key5);
+                } // if obj5 loaded
 
-                // Add the $obj1 (Promociondetalle) to the collection in $obj6 (Promocion)
-                $obj6->addPromociondetalle($obj1);
+                // Add the $obj1 (Promociondetalle) to the collection in $obj5 (Promocion)
+                $obj5->addPromociondetalle($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -1298,7 +1140,7 @@ abstract class BasePromociondetallePeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related MarcaRelatedByIdmarcaoperando table
+     * Returns the number of rows matching criteria, joining the related Marca table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1306,7 +1148,7 @@ abstract class BasePromociondetallePeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptMarcaRelatedByIdmarcaoperando(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptMarca(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -1333,9 +1175,9 @@ abstract class BasePromociondetallePeer
             $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
 
         $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
 
@@ -1353,7 +1195,7 @@ abstract class BasePromociondetallePeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related MarcaRelatedByIdmarcaresultado table
+     * Returns the number of rows matching criteria, joining the related Producto table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1361,7 +1203,7 @@ abstract class BasePromociondetallePeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptMarcaRelatedByIdmarcaresultado(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptProducto(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -1388,9 +1230,9 @@ abstract class BasePromociondetallePeer
             $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
 
         $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
 
@@ -1408,7 +1250,7 @@ abstract class BasePromociondetallePeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related ProductoRelatedByIdproductooperando table
+     * Returns the number of rows matching criteria, joining the related Productovariante table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1416,7 +1258,7 @@ abstract class BasePromociondetallePeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptProductoRelatedByIdproductooperando(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptProductovariante(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -1443,64 +1285,9 @@ abstract class BasePromociondetallePeer
             $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related ProductoRelatedByIdproductoresultado table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAllExceptProductoRelatedByIdproductoresultado(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(PromociondetallePeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            PromociondetallePeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
-
-        // Set the correct dbName
-        $criteria->setDbName(PromociondetallePeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
 
@@ -1553,13 +1340,11 @@ abstract class BasePromociondetallePeer
             $con = Propel::getConnection(PromociondetallePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1575,7 +1360,7 @@ abstract class BasePromociondetallePeer
 
 
     /**
-     * Selects a collection of Promociondetalle objects pre-filled with all related objects except MarcaRelatedByIdmarcaoperando.
+     * Selects a collection of Promociondetalle objects pre-filled with all related objects except Marca.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1584,7 +1369,7 @@ abstract class BasePromociondetallePeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptMarcaRelatedByIdmarcaoperando(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptMarca(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1601,15 +1386,15 @@ abstract class BasePromociondetallePeer
         ProductoPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + ProductoPeer::NUM_HYDRATE_COLUMNS;
 
-        ProductoPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+        ProductovariantePeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ProductovariantePeer::NUM_HYDRATE_COLUMNS;
 
         PromocionPeer::addSelectColumns($criteria);
         $startcol5 = $startcol4 + PromocionPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
 
         $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
 
@@ -1646,26 +1431,26 @@ abstract class BasePromociondetallePeer
                 } // if $obj2 already loaded
 
                 // Add the $obj1 (Promociondetalle) to the collection in $obj2 (Producto)
-                $obj2->addPromociondetalleRelatedByIdproductooperando($obj1);
+                $obj2->addPromociondetalle($obj1);
 
             } // if joined row is not null
 
-                // Add objects for joined Producto rows
+                // Add objects for joined Productovariante rows
 
-                $key3 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                $key3 = ProductovariantePeer::getPrimaryKeyHashFromRow($row, $startcol3);
                 if ($key3 !== null) {
-                    $obj3 = ProductoPeer::getInstanceFromPool($key3);
+                    $obj3 = ProductovariantePeer::getInstanceFromPool($key3);
                     if (!$obj3) {
 
-                        $cls = ProductoPeer::getOMClass();
+                        $cls = ProductovariantePeer::getOMClass();
 
                     $obj3 = new $cls();
                     $obj3->hydrate($row, $startcol3);
-                    ProductoPeer::addInstanceToPool($obj3, $key3);
+                    ProductovariantePeer::addInstanceToPool($obj3, $key3);
                 } // if $obj3 already loaded
 
-                // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Producto)
-                $obj3->addPromociondetalleRelatedByIdproductoresultado($obj1);
+                // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Productovariante)
+                $obj3->addPromociondetalle($obj1);
 
             } // if joined row is not null
 
@@ -1697,7 +1482,7 @@ abstract class BasePromociondetallePeer
 
 
     /**
-     * Selects a collection of Promociondetalle objects pre-filled with all related objects except MarcaRelatedByIdmarcaresultado.
+     * Selects a collection of Promociondetalle objects pre-filled with all related objects except Producto.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1706,7 +1491,7 @@ abstract class BasePromociondetallePeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptMarcaRelatedByIdmarcaresultado(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptProducto(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1720,8 +1505,130 @@ abstract class BasePromociondetallePeer
         PromociondetallePeer::addSelectColumns($criteria);
         $startcol2 = PromociondetallePeer::NUM_HYDRATE_COLUMNS;
 
-        ProductoPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+        MarcaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + MarcaPeer::NUM_HYDRATE_COLUMNS;
+
+        ProductovariantePeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ProductovariantePeer::NUM_HYDRATE_COLUMNS;
+
+        PromocionPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + PromocionPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
+
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
+
+        $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = PromociondetallePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = PromociondetallePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = PromociondetallePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                PromociondetallePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Marca rows
+
+                $key2 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = MarcaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = MarcaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    MarcaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Promociondetalle) to the collection in $obj2 (Marca)
+                $obj2->addPromociondetalle($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Productovariante rows
+
+                $key3 = ProductovariantePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ProductovariantePeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ProductovariantePeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ProductovariantePeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Productovariante)
+                $obj3->addPromociondetalle($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Promocion rows
+
+                $key4 = PromocionPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = PromocionPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = PromocionPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    PromocionPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Promociondetalle) to the collection in $obj4 (Promocion)
+                $obj4->addPromociondetalle($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Promociondetalle objects pre-filled with all related objects except Productovariante.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Promociondetalle objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptProductovariante(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(PromociondetallePeer::DATABASE_NAME);
+        }
+
+        PromociondetallePeer::addSelectColumns($criteria);
+        $startcol2 = PromociondetallePeer::NUM_HYDRATE_COLUMNS;
+
+        MarcaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + MarcaPeer::NUM_HYDRATE_COLUMNS;
 
         ProductoPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + ProductoPeer::NUM_HYDRATE_COLUMNS;
@@ -1729,9 +1636,9 @@ abstract class BasePromociondetallePeer
         PromocionPeer::addSelectColumns($criteria);
         $startcol5 = $startcol4 + PromocionPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
 
@@ -1753,22 +1660,22 @@ abstract class BasePromociondetallePeer
                 PromociondetallePeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined Producto rows
+                // Add objects for joined Marca rows
 
-                $key2 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                $key2 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
                 if ($key2 !== null) {
-                    $obj2 = ProductoPeer::getInstanceFromPool($key2);
+                    $obj2 = MarcaPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
 
-                        $cls = ProductoPeer::getOMClass();
+                        $cls = MarcaPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    ProductoPeer::addInstanceToPool($obj2, $key2);
+                    MarcaPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (Promociondetalle) to the collection in $obj2 (Producto)
-                $obj2->addPromociondetalleRelatedByIdproductooperando($obj1);
+                // Add the $obj1 (Promociondetalle) to the collection in $obj2 (Marca)
+                $obj2->addPromociondetalle($obj1);
 
             } // if joined row is not null
 
@@ -1787,251 +1694,7 @@ abstract class BasePromociondetallePeer
                 } // if $obj3 already loaded
 
                 // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Producto)
-                $obj3->addPromociondetalleRelatedByIdproductoresultado($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Promocion rows
-
-                $key4 = PromocionPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-                if ($key4 !== null) {
-                    $obj4 = PromocionPeer::getInstanceFromPool($key4);
-                    if (!$obj4) {
-
-                        $cls = PromocionPeer::getOMClass();
-
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    PromocionPeer::addInstanceToPool($obj4, $key4);
-                } // if $obj4 already loaded
-
-                // Add the $obj1 (Promociondetalle) to the collection in $obj4 (Promocion)
-                $obj4->addPromociondetalle($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Promociondetalle objects pre-filled with all related objects except ProductoRelatedByIdproductooperando.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Promociondetalle objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptProductoRelatedByIdproductooperando(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PromociondetallePeer::DATABASE_NAME);
-        }
-
-        PromociondetallePeer::addSelectColumns($criteria);
-        $startcol2 = PromociondetallePeer::NUM_HYDRATE_COLUMNS;
-
-        MarcaPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + MarcaPeer::NUM_HYDRATE_COLUMNS;
-
-        MarcaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + MarcaPeer::NUM_HYDRATE_COLUMNS;
-
-        PromocionPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + PromocionPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PromociondetallePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PromociondetallePeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = PromociondetallePeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PromociondetallePeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Marca rows
-
-                $key2 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = MarcaPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = MarcaPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    MarcaPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Promociondetalle) to the collection in $obj2 (Marca)
-                $obj2->addPromociondetalleRelatedByIdmarcaoperando($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Marca rows
-
-                $key3 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = MarcaPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = MarcaPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    MarcaPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Marca)
-                $obj3->addPromociondetalleRelatedByIdmarcaresultado($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Promocion rows
-
-                $key4 = PromocionPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-                if ($key4 !== null) {
-                    $obj4 = PromocionPeer::getInstanceFromPool($key4);
-                    if (!$obj4) {
-
-                        $cls = PromocionPeer::getOMClass();
-
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    PromocionPeer::addInstanceToPool($obj4, $key4);
-                } // if $obj4 already loaded
-
-                // Add the $obj1 (Promociondetalle) to the collection in $obj4 (Promocion)
-                $obj4->addPromociondetalle($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of Promociondetalle objects pre-filled with all related objects except ProductoRelatedByIdproductoresultado.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Promociondetalle objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptProductoRelatedByIdproductoresultado(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(PromociondetallePeer::DATABASE_NAME);
-        }
-
-        PromociondetallePeer::addSelectColumns($criteria);
-        $startcol2 = PromociondetallePeer::NUM_HYDRATE_COLUMNS;
-
-        MarcaPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + MarcaPeer::NUM_HYDRATE_COLUMNS;
-
-        MarcaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + MarcaPeer::NUM_HYDRATE_COLUMNS;
-
-        PromocionPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + PromocionPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDPROMOCION, PromocionPeer::IDPROMOCION, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = PromociondetallePeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = PromociondetallePeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = PromociondetallePeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                PromociondetallePeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Marca rows
-
-                $key2 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = MarcaPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = MarcaPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    MarcaPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (Promociondetalle) to the collection in $obj2 (Marca)
-                $obj2->addPromociondetalleRelatedByIdmarcaoperando($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Marca rows
-
-                $key3 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = MarcaPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = MarcaPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    MarcaPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Marca)
-                $obj3->addPromociondetalleRelatedByIdmarcaresultado($obj1);
+                $obj3->addPromociondetalle($obj1);
 
             } // if joined row is not null
 
@@ -2089,22 +1752,17 @@ abstract class BasePromociondetallePeer
         MarcaPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + MarcaPeer::NUM_HYDRATE_COLUMNS;
 
-        MarcaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + MarcaPeer::NUM_HYDRATE_COLUMNS;
-
         ProductoPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + ProductoPeer::NUM_HYDRATE_COLUMNS;
 
-        ProductoPeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+        ProductovariantePeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + ProductovariantePeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCAOPERANDO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDMARCA, MarcaPeer::IDMARCA, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDMARCARESULTADO, MarcaPeer::IDMARCA, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOOPERANDO, ProductoPeer::IDPRODUCTO, $join_behavior);
-
-        $criteria->addJoin(PromociondetallePeer::IDPRODUCTORESULTADO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(PromociondetallePeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -2139,64 +1797,45 @@ abstract class BasePromociondetallePeer
                 } // if $obj2 already loaded
 
                 // Add the $obj1 (Promociondetalle) to the collection in $obj2 (Marca)
-                $obj2->addPromociondetalleRelatedByIdmarcaoperando($obj1);
+                $obj2->addPromociondetalle($obj1);
 
             } // if joined row is not null
 
-                // Add objects for joined Marca rows
+                // Add objects for joined Producto rows
 
-                $key3 = MarcaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                $key3 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
                 if ($key3 !== null) {
-                    $obj3 = MarcaPeer::getInstanceFromPool($key3);
+                    $obj3 = ProductoPeer::getInstanceFromPool($key3);
                     if (!$obj3) {
 
-                        $cls = MarcaPeer::getOMClass();
+                        $cls = ProductoPeer::getOMClass();
 
                     $obj3 = new $cls();
                     $obj3->hydrate($row, $startcol3);
-                    MarcaPeer::addInstanceToPool($obj3, $key3);
+                    ProductoPeer::addInstanceToPool($obj3, $key3);
                 } // if $obj3 already loaded
 
-                // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Marca)
-                $obj3->addPromociondetalleRelatedByIdmarcaresultado($obj1);
+                // Add the $obj1 (Promociondetalle) to the collection in $obj3 (Producto)
+                $obj3->addPromociondetalle($obj1);
 
             } // if joined row is not null
 
-                // Add objects for joined Producto rows
+                // Add objects for joined Productovariante rows
 
-                $key4 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                $key4 = ProductovariantePeer::getPrimaryKeyHashFromRow($row, $startcol4);
                 if ($key4 !== null) {
-                    $obj4 = ProductoPeer::getInstanceFromPool($key4);
+                    $obj4 = ProductovariantePeer::getInstanceFromPool($key4);
                     if (!$obj4) {
 
-                        $cls = ProductoPeer::getOMClass();
+                        $cls = ProductovariantePeer::getOMClass();
 
                     $obj4 = new $cls();
                     $obj4->hydrate($row, $startcol4);
-                    ProductoPeer::addInstanceToPool($obj4, $key4);
+                    ProductovariantePeer::addInstanceToPool($obj4, $key4);
                 } // if $obj4 already loaded
 
-                // Add the $obj1 (Promociondetalle) to the collection in $obj4 (Producto)
-                $obj4->addPromociondetalleRelatedByIdproductooperando($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Producto rows
-
-                $key5 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-                if ($key5 !== null) {
-                    $obj5 = ProductoPeer::getInstanceFromPool($key5);
-                    if (!$obj5) {
-
-                        $cls = ProductoPeer::getOMClass();
-
-                    $obj5 = new $cls();
-                    $obj5->hydrate($row, $startcol5);
-                    ProductoPeer::addInstanceToPool($obj5, $key5);
-                } // if $obj5 already loaded
-
-                // Add the $obj1 (Promociondetalle) to the collection in $obj5 (Producto)
-                $obj5->addPromociondetalleRelatedByIdproductoresultado($obj1);
+                // Add the $obj1 (Promociondetalle) to the collection in $obj4 (Productovariante)
+                $obj4->addPromociondetalle($obj1);
 
             } // if joined row is not null
 

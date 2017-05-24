@@ -40,12 +40,9 @@ class PromociondetalleTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idpromociondetalle', 'Idpromociondetalle', 'INTEGER', true, null, null);
         $this->addForeignKey('idpromocion', 'Idpromocion', 'INTEGER', 'promocion', 'idpromocion', true, null, null);
-        $this->addForeignKey('idmarcaoperando', 'Idmarcaoperando', 'INTEGER', 'marca', 'idmarca', true, null, null);
-        $this->addForeignKey('idproductooperando', 'Idproductooperando', 'INTEGER', 'producto', 'idproducto', true, null, null);
-        $this->addColumn('promociondetalle_cantidadoperando', 'PromociondetalleCantidadoperando', 'DECIMAL', true, 10, null);
-        $this->addForeignKey('idmarcaresultado', 'Idmarcaresultado', 'INTEGER', 'marca', 'idmarca', true, null, null);
-        $this->addForeignKey('idproductoresultado', 'Idproductoresultado', 'INTEGER', 'producto', 'idproducto', true, null, null);
-        $this->addColumn('promociondetalle_cantidadresultado', 'PromociondetalleCantidadresultado', 'DECIMAL', true, 10, null);
+        $this->addForeignKey('idmarca', 'Idmarca', 'INTEGER', 'marca', 'idmarca', false, null, null);
+        $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', false, null, null);
+        $this->addForeignKey('idproductovariante', 'Idproductovariante', 'INTEGER', 'productovariante', 'idproductovariante', false, null, null);
         // validators
     } // initialize()
 
@@ -54,10 +51,9 @@ class PromociondetalleTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('MarcaRelatedByIdmarcaoperando', 'Marca', RelationMap::MANY_TO_ONE, array('idmarcaoperando' => 'idmarca', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('MarcaRelatedByIdmarcaresultado', 'Marca', RelationMap::MANY_TO_ONE, array('idmarcaresultado' => 'idmarca', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('ProductoRelatedByIdproductooperando', 'Producto', RelationMap::MANY_TO_ONE, array('idproductooperando' => 'idproducto', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('ProductoRelatedByIdproductoresultado', 'Producto', RelationMap::MANY_TO_ONE, array('idproductoresultado' => 'idproducto', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Marca', 'Marca', RelationMap::MANY_TO_ONE, array('idmarca' => 'idmarca', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Productovariante', 'Productovariante', RelationMap::MANY_TO_ONE, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Promocion', 'Promocion', RelationMap::MANY_TO_ONE, array('idpromocion' => 'idpromocion', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 

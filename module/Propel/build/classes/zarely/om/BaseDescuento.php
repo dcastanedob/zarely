@@ -66,6 +66,18 @@ abstract class BaseDescuento extends BaseObject implements Persistent
     protected $descuento_tipo;
 
     /**
+     * The value for the descuento_descripcion field.
+     * @var        string
+     */
+    protected $descuento_descripcion;
+
+    /**
+     * The value for the descuento_cantidad field.
+     * @var        string
+     */
+    protected $descuento_cantidad;
+
+    /**
      * @var        PropelObjectCollection|Descuentodetalle[] Collection to store aggregation of Descuentodetalle objects.
      */
     protected $collDescuentodetalles;
@@ -222,6 +234,28 @@ abstract class BaseDescuento extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [descuento_descripcion] column value.
+     *
+     * @return string
+     */
+    public function getDescuentoDescripcion()
+    {
+
+        return $this->descuento_descripcion;
+    }
+
+    /**
+     * Get the [descuento_cantidad] column value.
+     *
+     * @return string
+     */
+    public function getDescuentoCantidad()
+    {
+
+        return $this->descuento_cantidad;
+    }
+
+    /**
      * Set the value of [iddescuento] column.
      *
      * @param  int $v new value
@@ -360,6 +394,48 @@ abstract class BaseDescuento extends BaseObject implements Persistent
     } // setDescuentoTipo()
 
     /**
+     * Set the value of [descuento_descripcion] column.
+     *
+     * @param  string $v new value
+     * @return Descuento The current object (for fluent API support)
+     */
+    public function setDescuentoDescripcion($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->descuento_descripcion !== $v) {
+            $this->descuento_descripcion = $v;
+            $this->modifiedColumns[] = DescuentoPeer::DESCUENTO_DESCRIPCION;
+        }
+
+
+        return $this;
+    } // setDescuentoDescripcion()
+
+    /**
+     * Set the value of [descuento_cantidad] column.
+     *
+     * @param  string $v new value
+     * @return Descuento The current object (for fluent API support)
+     */
+    public function setDescuentoCantidad($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->descuento_cantidad !== $v) {
+            $this->descuento_cantidad = $v;
+            $this->modifiedColumns[] = DescuentoPeer::DESCUENTO_CANTIDAD;
+        }
+
+
+        return $this;
+    } // setDescuentoCantidad()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -397,6 +473,8 @@ abstract class BaseDescuento extends BaseObject implements Persistent
             $this->descuento_fechafin = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->descuento_estatus = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
             $this->descuento_tipo = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->descuento_descripcion = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->descuento_cantidad = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -406,7 +484,7 @@ abstract class BaseDescuento extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 6; // 6 = DescuentoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = DescuentoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Descuento object", $e);
@@ -655,6 +733,12 @@ abstract class BaseDescuento extends BaseObject implements Persistent
         if ($this->isColumnModified(DescuentoPeer::DESCUENTO_TIPO)) {
             $modifiedColumns[':p' . $index++]  = '`descuento_tipo`';
         }
+        if ($this->isColumnModified(DescuentoPeer::DESCUENTO_DESCRIPCION)) {
+            $modifiedColumns[':p' . $index++]  = '`descuento_descripcion`';
+        }
+        if ($this->isColumnModified(DescuentoPeer::DESCUENTO_CANTIDAD)) {
+            $modifiedColumns[':p' . $index++]  = '`descuento_cantidad`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `descuento` (%s) VALUES (%s)',
@@ -683,6 +767,12 @@ abstract class BaseDescuento extends BaseObject implements Persistent
                         break;
                     case '`descuento_tipo`':
                         $stmt->bindValue($identifier, $this->descuento_tipo, PDO::PARAM_STR);
+                        break;
+                    case '`descuento_descripcion`':
+                        $stmt->bindValue($identifier, $this->descuento_descripcion, PDO::PARAM_STR);
+                        break;
+                    case '`descuento_cantidad`':
+                        $stmt->bindValue($identifier, $this->descuento_cantidad, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -844,6 +934,12 @@ abstract class BaseDescuento extends BaseObject implements Persistent
             case 5:
                 return $this->getDescuentoTipo();
                 break;
+            case 6:
+                return $this->getDescuentoDescripcion();
+                break;
+            case 7:
+                return $this->getDescuentoCantidad();
+                break;
             default:
                 return null;
                 break;
@@ -879,6 +975,8 @@ abstract class BaseDescuento extends BaseObject implements Persistent
             $keys[3] => $this->getDescuentoFechafin(),
             $keys[4] => $this->getDescuentoEstatus(),
             $keys[5] => $this->getDescuentoTipo(),
+            $keys[6] => $this->getDescuentoDescripcion(),
+            $keys[7] => $this->getDescuentoCantidad(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -941,6 +1039,12 @@ abstract class BaseDescuento extends BaseObject implements Persistent
             case 5:
                 $this->setDescuentoTipo($value);
                 break;
+            case 6:
+                $this->setDescuentoDescripcion($value);
+                break;
+            case 7:
+                $this->setDescuentoCantidad($value);
+                break;
         } // switch()
     }
 
@@ -971,6 +1075,8 @@ abstract class BaseDescuento extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setDescuentoFechafin($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setDescuentoEstatus($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setDescuentoTipo($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setDescuentoDescripcion($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setDescuentoCantidad($arr[$keys[7]]);
     }
 
     /**
@@ -988,6 +1094,8 @@ abstract class BaseDescuento extends BaseObject implements Persistent
         if ($this->isColumnModified(DescuentoPeer::DESCUENTO_FECHAFIN)) $criteria->add(DescuentoPeer::DESCUENTO_FECHAFIN, $this->descuento_fechafin);
         if ($this->isColumnModified(DescuentoPeer::DESCUENTO_ESTATUS)) $criteria->add(DescuentoPeer::DESCUENTO_ESTATUS, $this->descuento_estatus);
         if ($this->isColumnModified(DescuentoPeer::DESCUENTO_TIPO)) $criteria->add(DescuentoPeer::DESCUENTO_TIPO, $this->descuento_tipo);
+        if ($this->isColumnModified(DescuentoPeer::DESCUENTO_DESCRIPCION)) $criteria->add(DescuentoPeer::DESCUENTO_DESCRIPCION, $this->descuento_descripcion);
+        if ($this->isColumnModified(DescuentoPeer::DESCUENTO_CANTIDAD)) $criteria->add(DescuentoPeer::DESCUENTO_CANTIDAD, $this->descuento_cantidad);
 
         return $criteria;
     }
@@ -1056,6 +1164,8 @@ abstract class BaseDescuento extends BaseObject implements Persistent
         $copyObj->setDescuentoFechafin($this->getDescuentoFechafin());
         $copyObj->setDescuentoEstatus($this->getDescuentoEstatus());
         $copyObj->setDescuentoTipo($this->getDescuentoTipo());
+        $copyObj->setDescuentoDescripcion($this->getDescuentoDescripcion());
+        $copyObj->setDescuentoCantidad($this->getDescuentoCantidad());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1411,6 +1521,31 @@ abstract class BaseDescuento extends BaseObject implements Persistent
         return $this->getDescuentodetalles($query, $con);
     }
 
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Descuento is new, it will return
+     * an empty collection; or if this Descuento has previously
+     * been saved, it will retrieve related Descuentodetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Descuento.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Descuentodetalle[] List of Descuentodetalle objects
+     */
+    public function getDescuentodetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = DescuentodetalleQuery::create(null, $criteria);
+        $query->joinWith('Productovariante', $join_behavior);
+
+        return $this->getDescuentodetalles($query, $con);
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -1422,6 +1557,8 @@ abstract class BaseDescuento extends BaseObject implements Persistent
         $this->descuento_fechafin = null;
         $this->descuento_estatus = null;
         $this->descuento_tipo = null;
+        $this->descuento_descripcion = null;
+        $this->descuento_cantidad = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

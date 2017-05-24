@@ -184,6 +184,29 @@ return array(
                 ),
             ),
 
+            'descuentos' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/descuentos[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Descuentos',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+            'promociones' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/promociones[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Promociones',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'gastos' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -479,6 +502,9 @@ return array(
             'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController',
             'Application\Catalogo\Controller\Proveedores' => 'Application\Catalogo\Controller\ProveedoresController',
             'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController',
+            'Application\Catalogo\Controller\Promociones' => 'Application\Catalogo\Controller\PromocionesController',
+            'Application\Catalogo\Controller\Descuentos' => 'Application\Catalogo\Controller\DescuentosController',
+
             'Application\Catalogo\Controller\Medidas' => 'Application\Catalogo\Controller\MedidasController',
             'Application\Controller\Login' => 'Application\Controller\LoginController',
 

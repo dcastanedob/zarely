@@ -24,13 +24,13 @@ abstract class BaseDescuentoPeer
     const TM_CLASS = 'DescuentoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the iddescuento field */
     const IDDESCUENTO = 'descuento.iddescuento';
@@ -49,6 +49,12 @@ abstract class BaseDescuentoPeer
 
     /** the column name for the descuento_tipo field */
     const DESCUENTO_TIPO = 'descuento.descuento_tipo';
+
+    /** the column name for the descuento_descripcion field */
+    const DESCUENTO_DESCRIPCION = 'descuento.descuento_descripcion';
+
+    /** the column name for the descuento_cantidad field */
+    const DESCUENTO_CANTIDAD = 'descuento.descuento_cantidad';
 
     /** The enumerated values for the descuento_tipo field */
     const DESCUENTO_TIPO_PORCENTAJE = 'porcentaje';
@@ -73,12 +79,12 @@ abstract class BaseDescuentoPeer
      * e.g. DescuentoPeer::$fieldNames[DescuentoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Iddescuento', 'DescuentoNombre', 'DescuentoFechainicio', 'DescuentoFechafin', 'DescuentoEstatus', 'DescuentoTipo', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('iddescuento', 'descuentoNombre', 'descuentoFechainicio', 'descuentoFechafin', 'descuentoEstatus', 'descuentoTipo', ),
-        BasePeer::TYPE_COLNAME => array (DescuentoPeer::IDDESCUENTO, DescuentoPeer::DESCUENTO_NOMBRE, DescuentoPeer::DESCUENTO_FECHAINICIO, DescuentoPeer::DESCUENTO_FECHAFIN, DescuentoPeer::DESCUENTO_ESTATUS, DescuentoPeer::DESCUENTO_TIPO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDDESCUENTO', 'DESCUENTO_NOMBRE', 'DESCUENTO_FECHAINICIO', 'DESCUENTO_FECHAFIN', 'DESCUENTO_ESTATUS', 'DESCUENTO_TIPO', ),
-        BasePeer::TYPE_FIELDNAME => array ('iddescuento', 'descuento_nombre', 'descuento_fechainicio', 'descuento_fechafin', 'descuento_estatus', 'descuento_tipo', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Iddescuento', 'DescuentoNombre', 'DescuentoFechainicio', 'DescuentoFechafin', 'DescuentoEstatus', 'DescuentoTipo', 'DescuentoDescripcion', 'DescuentoCantidad', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('iddescuento', 'descuentoNombre', 'descuentoFechainicio', 'descuentoFechafin', 'descuentoEstatus', 'descuentoTipo', 'descuentoDescripcion', 'descuentoCantidad', ),
+        BasePeer::TYPE_COLNAME => array (DescuentoPeer::IDDESCUENTO, DescuentoPeer::DESCUENTO_NOMBRE, DescuentoPeer::DESCUENTO_FECHAINICIO, DescuentoPeer::DESCUENTO_FECHAFIN, DescuentoPeer::DESCUENTO_ESTATUS, DescuentoPeer::DESCUENTO_TIPO, DescuentoPeer::DESCUENTO_DESCRIPCION, DescuentoPeer::DESCUENTO_CANTIDAD, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDDESCUENTO', 'DESCUENTO_NOMBRE', 'DESCUENTO_FECHAINICIO', 'DESCUENTO_FECHAFIN', 'DESCUENTO_ESTATUS', 'DESCUENTO_TIPO', 'DESCUENTO_DESCRIPCION', 'DESCUENTO_CANTIDAD', ),
+        BasePeer::TYPE_FIELDNAME => array ('iddescuento', 'descuento_nombre', 'descuento_fechainicio', 'descuento_fechafin', 'descuento_estatus', 'descuento_tipo', 'descuento_descripcion', 'descuento_cantidad', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -88,12 +94,12 @@ abstract class BaseDescuentoPeer
      * e.g. DescuentoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Iddescuento' => 0, 'DescuentoNombre' => 1, 'DescuentoFechainicio' => 2, 'DescuentoFechafin' => 3, 'DescuentoEstatus' => 4, 'DescuentoTipo' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('iddescuento' => 0, 'descuentoNombre' => 1, 'descuentoFechainicio' => 2, 'descuentoFechafin' => 3, 'descuentoEstatus' => 4, 'descuentoTipo' => 5, ),
-        BasePeer::TYPE_COLNAME => array (DescuentoPeer::IDDESCUENTO => 0, DescuentoPeer::DESCUENTO_NOMBRE => 1, DescuentoPeer::DESCUENTO_FECHAINICIO => 2, DescuentoPeer::DESCUENTO_FECHAFIN => 3, DescuentoPeer::DESCUENTO_ESTATUS => 4, DescuentoPeer::DESCUENTO_TIPO => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDDESCUENTO' => 0, 'DESCUENTO_NOMBRE' => 1, 'DESCUENTO_FECHAINICIO' => 2, 'DESCUENTO_FECHAFIN' => 3, 'DESCUENTO_ESTATUS' => 4, 'DESCUENTO_TIPO' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('iddescuento' => 0, 'descuento_nombre' => 1, 'descuento_fechainicio' => 2, 'descuento_fechafin' => 3, 'descuento_estatus' => 4, 'descuento_tipo' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Iddescuento' => 0, 'DescuentoNombre' => 1, 'DescuentoFechainicio' => 2, 'DescuentoFechafin' => 3, 'DescuentoEstatus' => 4, 'DescuentoTipo' => 5, 'DescuentoDescripcion' => 6, 'DescuentoCantidad' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('iddescuento' => 0, 'descuentoNombre' => 1, 'descuentoFechainicio' => 2, 'descuentoFechafin' => 3, 'descuentoEstatus' => 4, 'descuentoTipo' => 5, 'descuentoDescripcion' => 6, 'descuentoCantidad' => 7, ),
+        BasePeer::TYPE_COLNAME => array (DescuentoPeer::IDDESCUENTO => 0, DescuentoPeer::DESCUENTO_NOMBRE => 1, DescuentoPeer::DESCUENTO_FECHAINICIO => 2, DescuentoPeer::DESCUENTO_FECHAFIN => 3, DescuentoPeer::DESCUENTO_ESTATUS => 4, DescuentoPeer::DESCUENTO_TIPO => 5, DescuentoPeer::DESCUENTO_DESCRIPCION => 6, DescuentoPeer::DESCUENTO_CANTIDAD => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDDESCUENTO' => 0, 'DESCUENTO_NOMBRE' => 1, 'DESCUENTO_FECHAINICIO' => 2, 'DESCUENTO_FECHAFIN' => 3, 'DESCUENTO_ESTATUS' => 4, 'DESCUENTO_TIPO' => 5, 'DESCUENTO_DESCRIPCION' => 6, 'DESCUENTO_CANTIDAD' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('iddescuento' => 0, 'descuento_nombre' => 1, 'descuento_fechainicio' => 2, 'descuento_fechafin' => 3, 'descuento_estatus' => 4, 'descuento_tipo' => 5, 'descuento_descripcion' => 6, 'descuento_cantidad' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /** The enumerated values for this table */
@@ -226,6 +232,8 @@ abstract class BaseDescuentoPeer
             $criteria->addSelectColumn(DescuentoPeer::DESCUENTO_FECHAFIN);
             $criteria->addSelectColumn(DescuentoPeer::DESCUENTO_ESTATUS);
             $criteria->addSelectColumn(DescuentoPeer::DESCUENTO_TIPO);
+            $criteria->addSelectColumn(DescuentoPeer::DESCUENTO_DESCRIPCION);
+            $criteria->addSelectColumn(DescuentoPeer::DESCUENTO_CANTIDAD);
         } else {
             $criteria->addSelectColumn($alias . '.iddescuento');
             $criteria->addSelectColumn($alias . '.descuento_nombre');
@@ -233,6 +241,8 @@ abstract class BaseDescuentoPeer
             $criteria->addSelectColumn($alias . '.descuento_fechafin');
             $criteria->addSelectColumn($alias . '.descuento_estatus');
             $criteria->addSelectColumn($alias . '.descuento_tipo');
+            $criteria->addSelectColumn($alias . '.descuento_descripcion');
+            $criteria->addSelectColumn($alias . '.descuento_cantidad');
         }
     }
 

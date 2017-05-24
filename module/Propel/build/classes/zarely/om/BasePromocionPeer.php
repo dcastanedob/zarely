@@ -24,13 +24,13 @@ abstract class BasePromocionPeer
     const TM_CLASS = 'PromocionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the idpromocion field */
     const IDPROMOCION = 'promocion.idpromocion';
@@ -46,6 +46,9 @@ abstract class BasePromocionPeer
 
     /** the column name for the promocion_estatus field */
     const PROMOCION_ESTATUS = 'promocion.promocion_estatus';
+
+    /** the column name for the promocion_descripcion field */
+    const PROMOCION_DESCRIPCION = 'promocion.promocion_descripcion';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -66,12 +69,12 @@ abstract class BasePromocionPeer
      * e.g. PromocionPeer::$fieldNames[PromocionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idpromocion', 'PromocionNombre', 'PromocionFechainicio', 'PromocionFechafin', 'PromocionEstatus', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idpromocion', 'promocionNombre', 'promocionFechainicio', 'promocionFechafin', 'promocionEstatus', ),
-        BasePeer::TYPE_COLNAME => array (PromocionPeer::IDPROMOCION, PromocionPeer::PROMOCION_NOMBRE, PromocionPeer::PROMOCION_FECHAINICIO, PromocionPeer::PROMOCION_FECHAFIN, PromocionPeer::PROMOCION_ESTATUS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPROMOCION', 'PROMOCION_NOMBRE', 'PROMOCION_FECHAINICIO', 'PROMOCION_FECHAFIN', 'PROMOCION_ESTATUS', ),
-        BasePeer::TYPE_FIELDNAME => array ('idpromocion', 'promocion_nombre', 'promocion_fechainicio', 'promocion_fechafin', 'promocion_estatus', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idpromocion', 'PromocionNombre', 'PromocionFechainicio', 'PromocionFechafin', 'PromocionEstatus', 'PromocionDescripcion', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idpromocion', 'promocionNombre', 'promocionFechainicio', 'promocionFechafin', 'promocionEstatus', 'promocionDescripcion', ),
+        BasePeer::TYPE_COLNAME => array (PromocionPeer::IDPROMOCION, PromocionPeer::PROMOCION_NOMBRE, PromocionPeer::PROMOCION_FECHAINICIO, PromocionPeer::PROMOCION_FECHAFIN, PromocionPeer::PROMOCION_ESTATUS, PromocionPeer::PROMOCION_DESCRIPCION, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPROMOCION', 'PROMOCION_NOMBRE', 'PROMOCION_FECHAINICIO', 'PROMOCION_FECHAFIN', 'PROMOCION_ESTATUS', 'PROMOCION_DESCRIPCION', ),
+        BasePeer::TYPE_FIELDNAME => array ('idpromocion', 'promocion_nombre', 'promocion_fechainicio', 'promocion_fechafin', 'promocion_estatus', 'promocion_descripcion', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -81,12 +84,12 @@ abstract class BasePromocionPeer
      * e.g. PromocionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idpromocion' => 0, 'PromocionNombre' => 1, 'PromocionFechainicio' => 2, 'PromocionFechafin' => 3, 'PromocionEstatus' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idpromocion' => 0, 'promocionNombre' => 1, 'promocionFechainicio' => 2, 'promocionFechafin' => 3, 'promocionEstatus' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PromocionPeer::IDPROMOCION => 0, PromocionPeer::PROMOCION_NOMBRE => 1, PromocionPeer::PROMOCION_FECHAINICIO => 2, PromocionPeer::PROMOCION_FECHAFIN => 3, PromocionPeer::PROMOCION_ESTATUS => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPROMOCION' => 0, 'PROMOCION_NOMBRE' => 1, 'PROMOCION_FECHAINICIO' => 2, 'PROMOCION_FECHAFIN' => 3, 'PROMOCION_ESTATUS' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('idpromocion' => 0, 'promocion_nombre' => 1, 'promocion_fechainicio' => 2, 'promocion_fechafin' => 3, 'promocion_estatus' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Idpromocion' => 0, 'PromocionNombre' => 1, 'PromocionFechainicio' => 2, 'PromocionFechafin' => 3, 'PromocionEstatus' => 4, 'PromocionDescripcion' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idpromocion' => 0, 'promocionNombre' => 1, 'promocionFechainicio' => 2, 'promocionFechafin' => 3, 'promocionEstatus' => 4, 'promocionDescripcion' => 5, ),
+        BasePeer::TYPE_COLNAME => array (PromocionPeer::IDPROMOCION => 0, PromocionPeer::PROMOCION_NOMBRE => 1, PromocionPeer::PROMOCION_FECHAINICIO => 2, PromocionPeer::PROMOCION_FECHAFIN => 3, PromocionPeer::PROMOCION_ESTATUS => 4, PromocionPeer::PROMOCION_DESCRIPCION => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPROMOCION' => 0, 'PROMOCION_NOMBRE' => 1, 'PROMOCION_FECHAINICIO' => 2, 'PROMOCION_FECHAFIN' => 3, 'PROMOCION_ESTATUS' => 4, 'PROMOCION_DESCRIPCION' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('idpromocion' => 0, 'promocion_nombre' => 1, 'promocion_fechainicio' => 2, 'promocion_fechafin' => 3, 'promocion_estatus' => 4, 'promocion_descripcion' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -165,12 +168,14 @@ abstract class BasePromocionPeer
             $criteria->addSelectColumn(PromocionPeer::PROMOCION_FECHAINICIO);
             $criteria->addSelectColumn(PromocionPeer::PROMOCION_FECHAFIN);
             $criteria->addSelectColumn(PromocionPeer::PROMOCION_ESTATUS);
+            $criteria->addSelectColumn(PromocionPeer::PROMOCION_DESCRIPCION);
         } else {
             $criteria->addSelectColumn($alias . '.idpromocion');
             $criteria->addSelectColumn($alias . '.promocion_nombre');
             $criteria->addSelectColumn($alias . '.promocion_fechainicio');
             $criteria->addSelectColumn($alias . '.promocion_fechafin');
             $criteria->addSelectColumn($alias . '.promocion_estatus');
+            $criteria->addSelectColumn($alias . '.promocion_descripcion');
         }
     }
 

@@ -246,6 +246,8 @@ CREATE TABLE `descuento`
     `descuento_fechafin` DATE NOT NULL,
     `descuento_estatus` TINYINT(1) NOT NULL,
     `descuento_tipo` enum('porcentaje','cantidad') NOT NULL,
+    `descuento_descripcion` TEXT,
+    `descuento_cantidad` DECIMAL(10,5),
     PRIMARY KEY (`iddescuento`)
 ) ENGINE=InnoDB;
 
@@ -261,10 +263,12 @@ CREATE TABLE `descuentodetalle`
     `iddescuento` INTEGER NOT NULL,
     `idproducto` INTEGER,
     `idmarca` INTEGER,
+    `idproductovariante` INTEGER,
     PRIMARY KEY (`iddescuentodetalle`),
     INDEX `iddescuento` (`iddescuento`),
     INDEX `idproducto` (`idproducto`),
     INDEX `idmarca` (`idmarca`),
+    INDEX `idproductovariante` (`idproductovariante`),
     CONSTRAINT `iddescuento_descuentodetalle`
         FOREIGN KEY (`iddescuento`)
         REFERENCES `descuento` (`iddescuento`)
@@ -278,6 +282,11 @@ CREATE TABLE `descuentodetalle`
     CONSTRAINT `idproducto_descuentodetalle`
         FOREIGN KEY (`idproducto`)
         REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductovariante_descuentodetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -794,6 +803,7 @@ CREATE TABLE `promocion`
     `promocion_fechainicio` DATE NOT NULL,
     `promocion_fechafin` DATE NOT NULL,
     `promocion_estatus` TINYINT(1) NOT NULL,
+    `promocion_descripcion` TEXT,
     PRIMARY KEY (`idpromocion`)
 ) ENGINE=InnoDB;
 
@@ -807,36 +817,27 @@ CREATE TABLE `promociondetalle`
 (
     `idpromociondetalle` INTEGER NOT NULL AUTO_INCREMENT,
     `idpromocion` INTEGER NOT NULL,
-    `idmarcaoperando` INTEGER NOT NULL,
-    `idproductooperando` INTEGER NOT NULL,
-    `promociondetalle_cantidadoperando` DECIMAL(10,2) NOT NULL,
-    `idmarcaresultado` INTEGER NOT NULL,
-    `idproductoresultado` INTEGER NOT NULL,
-    `promociondetalle_cantidadresultado` DECIMAL(10,2) NOT NULL,
+    `idmarca` INTEGER,
+    `idproducto` INTEGER,
+    `idproductovariante` INTEGER,
     PRIMARY KEY (`idpromociondetalle`),
     INDEX `idpromocion` (`idpromocion`),
-    INDEX `idmarcaoperando` (`idmarcaoperando`),
-    INDEX `idproductooperando` (`idproductooperando`),
-    INDEX `idmarcaresultado` (`idmarcaresultado`),
-    INDEX `idproductoresultado` (`idproductoresultado`),
-    CONSTRAINT `idmarcaoperando_promociondetalle`
-        FOREIGN KEY (`idmarcaoperando`)
+    INDEX `idmarca` (`idmarca`),
+    INDEX `idproducto` (`idproducto`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    CONSTRAINT `idmarca_promociondetalle`
+        FOREIGN KEY (`idmarca`)
         REFERENCES `marca` (`idmarca`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `idmarcaresultado_promociondetalle`
-        FOREIGN KEY (`idmarcaresultado`)
-        REFERENCES `marca` (`idmarca`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `idproductooperando_promociondetalle`
-        FOREIGN KEY (`idproductooperando`)
+    CONSTRAINT `idproducto_promociondetalle`
+        FOREIGN KEY (`idproducto`)
         REFERENCES `producto` (`idproducto`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `idproductoresultado_promociondetalle`
-        FOREIGN KEY (`idproductoresultado`)
-        REFERENCES `producto` (`idproducto`)
+    CONSTRAINT `idproductovariante_promociondetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idpromocion_promociondetalle`

@@ -11,12 +11,14 @@
  * @method PromocionQuery orderByPromocionFechainicio($order = Criteria::ASC) Order by the promocion_fechainicio column
  * @method PromocionQuery orderByPromocionFechafin($order = Criteria::ASC) Order by the promocion_fechafin column
  * @method PromocionQuery orderByPromocionEstatus($order = Criteria::ASC) Order by the promocion_estatus column
+ * @method PromocionQuery orderByPromocionDescripcion($order = Criteria::ASC) Order by the promocion_descripcion column
  *
  * @method PromocionQuery groupByIdpromocion() Group by the idpromocion column
  * @method PromocionQuery groupByPromocionNombre() Group by the promocion_nombre column
  * @method PromocionQuery groupByPromocionFechainicio() Group by the promocion_fechainicio column
  * @method PromocionQuery groupByPromocionFechafin() Group by the promocion_fechafin column
  * @method PromocionQuery groupByPromocionEstatus() Group by the promocion_estatus column
+ * @method PromocionQuery groupByPromocionDescripcion() Group by the promocion_descripcion column
  *
  * @method PromocionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PromocionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -33,12 +35,14 @@
  * @method Promocion findOneByPromocionFechainicio(string $promocion_fechainicio) Return the first Promocion filtered by the promocion_fechainicio column
  * @method Promocion findOneByPromocionFechafin(string $promocion_fechafin) Return the first Promocion filtered by the promocion_fechafin column
  * @method Promocion findOneByPromocionEstatus(boolean $promocion_estatus) Return the first Promocion filtered by the promocion_estatus column
+ * @method Promocion findOneByPromocionDescripcion(string $promocion_descripcion) Return the first Promocion filtered by the promocion_descripcion column
  *
  * @method array findByIdpromocion(int $idpromocion) Return Promocion objects filtered by the idpromocion column
  * @method array findByPromocionNombre(string $promocion_nombre) Return Promocion objects filtered by the promocion_nombre column
  * @method array findByPromocionFechainicio(string $promocion_fechainicio) Return Promocion objects filtered by the promocion_fechainicio column
  * @method array findByPromocionFechafin(string $promocion_fechafin) Return Promocion objects filtered by the promocion_fechafin column
  * @method array findByPromocionEstatus(boolean $promocion_estatus) Return Promocion objects filtered by the promocion_estatus column
+ * @method array findByPromocionDescripcion(string $promocion_descripcion) Return Promocion objects filtered by the promocion_descripcion column
  *
  * @package    propel.generator.zarely.om
  */
@@ -146,7 +150,7 @@ abstract class BasePromocionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idpromocion`, `promocion_nombre`, `promocion_fechainicio`, `promocion_fechafin`, `promocion_estatus` FROM `promocion` WHERE `idpromocion` = :p0';
+        $sql = 'SELECT `idpromocion`, `promocion_nombre`, `promocion_fechainicio`, `promocion_fechafin`, `promocion_estatus`, `promocion_descripcion` FROM `promocion` WHERE `idpromocion` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -417,6 +421,35 @@ abstract class BasePromocionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PromocionPeer::PROMOCION_ESTATUS, $promocionEstatus, $comparison);
+    }
+
+    /**
+     * Filter the query on the promocion_descripcion column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPromocionDescripcion('fooValue');   // WHERE promocion_descripcion = 'fooValue'
+     * $query->filterByPromocionDescripcion('%fooValue%'); // WHERE promocion_descripcion LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $promocionDescripcion The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PromocionQuery The current query, for fluid interface
+     */
+    public function filterByPromocionDescripcion($promocionDescripcion = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($promocionDescripcion)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $promocionDescripcion)) {
+                $promocionDescripcion = str_replace('*', '%', $promocionDescripcion);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PromocionPeer::PROMOCION_DESCRIPCION, $promocionDescripcion, $comparison);
     }
 
     /**

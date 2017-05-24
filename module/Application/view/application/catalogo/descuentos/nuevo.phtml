@@ -1,0 +1,196 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title">Descuentos - Agregar</h1>
+	</div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+    		<div class="demo-form-wrapper">
+    			<form class="form form-horizontal" name="formulario" action="/catalogo/descuentos/nuevo" method="POST" enctype="multipart/form-data"">
+    				<div class="row">
+		    			<div class="col-md-5">
+			       			<div class="form-group">
+				           		<label  for="Nombre">Nombre </label>
+				                <?php echo $this->formText($form->get('descuento_nombre')) ?>
+			        		</div>
+
+			        		<div class="form-group">
+				           		<label  for="Fecha de inicio">Fecha de inicio</label>
+				                <?php echo $this->formText($form->get('descuento_fechainicio')) ?>
+			        		</div>
+
+			        		<div class="form-group">
+				           		<label  for="Tipo">Tipo</label>
+				                <?php echo $this->formSelect($form->get('descuento_tipo')) ?>
+			        		</div>
+			        		
+			        	</div>
+			        	<div class="col-md-1"></div>
+		        		<div class="col-md-5">
+			       			<div class="form-group">
+				           		<label  for="Estatus">Estatus </label>
+				                <?php echo $this->formSelect($form->get('descuento_estatus')) ?>
+			        		</div>
+
+			        		<div class="form-group">
+				           		<label  for="Fecha de fin"> Fecha de fin</label>
+				                <?php echo $this->formText($form->get('descuento_fechafin')) ?>
+			        		</div>
+
+			        		<div class="form-group">
+				           		<label  for="Cantidad">Cantidad </label>
+				                <?php echo $this->formText($form->get('descuento_cantidad')) ?>
+			        		</div>
+
+			        		
+			        	</div>
+		        	
+ 					</div> <!--end class row-->
+
+ 					<div class="row">
+ 						<div class="col-md-11">
+			       			<div class="form-group">
+				           		<label  for="Descripcion">Descripción </label>
+				                <?php echo $this->formTextarea($form->get('descuento_descripcion')) ?>
+			        		</div>
+			        	</div>
+ 					</div>
+ 					<hr>
+
+ 					<div class="row">
+		        		
+    					<div class="col-md-11 alineamiento" >
+    						
+							
+    						<div id="productosInformation">
+		        				<div class="col-md-9">
+				                    <div class="form-group">
+						           		<label for="productos">Productos</label>
+						                <?php echo $this->formSelect($form->get('idproducto[]')) ?>
+					        		</div>
+		        				</div>
+		        				<div class="col-md-1"></div>
+
+				        		<div class="col-md-2">		
+				        			<div class="form-group" >
+						           		<label  for="guardar"></label>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_producto">			Agregar
+	                                    </a>
+					        		</div>
+					        	</div>
+
+	                            <table class="table table-bordered" id="tabla_producto">
+		        				    <thead>
+		        				      <tr>
+		        				        <th>Nombre</th>
+		        				        <th>Opciones</th>
+		        				      </tr>
+		        				    </thead>
+		        				    <tbody>
+
+		        				    </tbody>
+		        				</table>
+	        				</div>
+
+
+	        				
+
+	        				
+		        			<div class="col-md-9">
+			                    <div class="form-group">
+					           		<label for="marca">Marcas</label>
+					                <?php echo $this->formSelect($form->get('idmarca[]')) ?>
+				        		</div>
+	        				</div>
+	        				<div class="col-md-1"></div>
+
+			        		<div class="col-md-2">		
+			        			<div class="form-group">
+					           		<label  for="guardar"></label>
+                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_marca">			Agregar
+                                    </a>
+				        		</div>
+				        	</div>
+
+                            <table class="table table-bordered" id="tabla_marca">
+	        				    <thead>
+	        				      <tr>
+	        				        <th>Nombre</th>
+	        				        <th>Opciones</th>
+	        				      </tr>
+	        				    </thead>
+	        				    <tbody>
+
+	        				    </tbody>
+	        				</table>
+	        				
+
+
+	        			</div>	
+	        			<div class="col-md-1"></div>
+	        			<div class="col-md-11 alineamiento" >
+	        				<div class="col-md-9">
+			                    <div class="form-group">
+					           		<label for="variantes">Producto variante</label>
+					                <?php echo $this->formSelect($form->get('idvariante[]')) ?>
+				        		</div>
+	        				</div>
+	        				<div class="col-md-1"></div>
+
+			        		<div class="col-md-2">		
+			        			<div class="form-group">
+					           		<label  for="guardar"></label>
+                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_variante">			Agregar
+                                    </a>
+				        		</div>
+				        	</div>
+
+                            <table class="table table-bordered" id="tabla_variante">
+	        				    <thead>
+	        				      <tr>
+	        				        <th>Nombre</th>
+	        				        <th>Opciones</th>
+	        				      </tr>
+	        				    </thead>
+	        				    <tbody>
+
+	        				    </tbody>
+	        				</table>
+		        				
+
+	        			</div>
+
+		        	</div>
+
+
+		        	<div class="form-group">
+		           		<label  for="guardar"></label>
+	                    <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="12">
+                         	Guardar
+                        </button>
+	        		</div>
+ 
+    			</form>
+    		</div>
+    	</div>
+	</div>
+
+
+	
+
+   
+
+</div>
+
+
+<script src="/js/catalogo/descuentos.js"></script>
+<script>
+	var descuentos = $('.body_container').descuentos();
+	descuentos.initForm();
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('form').on('submit', function(e) {
+	    $(this).find('button, input[type=button]').prop('disabled', true);
+	  });
+	});
+</script>

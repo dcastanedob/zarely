@@ -54,6 +54,12 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
     protected $idmarca;
 
     /**
+     * The value for the idproductovariante field.
+     * @var        int
+     */
+    protected $idproductovariante;
+
+    /**
      * @var        Descuento
      */
     protected $aDescuento;
@@ -67,6 +73,11 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
      * @var        Producto
      */
     protected $aProducto;
+
+    /**
+     * @var        Productovariante
+     */
+    protected $aProductovariante;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -130,6 +141,17 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
     {
 
         return $this->idmarca;
+    }
+
+    /**
+     * Get the [idproductovariante] column value.
+     *
+     * @return int
+     */
+    public function getIdproductovariante()
+    {
+
+        return $this->idproductovariante;
     }
 
     /**
@@ -229,6 +251,31 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
     } // setIdmarca()
 
     /**
+     * Set the value of [idproductovariante] column.
+     *
+     * @param  int $v new value
+     * @return Descuentodetalle The current object (for fluent API support)
+     */
+    public function setIdproductovariante($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idproductovariante !== $v) {
+            $this->idproductovariante = $v;
+            $this->modifiedColumns[] = DescuentodetallePeer::IDPRODUCTOVARIANTE;
+        }
+
+        if ($this->aProductovariante !== null && $this->aProductovariante->getIdproductovariante() !== $v) {
+            $this->aProductovariante = null;
+        }
+
+
+        return $this;
+    } // setIdproductovariante()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -264,6 +311,7 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
             $this->iddescuento = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idproducto = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->idmarca = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->idproductovariante = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -273,7 +321,7 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = DescuentodetallePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = DescuentodetallePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Descuentodetalle object", $e);
@@ -304,6 +352,9 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
         }
         if ($this->aMarca !== null && $this->idmarca !== $this->aMarca->getIdmarca()) {
             $this->aMarca = null;
+        }
+        if ($this->aProductovariante !== null && $this->idproductovariante !== $this->aProductovariante->getIdproductovariante()) {
+            $this->aProductovariante = null;
         }
     } // ensureConsistency
 
@@ -347,6 +398,7 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
             $this->aDescuento = null;
             $this->aMarca = null;
             $this->aProducto = null;
+            $this->aProductovariante = null;
         } // if (deep)
     }
 
@@ -486,6 +538,13 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
                 $this->setProducto($this->aProducto);
             }
 
+            if ($this->aProductovariante !== null) {
+                if ($this->aProductovariante->isModified() || $this->aProductovariante->isNew()) {
+                    $affectedRows += $this->aProductovariante->save($con);
+                }
+                $this->setProductovariante($this->aProductovariante);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -531,6 +590,9 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
         if ($this->isColumnModified(DescuentodetallePeer::IDMARCA)) {
             $modifiedColumns[':p' . $index++]  = '`idmarca`';
         }
+        if ($this->isColumnModified(DescuentodetallePeer::IDPRODUCTOVARIANTE)) {
+            $modifiedColumns[':p' . $index++]  = '`idproductovariante`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `descuentodetalle` (%s) VALUES (%s)',
@@ -553,6 +615,9 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
                         break;
                     case '`idmarca`':
                         $stmt->bindValue($identifier, $this->idmarca, PDO::PARAM_INT);
+                        break;
+                    case '`idproductovariante`':
+                        $stmt->bindValue($identifier, $this->idproductovariante, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -664,6 +729,12 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->aProductovariante !== null) {
+                if (!$this->aProductovariante->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProductovariante->getValidationFailures());
+                }
+            }
+
 
             if (($retval = DescuentodetallePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
@@ -717,6 +788,9 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
             case 3:
                 return $this->getIdmarca();
                 break;
+            case 4:
+                return $this->getIdproductovariante();
+                break;
             default:
                 return null;
                 break;
@@ -750,6 +824,7 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
             $keys[1] => $this->getIddescuento(),
             $keys[2] => $this->getIdproducto(),
             $keys[3] => $this->getIdmarca(),
+            $keys[4] => $this->getIdproductovariante(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -765,6 +840,9 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
             }
             if (null !== $this->aProducto) {
                 $result['Producto'] = $this->aProducto->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aProductovariante) {
+                $result['Productovariante'] = $this->aProductovariante->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -812,6 +890,9 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
             case 3:
                 $this->setIdmarca($value);
                 break;
+            case 4:
+                $this->setIdproductovariante($value);
+                break;
         } // switch()
     }
 
@@ -840,6 +921,7 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setIddescuento($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setIdproducto($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setIdmarca($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setIdproductovariante($arr[$keys[4]]);
     }
 
     /**
@@ -855,6 +937,7 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
         if ($this->isColumnModified(DescuentodetallePeer::IDDESCUENTO)) $criteria->add(DescuentodetallePeer::IDDESCUENTO, $this->iddescuento);
         if ($this->isColumnModified(DescuentodetallePeer::IDPRODUCTO)) $criteria->add(DescuentodetallePeer::IDPRODUCTO, $this->idproducto);
         if ($this->isColumnModified(DescuentodetallePeer::IDMARCA)) $criteria->add(DescuentodetallePeer::IDMARCA, $this->idmarca);
+        if ($this->isColumnModified(DescuentodetallePeer::IDPRODUCTOVARIANTE)) $criteria->add(DescuentodetallePeer::IDPRODUCTOVARIANTE, $this->idproductovariante);
 
         return $criteria;
     }
@@ -921,6 +1004,7 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
         $copyObj->setIddescuento($this->getIddescuento());
         $copyObj->setIdproducto($this->getIdproducto());
         $copyObj->setIdmarca($this->getIdmarca());
+        $copyObj->setIdproductovariante($this->getIdproductovariante());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1136,6 +1220,58 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Productovariante object.
+     *
+     * @param                  Productovariante $v
+     * @return Descuentodetalle The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setProductovariante(Productovariante $v = null)
+    {
+        if ($v === null) {
+            $this->setIdproductovariante(NULL);
+        } else {
+            $this->setIdproductovariante($v->getIdproductovariante());
+        }
+
+        $this->aProductovariante = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Productovariante object, it will not be re-added.
+        if ($v !== null) {
+            $v->addDescuentodetalle($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Productovariante object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Productovariante The associated Productovariante object.
+     * @throws PropelException
+     */
+    public function getProductovariante(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aProductovariante === null && ($this->idproductovariante !== null) && $doQuery) {
+            $this->aProductovariante = ProductovarianteQuery::create()->findPk($this->idproductovariante, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProductovariante->addDescuentodetalles($this);
+             */
+        }
+
+        return $this->aProductovariante;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1144,6 +1280,7 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
         $this->iddescuento = null;
         $this->idproducto = null;
         $this->idmarca = null;
+        $this->idproductovariante = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1175,6 +1312,9 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
             if ($this->aProducto instanceof Persistent) {
               $this->aProducto->clearAllReferences($deep);
             }
+            if ($this->aProductovariante instanceof Persistent) {
+              $this->aProductovariante->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -1182,6 +1322,7 @@ abstract class BaseDescuentodetalle extends BaseObject implements Persistent
         $this->aDescuento = null;
         $this->aMarca = null;
         $this->aProducto = null;
+        $this->aProductovariante = null;
     }
 
     /**

@@ -103,6 +103,8 @@ return array(
         'materiales',
         'marcas',
         'productos',
+        'descuentos',
+        'promociones',
         'tipocalzados',
         'gastos',
 

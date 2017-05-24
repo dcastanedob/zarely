@@ -80,8 +80,7 @@ class ProductoTableMap extends TableMap
         $this->addRelation('Productomedida', 'Productomedida', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productomedidas');
         $this->addRelation('Productotallaje', 'Productotallaje', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productotallajes');
         $this->addRelation('Productovariante', 'Productovariante', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productovariantes');
-        $this->addRelation('PromociondetalleRelatedByIdproductooperando', 'Promociondetalle', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproductooperando', ), 'CASCADE', 'CASCADE', 'PromociondetallesRelatedByIdproductooperando');
-        $this->addRelation('PromociondetalleRelatedByIdproductoresultado', 'Promociondetalle', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproductoresultado', ), 'CASCADE', 'CASCADE', 'PromociondetallesRelatedByIdproductoresultado');
+        $this->addRelation('Promociondetalle', 'Promociondetalle', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Promociondetalles');
     } // buildRelations()
 
 } // ProductoTableMap

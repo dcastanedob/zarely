@@ -44,6 +44,10 @@
  * @method ProductovarianteQuery rightJoinCompradetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Compradetalle relation
  * @method ProductovarianteQuery innerJoinCompradetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Compradetalle relation
  *
+ * @method ProductovarianteQuery leftJoinDescuentodetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Descuentodetalle relation
+ * @method ProductovarianteQuery rightJoinDescuentodetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Descuentodetalle relation
+ * @method ProductovarianteQuery innerJoinDescuentodetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Descuentodetalle relation
+ *
  * @method ProductovarianteQuery leftJoinDevoluciondetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Devoluciondetalle relation
  * @method ProductovarianteQuery rightJoinDevoluciondetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Devoluciondetalle relation
  * @method ProductovarianteQuery innerJoinDevoluciondetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Devoluciondetalle relation
@@ -59,6 +63,10 @@
  * @method ProductovarianteQuery leftJoinProductosucursal($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productosucursal relation
  * @method ProductovarianteQuery rightJoinProductosucursal($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productosucursal relation
  * @method ProductovarianteQuery innerJoinProductosucursal($relationAlias = null) Adds a INNER JOIN clause to the query using the Productosucursal relation
+ *
+ * @method ProductovarianteQuery leftJoinPromociondetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Promociondetalle relation
+ * @method ProductovarianteQuery rightJoinPromociondetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Promociondetalle relation
+ * @method ProductovarianteQuery innerJoinPromociondetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Promociondetalle relation
  *
  * @method ProductovarianteQuery leftJoinTransferenciadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Transferenciadetalle relation
  * @method ProductovarianteQuery rightJoinTransferenciadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Transferenciadetalle relation
@@ -874,6 +882,80 @@ abstract class BaseProductovarianteQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related Descuentodetalle object
+     *
+     * @param   Descuentodetalle|PropelObjectCollection $descuentodetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductovarianteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByDescuentodetalle($descuentodetalle, $comparison = null)
+    {
+        if ($descuentodetalle instanceof Descuentodetalle) {
+            return $this
+                ->addUsingAlias(ProductovariantePeer::IDPRODUCTOVARIANTE, $descuentodetalle->getIdproductovariante(), $comparison);
+        } elseif ($descuentodetalle instanceof PropelObjectCollection) {
+            return $this
+                ->useDescuentodetalleQuery()
+                ->filterByPrimaryKeys($descuentodetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByDescuentodetalle() only accepts arguments of type Descuentodetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Descuentodetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductovarianteQuery The current query, for fluid interface
+     */
+    public function joinDescuentodetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Descuentodetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Descuentodetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Descuentodetalle relation Descuentodetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   DescuentodetalleQuery A secondary query class using the current class as primary query
+     */
+    public function useDescuentodetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinDescuentodetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Descuentodetalle', 'DescuentodetalleQuery');
+    }
+
+    /**
      * Filter the query by a related Devoluciondetalle object
      *
      * @param   Devoluciondetalle|PropelObjectCollection $devoluciondetalle  the related object to use as filter
@@ -1167,6 +1249,80 @@ abstract class BaseProductovarianteQuery extends ModelCriteria
         return $this
             ->joinProductosucursal($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Productosucursal', 'ProductosucursalQuery');
+    }
+
+    /**
+     * Filter the query by a related Promociondetalle object
+     *
+     * @param   Promociondetalle|PropelObjectCollection $promociondetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 ProductovarianteQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPromociondetalle($promociondetalle, $comparison = null)
+    {
+        if ($promociondetalle instanceof Promociondetalle) {
+            return $this
+                ->addUsingAlias(ProductovariantePeer::IDPRODUCTOVARIANTE, $promociondetalle->getIdproductovariante(), $comparison);
+        } elseif ($promociondetalle instanceof PropelObjectCollection) {
+            return $this
+                ->usePromociondetalleQuery()
+                ->filterByPrimaryKeys($promociondetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPromociondetalle() only accepts arguments of type Promociondetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Promociondetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ProductovarianteQuery The current query, for fluid interface
+     */
+    public function joinPromociondetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Promociondetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Promociondetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Promociondetalle relation Promociondetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PromociondetalleQuery A secondary query class using the current class as primary query
+     */
+    public function usePromociondetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPromociondetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Promociondetalle', 'PromociondetalleQuery');
     }
 
     /**
