@@ -243,6 +243,7 @@
                       id:id,
                     },success:function(data){
 
+                      console.log(data);
 
                       $tr = $('<tr id="details">');
 
@@ -250,16 +251,27 @@
                       $tr.append('<td>'+data.data.nombre+'</td>');
                       $tr.append('<td>'+data.data.descripcion+'</td>');
                       $tr.append('<td><input type="text" size="7" id="precio" value="'+data.data.precio+'" name="preciounitario'+data.data.id+'" disabled></input></td>');
-                      $tr.append('<td><input type="text" size="5" id="descuento" value="0.0" name="descuento'+data.data.id+'"></input></td>');
+                      
+                      //verificamos que e ldescuento sea mayor que 15
+                      if(data.data.descuentoCantidad > 15)
+                      {
+                        $tr.append('<td><input type="text" size="5" id="" value="'+data.data.descuentoCantidad+'" name="descuento'+data.data.id+'" hidden><input type="text" size="5" id="descuento" value="0" name="descuento'+data.data.id+'" disabled></input></td>');
+
+                      }else{
+                        $tr.append('<td><input type="text" size="5" id="descuento" value="0" name="descuento'+data.data.id+'"></input></td>');
+
+                      }
+
                       $tr.find('input').numeric();
                       $tr.append('<td><input type="text" size="5" class="transferenciadetalle_subtotal" value="0.0" disabled></input></td>');
                       $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
-
                       
                       $tr.find('a').on('click',function(){
                           var $information = $(this).closest('#details');
 
                           $information.remove();
+
+                          $container.find('#descuentos'+data.data.id).remove();
 
                           var index = productovariantes.indexOf(id);
                           if (index > -1) {
@@ -280,11 +292,45 @@
                         calcularSubtotal($information)
                       });
 
+                      $tr.find('#descuento').on('keyup',function(){
+                        var comparable = parseFloat($(this).val()) ;
+
+                        $container.find('#detalle_subtotal'+data.data.id).removeClass('transferenciadetalle_subtotal');
+                          //verificamos que el descuento aplicado este en el rango de el descuento aplicado y 15
+
+                        if(15 < comparable )
+                        {
+                          $(this).val(15);
+                        }
+
+                        if(data.data.descuentoCantidad > comparable)
+                        {
+                          $(this).val(data.data.descuentoCantidad);
+                        }
+
+                        var $information = $(this).closest('#details');
+                        calcularSubtotal($information);
+                      });
+
                       $container.find('#tables_information1').append($tr);
+                      calcularSubtotal($tr); 
 
+                      if(data.data.descuento)
+                      {
+                        $tr = $('<tr id="descuentos'+data.data.id+'">');
+
+                        $tr.append('<td>Descuento</td>');
+                        $tr.append('<td>'+data.data.nombreDescuento+'</td>');
+                        $tr.append('<td>'+data.data.descripcionDescuento+'</td>');
+                        $tr.append('<td>'+data.data.descuentoPrecio+'</td>');
+                        $tr.append('<td>'+data.data.descuentoCantidad+'</td>');
+                        $tr.append('<td><input id="detalle_subtotal'+data.data.id+'" size="5" class="transferenciadetalle_subtotal" value="'+data.data.descuentoSubtotal+'" disabled="" type="text"></td>');
+                        $tr.append('<td></td>');
+                        $container.find('#tables_information1').append($tr);
+                        calcularTotal();
+                      }
                       
-                      calcularSubtotal($tr);
-
+                      
                       productosvariantes_added1.push(id);
                     
 
@@ -535,7 +581,7 @@
                     }
                   });
 
-                  var totalDeVenta =  parseFloat($modal.find('input[name=transferencia_total]').val().replace("$",""));
+                  var totalDeVenta =  parseFloat($modal.find('input[name=transferencia_total]').val().replace("$","").replace(",",""));
 
                   $modal.find('#cantidad_met').on('keyup',function(){
                     var comparable = parseFloat($(this).val()) + totalAlMomento;

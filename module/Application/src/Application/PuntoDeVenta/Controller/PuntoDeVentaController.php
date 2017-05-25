@@ -232,6 +232,7 @@ class PuntoDeVentaController extends AbstractActionController
 
             $descuentos = [];
             $cantidades = [];
+            //obtenemos todos los descuentos y cantidades correspondientes al id
             foreach ($post_data as $key => $value){
                 if(\VentaPeer::getTableMap()->hasColumn($key)){
                     $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
@@ -259,8 +260,11 @@ class PuntoDeVentaController extends AbstractActionController
      
                 }
             }
+
+            //vericiamos que si existan prodcuctos
             if(count($cantidades) != 0)
             {
+                //asignamos el tipo de venta
                 $entity->setVentaTipo = $post_data['venta_tipo'];
                 $entity->save();
 
@@ -290,6 +294,7 @@ class PuntoDeVentaController extends AbstractActionController
                     }
 
                 }
+                //aplicamos la fórmula del iva
 
                 $subtotal = $total / 1.16;
                 $iva = $total- $subtotal;
@@ -642,7 +647,7 @@ class PuntoDeVentaController extends AbstractActionController
                     $cliente->setClienteCreditorestante( $temp)->save();
 
                 }
-                
+                $entity->setVentaEstatuspago(1)->save();
                 return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Pago realizado')));
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'No se pudo realizar el pago')));
@@ -652,6 +657,7 @@ class PuntoDeVentaController extends AbstractActionController
         }
     }
 
+    //funcion para calcular la cantidad de pago que llevamos al momento
     private function totalAlMomento($id, $credito)
     {
         $entity = \VentaQuery::Create()->findPk($id);
@@ -775,12 +781,46 @@ class PuntoDeVentaController extends AbstractActionController
             //traemos la informacion del producto de la sucursal que estamos para ver el precio del producto
             $producto_sucursal = \ProductosucursalQuery::create()->filterByIdproductovariante($post_data['id'])->filterByIdsucursal($user['idsucursal'])->find()->toArray();
 
-            $details = array(
-                'id' => $post_data['id'],
-                'nombre' =>  $producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje,
-                'descripcion' => $producto->getProductoDescripcion(),
-                'precio' => money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"])
-            );
+            //verificamos si tiene algun descuento
+            $descuento = $this->getDescuento($post_data['id']);
+            
+            
+            $tieneDescuento = false;
+            if($descuento != null)
+            {
+                $tieneDescuento = true;
+            }
+
+            //si tiene descuento 
+            if($tieneDescuento)
+            {
+                //creamos el objeto que procesará los datos que necesitamos
+                $precio = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
+                $porcentaje = $descuento['DescuentoCantidad'];
+                $descuentoCantidad = floatval($porcentaje/100) * floatval($precio);
+          
+                $details = array(
+                    'id' => $post_data['id'],
+                    'nombre' =>  $producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje,
+                    'descripcion' => $producto->getProductoDescripcion(),
+                    'precio' => money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]),
+                    'descuento' => $tieneDescuento,
+                    'nombreDescuento' => $descuento['DescuentoNombre'],
+                    'descripcionDescuento' => $descuento['DescuentoDescripcion'],
+                    'descuentoPrecio' => $descuentoCantidad,
+                    'descuentoCantidad' => $porcentaje,
+                    'descuentoSubtotal' => $descuentoCantidad * -1
+                );
+            }else{
+                $details = array(
+                    'id' => $post_data['id'],
+                    'nombre' =>  $producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje,
+                    'descripcion' => $producto->getProductoDescripcion(),
+                    'precio' => money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]),
+                    'descuento' => $tieneDescuento
+                );
+            }
+            
 
             return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
 
@@ -788,6 +828,47 @@ class PuntoDeVentaController extends AbstractActionController
         }
 
     } 
+
+
+    private function getDescuento($id)
+    {
+        //verificamos si el productovariante pertence a alguno de los descuentos
+        //verificamos si pertenece a la variante
+        $descuentos = \DescuentodetalleQuery::create()->select('iddescuento')->filterByIdproductovariante($id)->find()->toArray();
+        if($descuentos != null)
+        {
+            $descuento = \DescuentoQuery::create()->filterByDescuentoestatus(1)->filterByIddescuento($descuentos)->find()->toArray();
+            return $descuento[0];
+        }
+
+
+        //verificamos que perttenezca al producto
+        $variante = \ProductovarianteQuery::Create()->findPk($id);
+        $descuentos = \DescuentodetalleQuery::create()->select('iddescuento')->filterByIdproducto($variante->getIdproducto())->find()->toArray();
+
+        if($descuentos != null)
+        {
+
+            $descuento = \DescuentoQuery::create()->filterByDescuentoestatus(1)->filterByIddescuento($descuentos)->find()->toArray();
+            return $descuento[0];
+        }
+
+
+        //verificamos que perttenezca a la marca
+        $producto = \ProductoQuery::Create()->findPk($variante->getIdproducto());
+        $descuentos = \DescuentodetalleQuery::create()->select('iddescuento')->filterByIdmarca($producto->getIdmarca())->find()->toArray();
+
+        if($descuentos != null)
+        {
+
+            $descuento = \DescuentoQuery::create()->filterByDescuentoestatus(1)->filterByIddescuento($descuentos)->find()->toArray();
+            return $descuento[0];
+        }
+
+        
+        
+        return null;
+    }
 
     
 
