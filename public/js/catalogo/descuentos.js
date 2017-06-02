@@ -149,18 +149,26 @@
                 //multipleWidth: 100
             });
 
-            
+            var dateToday = new Date();
             $container.find('input[name=descuento_fechafin]').datepicker({
                 language:'es',
-            });
-
+                startDate: 'today',
+            }).datepicker("setDate",dateToday);
 
             $container.find('input[name=descuento_cantidad]').numeric();
 
             $container.find('input[name=descuento_fechainicio]').datepicker({
                 language:'es',
-            });
+                startDate: 'today',
+            }).datepicker("setDate",dateToday);
             
+
+            $container.find('input[name=descuento_fechainicio]').on('changeDate', function(ev){
+                var date = $(this).datepicker('getDate');
+                console.log(date);
+                $container.find('input[name=descuento_fechafin]').datepicker('setStartDate',date);
+                $container.find('input[name=descuento_fechafin]').datepicker('setDate',date);
+            });
             
             var iddescuento = $('input[name=iddescuento]').val();
             

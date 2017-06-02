@@ -218,7 +218,6 @@ class PuntoDeVentaController extends AbstractActionController
             $entity = new \Venta();
 
             $post_data['venta_fecha'] = date_create_from_format('d/m/Y', $post_data['venta_fecha']);
-
             
             $user = new \Application\Session\AouthSession();
             $user = $user->getData();
@@ -261,7 +260,7 @@ class PuntoDeVentaController extends AbstractActionController
                 }
             }
 
-            //vericiamos que si existan prodcuctos
+            //verificamos que si existan prodcuctos
             if(count($cantidades) != 0)
             {
                 //asignamos el tipo de venta
@@ -269,6 +268,7 @@ class PuntoDeVentaController extends AbstractActionController
                 $entity->save();
 
                 $total = 0;
+                
                 foreach ($descuentos as $variante => $value) {
                     //traemos la informacion del producto de la sucursal que estamos
                     $producto_sucursal = \ProductosucursalQuery::create()->filterByIdproductovariante($variante)->filterByIdsucursal($user['idsucursal'])->find()->toArray();
@@ -291,9 +291,42 @@ class PuntoDeVentaController extends AbstractActionController
                                         ->setVentadetalleDescuento($descuento)
                                         ->save();
                         $total += $venta_detalle->getVentadetalleSubtotal();
+
+                        
+                        
+
                     }
 
                 }
+
+                if(isset($post_data['idpromocion'])){
+                    foreach ($post_data['id_promocion'] as $value) {
+                        //traemos la informacion del producto de la sucursal que estamos
+                        $producto_sucursal = \ProductosucursalQuery::create()->filterByIdproductovariante($value)->filterByIdsucursal($user['idsucursal'])->find()->toArray();
+
+                        if($producto_sucursal != null)
+                        {
+                            $precioUnitario = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
+                            $cantidad = intval($cantidades[$value][0]['valor'] / 2);
+                            $descuento = 150;
+                            $subtotal = ($precioUnitario * $cantidad);
+                            $subtotal = $subtotal - ($subtotal * ($descuento/100));
+
+                            $venta_detalle = new \Ventadetalle();
+                            $venta_detalle->setIdventa($entity->getIdventa())
+                                            ->setIdproductovariante($variante)
+                                            ->setVentadetalleCantidad($cantidad)
+                                            ->setVentadetalleSubtotal($subtotal)
+                                            ->setVentadetallePreciounitario($precioUnitario)
+                                            ->setVentadetalleEstatus('completo')
+                                            ->setVentadetalleDescuento($descuento)
+                                            ->save();
+                            $total += $venta_detalle->getVentadetalleSubtotal();
+                            
+                        }
+                    }
+                }
+
                 //aplicamos la fórmula del iva
 
                 $subtotal = $total / 1.16;
@@ -645,9 +678,11 @@ class PuntoDeVentaController extends AbstractActionController
                     $entity->setVentaEstatuspago(1)->save();
                     $cliente = \ClienteQuery::Create()->findPk($post_data['cliente']);
                     $cliente->setClienteCreditorestante( $temp)->save();
+                    
 
                 }
                 $entity->setVentaEstatuspago(1)->save();
+                $this->updateInventory($post_data['id'],$entity->getIdsucursal(), $entity->getIdempleadocajero());
                 return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Pago realizado')));
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'No se pudo realizar el pago')));
@@ -677,6 +712,35 @@ class PuntoDeVentaController extends AbstractActionController
         }
 
         return 0;
+    }
+
+    private function updateInventory($id,$sucursal,$user)
+    {
+
+        //Actualizamos as existencias de los productos sucursal
+        $venta_detalle = \VentadetalleQuery::create()->filterByIdventa($id)->find()->toArray();
+        $totalComisionable = 0;
+        foreach ($venta_detalle as $detalle) {
+
+            $producto_sucursal = \ProductosucursalQuery::create()->filterByIdproductovariante($detalle['Idproductovariante'])->filterByIdsucursal($sucursal)->find()[0];
+
+            $producto_sucursal->setProductosucursalExistencia($producto_sucursal->getProductosucursalExistencia() - $detalle['VentadetalleCantidad'])->save();
+
+            $comisionable = \ProductovarianteQuery::create()->findPk($detalle['Idproductovariante'])->getProducto()->getProductoComisionable();
+
+            if($comisionable)
+            {
+                $totalComisionable += $detalle['VentadetalleSubtotal'];
+            }
+        }
+
+        //aplicamos la comision
+        $cliente_comision = new \Comisiones();
+        $cliente_comision->setIdsucursal($sucursal)
+                         ->setIdempleado($user)
+                         ->setComisionesCantidad($totalComisionable)
+                         ->setComisionesFecha(date("Y/m/d"))
+                         ->save();
     }
 
     public function getProductovariantes($data){
@@ -784,7 +848,6 @@ class PuntoDeVentaController extends AbstractActionController
             //verificamos si tiene algun descuento
             $descuento = $this->getDescuento($post_data['id']);
             
-            
             $tieneDescuento = false;
             if($descuento != null)
             {
@@ -801,6 +864,7 @@ class PuntoDeVentaController extends AbstractActionController
           
                 $details = array(
                     'id' => $post_data['id'],
+                    'existencias' => $producto_sucursal[0]['ProductosucursalExistencia'],
                     'nombre' =>  $producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje,
                     'descripcion' => $producto->getProductoDescripcion(),
                     'precio' => money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]),
@@ -811,13 +875,59 @@ class PuntoDeVentaController extends AbstractActionController
                     'descuentoCantidad' => $porcentaje,
                     'descuentoSubtotal' => $descuentoCantidad * -1
                 );
+                return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
             }else{
                 $details = array(
                     'id' => $post_data['id'],
+                    'existencias' => $producto_sucursal[0]['ProductosucursalExistencia'],
                     'nombre' =>  $producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje,
                     'descripcion' => $producto->getProductoDescripcion(),
                     'precio' => money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]),
                     'descuento' => $tieneDescuento
+                );
+            }
+
+
+
+            //verificamos si tiene alguna promociòn
+            $promocion = $this->getPromocion($post_data['id']);
+            
+            
+            $tienePromocion = false;
+            if($promocion != null)
+            {
+                $tienePromocion = true;
+            }
+
+            //si tiene promocion 
+            if($tienePromocion)
+            {
+                //creamos el objeto que procesará los datos que necesitamos
+                $precio = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
+                $porcentaje = "50";
+                $promocionCantidad = floatval($porcentaje/100) * floatval($precio);
+          
+                $details = array(
+                    'id' => $post_data['id'],
+                    'existencias' => $producto_sucursal[0]['ProductosucursalExistencia'],
+                    'nombre' =>  $producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje,
+                    'descripcion' => $producto->getProductoDescripcion(),
+                    'precio' => money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]),
+                    'nombrePromocion' => $promocion['PromocionNombre'],
+                    'descripcionPromocion' => $promocion['PromocionDescripcion'],
+                    'promocion' => $tienePromocion,
+                    'promocionPorcentaje' => $porcentaje,
+                    'promocionSubtotal' => $promocionCantidad 
+                );
+                return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
+            }else{
+                $details = array(
+                    'id' => $post_data['id'],
+                    'existencias' => $producto_sucursal[0]['ProductosucursalExistencia'],
+                    'nombre' =>  $producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje,
+                    'descripcion' => $producto->getProductoDescripcion(),
+                    'precio' => money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]),
+                    'descuento' => $tienePromocion
                 );
             }
             
@@ -863,6 +973,46 @@ class PuntoDeVentaController extends AbstractActionController
 
             $descuento = \DescuentoQuery::create()->filterByDescuentoestatus(1)->filterByIddescuento($descuentos)->find()->toArray();
             return $descuento[0];
+        }
+
+        
+        
+        return null;
+    }
+
+    private function getPromocion($id)
+    {
+        //verificamos si el productovariante pertence a alguna de las promociones
+        //verificamos si pertenece a la variante
+        $promociones = \PromociondetalleQuery::create()->select('idpromocion')->filterByIdproductovariante($id)->find()->toArray();
+        if($promociones != null)
+        {
+            $promocion = \PromocionQuery::create()->filterByPromocionestatus(1)->filterByIdpromocion($promociones)->find()->toArray();
+            return $promocion[0];
+        }
+
+
+        //verificamos que perttenezca al producto
+        $variante = \ProductovarianteQuery::Create()->findPk($id);
+        $promociones = \PromociondetalleQuery::create()->select('idpromocion')->filterByIdproducto($variante->getIdproducto())->find()->toArray();
+
+        if($promociones != null)
+        {
+
+            $promocion = \PromocionQuery::create()->filterByPromocionestatus(1)->filterByIdpromocion($promociones)->find()->toArray();
+            return $promocion[0];
+        }
+
+
+        //verificamos que perttenezca a la marca
+        $producto = \ProductoQuery::Create()->findPk($variante->getIdproducto());
+        $promociones = \PromociondetalleQuery::create()->select('idpromocion')->filterByIdmarca($producto->getIdmarca())->find()->toArray();
+
+        if($promociones != null)
+        {
+
+            $promocion = \PromocionQuery::create()->filterByPromocionestatus(1)->filterByIdpromocion($promociones)->find()->toArray();
+            return $promocion[0];
         }
 
         

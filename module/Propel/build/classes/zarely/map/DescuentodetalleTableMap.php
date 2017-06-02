@@ -36,7 +36,7 @@ class DescuentodetalleTableMap extends TableMap
         $this->setPhpName('Descuentodetalle');
         $this->setClassname('Descuentodetalle');
         $this->setPackage('zarely');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('iddescuentodetalle', 'Iddescuentodetalle', 'INTEGER', true, null, null);
         $this->addForeignKey('iddescuento', 'Iddescuento', 'INTEGER', 'descuento', 'iddescuento', true, null, null);

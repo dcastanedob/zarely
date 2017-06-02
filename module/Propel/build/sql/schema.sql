@@ -80,6 +80,22 @@ CREATE TABLE `color`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- comisiones
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `comisiones`;
+
+CREATE TABLE `comisiones`
+(
+    `idcomisiones` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `idempleado` INTEGER NOT NULL,
+    `comisiones_cantidad` INTEGER NOT NULL,
+    `comisiones_fecha` DATE NOT NULL,
+    PRIMARY KEY (`idcomisiones`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- compra
 -- ---------------------------------------------------------------------
 
@@ -259,7 +275,7 @@ DROP TABLE IF EXISTS `descuentodetalle`;
 
 CREATE TABLE `descuentodetalle`
 (
-    `iddescuentodetalle` INTEGER NOT NULL,
+    `iddescuentodetalle` INTEGER NOT NULL AUTO_INCREMENT,
     `iddescuento` INTEGER NOT NULL,
     `idproducto` INTEGER,
     `idmarca` INTEGER,

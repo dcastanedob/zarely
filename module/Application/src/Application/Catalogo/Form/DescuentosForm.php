@@ -97,8 +97,8 @@ class DescuentosForm extends Form
             'options' => array(
               
                 'value_options' => array(
-                    1 => 'Sí',
-                    0 => 'No',
+                    1 => 'Activo',
+                    0 => 'Inactivo',
 
                 ),
             ),

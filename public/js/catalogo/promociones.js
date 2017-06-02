@@ -147,17 +147,20 @@
                 //multipleWidth: 100
             });
 
-            
+            var dateToday = new Date();
             $container.find('input[name=promocion_fechafin]').datepicker({
                 language:'es',
-            });
+                startDate: 'today',
+            }).datepicker("setDate",dateToday);
+
 
 
             $container.find('input[name=promocion_cantidad]').numeric();
 
             $container.find('input[name=promocion_fechainicio]').datepicker({
                 language:'es',
-            });
+                startDate: 'today',
+            }).datepicker("setDate",dateToday);
             
             
             var idpromocion = $('input[name=idpromocion]').val();
