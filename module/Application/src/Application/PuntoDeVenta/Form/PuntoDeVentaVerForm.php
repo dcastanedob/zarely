@@ -4,16 +4,10 @@ namespace Application\PuntoDeVenta\Form;
 
 use Zend\Form\Form;
 
-class PuntoDeVentaForm extends Form
+class PuntoDeVentaVerForm extends Form
 {
     public function __construct
     (
-        $vendedores_array = array(),
-        $clientes_array = array(),
-        $productosvariante_array = array(),
-        $productos_generales_array = array(),
-        $user = null,
-        $nextId = null
     )
     {
         // we want to ignore the name passed
@@ -36,6 +30,8 @@ class PuntoDeVentaForm extends Form
                 'required' => true,
                 'class' => 'form-control infput-thick',
                 'tabindex' =>3,
+                'disabled'=> " ",
+
 
             ),
         ));
@@ -73,15 +69,14 @@ class PuntoDeVentaForm extends Form
 
         $this->add(array(
             'name' => 'idcliente',
-            'type' => 'Select',
-            'options' => array(
-              
-                'value_options' => $clientes_array,
-            ),
+            'type' => 'Text',
+            
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
                 'tabindex' =>2,
+                'disabled'=> " ",
+
             ),
         ));
 
@@ -90,20 +85,14 @@ class PuntoDeVentaForm extends Form
 
         $this->add(array(
             'name' => 'venta_tipo',
-            'type' => 'Select',
-            'options' => array(
-              
-                'value_options' => array(
-                    'venta' => 'Venta',
-                    'credito' => 'Crédito',
-                    'apartado' => 'Apartado',
-
-                ),
-            ),
+            'type' => 'Text',
+            
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
                 'tabindex' =>5,
+                'disabled'=> " ",
+
 
             ),
         ));
@@ -111,15 +100,8 @@ class PuntoDeVentaForm extends Form
 
         $this->add(array(
             'name' => 'venta_estatuspago',
-            'type' => 'Select',
-            'options' => array(
-              
-                'value_options' => array(
-                    '0' => 'No pagada',
-                    '1' => 'Pagada',
-
-                ),
-            ),
+            'type' => 'Text',
+            
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
@@ -136,10 +118,9 @@ class PuntoDeVentaForm extends Form
             'options' => array(
               
                 'value_options' => array(
-                    'proceso' => 'En proceso',
-                    'terminada' => 'Terminada',
-                    'devolucion' => 'Devolución',
-                    'cambio' => 'Cambio',
+                    'cancelada' => 'Cancelada',
+                    'completada' => 'Completada',
+                    'procesando' => 'Procesando',
 
                 ),
             ),
@@ -147,7 +128,6 @@ class PuntoDeVentaForm extends Form
                 'required' => true,
                 'class' => 'form-control infput-thick',
                 'tabindex' =>5,
-                'disabled' =>" ",
 
             ),
         ));
@@ -155,11 +135,8 @@ class PuntoDeVentaForm extends Form
 
         $this->add(array(
             'name' => 'idproductovariante1[]',
-            'type' => 'Select',
-            'options' => array(
-              
-            'value_options' => $productosvariante_array,   
-            ),
+            'type' => 'Text',
+            
             'attributes' => array(
                 'required' => true,
                 'class' => '',
@@ -171,15 +148,13 @@ class PuntoDeVentaForm extends Form
 
         $this->add(array(
             'name' => 'idempleadovendedor',
-            'type' => 'Select',
-            'options' => array(
-              
-            'value_options' => $vendedores_array,   
-            ),
+            'type' => 'Text',
+            
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
-                
+                'disabled'=> " ",
+
 
                
             ),
@@ -187,63 +162,8 @@ class PuntoDeVentaForm extends Form
 
         $this->add(array(
             'name' => 'idproductovariante2[]',
-            'type' => 'Select',
-            'options' => array(
-              
-            'value_options' => $productosvariante_array,   
-            ),
-            'attributes' => array(
-                'required' => true,
-                'class' => '',
-                
-
-               
-            ),
-        ));
-
-
-        $this->add(array(
-            'name' => 'idproductovariante3[]',
-            'type' => 'Select',
-            'options' => array(
-              
-            'value_options' => $productosvariante_array,   
-            ),
-            'attributes' => array(
-                'required' => true,
-                'class' => '',
-                
-
-               
-            ),
-        ));
-
-
-
-        $this->add(array(
-            'name' => 'idproductovariante4[]',
-            'type' => 'Select',
-            'options' => array(
-              
-            'value_options' => $productosvariante_array,   
-            ),
-            'attributes' => array(
-                'required' => true,
-                'class' => '',
-                
-
-               
-            ),
-        ));
-
-
-        $this->add(array(
-            'name' => 'idproductovariante5[]',
-            'type' => 'Select',
-            'options' => array(
-              
-            'value_options' => $productosvariante_array,   
-            ),
+            'type' => 'Text',
+            
             'attributes' => array(
                 'required' => true,
                 'class' => '',
@@ -255,11 +175,8 @@ class PuntoDeVentaForm extends Form
 
         $this->add(array(
             'name' => 'productos_generales',
-            'type' => 'Select',
-            'options' => array(
-              
-            'value_options' => $productos_generales_array,   
-            ),
+            'type' => 'Text',
+            
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',

@@ -1,146 +1,140 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title"> Transferencia - Editar </h1>
+	    <h1 class="title-bar-title"> Punto de venta - Editar </h1>
 	</div>
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
     		<div class="demo-form-wrapper">
-    			<form class="form form-horizontal" name="formulario" action="/transferencias/ver/<?php echo $entity->getIdtransferencia() ?>" method="POST" enctype="multipart/form-data"">
-    				<div class="row">
+    			<form class="form form-horizontal" name="formulario" action="/puntodeventa/ver/<?php echo $entity->getIdventa() ?>" method="POST" enctype="multipart/form-data"">
+    				<input type="hidden" name="idventa" value="<?php echo $entity->getIdventa()?>">
+
+        			<div class="row">
 		    			<div class="col-md-5">
-		    				<input type="hidden" name="idtransferencia" value="<?php echo $entity->getIdtransferencia()?>">
 			       			<div class="form-group">
-				           		<label  for="Modelo">Fecha de transferencia</label>
-				                <?php echo $this->formText($form->get('transferencia_fecha')) ?>
+				           		<label  for="fecha">Fecha </label>
+				                <?php echo $this->formText($form->get('venta_fecha')) ?>
 			        		</div>
 
 			        		<div class="form-group">
-				           		<label  for="dirigido"> Sucursal de origen</label>
-				                <?php echo $this->formSelect($form->get('idsucursalorigen')) ?>
+				           		<label  for="cajero"> Cajero</label>
+				                <?php echo $this->formText($form->get('idempleadocajero')) ?>
 			        		</div>
 
 			        		<div class="form-group">
-				           		<label  for="tipo">Creador</label>
-				                <?php echo $this->formText($form->get('idempleadocreador')) ?>
+				           		<label  for="vendedor">Vendedor</label>
+				                <?php echo $this->formText($form->get('idempleadovendedor')) ?>
 			        		</div>
-			        		
+
 			        		<div class="form-group">
-				           		<label  for="Modelo">Fecha de recepción</label>
-				                <?php echo $this->formText($form->get('transferencia_fecharecepcion')) ?>
+					           		<label  for="cliente">Cliente</label>
+					           		<div id="clientes_select">
+					                	<?php echo $this->formText($form->get('idcliente')) ?>
+				        			</div>
 			        		</div>
 
 			        	</div>
 			        	<div class="col-md-1"></div>
 		        		<div class="col-md-5">
 			       			<div class="form-group">
-				           		<label  for="Proveedor">Estatus </label>
-				                <?php echo $this->formSelect($form->get('transferencia_estatus')) ?>
-			        		</div>
-
-
-			        		<div class="form-group">
-				           		<label  for="Proveedor">Sucursal de destino </label>
-				                <?php echo $this->formSelect($form->get('idsucursaldestino')) ?>
+				           		<label  for="folio">Folio </label>
+				                <?php echo $this->formText($form->get('folio')) ?>
 			        		</div>
 
 			        		<div class="form-group">
-				           		<label  for="tipo">Receptor</label>
-				                <?php echo $this->formSelect($form->get('idempleadoreceptor')) ?>
+				           		<label  for="tipo"> Tipo </label>
+				                <?php echo $this->formText($form->get('venta_tipo')) ?>
+			        		</div>
+
+			        		<div class="form-group">
+				           		<label  for="pago">Pago</label>
+				                <?php echo $this->formText($form->get('venta_estatuspago')) ?>
+			        		</div>
+
+			        		<div class="form-group">
+				           		<label  for="estatus">Estatus</label>
+				                <?php echo $this->formSelect($form->get('venta_estatus')) ?>
 			        		</div>
 
 			        		
 			        	</div>
 		        	
  					</div> <!--end class row-->
+ 					<br><br>
+      				<div class="row">
 
+      					<div class="col-md-11 alineamiento" >
 
- 					<div class="row">
-		        		
-    					<div class="col-md-11 alineamiento" >
-    						
-							<div class="form-group" >
-								<label for="tallaje">Productos</label>
-								
-								<input type="radio" id="variante" name="validar" checked><label class="alinearTexto">Variante</label>
-								<input type="radio" id="general" name="validar"><label class="alinearTexto">Producto general</label>
-							</div>
-
-	        				<div id="medidasInformation">
-	        					<div id="variantes">
-			        				<div class="col-md-9 ">
-					                    <div class="form-group">
-							                <?php echo $this->formSelect($form->get('idproductovariante[]')) ?>
-						        		</div>
-			        				</div>
-			        				<div class="col-md-1 "></div>
-
-					        		<div class="col-md-2 ">		
-					        			<div class="form-group" style="margin-top: -23px">
-							           		<label  for="guardar"></label>
-		                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_productovariante">			Agregar
-		                                    </a>
-						        		</div>
-						        	</div>	
-					        	</div>
-
-					        	<div class="ocultar" id="producto_general"> 
-					        		<div class="col-md-9 ">
-					                    <div class="form-group">
-							                <?php echo $this->formSelect($form->get('productos_generales')) ?>
-						        		</div>
-			        				</div>
-
-			        				<div class="col-md-1 "></div>
-
-					        		<div class="col-md-2 ">		
-					        			<div class="form-group" style="margin-top: -23px">
-							           		<label  for="guardar"></label>
-		                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_productogeneral">			Agregar
-		                                    </a>
-						        		</div>
-						        	</div>
-					        	</div>
+	        				<div id="medidasInformation">	        	
 
 	                            <div class="row">
-		                            <div class="col-md-12" id="tables_information">
-		                            	
+		                            <div class="col-md-12" >
+		                            	<table class="table table-bordered" id="table_venta1">
+		                            		<thead>
+			                            		<tr>
+			                            			<th>Cantidad</th>
+			                            			<th>Nombre del producto</th>
+			                            			<th>Descripción</th>
+			                            			<th>Precio unitario</th>
+			                            			<th>Descuento</th>
+			                            			<th>Subtotal</th>
+			                            		</tr>
+		                            			
+		                            		</thead>
+
+		                            		<tbody id="tables_information1">
+		                            			
+		                            		</tbody>
+		                            	</table>
 		                            </div>
 	                            </div>
-		        					<div class="row">
-		        						<div class="col-md-12">
-		        							<label  class="pull-right" >
-		        				              TOTAL:
-		        				              	<input id="total_transferencia" type="text" name="transferencia_total" disabled>
-		        				              
-		        				              </span>
-		        				            </label>
-		        						</div>
+	                            	<div id="informacion_venta1">
+			        					<div class="row">
+			        						<div class="col-md-12">
+			        							<label  class="pull-right" >
+			        				              SUBTOTAL:
+			        				              	<input id="subtotal_transferencia" type="text" name="transferencia_subtotal" disabled>
+			        				              
+			        				              </span>
+			        				            </label>
+			        						</div>
+			        					</div>
+
+			        					<div class="row">
+			        						<div class="col-md-12">
+			        							<label  class="pull-right" >
+			        				              IVA:
+			        				              	<input id="iva_transferencia" type="text" name="transferencia_iva"  disabled>
+			        				              
+			        				              </span>
+			        				            </label>
+			        						</div>
+			        					</div>
+
+			        					<div class="row">
+			        						<div class="col-md-12">
+			        							<label  class="pull-right" >
+			        				              TOTAL:
+			        				              	<input id="total_transferencia" type="text" name="transferencia_total" disabled>
+			        				              
+			        				              </span>
+			        				            </label>
+			        						</div>
+			        					</div>
 		        					</div>
+		        					<br>
+		        					<br>
+		        			
 	        				</div>
 
 	        			</div>	
-
-		        	</div>
-		        	<hr>
-
-		        	
- 					<div class="row">
- 						<div class="col-md-11 alineamiento" >
- 							<div class="">
-				           		<label  for="nota">Notas</label>
-				                <?php echo $this->formTextarea($form->get('transferencia_nota')) ?>
-			        		</div>
- 						</div>
- 					</div>
-
+      				</div>
 		        	<div class="row">
 		        		<div class="col-md-11 alineamiento" >
- 							<div class="">
+ 							<div class="form-group" style="margin-top: -23px">
 				           		<label  for="guardar"></label>
-			                    <button class="btn btn-primary btn-block btn-next" type="submit">
-		                         	Guardar
-		                        </button>
-		                    </div>
+                                <button class="btn btn-primary btn-block btn-next" id="btn_venta_1">			Guardar
+                                </button>
+			        		</div>
 		                </div>
 	        		</div>
  
@@ -159,10 +153,12 @@
 
 <link rel="stylesheet"  href="/plugins/Select2/select2.min.css">
 <script src="/plugins/Select2/select2.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.4.2/sweetalert2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/sweetalert2/6.4.2/sweetalert2.min.css">
 
-<script src="/js/transferencia/generales.js"></script>
+<script src="/js/transferencia/ver.js"></script>
 <script>
-	var generales = $('.body_container').generales();
-	generales.initForm();
+	var ver = $('.body_container').ver();
+	ver.initForm();
 </script>
 

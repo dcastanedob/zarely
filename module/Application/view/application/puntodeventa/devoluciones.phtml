@@ -1,0 +1,61 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title"> Devoluciones de la venta <?php echo $entity->getIdventa() ?> </h1>
+	</div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+    		<div class="demo-form-wrapper">
+    			<form class="form form-horizontal" name="formulario" action="/puntodeventa/devoluciones/<?php echo $entity->getIdventa() ?>" method="POST" enctype="multipart/form-data"">
+    				<input type="hidden" name="idventa" value="<?php echo $entity->getIdventa()?>">
+
+        			<div class="col-md-11 alineamiento" >
+                        <div class="row">
+                            <div class="col-md-12" >
+                            	<table class="table table-bordered" id="productos">
+                            		<thead>
+	                            		<tr>
+	                            			<th>Total</th>
+	                            			<th>Cantidad a devolver</th>
+	                            			<th>Nombre del producto</th>
+	                            		</tr>
+                            			
+                            		</thead>
+
+                            		<tbody id="tables_information">
+                            			
+                            		</tbody>
+                            	</table>
+                            </div>
+                        </div>
+        			</div>
+
+		        	<div class="row">
+		        		<div class="col-md-11 alineamiento" >
+ 							<div class="form-group" style="margin-top: -23px">
+				           		<label  for="guardar"></label>
+                                <button class="btn btn-primary btn-block btn-next" >			Guardar
+                                </button>
+			        		</div>
+		                </div>
+	        		</div>
+ 
+    			</form>
+    		</div>
+    	</div>
+	</div>
+
+
+	
+
+   
+
+</div>
+<link rel="stylesheet"  href="/css/tableScroll.css">
+
+
+<script src="/js/puntodeventa/devoluciones.js"></script>
+<script>
+	var devoluciones = $('.body_container').devoluciones();
+	devoluciones.initForm();
+</script>
+
