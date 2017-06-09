@@ -507,6 +507,28 @@ class PuntoDeVentaController extends AbstractActionController
             $entity = \VentaQuery::create()->findPk($id);
             if($request->isPost()){
                 $post_data = $request->getPost();
+
+                //obtenemos un arreglo de variante=>cantidad con los datos que le mandamos
+                $detalles = [];
+                foreach ($post_data as $key => $value) {
+                    if(substr( $key, 0, 10 ) === "devolucion")
+                    {
+                        
+                        $detalles[str_replace("devolucion", "", $key)] = $value;
+                    }
+                }
+
+                //iteramos sobre cada uno para cambiar el estatus
+                foreach ($detalles as $id => $cantidad) {
+                    $venta_detalle = \VentadetalleQuery::create()->findPk($id);
+                    $venta_detalle->setVentadetalleEstatus('cambio')->save();
+                    
+                }
+
+                $this->flashMessenger()->addSuccessMessage('Sus devoluciones han guardado satisfactoriamente.');
+
+                return $this->redirect()->toUrl('/puntodeventa');
+
             }
 
             $view_model = new ViewModel();
@@ -839,6 +861,7 @@ class PuntoDeVentaController extends AbstractActionController
 
                 //procesamos la informacion en un json
                 $details[] = array(
+                                'id' => $venta['Idventadetalle'],
                                 'cantidad' => $venta['VentadetalleCantidad'],
                                 'precioUnitario' => $venta['VentadetallePreciounitario'],
                                 'descuento' => $venta['VentadetalleDescuento'],

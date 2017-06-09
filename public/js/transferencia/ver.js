@@ -119,8 +119,8 @@
                                                 '<span class="sr-only">Close</span>',
                                               '</button>',
                                               '<h3 class="text-primary">Pagos de la venta </h3>',
-                                              '<h5 id="pago_total" class="text-primary"> </h5>',
-                                              '<h5 id="pago_almomento" class="text-primary"> </h5>',
+                                              '<h5>Pago total</h5><h5 id="pago_total" class="text-primary"> </h5>',
+                                              '<h5>Pago al momento</h5><h5 id="pago_almomento" class="text-primary"> </h5>',
                                             '</div>',
                                             
                                            ' <div class="modal-body" style="overflow-x:auto;">',
