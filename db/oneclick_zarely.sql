@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-06-2017 a las 18:28:42
+-- Tiempo de generación: 14-06-2017 a las 22:36:22
 -- Versión del servidor: 5.6.31
 -- Versión de PHP: 5.4.42
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `cliente` (
 
 INSERT INTO `cliente` (`idcliente`, `cliente_nombre`, `cliente_apaterno`, `cliente_amaterno`, `cliente_rfc`, `cliente_razonsocial`, `cliente_callefiscal`, `cliente_numerofiscal`, `cliente_interiorfiscal`, `cliente_coloniafiscal`, `cliente_ciudadfiscal`, `cliente_cpfiscal`, `cliente_estadofiscal`, `cliente_calle`, `cliente_numero`, `cliente_interior`, `cliente_colonia`, `cliente_cp`, `cliente_ciudad`, `cliente_estado`, `cliente_tipo`, `cliente_fecharegistro`, `cliente_estatus`, `cliente_credito`, `cliente_limitecredito`, `cliente_creditorestante`) VALUES
 (1, 'Venta', 'al ', 'publico', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0, 0, 1000.00000, NULL),
-(2, 'Armando', 'Alonso', 'Orozco', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0, 1, 1000.00000, 6.50000),
+(2, 'Armando', 'Alonso', 'Orozco', 'adsf', 'adsf', 'jsdfk', '324', '243', 'Jasdf', 'Guadaljara', '23432', 'Jalisco', 'Isla salinas', '2422', '2324', 'Jardines del sur', '48599', 'Guadalajra', 'Jalisco', 'mayorista', '2017-03-01', 0, 1, 1000.00000, 61.00000),
 (4, 'ToÃ±o', 'Garcia', 'Perez', '73', '3897834734897', '89374', '83749', '837489374983748979847', '3894789', '37498', '73489', '7389478', 'asdf', '234', '234', '79834', '324', '78933', '7894793887', 'mayorista', '2017-04-27', 0, 1, 2500.00000, 2500.00000);
 
 -- --------------------------------------------------------
@@ -126,16 +126,17 @@ CREATE TABLE IF NOT EXISTS `comisiones` (
   `idempleado` int(11) NOT NULL,
   `comisiones_cantidad` int(11) NOT NULL,
   `comisiones_fecha` date NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `comisiones`
 --
 
 INSERT INTO `comisiones` (`idcomisiones`, `idsucursal`, `idempleado`, `comisiones_cantidad`, `comisiones_fecha`) VALUES
-(45, 1, 4, 11, '2017-06-05'),
-(46, 1, 4, 2, '2017-06-06'),
-(47, 1, 4, 108, '2017-06-07');
+(52, 1, 4, 5, '2017-06-08'),
+(53, 1, 4, 13, '2017-06-09'),
+(54, 1, 4, 5, '2017-06-12'),
+(55, 1, 4, 4, '2017-06-14');
 
 -- --------------------------------------------------------
 
@@ -859,10 +860,10 @@ CREATE TABLE IF NOT EXISTS `productosucursal` (
 --
 
 INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo`) VALUES
-(157, 6897, 1, 295, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(158, 6898, 1, 14, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(159, 6899, 1, 9, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(160, 6900, 1, 434, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(157, 6897, 1, 244, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(158, 6898, 1, 34, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(159, 6899, 1, 224, 2, 2, 6.00000, 120.00000, 1, 0.00000),
+(160, 6900, 1, 394, 2, 2, 6.00000, 120.00000, 1, 0.00000),
 (161, 6901, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
 (162, 6902, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
 (163, 6903, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
@@ -5086,14 +5087,16 @@ CREATE TABLE IF NOT EXISTS `venta` (
   `venta_iva` decimal(15,5) NOT NULL,
   `venta_estatus` enum('cancelada','completada','procesando') NOT NULL,
   `venta_facturacion` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=464 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=497 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `venta`
 --
 
 INSERT INTO `venta` (`idventa`, `idempleadocajero`, `idempleadovendedor`, `idcliente`, `venta_total`, `venta_fecha`, `venta_comprobante`, `idsucursal`, `venta_estatuspago`, `venta_tipo`, `venta_subtotal`, `venta_iva`, `venta_estatus`, `venta_facturacion`) VALUES
-(463, 4, 6, 1, 11.40000, '2017-06-07 13:27:50', NULL, 1, 1, 'venta', 9.82759, 1.57241, 'completada', NULL);
+(493, 4, 6, 2, 42.00000, '2017-06-09 11:53:13', NULL, 1, 1, 'credito', 36.20690, 5.79310, 'completada', NULL),
+(494, 4, 6, 2, 30.00000, '2017-06-12 10:52:29', NULL, 1, 1, 'credito', 25.86207, 4.13793, 'completada', NULL),
+(496, 4, 6, 1, 11.40000, '2017-06-14 16:13:44', NULL, 1, 1, 'venta', 9.82759, 1.57241, 'completada', NULL);
 
 -- --------------------------------------------------------
 
@@ -5111,15 +5114,19 @@ CREATE TABLE IF NOT EXISTS `ventadetalle` (
   `ventadetalle_preciounitario` decimal(15,5) NOT NULL,
   `ventadetalle_estatus` enum('completo','defecto','cambio') NOT NULL,
   `ventadetalle_descuento` float DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=541 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=603 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `ventadetalle`
 --
 
 INSERT INTO `ventadetalle` (`idventadetalle`, `idventa`, `idproductovariante`, `ventadetalle_cantidad`, `ventadetalle_subtotal`, `ventadetalle_preciounitario`, `ventadetalle_estatus`, `ventadetalle_descuento`) VALUES
-(539, 463, 6897, 1, 5.40000, 6.00000, 'completo', 10),
-(540, 463, 6899, 1, 6.00000, 6.00000, 'completo', 0);
+(596, 493, 6897, 3, 18.00000, 6.00000, 'cambio', 0),
+(597, 493, 6899, 4, 24.00000, 6.00000, 'cambio', 0),
+(598, 494, 6899, 2, 12.00000, 6.00000, 'completo', 0),
+(599, 494, 6897, 3, 18.00000, 6.00000, 'completo', 0),
+(601, 496, 6897, 1, 5.40000, 6.00000, 'completo', 10),
+(602, 496, 6899, 1, 6.00000, 6.00000, 'completo', 0);
 
 -- --------------------------------------------------------
 
@@ -5138,14 +5145,22 @@ CREATE TABLE IF NOT EXISTS `ventapago` (
   `ventapago_referencia` varchar(50) DEFAULT NULL,
   `ventapago_cuatrodigitos` varchar(4) DEFAULT NULL,
   `idvale` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=162 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=240 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `ventapago`
 --
 
 INSERT INTO `ventapago` (`idventapago`, `idventa`, `venta_fecha`, `idempleado`, `ventapago_metododepago`, `ventapago_cantidad`, `ventapago_referencia`, `ventapago_cuatrodigitos`, `idvale`) VALUES
-(161, 463, '2017-06-07 13:27:50', 4, 'efectivo', 11.40000, NULL, NULL, NULL);
+(231, 493, '2017-06-09 11:53:13', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
+(232, 493, '2017-06-09 11:53:13', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
+(233, 493, '2017-06-09 11:53:13', 4, 'efectivo', 2.00000, NULL, NULL, NULL),
+(234, 494, '2017-06-12 10:52:29', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
+(235, 494, '2017-06-12 10:52:29', 4, 'efectivo', 3.00000, NULL, NULL, NULL),
+(236, 494, '2017-06-12 10:52:29', 4, 'efectivo', 4.00000, NULL, NULL, NULL),
+(237, 494, '2017-06-12 10:52:29', 4, 'efectivo', 3.00000, NULL, NULL, NULL),
+(238, 496, '2017-06-14 16:13:44', 4, 'efectivo', 11.40000, NULL, NULL, NULL),
+(239, 496, '2017-06-14 16:13:44', 4, 'efectivo', 0.60000, NULL, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -5510,7 +5525,7 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT de la tabla `comisiones`
 --
 ALTER TABLE `comisiones`
-  MODIFY `idcomisiones` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=48;
+  MODIFY `idcomisiones` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=56;
 --
 -- AUTO_INCREMENT de la tabla `compra`
 --
@@ -5705,17 +5720,17 @@ ALTER TABLE `transferenciadetalle`
 -- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=464;
+  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=497;
 --
 -- AUTO_INCREMENT de la tabla `ventadetalle`
 --
 ALTER TABLE `ventadetalle`
-  MODIFY `idventadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=541;
+  MODIFY `idventadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=603;
 --
 -- AUTO_INCREMENT de la tabla `ventapago`
 --
 ALTER TABLE `ventapago`
-  MODIFY `idventapago` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=162;
+  MODIFY `idventapago` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=240;
 --
 -- Restricciones para tablas volcadas
 --

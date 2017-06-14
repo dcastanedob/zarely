@@ -112,3 +112,10 @@
     background-color: red;
     color: white;
 }
+
+
+.buttonSize{
+    padding: 40px 120px;
+    font-size: 20px;
+    border-radius: 10px;
+}

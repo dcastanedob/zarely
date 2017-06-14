@@ -56,7 +56,6 @@
 
         plugin.initForm = function(){
 
-
             
             
             var idventa = $('input[name=idventa]').val();
@@ -119,8 +118,14 @@
                                                 '<span class="sr-only">Close</span>',
                                               '</button>',
                                               '<h3 class="text-primary">Pagos de la venta </h3>',
-                                              '<h5>Pago total</h5><h5 id="pago_total" class="text-primary"> </h5>',
-                                              '<h5>Pago al momento</h5><h5 id="pago_almomento" class="text-primary"> </h5>',
+                                              '<div class="row">',
+                                                '<div class="col-md-offset-1 col-md-5">',
+                                                  '<h5>Pago total</h5><h5 id="pago_total" class="text-primary"> </h5>',
+                                                '</div>',
+                                                '<div class=" col-md-5">',
+                                                  '<h5>Pago al momento</h5><h5 id="pago_almomento" class="text-primary"> </h5>',
+                                                '</div>',
+                                              '</div>',
                                             '</div>',
                                             
                                            ' <div class="modal-body" style="overflow-x:auto;">',
@@ -345,7 +350,9 @@
                                   
                                   if(booleano){
 
+                                  
                                     totalAlMomento+=parseFloat(cantidad);
+                                    $modal.find('#pago_almomento').html('$'+totalAlMomento);
 
                                     $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
 
@@ -372,7 +379,6 @@
                                   
                                   $modal.find('#detalles_de_venta tr').filter(function(){
                                     var cantidadRow = $(this).find('#cantidadRow').html();
-                                    console.log("undefined" !== typeof cantidadRow);
                                     if ( "undefined" !== typeof cantidadRow)
                                     {
                                       var referenciaRow = $(this).find('#referenciaRow').html();

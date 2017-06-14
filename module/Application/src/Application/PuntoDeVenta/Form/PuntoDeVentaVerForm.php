@@ -8,6 +8,7 @@ class PuntoDeVentaVerForm extends Form
 {
     public function __construct
     (
+        $productosvariante_array = array()
     )
     {
         // we want to ignore the name passed
@@ -135,8 +136,11 @@ class PuntoDeVentaVerForm extends Form
 
         $this->add(array(
             'name' => 'idproductovariante1[]',
-            'type' => 'Text',
-            
+            'type' => 'Select',
+            'options' => array(
+              
+            'value_options' => $productosvariante_array,   
+            ),
             'attributes' => array(
                 'required' => true,
                 'class' => '',

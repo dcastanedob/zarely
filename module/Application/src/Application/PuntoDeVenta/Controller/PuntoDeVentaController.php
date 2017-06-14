@@ -84,14 +84,14 @@ class PuntoDeVentaController extends AbstractActionController
 
                 $c3= $c->getNewCriterion('venta.venta_estatuspago', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c4= $c->getNewCriterion('venta.venta_fecha', '%'.$search_value.'%', \Criteria::LIKE);
+                //$c4= $c->getNewCriterion('venta.venta_fecha', '%'.$search_value.'%', \Criteria::LIKE);
 
                 $c5= $c->getNewCriterion('venta.venta_tipo', '%'.$search_value.'%', \Criteria::LIKE);
 
                 $c6= $c->getNewCriterion('venta.venta_estatus', '%'.$search_value.'%', \Criteria::LIKE);
 
 
-                $c1->addOr($c2)->addOr($c3)->addOr($c4)->addOr($c5)->addOr($c6);
+                $c1->addOr($c2)->addOr($c3)->addOr($c5)->addOr($c6);
 
                 $query->addAnd($c1);
                 $query->groupByVentaFecha();
@@ -142,7 +142,45 @@ class PuntoDeVentaController extends AbstractActionController
 
                 $tmp['venta_estatus'] = $value['venta_estatus'];
                  $tmp['venta_total'] = "$" . money_format('%.2n',$value['venta_total']);
-                 if($user['idrol'] == 1 || $user['idrol'] == 6)
+
+                 if(($user['idrol'] == 1 || $user['idrol'] == 6) && $value['venta_estatus'] =="cancelada")
+                 {
+                    $tmp['options'] = '<td><div class="btn-group dropdown">
+                      <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
+                        <span class="icon icon-gear icon-lg icon-fw"></span>
+                        Opciones
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a href="/puntodeventa/ver/' . $value['idventa'] . '">
+                            <div class="media">
+                              <div class="media-left">
+                                <span class="icon icon-edit icon-lg icon-fw"></span>
+                              </div>
+                              <div class="media-body">
+                                <span class="d-b">Editar</span>
+                               
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="javascript:;" class="delete_modal">
+                            <div class="media">
+                              <div class="media-left">
+                                <span class="icon icon-trash icon-lg icon-fw"></span>
+                              </div>
+                              <div class="media-body">
+                                <span class="d-b">Eliminar</span>
+                           
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div></td>';
+                 }else if(($user['idrol'] == 1 || $user['idrol'] == 6) && $value['venta_tipo'] =="venta")
                  {
                     $tmp['options'] = '<td><div class="btn-group dropdown">
                       <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
@@ -201,13 +239,13 @@ class PuntoDeVentaController extends AbstractActionController
                       </button>
                       <ul class="dropdown-menu">
                         <li>
-                          <a href="/puntodeventa/devoluciones/' . $value['idventa'] . '">
+                          <a href="/puntodeventa/ver/' . $value['idventa'] . '">
                             <div class="media">
                               <div class="media-left">
-                                <span class="icon icon-mail-reply icon-lg icon-fw"></span>
+                                <span class="icon icon-edit icon-lg icon-fw"></span>
                               </div>
                               <div class="media-body">
-                                <span class="d-b">Devoluciones</span>
+                                <span class="d-b">Editar</span>
                                
                               </div>
                             </div>
@@ -495,6 +533,36 @@ class PuntoDeVentaController extends AbstractActionController
         
     }
 
+    public function checkdayAction()
+    {
+      $request = $this->getRequest();
+        
+      if($request->isPost()){
+        $post_data = $request->getPost();
+        $entity = \VentaQuery::create()->findPk($post_data['id']);
+       // $date = split(" ",$entity->getVentaFecha())[0];
+        $hoy = date("Y-m-d");  
+
+          return $this->getResponse()->setContent(json_encode(array('response' => true)));
+      }
+              
+    }
+
+
+    public function actualizardetallesAction()
+    {
+      $request = $this->getRequest();
+        
+      if($request->isPost()){
+        $post_data = $request->getPost();
+        $entity = \VentaQuery::create()->findPk($post_data['id']);
+       
+        return $this->getResponse()->setContent(json_encode(array('response' => true)));
+      }
+              
+    }
+
+
     public function devolucionesAction()
     {
         $request = $this->getRequest();
@@ -507,7 +575,7 @@ class PuntoDeVentaController extends AbstractActionController
             $entity = \VentaQuery::create()->findPk($id);
             if($request->isPost()){
                 $post_data = $request->getPost();
-
+                var_dump($post_data);exit();
                 //obtenemos un arreglo de variante=>cantidad con los datos que le mandamos
                 $detalles = [];
                 foreach ($post_data as $key => $value) {
@@ -531,10 +599,65 @@ class PuntoDeVentaController extends AbstractActionController
 
             }
 
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
+
+            //traer los productosvariantes
+            $variantes = \ProductovarianteQuery::create()->find();
+
+            $productosvariante_array = array();
+
+            foreach ($variantes as $value){
+                //traemos la informacion del producto de la sucursal que estamos
+                $producto_sucursal = \ProductosucursalQuery::create()->filterByIdproductovariante($value->getIdproductovariante())->filterByIdsucursal($user['idsucursal'])->find()->toArray();
+
+                if($producto_sucursal == null)
+                {
+                    continue;
+                }
+                //verificamos que tengamos en existencia
+                if($producto_sucursal[0]["ProductosucursalExistencia"] > 0 )
+                {
+
+                    $producto = $value->getProducto();
+                    $color = $value->getProductocolor();
+                    $color = $color->getColor();
+                    $material = $value->getProductomaterial();
+                    $material = $material->getMaterial();
+                    $tallaje = $value->getProductovarianteTalla();
+
+                    $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje;
+
+                    $productosvariante_array[$value->getIdproductovariante()] = $information;
+                }
+            }
+
+            $form = new \Application\PuntoDeVenta\Form\PuntoDeVentaVerForm($productosvariante_array);
+
+            $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
+
+            $form->get('venta_fecha')->setValue($entity->getVentaFecha('d/m/Y'));
+            $form->get('folio')->setValue($entity->getIdventa());
+            $form->get('idempleadocajero')->setValue($entity->getEmpleadoRelatedByIdempleadocajero()->getEmpleadoNombre());
+
+            $form->get('venta_tipo')->setValue($entity->getVentaTipo());
+            $form->get('idempleadovendedor')->setValue($entity->getEmpleadoRelatedByIdempleadovendedor()->getEmpleadoNombre());
+
+            $form->get('idcliente')->setValue($entity->getCliente()->getClienteNombre() ." ". $entity->getCliente()->getClienteApaterno() ." ". $entity->getCliente()->getClienteAmaterno());
+
+            if($entity->getVentaEstatuspago())
+            {
+                $form->get('venta_estatuspago')->setValue("Pagada");
+            }
+            else{
+                $form->get('venta_estatuspago')->setValue("No pagada");
+            }
+
             $view_model = new ViewModel();
             $view_model->setTemplate('application/puntodeventa/devoluciones');
             $view_model->setVariables(array(
                 'entity' => $entity,
+                'form' => $form,
             ));
             return $view_model;
 
@@ -759,9 +882,10 @@ class PuntoDeVentaController extends AbstractActionController
 
     public function getProductovariantes($data){
         $information = [
-            'selects' => \TransferenciadetalleQuery::create()->select('idproductovariante')->filterByIdtransferencia($data['idtransferencia'])->find()->toArray(),
-            'cantidad' =>\TransferenciadetalleQuery::create()->select('transferenciadetalle_cantidad')->filterByIdtransferencia($data['idtransferencia'])->find()->toArray(),
-            'precio' =>\TransferenciadetalleQuery::create()->select('transferenciadetalle_preciounitario')->filterByIdtransferencia($data['idtransferencia'])->find()->toArray(),
+            'selects' => \VentadetalleQuery::create()->select('idproductovariante')->filterByIdventa($data['idventa'])->find()->toArray(),
+            'cantidad' =>\VentadetalleQuery::create()->select('ventadetalle_cantidad')->filterByIdventa($data['idventa'])->find()->toArray(),
+            'precio' =>\VentadetalleQuery::create()->select('ventadetalle_preciounitario')->filterByIdventa($data['idventa'])->find()->toArray(),
+            'descuento' =>\VentadetalleQuery::create()->select('ventadetalle_descuento')->filterByIdventa($data['idventa'])->find()->toArray(),
         ];
 
         return $information;
@@ -867,7 +991,8 @@ class PuntoDeVentaController extends AbstractActionController
                                 'descuento' => $venta['VentadetalleDescuento'],
                                 'subtotal' => $venta['VentadetalleSubtotal'],
                                 'nombre' => $producto->getProductoModelo() .' - ' . $color->getColorNombre().' / ' . $material->getMaterialNombre().' / ' . $tallaje,
-                                'descripcion' => $producto->getProductoDescripcion()
+                                'descripcion' => $producto->getProductoDescripcion(),
+                                'idvariante' => $variante->getIdproductovariante()
                             );
 
             }

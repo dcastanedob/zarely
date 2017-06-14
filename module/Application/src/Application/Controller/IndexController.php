@@ -51,11 +51,11 @@ class IndexController extends AbstractActionController
     private function getTotal()
     {
         //traer las compras
-        $compras = \CompraQuery::create()->find();
+        $compras = \VentaQuery::create()->find();
         $compras_array = array();
         $total = 0 ;
         foreach ($compras as $value){
-            $total += $value->getCompraTotal();
+            $total += $value->getVentaTotal();
         }
         return $total;
     }
