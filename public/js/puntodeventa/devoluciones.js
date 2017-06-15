@@ -467,7 +467,7 @@
                         $modal.modal();
                       }else if($container.find('#diferencia_venta').val().split("$")[1] == 0)
                       {
-                         var data = $('#venta_devolucion').serialize();
+                        var data = $('#venta_devolucion').serialize();
               
                         $.post('/puntodeventa/actualizardetalles', data).done(function(e){
                           if(JSON.parse(e).response)
