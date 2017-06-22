@@ -176,16 +176,19 @@
 
                     $container.find('#btn_add_productovariante1').trigger('click');
                     productosvariantes_added = data.selects;  
-                    alert("");
-                    for(var i = 0; i<data.selects.length;i++)
-                    {
+                    setTimeout(function(){
+                      for(var i = 0; i<data.selects.length;i++)
+                      {
+                      
+                          $container.find('input[name=cantidad'+data.selects[i]+']').attr('value',data.cantidad[i].replace(".00",""));
+                          $container.find('input[name=cantidad'+data.selects[i]+']').attr('disabled','');
+                          $container.find('input[name=preciounitario'+data.selects[i]+']').attr('value',data.precio[i]);
+                          $container.find('input[name=preciounitario'+data.selects[i]+']').keyup();
+                          $container.find('input[name=descuento'+data.selects[i]+']').attr('value',data.descuento[i]);
+                          $container.find('input[name=descuento'+data.selects[i]+']').keyup();
+                      }
+                    }, 1000);
                     
-                        $container.find('input[name=cantidad'+data.selects[i]+']').attr('value',data.cantidad[i].replace(".00",""));
-                        $container.find('input[name=preciounitario'+data.selects[i]+']').attr('value',data.precio[i]);
-                        $container.find('input[name=preciounitario'+data.selects[i]+']').keyup();
-                        $container.find('input[name=descuento'+data.selects[i]+']').attr('value',data.descuento[i]);
-                        $container.find('input[name=descuento'+data.selects[i]+']').keyup();
-                    }
                                       
                 }
             });
@@ -212,9 +215,8 @@
                     },success:function(data){
 
                       console.log(data);
-                      var verificarTipo = $container.find('#venta_tipo select[name*=venta_tipo] option:selected').val();
+                      var verificarTipo = $container.find('input[name="venta_tipo"]').val();
                       $tr = $('<tr id="details">');
-
                       $tr.append('<td><input type="text" size="5" id="cantidad" value="1" name="cantidad'+data.data.id+'"></input></td>');
                       $tr.append('<td>'+data.data.nombre+'</td>');
                       $tr.append('<td>'+data.data.descripcion+'</td>');
@@ -250,6 +252,11 @@
                           var index = productovariantes.indexOf(id);
                           if (index > -1) {
                              productovariantes.splice(index, 1);
+                          }
+                          var index =productosvariantes_added.indexOf(id);
+                          if(index> -1)
+                          {
+                           productosvariantes_added.splice(index,1);
                           }
                           var index =productosvariantes_added.indexOf(id);
                           if(index> -1)
@@ -317,7 +324,7 @@
                               $container.find('#promociones'+data.data.id+".transferenciadetalle_subtotal").val(accounting.formatMoney(0));
                             }
                           }else{
-                            $(this).val(1);
+                            $(this).val(0);
                           
                           }
                           calcularSubtotal($information)
@@ -342,7 +349,7 @@
                             var $total = (-1 * cantidad * $descuento);
                             container.find('#detalle_subtotal'+data.data.id).val($total);
                           }else{
-                            $(this).val(1);
+                            $(this).val(0);
                           }
                           calcularSubtotal($information)
                         });
@@ -432,6 +439,7 @@
                     data:{
                       id:idventa,
                     },success:function(data){
+                      $container.find('#tables_information1 input[name*=cantidad]').removeAttr('disabled');
                       if($container.find('#diferencia_venta').val().split("$")[1] > 0 && data.response) 
                       {
                         var tmpl = [
@@ -465,6 +473,45 @@
                         $modal = $(tmpl);
                         $modal.find('#cantidad_canjear').html("$"+$container.find('#diferencia_venta').val().split("$")[1]);
                         $modal.modal();
+                        var data = $('#venta_devolucion').serialize();
+              
+                        $.post('/puntodeventa/actualizardetalles', data).done(function(e){
+                        });
+                      }else if($container.find('#diferencia_venta').val().split("$")[1] > 0 )
+                      {
+                        var tmpl = [
+                                    '<div id="modalBounceInLeft" tabindex="-1" role="dialog" class="modal fade bs-example-modal-lg">',
+                                          '<div class="modal-dialog">',
+                                           ' <div class="modal-content animated bounceInLeft" style="margin-left: 0%;margin-right: 0%;">',
+                                            '  <div class="modal-header">',
+                                                ' <button type="button" class="close" data-dismiss="modal">',
+                                                  '<span aria-hidden="true">×</span>',
+                                                  '<span class="sr-only">Close</span>',
+                                                '</button>',
+                                                '<h3 class="text-primary">Saldo a canjear: </h3>',
+                                                '<h3 class="text-primary" id="cantidad_canjear"></h3>',
+                                              '</div>',
+                                              '<div class="row">',
+                                                '<div class="col-md-offset-1 col-md-10">',
+                                                  '<button class="btn btn-info buttonSize" data-dismiss="modal" id="canjear_vale" style="padding: 40px 200px">Vale</button>',
+                                                '</div>',
+                                              '</div>',
+                                              
+                                             ' <div class="modal-body" style="overflow-x:auto;">',
+                                                  '<hr>',
+                                              '</div>',
+                                            '</div>',
+                                          '</div>',
+                                        '</div>',
+                                    ].join('');
+                        $modal = $(tmpl);
+                        $modal.find('#cantidad_canjear').html("$"+$container.find('#diferencia_venta').val().split("$")[1]);
+                        $modal.modal();
+
+                        var data = $('#venta_devolucion').serialize();
+              
+                        $.post('/puntodeventa/actualizardetalles', data).done(function(e){
+                        });
                       }else if($container.find('#diferencia_venta').val().split("$")[1] == 0)
                       {
                         var data = $('#venta_devolucion').serialize();
@@ -473,7 +520,6 @@
                           if(JSON.parse(e).response)
                           {
                             swal("Éxito","Acción realizada correctamente","success");
-
                           }
                         });
 
@@ -737,6 +783,10 @@
                                   $modal.find('#btn_cancelar_pago').off('click');
                                   $modal.find('#btn_cancelar_pago').text('Regresar');
                                   swal("Éxito","Acción realizada correctamente","success");
+                                  var data = $('#venta_devolucion').serialize();
+                                  
+                                  $.post('/puntodeventa/actualizardetalles', data).done(function(e){
+                                  });
                                   $container.find('#tables_information5 a').filter(function(){
                                     $(this).trigger('click');
                                   });

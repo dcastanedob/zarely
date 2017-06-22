@@ -122,6 +122,8 @@ class PuntoDeVentaVerForm extends Form
                     'cancelada' => 'Cancelada',
                     'completada' => 'Completada',
                     'procesando' => 'Procesando',
+                    'devolucion' => 'Devolucion',
+                    'defecto' => 'Defecto',
 
                 ),
             ),

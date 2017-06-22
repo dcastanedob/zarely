@@ -24,6 +24,7 @@
     <script src="/plugins/DatePicker/bootstrap-datepicker.es.js"></script>
     <script src="/plugins/Numeric/numeric.js"></script>
     <script src="/plugins/Accounting/accounting.js"></script>
+    <script src="/plugins/Download/download.js"></script>
   </head>
   <body class="layout">
     <?php $session = new \Application\Session\AouthSession();
@@ -234,8 +235,23 @@
                     
                     <li><a href="/puntodeventa">Punto de venta</a></li>   
                   </ul>
+                </li>
 
+                <li class="sidenav-item has-subnav">
+                  <a href="javascript:;" aria-haspopup="true">
+                    <span class="sidenav-icon icon icon-bar-chart"></span>
+                    <span class="sidenav-label">Reportes</span>
+                  </a>
+                  <ul class="sidenav-subnav collapse" aria-expanded="false">
+                    <li class="sidenav-subheading">Reportes</li>
+                    
+                    <li><a href="/reporte/masvendidos">Productos más vendidos</a></li>  
+                    <li><a href="/reporte/mascreditos">Productos con más créditos</a></li>     
+                    <li><a href="/reporte/masapartados">Productos con más apartados</a></li>  
+                    <li><a href="/reporte/ventas">De ventas</a></li>     
+                    <li><a href="/reporte/por-pagar">Cuentas por pagar</a></li>     
 
+                  </ul>
 
                 </li>
 

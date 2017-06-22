@@ -902,7 +902,7 @@
     <column name="venta_tipo" phpName="VentaTipo" type="CHAR" sqlType="enum('venta','credito','apartado')" required="true"/>
     <column name="venta_subtotal" phpName="VentaSubtotal" type="DECIMAL" size="15" scale="5" required="true"/>
     <column name="venta_iva" phpName="VentaIva" type="DECIMAL" size="15" scale="5" required="true"/>
-    <column name="venta_estatus" phpName="VentaEstatus" type="CHAR" sqlType="enum('cancelada','completada','procesando')" required="true"/>
+    <column name="venta_estatus" phpName="VentaEstatus" type="CHAR" sqlType="enum('cancelada','completada','procesando','devolucion','defecto')" required="true"/>
     <column name="venta_facturacion" phpName="VentaFacturacion" type="BOOLEAN" size="1" required="false"/>
     <foreign-key foreignTable="cliente" name="idcliente_venta" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idcliente" foreign="idcliente"/>

@@ -83,6 +83,8 @@ abstract class BaseVentaPeer
     const VENTA_ESTATUS_CANCELADA = 'cancelada';
     const VENTA_ESTATUS_COMPLETADA = 'completada';
     const VENTA_ESTATUS_PROCESANDO = 'procesando';
+    const VENTA_ESTATUS_DEVOLUCION = 'devolucion';
+    const VENTA_ESTATUS_DEFECTO = 'defecto';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -137,6 +139,8 @@ abstract class BaseVentaPeer
             VentaPeer::VENTA_ESTATUS_CANCELADA,
             VentaPeer::VENTA_ESTATUS_COMPLETADA,
             VentaPeer::VENTA_ESTATUS_PROCESANDO,
+            VentaPeer::VENTA_ESTATUS_DEVOLUCION,
+            VentaPeer::VENTA_ESTATUS_DEFECTO,
         ),
     );
 

@@ -89,7 +89,7 @@
                     {
                         $container.find('#btn_venta_1').remove();
                         $container.find('select[name=venta_estatus]').attr('disabled',"");
-                    }else if(data.estatus == 'completada')
+                    }else if(data.estatus == 'completada' || data.estatus == 'devolucion' || data.estatus == 'defecto')
                     {
                         $container.find('select[name=venta_estatus] option[value="procesando"]').remove();
                     }else{

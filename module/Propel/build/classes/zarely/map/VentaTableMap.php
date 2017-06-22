@@ -60,6 +60,8 @@ class VentaTableMap extends TableMap
   0 => 'cancelada',
   1 => 'completada',
   2 => 'procesando',
+  3 => 'devolucion',
+  4 => 'defecto',
 ));
         $this->addColumn('venta_facturacion', 'VentaFacturacion', 'BOOLEAN', false, 1, null);
         // validators

@@ -143,6 +143,9 @@ return array(
 
         //Punto de venta
         'puntodeventa',
-        
+
+        //reportes
+
+        'reporte',        
     ),
 );

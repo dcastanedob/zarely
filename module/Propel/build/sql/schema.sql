@@ -1159,7 +1159,7 @@ CREATE TABLE `venta`
     `venta_tipo` enum('venta','credito','apartado') NOT NULL,
     `venta_subtotal` DECIMAL(15,5) NOT NULL,
     `venta_iva` DECIMAL(15,5) NOT NULL,
-    `venta_estatus` enum('cancelada','completada','procesando') NOT NULL,
+    `venta_estatus` enum('cancelada','completada','procesando','devolucion','defecto') NOT NULL,
     `venta_facturacion` TINYINT(1),
     PRIMARY KEY (`idventa`),
     INDEX `idempleadocajero` (`idempleadocajero`),

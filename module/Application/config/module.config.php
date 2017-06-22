@@ -433,6 +433,17 @@ return array(
                 ),
             ),
 
+            'reporte' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reporte[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Reporte\Controller\Reporte',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
 
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
@@ -543,6 +554,8 @@ return array(
             'Application\FlujoEfectivo\Controller\CuentaPorPagar' => 'Application\FlujoEfectivo\Controller\CuentaPorPagarController',
             'Application\Transferencia\Controller\Transferencia' => 'Application\Transferencia\Controller\TransferenciaController',
             'Application\PuntoDeVenta\Controller\PuntoDeVenta' => 'Application\PuntoDeVenta\Controller\PuntoDeVentaController',
+            'Application\Reporte\Controller\Reporte' => 'Application\Reporte\Controller\ReporteController',
+
 
 
         ),
