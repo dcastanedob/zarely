@@ -89,8 +89,9 @@
                     columns:[
                         {"data":"producto_nombre","name":"producto_nombre","orderable":true},
                         {"data":"producto_marca","name":"producto_marca","orderable":true},
-                        {"data":"ventadetalle_cantidad","name":"ventadetalle_cantidad","orderable":true},
-                        {"data":"ventadetalle_subtotal","name":"ventadetalle_subtotal","orderable":true},
+                        {"data":"productosucursal_existencia","name":"productosucursal_existencia","orderable":true},
+                        {"data":"productosucursal_minimo","name":"productosucursal_minimo","orderable":true},
+                        {"data":"productosucursal_reorden","name":"productosucursal_reorden","orderable":true},
 
                     ],
 

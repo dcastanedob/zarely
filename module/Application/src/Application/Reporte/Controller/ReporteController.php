@@ -32,6 +32,15 @@ class ReporteController extends AbstractActionController
 
     );
 
+    public $column_map_existencia = array(
+        0 => 'b.ProductoModelo',
+        1 => 'c.MarcaNombre',
+        2 => 'productosucursal_existencia',
+        3 => 'productosucursal_minimo',
+        4 => 'productosucursal_reorden',
+
+    );
+
 
 	public function masvendidosAction()
 	{
@@ -1221,14 +1230,11 @@ class ReporteController extends AbstractActionController
             
             $query->useProductovarianteQuery('a')->useProductoQuery('b')->useMarcaQuery('c')->endUse()->endUse()->endUse();
 
-            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('venta')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->filterByIdsucursal($user['idsucursal'])->endUse();
 
             $query->useProductovarianteQuery()->useProductoQuery()->useMarcaQuery()->filterByIdMarca($post_data['marcas'],\Criteria::IN)->endUse()->endUse()->endUse();
 
             $query->withColumn('b.ProductoModelo', 'producto_nombre');
             $query->withColumn('c.MarcaNombre', 'producto_marca');
-            $query->withColumn('SUM(ventadetalle_cantidad)','ventadetalle_cantidad_total');
-            $query->withColumn('SUM(ventadetalle_subtotal)','ventadetalle_subtotal_total');
 
 
             $query->groupBy("a.idproductovariante");
@@ -1273,7 +1279,11 @@ class ReporteController extends AbstractActionController
                 $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
                 $c3= $c->getNewCriterion('marca.marca_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c1->addOr($c2)->addOr($c3);
+                $c4 = $c->getNewCriterion('productosucursal.productosucursal_existencia', '%'.$search_value.'%', \Criteria::LIKE);
+                $c5 = $c->getNewCriterion('productosucursal.productosucursal_minimo', '%'.$search_value.'%', \Criteria::LIKE);
+                $c6 = $c->getNewCriterion('productosucursal.productosucursal_reorden', '%'.$search_value.'%', \Criteria::LIKE);
+
+                $c1->addOr($c2)->addOr($c3)->addOr($c4)->addOr($c5)->addOr($c6);
 
                 $query->addAnd($c1);
 
@@ -1290,7 +1300,7 @@ class ReporteController extends AbstractActionController
             
             //ORDER
             $order_column = $post_data['order'][0]['column'];
-            $order_column = $this->column_map[$order_column];
+            $order_column = $this->column_map_existencia[$order_column];
             $dir = $post_data['order'][0]['dir'];
             if($dir == 'desc'){
                 $query->orderBy($order_column,  \Criteria::DESC);
@@ -1304,13 +1314,11 @@ class ReporteController extends AbstractActionController
             $data = array();
             
 
-           
-            $query->filterByVentadetalleEstatus('completo');
+            $query->filterByIdsucursal($user['idsucursal']);
 
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
-                
-                $tmp['DT_RowId'] = $value['idventadetalle'];
-                $tmp['idventadetalle'] = $value['idventadetalle'];
+                $tmp['DT_RowId'] = $value['idproductosucursal'];
+                $tmp['idproductosucursal'] = $value['idproductosucursal'];
 
                 $variante = \ProductovarianteQuery::create()->findPk($value["idproductovariante"]);
 
@@ -1326,9 +1334,9 @@ class ReporteController extends AbstractActionController
                 $tmp['producto_nombre'] = $information;
 
                 $tmp['producto_marca'] = $value['producto_marca'];
-
-                $tmp['ventadetalle_cantidad'] = $value['ventadetalle_cantidad_total'];
-                $tmp['ventadetalle_subtotal'] = "$" . $value['ventadetalle_subtotal_total'];
+                $tmp['productosucursal_existencia'] = $value['productosucursal_existencia'];
+                $tmp['productosucursal_minimo'] = $value['productosucursal_minimo'];
+                $tmp['productosucursal_reorden'] =  $value['productosucursal_reorden'];
 
                 $data[] = $tmp;
  

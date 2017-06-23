@@ -15,14 +15,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-4">
-			<label class="col-sm-3 control-label" for="form-control-18">Desde</label>
-			<?php echo $this->formDate($form->get('fecha_desde')) ?>
-		</div>
-		<div class="col-md-4">
-			<label class="col-sm-3 control-label" for="form-control-18">Hasta</label>
-			<?php echo $this->formDate($form->get('fecha_hasta')) ?>
-		</div>
+
 		<div class="col-md-4">
 			<label class="col-sm-3 control-label" for="form-control-18">Marca</label>
 			<?php echo $this->formSelect($form->get('idmarca[]')) ?>
@@ -38,6 +31,7 @@
 		            <tr>
 		                <th>Producto</th>
 		                <th>Marca</th>
+		                <th>Existencias</th>
 		                <th>Mínima</th>
 		                <th>Reorden</th>
 		            </tr>
@@ -46,6 +40,7 @@
 		            <tr>
 		                <th>Producto</th>
 		                <th>Marca</th>
+		                <th>Existencias</th>
 		                <th>Mínima</th>
 		                <th>Reorden</th>
 		            </tr>
