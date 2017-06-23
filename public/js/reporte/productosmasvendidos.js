@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.porPagar= function(data){
+    $.fn.productosmasvendidos= function(data){
         var _this = $(this);
-        var plugin = _this.data('porPagar');
+        var plugin = _this.data('productosmasvendidos');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.porPagar(this, data);
+            plugin = new $.productosmasvendidos(this, data);
             
-            _this.data('porPagar', plugin);
+            _this.data('productosmasvendidos', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.porPagar = function(container, options){
+    $.productosmasvendidos = function(container, options){
         
         var plugin = this;
        
@@ -56,33 +56,8 @@
                 language:'es',
             }).datepicker("setDate", new Date());
 
-           
+            
 
-            $container.find('select[name*=idvendedor]').multipleSelect({
-                filter:true,
-                selectAllText: 'Seleccionar Todos',
-                width: '100%',
-                allSelected: 'Todos seleccionados',
-                countSelected: '# de % Seleccionados',
-                //multiple: true,
-                //multipleWidth: 100
-            });
-
-            $container.find('select[name*=idtipo] option[value="venta"]').remove();
-
-            $container.find('select[name*=idtipo]').multipleSelect({
-                filter:true,
-                selectAllText: 'Seleccionar Todos',
-                width: '100%',
-                allSelected: 'Todos seleccionados',
-                countSelected: '# de % Seleccionados',
-                //multiple: true,
-                //multipleWidth: 100
-            });
-
-
-
-            $container.find('input[type=checkbox]').trigger('click');
         }
 
         plugin.list =function(){
@@ -102,8 +77,6 @@
                         order:[[0,'asc']],
                         data: function(d)
                         {
-                          d.tipo = $container.find('select[name*=idtipo]').multipleSelect("getSelects"),
-                          d.vendedor = $container.find('select[name*=idvendedor]').multipleSelect("getSelects"),
                           d.desde = $container.find('input[name*=fecha_desde]').val(),
                           d.hasta = $container.find('input[name*=fecha_hasta]').val(),
                           d.btn = $container.find('input#btn_download').val()
@@ -113,21 +86,15 @@
                     
 
                     columns:[
-                        {"data":"venta_fecha","name":"venta_fecha","orderable":true},
-                        {"data":"venta_fechavencimiento","name":"venta_fechavencimiento","orderable":true},
-                        {"data":"venta_tipo","name":"venta_tipo","orderable":true},
-                        {"data":"vendedor","name":"vendedor","orderable":true},
-                        {"data":"cliente","name":"cliente","orderable":true},
-                        {"data":"venta_folio","name":"venta_folio","orderable":true},
-                        {"data":"venta_adeudo","name":"venta_adeudo","orderable":true},
-                        {"data":"venta_total","name":"venta_total","orderable":true},
-
+                        {"data":"producto_nombre","name":"producto_nombre","orderable":true},
+                        {"data":"producto_cantidad","name":"producto_cantidad","orderable":true},
+                        {"data":"producto_precio","name":"producto_precio","orderable":true},
                     ],
 
                     createdRow: function( nRow, aData, iDataIndex) {
                         console.log(aData);
                         if(typeof aData.base64 != 'undefined'){
-                            download("data:application/xls;base64,"+aData.base64,"porPagar.XLS", "application/xls");
+                            download("data:application/xls;base64,"+aData.base64,"productosmasvendidos.XLS", "application/xls");
                         }
                     }
                     
@@ -142,17 +109,7 @@
               $table.api().ajax.reload();
             });
 
-            
 
-
-             $container.find('select[name*=idvendedor]').on('change',function(){
-              $table.api().ajax.reload();
-            });
-
-
-             $container.find('select[name*=idtipo]').on('change',function(){
-              $table.api().ajax.reload();
-            });
 
             $container.find('#btn_excel').on('click',function(){
                 $container.find('#btn_download').val('excel');

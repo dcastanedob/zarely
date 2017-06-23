@@ -769,6 +769,7 @@ class ReporteController extends AbstractActionController
     }
 
 
+
     public function porPagarAction()
     {
         $request = $this->getRequest();
@@ -848,7 +849,7 @@ class ReporteController extends AbstractActionController
                 $query->addAnd($c1);
 
               
-
+                $query->groupByIdventa();
 
                 $records_filtered = $query->count();
                 
@@ -876,7 +877,9 @@ class ReporteController extends AbstractActionController
 
                 $tmp['DT_RowId'] = $value['idventa'];
                 $tmp['idventa'] = $value['idventa'];
+
                 $tmp['venta_fecha'] = $value['venta_fecha'];
+                $tmp['venta_fechavencimiento'] = date('Y-m-d',strtotime("+1 month"));
                 $tmp['venta_tipo'] = $value['venta_tipo'];
 
                 $tmp['vendedor'] = $value['empleado_nombre'] . " " . $value['empleado_paterno'] . " " . $value['empleado_materno'] ;
@@ -969,6 +972,7 @@ class ReporteController extends AbstractActionController
 
         return $view_model;
     }
+
 
     
 
