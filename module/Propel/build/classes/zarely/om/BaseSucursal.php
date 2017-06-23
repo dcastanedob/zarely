@@ -126,6 +126,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     protected $collTransferenciasRelatedByIdsucursalorigenPartial;
 
     /**
+     * @var        PropelObjectCollection|Vale[] Collection to store aggregation of Vale objects.
+     */
+    protected $collVales;
+    protected $collValesPartial;
+
+    /**
      * @var        PropelObjectCollection|Venta[] Collection to store aggregation of Venta objects.
      */
     protected $collVentas;
@@ -186,6 +192,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $transferenciasRelatedByIdsucursalorigenScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $valesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -638,6 +650,8 @@ abstract class BaseSucursal extends BaseObject implements Persistent
 
             $this->collTransferenciasRelatedByIdsucursalorigen = null;
 
+            $this->collVales = null;
+
             $this->collVentas = null;
 
         } // if (deep)
@@ -860,6 +874,23 @@ abstract class BaseSucursal extends BaseObject implements Persistent
 
             if ($this->collTransferenciasRelatedByIdsucursalorigen !== null) {
                 foreach ($this->collTransferenciasRelatedByIdsucursalorigen as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->valesScheduledForDeletion !== null) {
+                if (!$this->valesScheduledForDeletion->isEmpty()) {
+                    ValeQuery::create()
+                        ->filterByPrimaryKeys($this->valesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->valesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collVales !== null) {
+                foreach ($this->collVales as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1127,6 +1158,14 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collVales !== null) {
+                    foreach ($this->collVales as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collVentas !== null) {
                     foreach ($this->collVentas as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1263,6 +1302,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             }
             if (null !== $this->collTransferenciasRelatedByIdsucursalorigen) {
                 $result['TransferenciasRelatedByIdsucursalorigen'] = $this->collTransferenciasRelatedByIdsucursalorigen->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collVales) {
+                $result['Vales'] = $this->collVales->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collVentas) {
                 $result['Ventas'] = $this->collVentas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1502,6 +1544,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getVales() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addVale($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getVentas() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addVenta($relObj->copy($deepCopy));
@@ -1586,6 +1634,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         }
         if ('TransferenciaRelatedByIdsucursalorigen' == $relationName) {
             $this->initTransferenciasRelatedByIdsucursalorigen();
+        }
+        if ('Vale' == $relationName) {
+            $this->initVales();
         }
         if ('Venta' == $relationName) {
             $this->initVentas();
@@ -3168,6 +3219,231 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collVales collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Sucursal The current object (for fluent API support)
+     * @see        addVales()
+     */
+    public function clearVales()
+    {
+        $this->collVales = null; // important to set this to null since that means it is uninitialized
+        $this->collValesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collVales collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialVales($v = true)
+    {
+        $this->collValesPartial = $v;
+    }
+
+    /**
+     * Initializes the collVales collection.
+     *
+     * By default this just sets the collVales collection to an empty array (like clearcollVales());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initVales($overrideExisting = true)
+    {
+        if (null !== $this->collVales && !$overrideExisting) {
+            return;
+        }
+        $this->collVales = new PropelObjectCollection();
+        $this->collVales->setModel('Vale');
+    }
+
+    /**
+     * Gets an array of Vale objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Sucursal is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Vale[] List of Vale objects
+     * @throws PropelException
+     */
+    public function getVales($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collValesPartial && !$this->isNew();
+        if (null === $this->collVales || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collVales) {
+                // return empty collection
+                $this->initVales();
+            } else {
+                $collVales = ValeQuery::create(null, $criteria)
+                    ->filterBySucursal($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collValesPartial && count($collVales)) {
+                      $this->initVales(false);
+
+                      foreach ($collVales as $obj) {
+                        if (false == $this->collVales->contains($obj)) {
+                          $this->collVales->append($obj);
+                        }
+                      }
+
+                      $this->collValesPartial = true;
+                    }
+
+                    $collVales->getInternalIterator()->rewind();
+
+                    return $collVales;
+                }
+
+                if ($partial && $this->collVales) {
+                    foreach ($this->collVales as $obj) {
+                        if ($obj->isNew()) {
+                            $collVales[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collVales = $collVales;
+                $this->collValesPartial = false;
+            }
+        }
+
+        return $this->collVales;
+    }
+
+    /**
+     * Sets a collection of Vale objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $vales A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function setVales(PropelCollection $vales, PropelPDO $con = null)
+    {
+        $valesToDelete = $this->getVales(new Criteria(), $con)->diff($vales);
+
+
+        $this->valesScheduledForDeletion = $valesToDelete;
+
+        foreach ($valesToDelete as $valeRemoved) {
+            $valeRemoved->setSucursal(null);
+        }
+
+        $this->collVales = null;
+        foreach ($vales as $vale) {
+            $this->addVale($vale);
+        }
+
+        $this->collVales = $vales;
+        $this->collValesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Vale objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Vale objects.
+     * @throws PropelException
+     */
+    public function countVales(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collValesPartial && !$this->isNew();
+        if (null === $this->collVales || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collVales) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getVales());
+            }
+            $query = ValeQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySucursal($this)
+                ->count($con);
+        }
+
+        return count($this->collVales);
+    }
+
+    /**
+     * Method called to associate a Vale object to this object
+     * through the Vale foreign key attribute.
+     *
+     * @param    Vale $l Vale
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function addVale(Vale $l)
+    {
+        if ($this->collVales === null) {
+            $this->initVales();
+            $this->collValesPartial = true;
+        }
+
+        if (!in_array($l, $this->collVales->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddVale($l);
+
+            if ($this->valesScheduledForDeletion and $this->valesScheduledForDeletion->contains($l)) {
+                $this->valesScheduledForDeletion->remove($this->valesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Vale $vale The vale object to add.
+     */
+    protected function doAddVale($vale)
+    {
+        $this->collVales[]= $vale;
+        $vale->setSucursal($this);
+    }
+
+    /**
+     * @param	Vale $vale The vale object to remove.
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function removeVale($vale)
+    {
+        if ($this->getVales()->contains($vale)) {
+            $this->collVales->remove($this->collVales->search($vale));
+            if (null === $this->valesScheduledForDeletion) {
+                $this->valesScheduledForDeletion = clone $this->collVales;
+                $this->valesScheduledForDeletion->clear();
+            }
+            $this->valesScheduledForDeletion[]= clone $vale;
+            $vale->setSucursal(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collVentas collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3534,6 +3810,11 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collVales) {
+                foreach ($this->collVales as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collVentas) {
                 foreach ($this->collVentas as $o) {
                     $o->clearAllReferences($deep);
@@ -3567,6 +3848,10 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $this->collTransferenciasRelatedByIdsucursalorigen->clearIterator();
         }
         $this->collTransferenciasRelatedByIdsucursalorigen = null;
+        if ($this->collVales instanceof PropelCollection) {
+            $this->collVales->clearIterator();
+        }
+        $this->collVales = null;
         if ($this->collVentas instanceof PropelCollection) {
             $this->collVentas->clearIterator();
         }

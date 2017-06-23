@@ -1140,6 +1140,30 @@ CREATE TABLE `transferenciadetalle`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- vale
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `vale`;
+
+CREATE TABLE `vale`
+(
+    `idvale` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `vale_cantidad` DECIMAL(10,5) NOT NULL,
+    `vale_estatus` TINYINT(1) NOT NULL,
+    `vale_vigenciadesde` DATETIME NOT NULL,
+    `vale_vigenciahasta` DATETIME NOT NULL,
+    `vale_cantidadutilizada` DECIMAL(10,5),
+    PRIMARY KEY (`idvale`),
+    INDEX `idsucursal` (`idsucursal`),
+    CONSTRAINT `idsucursal_vale`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- venta
 -- ---------------------------------------------------------------------
 

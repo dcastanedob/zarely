@@ -1854,4 +1854,28 @@ class PuntoDeVentaController extends AbstractActionController
         }
     }
 
+    public function generarvaleAction(){
+      $request = $this->getRequest();
+      
+      if($request->isPost()){
+        $post_data = $request->getPost();
+        $user = new \Application\Session\AouthSession();
+        $user = $user->getData();
+
+        $entity = new \Vale();
+        $entity->setValeCantidad($post_data['cantidad'])
+                ->setValeEstatus(1)
+                ->setIdsucursal($user['idsucursal'])
+                ->setValeVigenciadesde(date("Y/m/d"))
+                ->setValeVigenciahasta(date("Y/m/d"))
+                ->save();
+
+        return $this->getResponse()->setContent(json_encode(array('response' => true,'message' => "ID del vale: " . $entity->getIdvale())));
+
+      }
+
+
+
+    }
+
 }

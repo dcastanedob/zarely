@@ -889,6 +889,24 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="vale" phpName="Vale" idMethod="native">
+    <column name="idvale" phpName="Idvale" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idsucursal" phpName="Idsucursal" type="INTEGER" required="true"/>
+    <column name="vale_cantidad" phpName="ValeCantidad" type="DECIMAL" size="10" scale="5" required="true"/>
+    <column name="vale_estatus" phpName="ValeEstatus" type="BOOLEAN" size="1" required="true"/>
+    <column name="vale_vigenciadesde" phpName="ValeVigenciadesde" type="TIMESTAMP" required="true"/>
+    <column name="vale_vigenciahasta" phpName="ValeVigenciahasta" type="TIMESTAMP" required="true"/>
+    <column name="vale_cantidadutilizada" phpName="ValeCantidadutilizada" type="DECIMAL" size="10" scale="5" required="false"/>
+    <foreign-key foreignTable="sucursal" name="idsucursal_vale" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idsucursal" foreign="idsucursal"/>
+    </foreign-key>
+    <index name="idsucursal">
+      <index-column name="idsucursal"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="venta" phpName="Venta" idMethod="native">
     <column name="idventa" phpName="Idventa" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idempleadocajero" phpName="Idempleadocajero" type="INTEGER" required="true"/>

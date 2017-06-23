@@ -472,6 +472,22 @@
                                     ].join('');
                         $modal = $(tmpl);
                         $modal.find('#cantidad_canjear').html("$"+$container.find('#diferencia_venta').val().split("$")[1]);
+
+                        $modal.find('#canjear_vale').on('click',function(){
+                          $.ajax({
+                              url:'/puntodeventa/generarvale',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  cantidad:$container.find('#diferencia_venta').val().split("$")[1],
+                              },success: function (data, textStatus, jqXHR) {
+
+                                swal("Éxito",data.message,"success");
+                              }
+
+
+                          });
+                        });
                         $modal.modal();
                         var data = $('#venta_devolucion').serialize();
               
@@ -506,6 +522,22 @@
                                     ].join('');
                         $modal = $(tmpl);
                         $modal.find('#cantidad_canjear').html("$"+$container.find('#diferencia_venta').val().split("$")[1]);
+
+                        $modal.find('#canjear_vale').on('click',function(){
+                          $.ajax({
+                              url:'/puntodeventa/generarvale',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  cantidad:$container.find('#diferencia_venta').val().split("$")[1],
+                              },success: function (data, textStatus, jqXHR) {
+
+                                swal("Éxito",data.message,"success");
+                              }
+
+
+                          });
+                        });
                         $modal.modal();
 
                         var data = $('#venta_devolucion').serialize();
