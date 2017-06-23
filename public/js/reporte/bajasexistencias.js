@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.masvendidos= function(data){
+    $.fn.bajasexistencias= function(data){
         var _this = $(this);
-        var plugin = _this.data('masvendidos');
+        var plugin = _this.data('bajasexistencias');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.masvendidos(this, data);
+            plugin = new $.bajasexistencias(this, data);
             
-            _this.data('masvendidos', plugin);
+            _this.data('bajasexistencias', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.masvendidos = function(container, options){
+    $.bajasexistencias = function(container, options){
         
         var plugin = this;
        
@@ -48,13 +48,6 @@
 
             settings = plugin.settings = $.extend({}, defaults, options);
 
-            $container.find('input[name=fecha_desde]').datepicker({
-                language:'es',
-            }).datepicker("setDate", new Date());
-
-            $container.find('input[name=fecha_hasta]').datepicker({
-                language:'es',
-            }).datepicker("setDate", new Date());
 
             $container.find('select[name*=idmarca]').multipleSelect({
                 filter:true,
@@ -87,8 +80,6 @@
                         data: function(d)
                         {
                           d.marcas = $container.find('select[name*=idmarca]').multipleSelect("getSelects"),
-                          d.desde = $container.find('input[name*=fecha_desde]').val(),
-                          d.hasta = $container.find('input[name*=fecha_hasta]').val(),
                           d.btn = $container.find('input#btn_download').val()
                         },
                         
@@ -106,20 +97,14 @@
                     createdRow: function( nRow, aData, iDataIndex) {
                         console.log(aData);
                         if(typeof aData.base64 != 'undefined'){
-                            download("data:application/xls;base64,"+aData.base64,"masvendidos.XLS", "application/xls");
+                            download("data:application/xls;base64,"+aData.base64,"bajasexistencias.XLS", "application/xls");
                         }
                     }
                     
                 }
             );
 
-            $container.find('input[name=fecha_desde]').on('change',function(){
-              $table.api().ajax.reload();
-            });
-
-            $container.find('input[name=fecha_hasta]').on('change',function(){
-              $table.api().ajax.reload();
-            });
+            
 
              $container.find('select[name*=idmarca]').on('change',function(){
               $table.api().ajax.reload();

@@ -17,7 +17,8 @@ class ReporteController extends AbstractActionController
     public $column_map = array(
         0 => 'b.ProductoModelo',
         1 => 'c.MarcaNombre',
-        2 => 'ventadetalle_cantidad'
+        2 => 'ventadetalle_cantidad',
+        3 => 'ventadetalle_subtotal',
     );
 
 
@@ -37,6 +38,10 @@ class ReporteController extends AbstractActionController
 		$request = $this->getRequest();
 		if($request->isPost()){
 
+            //Creamos una instancia de la sesión
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
+
             $post_data = $request->getPost();
             //convertir la fecha
             $temp = explode('/',$post_data['desde']);
@@ -50,13 +55,15 @@ class ReporteController extends AbstractActionController
             
             $query->useProductovarianteQuery('a')->useProductoQuery('b')->useMarcaQuery('c')->endUse()->endUse()->endUse();
 
-            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('venta')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->endUse();
+            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('venta')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->filterByIdsucursal($user['idsucursal'])->endUse();
 
             $query->useProductovarianteQuery()->useProductoQuery()->useMarcaQuery()->filterByIdMarca($post_data['marcas'],\Criteria::IN)->endUse()->endUse()->endUse();
 
             $query->withColumn('b.ProductoModelo', 'producto_nombre');
             $query->withColumn('c.MarcaNombre', 'producto_marca');
             $query->withColumn('SUM(ventadetalle_cantidad)','ventadetalle_cantidad_total');
+            $query->withColumn('SUM(ventadetalle_subtotal)','ventadetalle_subtotal_total');
+
 
             $query->groupBy("b.idproducto");
 
@@ -143,7 +150,8 @@ class ReporteController extends AbstractActionController
                 $tmp['producto_marca'] = $value['producto_marca'];
 
                 $tmp['ventadetalle_cantidad'] = $value['ventadetalle_cantidad_total'];
-                
+                $tmp['ventadetalle_subtotal'] = "$" . $value['ventadetalle_subtotal_total'];
+
                 $data[] = $tmp;
  
             }   
@@ -214,10 +222,14 @@ class ReporteController extends AbstractActionController
         return $view_model;
 	}
 
-    public function mascreditosAction()
+    public function variantesMasVendidasAction()
     {
         $request = $this->getRequest();
         if($request->isPost()){
+
+            //Creamos una instancia de la sesión
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
 
             $post_data = $request->getPost();
             //convertir la fecha
@@ -232,7 +244,208 @@ class ReporteController extends AbstractActionController
             
             $query->useProductovarianteQuery('a')->useProductoQuery('b')->useMarcaQuery('c')->endUse()->endUse()->endUse();
 
-            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('credito')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->endUse();
+            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('venta')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->filterByIdsucursal($user['idsucursal'])->endUse();
+
+            $query->useProductovarianteQuery()->useProductoQuery()->useMarcaQuery()->filterByIdMarca($post_data['marcas'],\Criteria::IN)->endUse()->endUse()->endUse();
+
+            $query->withColumn('b.ProductoModelo', 'producto_nombre');
+            $query->withColumn('c.MarcaNombre', 'producto_marca');
+            $query->withColumn('SUM(ventadetalle_cantidad)','ventadetalle_cantidad_total');
+            $query->withColumn('SUM(ventadetalle_subtotal)','ventadetalle_subtotal_total');
+
+
+            $query->groupBy("a.idproductovariante");
+
+            $records_filtered = $query->count();
+            
+            //SEARCH
+            if(!empty($post_data['search']['value'])){
+                $search_value = $post_data['search']['value'];
+                
+                $search_value = str_replace("Ñ", "Ã‘", $search_value);
+                $search_value = str_replace("L'", "L'", $search_value);
+                $search_value = str_replace("Ç", "Ã‡", $search_value);
+                $search_value = str_replace("À", "Ã€", $search_value);
+                $search_value = str_replace("È", "Ãˆ", $search_value);
+                $search_value = str_replace("Û", "Ã›", $search_value);
+                $search_value = str_replace("´", "Â´", $search_value);
+                $search_value = str_replace("ñ", "Ã±", $search_value);
+                $search_value = str_replace("Ú", "Ãš", $search_value);
+                $search_value = str_replace("é", "Ã©", $search_value);
+                $search_value = str_replace("Á", "Ã", $search_value);
+                $search_value = str_replace("ó", "Ã³", $search_value);
+                $search_value = str_replace("'", "'", $search_value);
+                $search_value = str_replace("ú", "Ãº", $search_value);
+                if ( strpos($search_value, 'Ð') !== false)
+                {
+                    $search_value = str_replace("Ð", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Á') !== false )
+                {
+                    $search_value = str_replace("Á", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Í') !== false )
+                {
+                    $search_value = str_replace("Í", "Ã", $search_value);
+                }
+                $c = new \Criteria();
+               
+                
+                $c1= $c->getNewCriterion('ventadetalle.idventadetalle', '%'.$search_value.'%', \Criteria::LIKE);
+
+                $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
+                $c3= $c->getNewCriterion('marca.marca_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+
+                $c1->addOr($c2)->addOr($c3);
+
+                $query->addAnd($c1);
+
+              
+
+
+                $records_filtered = $query->count();
+                
+            }
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+            
+            //ORDER
+            $order_column = $post_data['order'][0]['column'];
+            $order_column = $this->column_map[$order_column];
+            $dir = $post_data['order'][0]['dir'];
+            if($dir == 'desc'){
+                $query->orderBy($order_column,  \Criteria::DESC);
+            }else{
+                $query->orderBy($order_column,  \Criteria::ASC);
+            }
+
+            
+            
+            //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+            $data = array();
+            
+
+           
+            $query->filterByVentadetalleEstatus('completo');
+
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                
+                $tmp['DT_RowId'] = $value['idventadetalle'];
+                $tmp['idventadetalle'] = $value['idventadetalle'];
+
+                $variante = \ProductovarianteQuery::create()->findPk($value["idproductovariante"]);
+
+                $producto = $variante->getProducto();
+                            $color = $variante->getProductocolor();
+                            $color = $color->getColor();
+                            $material = $variante->getProductomaterial();
+                            $material = $material->getMaterial();
+                            $tallaje = $variante->getProductovarianteTalla();
+
+                            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje;
+
+                $tmp['producto_nombre'] = $information;
+
+                $tmp['producto_marca'] = $value['producto_marca'];
+
+                $tmp['ventadetalle_cantidad'] = $value['ventadetalle_cantidad_total'];
+                $tmp['ventadetalle_subtotal'] = "$" . $value['ventadetalle_subtotal_total'];
+
+                $data[] = $tmp;
+ 
+            }   
+      
+            //El arreglo que regresamos
+            $json_data = array(
+                'order' => $order_column,
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => $records_filtered,
+                "data"            => $data
+            );
+            
+            if($post_data['btn'] == 'excel')
+            {
+                $phpreport = new \Application\Shared\PHPReport();
+                $phpreport->load(array(
+                    array(
+                        'id' => 'reporte',
+                        'repeat' => true,
+                        'data' => $data,
+                        'minRows' => 2,
+                    )
+                ));
+                $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                $json_data['base64'] = $base_64;
+            }
+
+            if(count($json_data['data']) > 0){
+                $index = count($json_data['data']) -1;
+                if($post_data['btn'] == 'excel'){
+                    
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                    array(
+                           'id' => 'reporte',
+                           'repeat' => true,
+                           'data' => $data,
+                           'minRows' => 2,
+                       )));
+                    $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                    $json_data['data'][$index]['base64'] = $base_64;
+                    $json_data['output'] = 'excel';
+                    
+                    
+                }
+            }
+            return $this->getResponse()->setContent(json_encode($json_data));
+        }
+
+        $marcas = \MarcaQuery::create()->find();
+        $marcas_array = array();
+        $value = new \Tallaje();
+        foreach ($marcas as $marca){
+            $marcas_array[$marca->getIdmarca()] = $marca->getMarcaNombre();
+        }
+
+        $form = new \Application\Reporte\Form\MasVendidosForm($marcas_array);
+
+
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/reporte/variantesMasVendidas/ver');
+
+        $view_model->setVariables(array(
+            'form' => $form,
+        ));
+
+        return $view_model;
+    }
+
+    public function mascreditosAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            //Creamos una instancia de la sesión
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
+
+            $post_data = $request->getPost();
+            //convertir la fecha
+            $temp = explode('/',$post_data['desde']);
+
+            $post_data['desde'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 00:00:00';
+
+            $temp = explode('/',$post_data['hasta']);
+            $post_data['hasta'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 23:59:59';
+
+            $query = new \VentadetalleQuery();
+            
+            $query->useProductovarianteQuery('a')->useProductoQuery('b')->useMarcaQuery('c')->endUse()->endUse()->endUse();
+
+            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('credito')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->filterByIdsucursal($user['idsucursal'])->endUse();
 
             $query->useProductovarianteQuery()->useProductoQuery()->useMarcaQuery()->filterByIdMarca($post_data['marcas'],\Criteria::IN)->endUse()->endUse()->endUse();
 
@@ -401,6 +614,10 @@ class ReporteController extends AbstractActionController
         $request = $this->getRequest();
         if($request->isPost()){
 
+            //Creamos una instancia de la sesión
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
+
             $post_data = $request->getPost();
             //convertir la fecha
             $temp = explode('/',$post_data['desde']);
@@ -414,7 +631,7 @@ class ReporteController extends AbstractActionController
             
             $query->useProductovarianteQuery('a')->useProductoQuery('b')->useMarcaQuery('c')->endUse()->endUse()->endUse();
 
-            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('apartado')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->endUse();
+            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('apartado')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->filterByIdsucursal($user['idsucursal'])->endUse();
 
             $query->useProductovarianteQuery()->useProductoQuery()->useMarcaQuery()->filterByIdMarca($post_data['marcas'],\Criteria::IN)->endUse()->endUse()->endUse();
 
@@ -584,6 +801,10 @@ class ReporteController extends AbstractActionController
         $request = $this->getRequest();
         if($request->isPost()){
 
+            //Creamos una instancia de la sesión
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
+
             $post_data = $request->getPost();
             //convertir la fecha
             $temp = explode('/',$post_data['desde']);
@@ -599,7 +820,7 @@ class ReporteController extends AbstractActionController
             $query->useEmpleadoRelatedByIdempleadovendedorQuery('b')->endUse();
 
             
-            $query->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo($post_data['tipo'],\Criteria::IN)->filterByVentaEstatuspago($post_data['estatus'],\Criteria::IN)->filterByIdempleadovendedor($post_data['vendedor'],\Criteria::IN);
+            $query->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo($post_data['tipo'],\Criteria::IN)->filterByVentaEstatuspago($post_data['estatus'],\Criteria::IN)->filterByIdempleadovendedor($post_data['vendedor'],\Criteria::IN)->filterByIdsucursal($user['idsucursal']);
 
 
             $query->withColumn('a.ClienteNombre', 'cliente_nombre');
@@ -774,6 +995,10 @@ class ReporteController extends AbstractActionController
     {
         $request = $this->getRequest();
         if($request->isPost()){
+
+            //Creamos una instancia de la sesión
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
             $post_data = $request->getPost();
             //convertir la fecha
             $temp = explode('/',$post_data['desde']);
@@ -789,7 +1014,7 @@ class ReporteController extends AbstractActionController
             $query->useEmpleadoRelatedByIdempleadovendedorQuery('b')->endUse();
 
             
-            $query->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo($post_data['tipo'],\Criteria::IN)->filterByVentaEstatuspago(0)->filterByIdempleadovendedor($post_data['vendedor'],\Criteria::IN);
+            $query->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo($post_data['tipo'],\Criteria::IN)->filterByVentaEstatuspago(0)->filterByIdempleadovendedor($post_data['vendedor'],\Criteria::IN)->filterByIdsucursal($user['idsucursal']);
 
 
             $query->withColumn('a.ClienteNombre', 'cliente_nombre');
@@ -974,7 +1199,206 @@ class ReporteController extends AbstractActionController
     }
 
 
-    
+    public function bajasExistenciasAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            //Creamos una instancia de la sesión
+            $user = new \Application\Session\AouthSession();
+            $user = $user->getData();
+
+            $post_data = $request->getPost();
+            //convertir la fecha
+            $temp = explode('/',$post_data['desde']);
+
+            $post_data['desde'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 00:00:00';
+
+            $temp = explode('/',$post_data['hasta']);
+            $post_data['hasta'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 23:59:59';
+
+            $query = new \ProductosucursalQuery();
+            
+            $query->useProductovarianteQuery('a')->useProductoQuery('b')->useMarcaQuery('c')->endUse()->endUse()->endUse();
+
+            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('venta')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->filterByIdsucursal($user['idsucursal'])->endUse();
+
+            $query->useProductovarianteQuery()->useProductoQuery()->useMarcaQuery()->filterByIdMarca($post_data['marcas'],\Criteria::IN)->endUse()->endUse()->endUse();
+
+            $query->withColumn('b.ProductoModelo', 'producto_nombre');
+            $query->withColumn('c.MarcaNombre', 'producto_marca');
+            $query->withColumn('SUM(ventadetalle_cantidad)','ventadetalle_cantidad_total');
+            $query->withColumn('SUM(ventadetalle_subtotal)','ventadetalle_subtotal_total');
+
+
+            $query->groupBy("a.idproductovariante");
+
+            $records_filtered = $query->count();
+            
+            //SEARCH
+            if(!empty($post_data['search']['value'])){
+                $search_value = $post_data['search']['value'];
+                
+                $search_value = str_replace("Ñ", "Ã‘", $search_value);
+                $search_value = str_replace("L'", "L'", $search_value);
+                $search_value = str_replace("Ç", "Ã‡", $search_value);
+                $search_value = str_replace("À", "Ã€", $search_value);
+                $search_value = str_replace("È", "Ãˆ", $search_value);
+                $search_value = str_replace("Û", "Ã›", $search_value);
+                $search_value = str_replace("´", "Â´", $search_value);
+                $search_value = str_replace("ñ", "Ã±", $search_value);
+                $search_value = str_replace("Ú", "Ãš", $search_value);
+                $search_value = str_replace("é", "Ã©", $search_value);
+                $search_value = str_replace("Á", "Ã", $search_value);
+                $search_value = str_replace("ó", "Ã³", $search_value);
+                $search_value = str_replace("'", "'", $search_value);
+                $search_value = str_replace("ú", "Ãº", $search_value);
+                if ( strpos($search_value, 'Ð') !== false)
+                {
+                    $search_value = str_replace("Ð", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Á') !== false )
+                {
+                    $search_value = str_replace("Á", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Í') !== false )
+                {
+                    $search_value = str_replace("Í", "Ã", $search_value);
+                }
+                $c = new \Criteria();
+               
+                
+                $c1= $c->getNewCriterion('ventadetalle.idventadetalle', '%'.$search_value.'%', \Criteria::LIKE);
+
+                $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
+                $c3= $c->getNewCriterion('marca.marca_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+
+                $c1->addOr($c2)->addOr($c3);
+
+                $query->addAnd($c1);
+
+              
+
+
+                $records_filtered = $query->count();
+                
+            }
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+            
+            //ORDER
+            $order_column = $post_data['order'][0]['column'];
+            $order_column = $this->column_map[$order_column];
+            $dir = $post_data['order'][0]['dir'];
+            if($dir == 'desc'){
+                $query->orderBy($order_column,  \Criteria::DESC);
+            }else{
+                $query->orderBy($order_column,  \Criteria::ASC);
+            }
+
+            
+            
+            //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+            $data = array();
+            
+
+           
+            $query->filterByVentadetalleEstatus('completo');
+
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                
+                $tmp['DT_RowId'] = $value['idventadetalle'];
+                $tmp['idventadetalle'] = $value['idventadetalle'];
+
+                $variante = \ProductovarianteQuery::create()->findPk($value["idproductovariante"]);
+
+                $producto = $variante->getProducto();
+                            $color = $variante->getProductocolor();
+                            $color = $color->getColor();
+                            $material = $variante->getProductomaterial();
+                            $material = $material->getMaterial();
+                            $tallaje = $variante->getProductovarianteTalla();
+
+                            $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre(). ' / ' . $tallaje;
+
+                $tmp['producto_nombre'] = $information;
+
+                $tmp['producto_marca'] = $value['producto_marca'];
+
+                $tmp['ventadetalle_cantidad'] = $value['ventadetalle_cantidad_total'];
+                $tmp['ventadetalle_subtotal'] = "$" . $value['ventadetalle_subtotal_total'];
+
+                $data[] = $tmp;
+ 
+            }   
+      
+            //El arreglo que regresamos
+            $json_data = array(
+                'order' => $order_column,
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => $records_filtered,
+                "data"            => $data
+            );
+            
+            if($post_data['btn'] == 'excel')
+            {
+                $phpreport = new \Application\Shared\PHPReport();
+                $phpreport->load(array(
+                    array(
+                        'id' => 'reporte',
+                        'repeat' => true,
+                        'data' => $data,
+                        'minRows' => 2,
+                    )
+                ));
+                $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                $json_data['base64'] = $base_64;
+            }
+
+            if(count($json_data['data']) > 0){
+                $index = count($json_data['data']) -1;
+                if($post_data['btn'] == 'excel'){
+                    
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                    array(
+                           'id' => 'reporte',
+                           'repeat' => true,
+                           'data' => $data,
+                           'minRows' => 2,
+                       )));
+                    $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                    $json_data['data'][$index]['base64'] = $base_64;
+                    $json_data['output'] = 'excel';
+                    
+                    
+                }
+            }
+            return $this->getResponse()->setContent(json_encode($json_data));
+        }
+
+        $marcas = \MarcaQuery::create()->find();
+        $marcas_array = array();
+        $value = new \Tallaje();
+        foreach ($marcas as $marca){
+            $marcas_array[$marca->getIdmarca()] = $marca->getMarcaNombre();
+        }
+
+        $form = new \Application\Reporte\Form\MasVendidosForm($marcas_array);
+
+
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/reporte/bajasExistencias/ver');
+
+        $view_model->setVariables(array(
+            'form' => $form,
+        ));
+
+        return $view_model;
+    }
 
 
 }

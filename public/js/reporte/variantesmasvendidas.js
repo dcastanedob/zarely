@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.productosmasvendidos= function(data){
+    $.fn.variantesmasvendidas= function(data){
         var _this = $(this);
-        var plugin = _this.data('productosmasvendidos');
+        var plugin = _this.data('variantesmasvendidas');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.productosmasvendidos(this, data);
+            plugin = new $.variantesmasvendidas(this, data);
             
-            _this.data('productosmasvendidos', plugin);
+            _this.data('variantesmasvendidas', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.productosmasvendidos = function(container, options){
+    $.variantesmasvendidas = function(container, options){
         
         var plugin = this;
        
@@ -56,8 +56,17 @@
                 language:'es',
             }).datepicker("setDate", new Date());
 
-            
+            $container.find('select[name*=idmarca]').multipleSelect({
+                filter:true,
+                selectAllText: 'Seleccionar Todos',
+                width: '100%',
+                allSelected: 'Todos seleccionados',
+                countSelected: '# de % Seleccionados',
+                //multiple: true,
+                //multipleWidth: 100
+            });
 
+            $container.find('input[type=checkbox]').trigger('click');
         }
 
         plugin.list =function(){
@@ -77,6 +86,7 @@
                         order:[[0,'asc']],
                         data: function(d)
                         {
+                          d.marcas = $container.find('select[name*=idmarca]').multipleSelect("getSelects"),
                           d.desde = $container.find('input[name*=fecha_desde]').val(),
                           d.hasta = $container.find('input[name*=fecha_hasta]').val(),
                           d.btn = $container.find('input#btn_download').val()
@@ -87,14 +97,16 @@
 
                     columns:[
                         {"data":"producto_nombre","name":"producto_nombre","orderable":true},
-                        {"data":"producto_cantidad","name":"producto_cantidad","orderable":true},
-                        {"data":"producto_precio","name":"producto_precio","orderable":true},
+                        {"data":"producto_marca","name":"producto_marca","orderable":true},
+                        {"data":"ventadetalle_cantidad","name":"ventadetalle_cantidad","orderable":true},
+                        {"data":"ventadetalle_subtotal","name":"ventadetalle_subtotal","orderable":true},
+
                     ],
 
                     createdRow: function( nRow, aData, iDataIndex) {
                         console.log(aData);
                         if(typeof aData.base64 != 'undefined'){
-                            download("data:application/xls;base64,"+aData.base64,"productosmasvendidos.XLS", "application/xls");
+                            download("data:application/xls;base64,"+aData.base64,"variantesmasvendidas.XLS", "application/xls");
                         }
                     }
                     
@@ -109,7 +121,9 @@
               $table.api().ajax.reload();
             });
 
-
+             $container.find('select[name*=idmarca]').on('change',function(){
+              $table.api().ajax.reload();
+            });
 
             $container.find('#btn_excel').on('click',function(){
                 $container.find('#btn_download').val('excel');

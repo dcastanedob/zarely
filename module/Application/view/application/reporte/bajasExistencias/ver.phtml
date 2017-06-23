@@ -1,6 +1,6 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title">Productos más vendidos</h1>
+	    <h1 class="title-bar-title">Bajas existencias</h1>
 	    <input type="text" id="btn_download" hidden="" disabled="">
 	</div>
 	<br>
@@ -38,14 +38,16 @@
 		            <tr>
 		                <th>Producto</th>
 		                <th>Marca</th>
-		                <th>Cantidad</th>
+		                <th>Mínima</th>
+		                <th>Reorden</th>
 		            </tr>
 		        </thead>
 		        <tfoot>
 		            <tr>
 		                <th>Producto</th>
 		                <th>Marca</th>
-		                <th>Cantidad</th>
+		                <th>Mínima</th>
+		                <th>Reorden</th>
 		            </tr>
 		        </tfoot>
 		        <tbody>
@@ -56,8 +58,8 @@
 	</div>
 
 </div>
-<script src="/js/reporte/masvendidos.js"></script>
+<script src="/js/reporte/bajasexistencias.js"></script>
 <script>
-	var masvendidos = $('.body_container').masvendidos();
-	masvendidos.list();
-</script>t
+	var bajasexistencias = $('.body_container').bajasexistencias();
+	bajasexistencias.list();
+</script>
