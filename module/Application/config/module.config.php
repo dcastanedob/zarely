@@ -467,6 +467,17 @@ return array(
                 ),
             ),
 
+            'transferencias-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/transferencias-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Transferencia\Controller\Transferencia',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
             'puntodeventa' => array(
                 'type' => 'Segment',
                 'options' => array(

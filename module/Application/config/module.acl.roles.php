@@ -140,6 +140,7 @@ return array(
 
         //transferencias
         'transferencias',
+        'transferencias-sucursal',
 
         //Punto de venta
         'puntodeventa',
@@ -152,6 +153,7 @@ return array(
         'precios-sucursal',
         'reordenes-sucursal',
         'existencias-sucursal',
-        'enreorden-sucursal',     
+        'enreorden-sucursal', 
+
     ),
 );
