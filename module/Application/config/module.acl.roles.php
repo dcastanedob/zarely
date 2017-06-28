@@ -146,6 +146,12 @@ return array(
 
         //reportes
 
-        'reporte',        
+        'reporte',    
+
+        //inventarios
+        'precios-sucursal',
+        'reordenes-sucursal',
+        'existencias-sucursal',
+        'enreorden-sucursal',     
     ),
 );

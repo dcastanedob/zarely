@@ -262,13 +262,58 @@ return array(
                 ),
             ),
 
-            'mayoristas' => array(
+
+            'precios-sucursal' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/pedidos/mayoristas[/:action][/:id]',
+                    'route'    => '/producto/precios-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\PrecioProducto',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
+            'reordenes-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/reordenes-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\ReordenProducto',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
+            'existencias-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/existencias-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\ExistenciaProducto',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
+            'enreorden-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/enreorden-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\EnReordenProducto',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
+            'mayoristas-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/mayoristas-sucursal[/:action][/:id]',
                     'defaults' => array(
                         'controller' => 'Application\Pedido\Controller\PedidoMayorista',
-                        'action'     => 'index',
+                        'action'     => 'indexsucursal',
                     ),
                 ),
             ),

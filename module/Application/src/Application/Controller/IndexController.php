@@ -74,4 +74,14 @@ class IndexController extends AbstractActionController
     	return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $sucursales)));
 
     }
+
+
+    public function getsucursalAction(){
+        $user = new \Application\Session\AouthSession();
+        $user = $user->getData();
+        $sucursales = \SucursalQuery::create()->findPk($user['idsucursal'])->toArray();
+
+        return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $sucursales)));
+
+    }
 }

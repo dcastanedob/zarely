@@ -688,8 +688,7 @@ class PuntoDeVentaController extends AbstractActionController
           $iva = $total- $subtotal;
           $entity->setVentaTotal($total)->setVentaSubtotal($subtotal)->setVentaIva($iva)->save();
 
-          $this->updateInventory($post_data['idventa'],$user['idsucursal'],$user['idempleado']);
-          $entity->setVentaEstatus('devolucion')->save();
+         
 
           //insertamos las devoluciones
           if(count($devoluciones) > 0)
@@ -730,6 +729,8 @@ class PuntoDeVentaController extends AbstractActionController
 
 
           }
+
+
         }
 
         
@@ -758,8 +759,8 @@ class PuntoDeVentaController extends AbstractActionController
                           ->setVentadetalleDescuento($detalle['VentadetalleDescuento'])
                           ->save();
         }
-
-       
+       $this->updateInventory($post_data['idventa'],$user['idsucursal'],$user['idempleado']);
+        $entity->setVentaEstatus('devolucion')->save();
         return $this->getResponse()->setContent(json_encode(array('response' => true)));
       }
               
@@ -1244,18 +1245,20 @@ class PuntoDeVentaController extends AbstractActionController
 
             $comisionable = \ProductovarianteQuery::create()->findPk($producto['Idproductovariante'])->getProducto()->getProductoComisionable();
 
-            if($comisionable)
+            if($comisionable && $producto['VentadetalleSubtotal']>=0)
             {
                 $comisiones += $producto['VentadetalleCantidad'];
             }
 
         }
-
         $entity = \VentaQuery::Create()->findPk($id);
-        $comision = \ComisionesQuery::create()->filterByIdempleado(4)->filterByIdsucursal(1)->filterByComisionesFecha($entity->getVentaFecha())->find()->toArray();
-        $comision = \ComisionesQuery::Create()->findPk($comision[0]['Idcomisiones']);
-        $comision->setComisionesCantidad($comision->getComisionesCantidad()-$comisiones)->save();
-        
+        $comisiones_array = \ComisionesQuery::create()->filterByIdempleado(4)->filterByIdsucursal(1)->filterByComisionesFecha($entity->getVentaFecha())->find()->toArray();
+        $comision = \ComisionesQuery::Create()->findPk($comisiones_array[0]['Idcomisiones']);
+        if($comision != null) 
+        {
+          $comision->setComisionesCantidad($comision->getComisionesCantidad()-$comisiones)->save();
+        }
+
 
     }
 
@@ -1283,6 +1286,23 @@ class PuntoDeVentaController extends AbstractActionController
                 if($post_data['metodo'] == 'vales')
                 {
                     $venta_pago->setVentapagoReferencia($post_data['referencia']);
+                    $vale = \ValeQuery::create()->findPk($post_data['referencia']);
+                    if($post_data['cantidad'] < $vale->getValeCantidad())
+                    {
+                      $user = new \Application\Session\AouthSession();
+                      $user = $user->getData();
+
+                      $entity = new \Vale();
+                      $entity->setValeCantidad($vale->getValeCantidad() - $post_data['cantidad'])
+                              ->setValeEstatus(1)
+                              ->setIdsucursal($user['idsucursal'])
+                              ->setValeVigenciadesde(date("Y/m/d"))
+                              ->setValeVigenciahasta(date("Y/m/d", strtotime("+3 months",strtotime(date('Y/m/d')))))
+                              ->save();
+                      $vale->setValeCantidadutilizada($post_data['cantidad'])->save();
+                    }
+
+                    $vale->setValeEstatus(0)->save();
                 }
 
                 if($post_data['metodo'] == 'tarjeta')
@@ -1339,7 +1359,6 @@ class PuntoDeVentaController extends AbstractActionController
 
     private function updateInventory($id,$sucursal,$user)
     {
-
         //Actualizamos as existencias de los productos sucursal
         $venta_detalle = \VentadetalleQuery::create()->filterByIdventa($id)->find()->toArray();
         $totalComisionable = 0;
@@ -1351,7 +1370,7 @@ class PuntoDeVentaController extends AbstractActionController
 
             $comisionable = \ProductovarianteQuery::create()->findPk($detalle['Idproductovariante'])->getProducto()->getProductoComisionable();
 
-            if($comisionable)
+            if($comisionable && $producto['VentadetalleSubtotal']>=0)
             {
                 $totalComisionable += $detalle['VentadetalleCantidad'];
             }
@@ -1380,8 +1399,6 @@ class PuntoDeVentaController extends AbstractActionController
                              ->setComisionesFecha(date("Y/m/d"))
                              ->save();
             }
-        
-        
     }
 
     public function getProductovariantes($data){
@@ -1390,6 +1407,7 @@ class PuntoDeVentaController extends AbstractActionController
             'cantidad' =>\VentadetalleQuery::create()->select('ventadetalle_cantidad')->filterByVentadetalleEstatus('completo')->filterByIdventa($data['idventa'])->find()->toArray(),
             'precio' =>\VentadetalleQuery::create()->select('ventadetalle_preciounitario')->filterByVentadetalleEstatus('completo')->filterByIdventa($data['idventa'])->find()->toArray(),
             'descuento' =>\VentadetalleQuery::create()->select('ventadetalle_descuento')->filterByVentadetalleEstatus('completo')->filterByIdventa($data['idventa'])->find()->toArray(),
+            'subtotal' =>\VentadetalleQuery::create()->select('ventadetalle_subtotal')->filterByVentadetalleEstatus('completo')->filterByIdventa($data['idventa'])->find()->toArray(),
         ];
 
         return $information;
@@ -1477,27 +1495,28 @@ class PuntoDeVentaController extends AbstractActionController
             $details = [];
 
             foreach ($venta_detalle as $venta) {
-                //obtenemos la información del producto variante
-                $variante = \ProductovarianteQuery::create()->findPk($venta['Idproductovariante']);
-                $producto = $variante->getProducto();
 
-                $color = $variante->getProductocolor();
-                $color = $color->getColor();
-                $material = $variante->getProductomaterial();
-                $material = $material->getMaterial();
-                $tallaje = $variante->getProductovarianteTalla();
+                  //obtenemos la información del producto variante
+                  $variante = \ProductovarianteQuery::create()->findPk($venta['Idproductovariante']);
+                  $producto = $variante->getProducto();
 
-                //procesamos la informacion en un json
-                $details[] = array(
-                                'id' => $variante->getIdproductovariante(),
-                                'cantidad' => $venta['VentadetalleCantidad'],
-                                'precioUnitario' => $venta['VentadetallePreciounitario'],
-                                'descuento' => $venta['VentadetalleDescuento'],
-                                'subtotal' => $venta['VentadetalleSubtotal'],
-                                'nombre' => $producto->getProductoModelo() .' - ' . $color->getColorNombre().' / ' . $material->getMaterialNombre().' / ' . $tallaje,
-                                'descripcion' => $producto->getProductoDescripcion(),
-                                'idvariante' => $variante->getIdproductovariante()
-                            );
+                  $color = $variante->getProductocolor();
+                  $color = $color->getColor();
+                  $material = $variante->getProductomaterial();
+                  $material = $material->getMaterial();
+                  $tallaje = $variante->getProductovarianteTalla();
+
+                  //procesamos la informacion en un json
+                  $details[] = array(
+                                  'id' => $variante->getIdproductovariante(),
+                                  'cantidad' => $venta['VentadetalleCantidad'],
+                                  'precioUnitario' => $venta['VentadetallePreciounitario'],
+                                  'descuento' => $venta['VentadetalleDescuento'],
+                                  'subtotal' => $venta['VentadetalleSubtotal'],
+                                  'nombre' => $producto->getProductoModelo() .' - ' . $color->getColorNombre().' / ' . $material->getMaterialNombre().' / ' . $tallaje,
+                                  'descripcion' => $producto->getProductoDescripcion(),
+                                  'idvariante' => $variante->getIdproductovariante()
+                              );
 
             }
 
@@ -1867,7 +1886,7 @@ class PuntoDeVentaController extends AbstractActionController
                 ->setValeEstatus(1)
                 ->setIdsucursal($user['idsucursal'])
                 ->setValeVigenciadesde(date("Y/m/d"))
-                ->setValeVigenciahasta(date("Y/m/d"))
+                ->setValeVigenciahasta(date("Y/m/d", strtotime("+3 months",strtotime(date('Y/m/d')))))
                 ->save();
 
         return $this->getResponse()->setContent(json_encode(array('response' => true,'message' => "ID del vale: " . $entity->getIdvale())));
@@ -1876,6 +1895,26 @@ class PuntoDeVentaController extends AbstractActionController
 
 
 
+    }
+
+
+    public function verificarvaleAction(){
+      $request = $this->getRequest();
+      
+      if($request->isPost()){
+        $post_data = $request->getPost();
+        $vale = \ValeQuery::create()->findPk($post_data['referencia']);
+        if($vale != null )
+        {
+          if($vale->getValeEstatus())
+          {
+            return $this->getResponse()->setContent(json_encode(array('response' => true,'cantidad'=>$vale->getValeCantidad(),'message' => 'Lo sentimos solo cuentas con $'.$vale->getValeCantidad())));
+          }
+        }
+        return $this->getResponse()->setContent(json_encode(array('response' => false,'message' => 'Lo sentimos no existe dicho vale')));
+
+
+      }
     }
 
 }

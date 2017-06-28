@@ -304,6 +304,17 @@ class ExistenciaProductoController extends AbstractActionController
         return $view_model;
     }
 
+    public function indexsucursalAction()
+    {   
+        
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/producto/existencias/index');
+        $view_model->setVariables(array(
+             'messages' => $this->flashMessenger(),
+        ));
+        return $view_model;
+    }
+
 
     public function verAction()
     {

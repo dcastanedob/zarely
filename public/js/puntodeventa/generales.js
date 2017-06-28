@@ -124,6 +124,7 @@
 
         plugin.initForm = function(){
 
+          var referencias_array = [];
 
            $container.find('input[name=venta_fecha]').datepicker({
                 language:'es',
@@ -1669,12 +1670,33 @@
                     if(metodo == "vales")
                     {
                       var referencia = $modal.find('#referencia_pago').val();
-                      $tr.append('<td id="referenciaRow">'+referencia+'</td>');
-                      $tr.append('<td id="digitosRow">N/A</td>');
+                      if($.inArray(referencia,referencias_array) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarvale',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
+                                if(data.response && cantidad <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array.push(referencia);
 
-                      if(cantidad != "" && referencia != "")
-                      {
-                        booleano = true;
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
                       }
 
                     }
@@ -1691,87 +1713,89 @@
                       }
                     }
                     
-                    if(booleano){
+                    setTimeout(function(){
+                      if(booleano){
 
-                      totalAlMomento+=parseFloat(cantidad);
+                        totalAlMomento+=parseFloat(cantidad);
 
-                      $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+                        $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
 
-                      $tr.find('a').on('click',function(){
-                        var $information = $(this).closest('#row_data');
-                        var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
-                        totalAlMomento-= cantEliminiar;
-                        $information.remove();
+                        $tr.find('a').on('click',function(){
+                          var $information = $(this).closest('#row_data');
+                          var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
+                          totalAlMomento-= cantEliminiar;
+                          $information.remove();
 
-                        if((totalAlMomento + creditoCliente) < totalDeVenta)
-                        {
-                          $modal.find('#btn_hacer_pago').attr('disabled',"");
-                        }
-                      });
+                          if((totalAlMomento) < totalDeVenta)
+                          {
+                            $modal.find('#btn_hacer_pago').attr('disabled',"");
+                          }
+                        });
 
-                      $modal.find('#detalles_de_venta').append($tr);
-                    }
-
+                        $modal.find('#detalles_de_venta').append($tr);
+                      }
+                    
+                    
                     $modal.find('#cantidad_met').val(0);
 
 
 
-                    if((totalAlMomento + creditoCliente) >= totalDeVenta)
-                    {
-                      $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
-                      $modal.find('#btn_hacer_pago').off('click');
-                      $modal.find('#btn_hacer_pago').removeAttr('disabled');
-                      $modal.find('#btn_hacer_pago').on('click',function(){
-                        
-                        $modal.find('#detalles_de_venta tr').filter(function(){
-                          var cantidadRow = $(this).find('#cantidadRow').html();
-                          console.log("undefined" !== typeof cantidadRow);
-                          if ( "undefined" !== typeof cantidadRow)
-                          {
-                            var referenciaRow = $(this).find('#referenciaRow').html();
-                            var digitosRow = $(this).find('#digitosRow').html();
-                            var metodoRow = $(this).find('#metodoRow').html();
-                            $.ajax({
-                                method: 'POST',
-                                url:'/puntodeventa/hacerPago',
-                                dataType:'JSON',
-                                data:{
-                                  id:id,
-                                  cantidad:cantidadRow,
-                                  referencia:referenciaRow,
-                                  digitos:digitosRow,
-                                  metodo:metodoRow,
-                                  credito:creditoCliente,
-                                  cliente:id_cliente,
-                                }
+                      if((totalAlMomento + creditoCliente) >= totalDeVenta)
+                      {
+                        $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
+                        $modal.find('#btn_hacer_pago').off('click');
+                        $modal.find('#btn_hacer_pago').removeAttr('disabled');
+                        $modal.find('#btn_hacer_pago').on('click',function(){
+                          
+                          $modal.find('#detalles_de_venta tr').filter(function(){
+                            var cantidadRow = $(this).find('#cantidadRow').html();
+                            console.log("undefined" !== typeof cantidadRow);
+                            if ( "undefined" !== typeof cantidadRow)
+                            {
+                              var referenciaRow = $(this).find('#referenciaRow').html();
+                              var digitosRow = $(this).find('#digitosRow').html();
+                              var metodoRow = $(this).find('#metodoRow').html();
+                              $.ajax({
+                                  method: 'POST',
+                                  url:'/puntodeventa/hacerPago',
+                                  dataType:'JSON',
+                                  data:{
+                                    id:id,
+                                    cantidad:cantidadRow,
+                                    referencia:referenciaRow,
+                                    digitos:digitosRow,
+                                    metodo:metodoRow,
+                                    credito:creditoCliente,
+                                    cliente:id_cliente,
+                                  }
+                              
+                              });
+                              $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
+                              $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_hacer_pago').off('click');
+
+                              $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_cancelar_pago').off('click');
+                              $modal.find('#btn_cancelar_pago').text('Regresar');
+                              swal("Éxito","Acción realizada correctamente","success");
+                              $container.find('#tables_information1 a').filter(function(){
+                                $(this).trigger('click');
+                              });
+                              var newFolio = parseInt($container.find('#compra_1 input[name=folio]').val()) + 5;
+                              $container.find('#compra_1 input[name=folio]').val(newFolio);
+                              $container.find('#folio_venta_1').html('Venta '+newFolio);
+
+                            }else
+                            {
+                              swal("Oopss...","Realiza algún pago","error");
+                            }
                             
-                            });
-                            $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
-                            $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_hacer_pago').off('click');
+                          });
 
-                            $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_cancelar_pago').off('click');
-                            $modal.find('#btn_cancelar_pago').text('Regresar');
-                            swal("Éxito","Acción realizada correctamente","success");
-                            $container.find('#tables_information1 a').filter(function(){
-                              $(this).trigger('click');
-                            });
-                            var newFolio = parseInt($container.find('#compra_1 input[name=folio]').val()) + 5;
-                            $container.find('#compra_1 input[name=folio]').val(newFolio);
-                            $container.find('#folio_venta_1').html('Venta '+newFolio);
-
-                          }else
-                          {
-                            swal("Oopss...","Realiza algún pago","error");
-                          }
                           
                         });
-
-                        
-                      });
-                    }
-
+                      }
+                    }, 1000);
                   });
 
                   $modal.find('#recibi').on('keyup',function(){
@@ -2004,12 +2028,33 @@
                     if(metodo == "vales")
                     {
                       var referencia = $modal.find('#referencia_pago').val();
-                      $tr.append('<td id="referenciaRow">'+referencia+'</td>');
-                      $tr.append('<td id="digitosRow">N/A</td>');
+                      if($.inArray(referencia,referencias_array) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarvale',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
+                                if(data.response && cantidad <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array.push(referencia);
 
-                      if(cantidad != "" && referencia != "")
-                      {
-                        booleano = true;
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
                       }
 
                     }
@@ -2026,83 +2071,85 @@
                       }
                     }
                     
-                    if(booleano){
+                    setTimeout(function(){
+                      if(booleano){
 
-                      totalAlMomento+=parseFloat(cantidad);
+                        totalAlMomento+=parseFloat(cantidad);
 
-                      $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+                        $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
 
-                      $tr.find('a').on('click',function(){
-                        var $information = $(this).closest('#row_data');
-                        var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
-                        totalAlMomento-= cantEliminiar;
-                        $information.remove();
+                        $tr.find('a').on('click',function(){
+                          var $information = $(this).closest('#row_data');
+                          var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
+                          totalAlMomento-= cantEliminiar;
+                          $information.remove();
 
-                        if((totalAlMomento + creditoCliente) < totalDeVenta)
-                        {
-                          $modal.find('#btn_hacer_pago').attr('disabled',"");
-                        }
-                      });
+                          if((totalAlMomento) < totalDeVenta)
+                          {
+                            $modal.find('#btn_hacer_pago').attr('disabled',"");
+                          }
+                        });
 
-                      $modal.find('#detalles_de_venta').append($tr);
-                    }
+                        $modal.find('#detalles_de_venta').append($tr);
+                      }
 
                     $modal.find('#cantidad_met').val(0);
 
 
 
-                    if((totalAlMomento + creditoCliente) >= totalDeVenta)
-                    {
-                      $modal.find('#btn_hacer_pago').removeAttr('disabled');
-                      $modal.find('#btn_hacer_pago').on('click',function(){
-                        
-                        $modal.find('#detalles_de_venta tr').filter(function(){
-                          var cantidadRow = $(this).find('#cantidadRow').html();
-                          console.log("undefined" !== typeof cantidadRow);
-                          if ( "undefined" !== typeof cantidadRow)
-                          {
-                            var referenciaRow = $(this).find('#referenciaRow').html();
-                            var digitosRow = $(this).find('#digitosRow').html();
-                            var metodoRow = $(this).find('#metodoRow').html();
-                            $.ajax({
-                                method: 'POST',
-                                url:'/puntodeventa/hacerPago',
-                                dataType:'JSON',
-                                data:{
-                                  id:id,
-                                  cantidad:cantidadRow,
-                                  referencia:referenciaRow,
-                                  digitos:digitosRow,
-                                  metodo:metodoRow,
-                                  credito:creditoCliente,
-                                  cliente:id_cliente,
-                                }
-                            
-                            });
-                            $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
-                            $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_hacer_pago').off('click');
+                      if((totalAlMomento + creditoCliente) >= totalDeVenta)
+                      {
+                        $modal.find('#btn_hacer_pago').removeAttr('disabled');
+                        $modal.find('#btn_hacer_pago').on('click',function(){
+                          
+                          $modal.find('#detalles_de_venta tr').filter(function(){
+                            var cantidadRow = $(this).find('#cantidadRow').html();
+                            console.log("undefined" !== typeof cantidadRow);
+                            if ( "undefined" !== typeof cantidadRow)
+                            {
+                              var referenciaRow = $(this).find('#referenciaRow').html();
+                              var digitosRow = $(this).find('#digitosRow').html();
+                              var metodoRow = $(this).find('#metodoRow').html();
+                              $.ajax({
+                                  method: 'POST',
+                                  url:'/puntodeventa/hacerPago',
+                                  dataType:'JSON',
+                                  data:{
+                                    id:id,
+                                    cantidad:cantidadRow,
+                                    referencia:referenciaRow,
+                                    digitos:digitosRow,
+                                    metodo:metodoRow,
+                                    credito:creditoCliente,
+                                    cliente:id_cliente,
+                                  }
+                              
+                              });
+                              $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
+                              $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_hacer_pago').off('click');
 
-                            $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_cancelar_pago').off('click');
-                            $modal.find('#btn_cancelar_pago').text('Regresar');
-                            swal("Éxito","Acción realizada correctamente","success");
-                            $container.find('#tables_information2 a').filter(function(){
-                              $(this).trigger('click');
-                            });
-                            var newFolio = parseInt($container.find('#compra_2 input[name=folio]').val()) + 5;
-                            $container.find('#compra_2 input[name=folio]').val(newFolio);
-                            $container.find('#folio_venta_2').html('Venta '+newFolio);
-                          }else
-                          {
-                            swal("Oopss...","Realiza algún pago","error");
-                          }
+                              $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_cancelar_pago').off('click');
+                              $modal.find('#btn_cancelar_pago').text('Regresar');
+                              swal("Éxito","Acción realizada correctamente","success");
+                              $container.find('#tables_information2 a').filter(function(){
+                                $(this).trigger('click');
+                              });
+                              var newFolio = parseInt($container.find('#compra_2 input[name=folio]').val()) + 5;
+                              $container.find('#compra_2 input[name=folio]').val(newFolio);
+                              $container.find('#folio_venta_2').html('Venta '+newFolio);
+                            }else
+                            {
+                              swal("Oopss...","Realiza algún pago","error");
+                            }
+                            
+                          });
+
                           
                         });
-
-                        
-                      });
-                    }
+                      }
+                    }, 1000);
 
                   });
 
@@ -2336,12 +2383,33 @@
                     if(metodo == "vales")
                     {
                       var referencia = $modal.find('#referencia_pago').val();
-                      $tr.append('<td id="referenciaRow">'+referencia+'</td>');
-                      $tr.append('<td id="digitosRow">N/A</td>');
+                      if($.inArray(referencia,referencias_array) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarvale',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
+                                if(data.response && cantidad <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array.push(referencia);
 
-                      if(cantidad != "" && referencia != "")
-                      {
-                        booleano = true;
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
                       }
 
                     }
@@ -2358,83 +2426,85 @@
                       }
                     }
                     
-                    if(booleano){
+                    setTimeout(function(){
+                      if(booleano){
 
-                      totalAlMomento+=parseFloat(cantidad);
+                        totalAlMomento+=parseFloat(cantidad);
 
-                      $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+                        $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
 
-                      $tr.find('a').on('click',function(){
-                        var $information = $(this).closest('#row_data');
-                        var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
-                        totalAlMomento-= cantEliminiar;
-                        $information.remove();
+                        $tr.find('a').on('click',function(){
+                          var $information = $(this).closest('#row_data');
+                          var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
+                          totalAlMomento-= cantEliminiar;
+                          $information.remove();
 
-                        if((totalAlMomento + creditoCliente) < totalDeVenta)
-                        {
-                          $modal.find('#btn_hacer_pago').attr('disabled',"");
-                        }
-                      });
+                          if((totalAlMomento) < totalDeVenta)
+                          {
+                            $modal.find('#btn_hacer_pago').attr('disabled',"");
+                          }
+                        });
 
-                      $modal.find('#detalles_de_venta').append($tr);
-                    }
+                        $modal.find('#detalles_de_venta').append($tr);
+                      }
 
                     $modal.find('#cantidad_met').val(0);
 
 
 
-                    if((totalAlMomento + creditoCliente) >= totalDeVenta)
-                    {
-                      $modal.find('#btn_hacer_pago').removeAttr('disabled');
-                      $modal.find('#btn_hacer_pago').on('click',function(){
-                        
-                        $modal.find('#detalles_de_venta tr').filter(function(){
-                          var cantidadRow = $(this).find('#cantidadRow').html();
-                          console.log("undefined" !== typeof cantidadRow);
-                          if ( "undefined" !== typeof cantidadRow)
-                          {
-                            var referenciaRow = $(this).find('#referenciaRow').html();
-                            var digitosRow = $(this).find('#digitosRow').html();
-                            var metodoRow = $(this).find('#metodoRow').html();
-                            $.ajax({
-                                method: 'POST',
-                                url:'/puntodeventa/hacerPago',
-                                dataType:'JSON',
-                                data:{
-                                  id:id,
-                                  cantidad:cantidadRow,
-                                  referencia:referenciaRow,
-                                  digitos:digitosRow,
-                                  metodo:metodoRow,
-                                  credito:creditoCliente,
-                                  cliente:id_cliente,
-                                }
-                            
-                            });
-                            $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
-                            $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_hacer_pago').off('click');
+                      if((totalAlMomento + creditoCliente) >= totalDeVenta)
+                      {
+                        $modal.find('#btn_hacer_pago').removeAttr('disabled');
+                        $modal.find('#btn_hacer_pago').on('click',function(){
+                          
+                          $modal.find('#detalles_de_venta tr').filter(function(){
+                            var cantidadRow = $(this).find('#cantidadRow').html();
+                            console.log("undefined" !== typeof cantidadRow);
+                            if ( "undefined" !== typeof cantidadRow)
+                            {
+                              var referenciaRow = $(this).find('#referenciaRow').html();
+                              var digitosRow = $(this).find('#digitosRow').html();
+                              var metodoRow = $(this).find('#metodoRow').html();
+                              $.ajax({
+                                  method: 'POST',
+                                  url:'/puntodeventa/hacerPago',
+                                  dataType:'JSON',
+                                  data:{
+                                    id:id,
+                                    cantidad:cantidadRow,
+                                    referencia:referenciaRow,
+                                    digitos:digitosRow,
+                                    metodo:metodoRow,
+                                    credito:creditoCliente,
+                                    cliente:id_cliente,
+                                  }
+                              
+                              });
+                              $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
+                              $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_hacer_pago').off('click');
 
-                            $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_cancelar_pago').off('click');
-                            $modal.find('#btn_cancelar_pago').text('Regresar');
-                            swal("Éxito","Acción realizada correctamente","success");
-                            $container.find('#tables_information3 a').filter(function(){
-                              $(this).trigger('click');
-                            });
-                            var newFolio = parseInt($container.find('#compra_3 input[name=folio]').val()) + 5;
-                            $container.find('#compra_3 input[name=folio]').val(newFolio);
-                            $container.find('#folio_venta_3').html('Venta '+newFolio);
-                          }else
-                          {
-                            swal("Oopss...","Realiza algún pago","error");
-                          }
+                              $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_cancelar_pago').off('click');
+                              $modal.find('#btn_cancelar_pago').text('Regresar');
+                              swal("Éxito","Acción realizada correctamente","success");
+                              $container.find('#tables_information3 a').filter(function(){
+                                $(this).trigger('click');
+                              });
+                              var newFolio = parseInt($container.find('#compra_3 input[name=folio]').val()) + 5;
+                              $container.find('#compra_3 input[name=folio]').val(newFolio);
+                              $container.find('#folio_venta_3').html('Venta '+newFolio);
+                            }else
+                            {
+                              swal("Oopss...","Realiza algún pago","error");
+                            }
+                            
+                          });
+
                           
                         });
-
-                        
-                      });
-                    }
+                      }
+                    }, 1000);
 
                   });
 
@@ -2668,12 +2738,35 @@
                     if(metodo == "vales")
                     {
                       var referencia = $modal.find('#referencia_pago').val();
-                      $tr.append('<td id="referenciaRow">'+referencia+'</td>');
-                      $tr.append('<td id="digitosRow">N/A</td>');
+                      if($.inArray(referencia,referencias_array) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarvale',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
 
-                      if(cantidad != "" && referencia != "")
-                      {
-                        booleano = true;
+
+                                if(data.response && parseFloat(cantidad) <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array.push(referencia);
+
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
                       }
 
                     }
@@ -2690,83 +2783,85 @@
                       }
                     }
                     
-                    if(booleano){
+                    setTimeout(function(){
+                      if(booleano){
 
-                      totalAlMomento+=parseFloat(cantidad);
+                        totalAlMomento+=parseFloat(cantidad);
 
-                      $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+                        $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
 
-                      $tr.find('a').on('click',function(){
-                        var $information = $(this).closest('#row_data');
-                        var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
-                        totalAlMomento-= cantEliminiar;
-                        $information.remove();
+                        $tr.find('a').on('click',function(){
+                          var $information = $(this).closest('#row_data');
+                          var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
+                          totalAlMomento-= cantEliminiar;
+                          $information.remove();
 
-                        if((totalAlMomento + creditoCliente) < totalDeVenta)
-                        {
-                          $modal.find('#btn_hacer_pago').attr('disabled',"");
-                        }
-                      });
+                          if((totalAlMomento) < totalDeVenta)
+                          {
+                            $modal.find('#btn_hacer_pago').attr('disabled',"");
+                          }
+                        });
 
-                      $modal.find('#detalles_de_venta').append($tr);
-                    }
+                        $modal.find('#detalles_de_venta').append($tr);
+                      }
 
                     $modal.find('#cantidad_met').val(0);
 
 
 
-                    if((totalAlMomento + creditoCliente) >= totalDeVenta)
-                    {
-                      $modal.find('#btn_hacer_pago').removeAttr('disabled');
-                      $modal.find('#btn_hacer_pago').on('click',function(){
-                        
-                        $modal.find('#detalles_de_venta tr').filter(function(){
-                          var cantidadRow = $(this).find('#cantidadRow').html();
-                          console.log("undefined" !== typeof cantidadRow);
-                          if ( "undefined" !== typeof cantidadRow)
-                          {
-                            var referenciaRow = $(this).find('#referenciaRow').html();
-                            var digitosRow = $(this).find('#digitosRow').html();
-                            var metodoRow = $(this).find('#metodoRow').html();
-                            $.ajax({
-                                method: 'POST',
-                                url:'/puntodeventa/hacerPago',
-                                dataType:'JSON',
-                                data:{
-                                  id:id,
-                                  cantidad:cantidadRow,
-                                  referencia:referenciaRow,
-                                  digitos:digitosRow,
-                                  metodo:metodoRow,
-                                  credito:creditoCliente,
-                                  cliente:id_cliente,
-                                }
-                            
-                            });
-                            $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
-                            $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_hacer_pago').off('click');
+                      if((totalAlMomento + creditoCliente) >= totalDeVenta)
+                      {
+                        $modal.find('#btn_hacer_pago').removeAttr('disabled');
+                        $modal.find('#btn_hacer_pago').on('click',function(){
+                          
+                          $modal.find('#detalles_de_venta tr').filter(function(){
+                            var cantidadRow = $(this).find('#cantidadRow').html();
+                            console.log("undefined" !== typeof cantidadRow);
+                            if ( "undefined" !== typeof cantidadRow)
+                            {
+                              var referenciaRow = $(this).find('#referenciaRow').html();
+                              var digitosRow = $(this).find('#digitosRow').html();
+                              var metodoRow = $(this).find('#metodoRow').html();
+                              $.ajax({
+                                  method: 'POST',
+                                  url:'/puntodeventa/hacerPago',
+                                  dataType:'JSON',
+                                  data:{
+                                    id:id,
+                                    cantidad:cantidadRow,
+                                    referencia:referenciaRow,
+                                    digitos:digitosRow,
+                                    metodo:metodoRow,
+                                    credito:creditoCliente,
+                                    cliente:id_cliente,
+                                  }
+                              
+                              });
+                              $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
+                              $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_hacer_pago').off('click');
 
-                            $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_cancelar_pago').off('click');
-                            $modal.find('#btn_cancelar_pago').text('Regresar');
-                            swal("Éxito","Acción realizada correctamente","success");
-                            $container.find('#tables_information4 a').filter(function(){
-                              $(this).trigger('click');
-                            });
-                            var newFolio = parseInt($container.find('#compra_4 input[name=folio]').val()) + 5;
-                            $container.find('#compra_4 input[name=folio]').val(newFolio);
-                            $container.find('#folio_venta_4').html('Venta '+newFolio);
-                          }else
-                          {
-                            swal("Oopss...","Realiza algún pago","error");
-                          }
+                              $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_cancelar_pago').off('click');
+                              $modal.find('#btn_cancelar_pago').text('Regresar');
+                              swal("Éxito","Acción realizada correctamente","success");
+                              $container.find('#tables_information4 a').filter(function(){
+                                $(this).trigger('click');
+                              });
+                              var newFolio = parseInt($container.find('#compra_4 input[name=folio]').val()) + 5;
+                              $container.find('#compra_4 input[name=folio]').val(newFolio);
+                              $container.find('#folio_venta_4').html('Venta '+newFolio);
+                            }else
+                            {
+                              swal("Oopss...","Realiza algún pago","error");
+                            }
+                            
+                          });
+
                           
                         });
-
-                        
-                      });
-                    }
+                      }
+                    }, 1000);
 
                   });
 
@@ -3000,12 +3095,33 @@
                     if(metodo == "vales")
                     {
                       var referencia = $modal.find('#referencia_pago').val();
-                      $tr.append('<td id="referenciaRow">'+referencia+'</td>');
-                      $tr.append('<td id="digitosRow">N/A</td>');
+                      if($.inArray(referencia,referencias_array) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarvale',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
+                                if(data.response && cantidad <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array.push(referencia);
 
-                      if(cantidad != "" && referencia != "")
-                      {
-                        booleano = true;
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
                       }
 
                     }
@@ -3022,83 +3138,85 @@
                       }
                     }
                     
-                    if(booleano){
+                    setTimeout(function(){
+                      if(booleano){
 
-                      totalAlMomento+=parseFloat(cantidad);
+                        totalAlMomento+=parseFloat(cantidad);
 
-                      $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
+                        $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
 
-                      $tr.find('a').on('click',function(){
-                        var $information = $(this).closest('#row_data');
-                        var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
-                        totalAlMomento-= cantEliminiar;
-                        $information.remove();
+                        $tr.find('a').on('click',function(){
+                          var $information = $(this).closest('#row_data');
+                          var cantEliminiar = parseFloat($information.find('#cantidadRow').html());
+                          totalAlMomento-= cantEliminiar;
+                          $information.remove();
 
-                        if((totalAlMomento + creditoCliente) < totalDeVenta)
-                        {
-                          $modal.find('#btn_hacer_pago').attr('disabled',"");
-                        }
-                      });
+                          if((totalAlMomento) < totalDeVenta)
+                          {
+                            $modal.find('#btn_hacer_pago').attr('disabled',"");
+                          }
+                        });
 
-                      $modal.find('#detalles_de_venta').append($tr);
-                    }
+                        $modal.find('#detalles_de_venta').append($tr);
+                      }
 
                     $modal.find('#cantidad_met').val(0);
 
 
 
-                    if((totalAlMomento + creditoCliente) >= totalDeVenta)
-                    {
-                      $modal.find('#btn_hacer_pago').removeAttr('disabled');
-                      $modal.find('#btn_hacer_pago').on('click',function(){
-                        
-                        $modal.find('#detalles_de_venta tr').filter(function(){
-                          var cantidadRow = $(this).find('#cantidadRow').html();
-                          console.log("undefined" !== typeof cantidadRow);
-                          if ( "undefined" !== typeof cantidadRow)
-                          {
-                            var referenciaRow = $(this).find('#referenciaRow').html();
-                            var digitosRow = $(this).find('#digitosRow').html();
-                            var metodoRow = $(this).find('#metodoRow').html();
-                            $.ajax({
-                                method: 'POST',
-                                url:'/puntodeventa/hacerPago',
-                                dataType:'JSON',
-                                data:{
-                                  id:id,
-                                  cantidad:cantidadRow,
-                                  referencia:referenciaRow,
-                                  digitos:digitosRow,
-                                  metodo:metodoRow,
-                                  credito:creditoCliente,
-                                  cliente:id_cliente,
-                                }
-                            
-                            });
-                            $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
-                            $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_hacer_pago').off('click');
+                      if((totalAlMomento + creditoCliente) >= totalDeVenta)
+                      {
+                        $modal.find('#btn_hacer_pago').removeAttr('disabled');
+                        $modal.find('#btn_hacer_pago').on('click',function(){
+                          
+                          $modal.find('#detalles_de_venta tr').filter(function(){
+                            var cantidadRow = $(this).find('#cantidadRow').html();
+                            console.log("undefined" !== typeof cantidadRow);
+                            if ( "undefined" !== typeof cantidadRow)
+                            {
+                              var referenciaRow = $(this).find('#referenciaRow').html();
+                              var digitosRow = $(this).find('#digitosRow').html();
+                              var metodoRow = $(this).find('#metodoRow').html();
+                              $.ajax({
+                                  method: 'POST',
+                                  url:'/puntodeventa/hacerPago',
+                                  dataType:'JSON',
+                                  data:{
+                                    id:id,
+                                    cantidad:cantidadRow,
+                                    referencia:referenciaRow,
+                                    digitos:digitosRow,
+                                    metodo:metodoRow,
+                                    credito:creditoCliente,
+                                    cliente:id_cliente,
+                                  }
+                              
+                              });
+                              $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
+                              $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_hacer_pago').off('click');
 
-                            $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
-                            $modal.find('#btn_cancelar_pago').off('click');
-                            $modal.find('#btn_cancelar_pago').text('Regresar');
-                            swal("Éxito","Acción realizada correctamente","success");
-                            $container.find('#tables_information5 a').filter(function(){
-                              $(this).trigger('click');
-                            });
-                            var newFolio = parseInt($container.find('#compra_5 input[name=folio]').val()) + 5;
-                            $container.find('#compra_5 input[name=folio]').val(newFolio);
-                            $container.find('#folio_venta_5').html('Venta '+newFolio);
-                          }else
-                          {
-                            swal("Oopss...","Realiza algún pago","error");
-                          }
+                              $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_cancelar_pago').off('click');
+                              $modal.find('#btn_cancelar_pago').text('Regresar');
+                              swal("Éxito","Acción realizada correctamente","success");
+                              $container.find('#tables_information5 a').filter(function(){
+                                $(this).trigger('click');
+                              });
+                              var newFolio = parseInt($container.find('#compra_5 input[name=folio]').val()) + 5;
+                              $container.find('#compra_5 input[name=folio]').val(newFolio);
+                              $container.find('#folio_venta_5').html('Venta '+newFolio);
+                            }else
+                            {
+                              swal("Oopss...","Realiza algún pago","error");
+                            }
+                            
+                          });
+
                           
                         });
-
-                        
-                      });
-                    }
+                      }
+                    }, 1000);
 
                   });
 
