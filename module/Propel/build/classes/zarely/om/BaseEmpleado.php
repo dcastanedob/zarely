@@ -185,6 +185,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $collCuentabancariamovimientosPartial;
 
     /**
+     * @var        PropelObjectCollection|Pedidosucursal[] Collection to store aggregation of Pedidosucursal objects.
+     */
+    protected $collPedidosucursals;
+    protected $collPedidosucursalsPartial;
+
+    /**
      * @var        PropelObjectCollection|Sucursalempleado[] Collection to store aggregation of Sucursalempleado objects.
      */
     protected $collSucursalempleados;
@@ -251,6 +257,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $cuentabancariamovimientosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pedidosucursalsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1240,6 +1252,8 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
             $this->collCuentabancariamovimientos = null;
 
+            $this->collPedidosucursals = null;
+
             $this->collSucursalempleados = null;
 
             $this->collTransferenciasRelatedByIdempleadocreador = null;
@@ -1416,6 +1430,23 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
             if ($this->collCuentabancariamovimientos !== null) {
                 foreach ($this->collCuentabancariamovimientos as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pedidosucursalsScheduledForDeletion !== null) {
+                if (!$this->pedidosucursalsScheduledForDeletion->isEmpty()) {
+                    PedidosucursalQuery::create()
+                        ->filterByPrimaryKeys($this->pedidosucursalsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pedidosucursalsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPedidosucursals !== null) {
+                foreach ($this->collPedidosucursals as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1826,6 +1857,14 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPedidosucursals !== null) {
+                    foreach ($this->collPedidosucursals as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collSucursalempleados !== null) {
                     foreach ($this->collSucursalempleados as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -2045,6 +2084,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             if (null !== $this->collCuentabancariamovimientos) {
                 $result['Cuentabancariamovimientos'] = $this->collCuentabancariamovimientos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPedidosucursals) {
+                $result['Pedidosucursals'] = $this->collPedidosucursals->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collSucursalempleados) {
                 $result['Sucursalempleados'] = $this->collSucursalempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2353,6 +2395,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPedidosucursals() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPedidosucursal($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getSucursalempleados() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addSucursalempleado($relObj->copy($deepCopy));
@@ -2507,6 +2555,9 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         }
         if ('Cuentabancariamovimiento' == $relationName) {
             $this->initCuentabancariamovimientos();
+        }
+        if ('Pedidosucursal' == $relationName) {
+            $this->initPedidosucursals();
         }
         if ('Sucursalempleado' == $relationName) {
             $this->initSucursalempleados();
@@ -3026,6 +3077,256 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $query->joinWith('Cuentabancaria', $join_behavior);
 
         return $this->getCuentabancariamovimientos($query, $con);
+    }
+
+    /**
+     * Clears out the collPedidosucursals collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addPedidosucursals()
+     */
+    public function clearPedidosucursals()
+    {
+        $this->collPedidosucursals = null; // important to set this to null since that means it is uninitialized
+        $this->collPedidosucursalsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPedidosucursals collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPedidosucursals($v = true)
+    {
+        $this->collPedidosucursalsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPedidosucursals collection.
+     *
+     * By default this just sets the collPedidosucursals collection to an empty array (like clearcollPedidosucursals());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPedidosucursals($overrideExisting = true)
+    {
+        if (null !== $this->collPedidosucursals && !$overrideExisting) {
+            return;
+        }
+        $this->collPedidosucursals = new PropelObjectCollection();
+        $this->collPedidosucursals->setModel('Pedidosucursal');
+    }
+
+    /**
+     * Gets an array of Pedidosucursal objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Pedidosucursal[] List of Pedidosucursal objects
+     * @throws PropelException
+     */
+    public function getPedidosucursals($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidosucursalsPartial && !$this->isNew();
+        if (null === $this->collPedidosucursals || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPedidosucursals) {
+                // return empty collection
+                $this->initPedidosucursals();
+            } else {
+                $collPedidosucursals = PedidosucursalQuery::create(null, $criteria)
+                    ->filterByEmpleado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPedidosucursalsPartial && count($collPedidosucursals)) {
+                      $this->initPedidosucursals(false);
+
+                      foreach ($collPedidosucursals as $obj) {
+                        if (false == $this->collPedidosucursals->contains($obj)) {
+                          $this->collPedidosucursals->append($obj);
+                        }
+                      }
+
+                      $this->collPedidosucursalsPartial = true;
+                    }
+
+                    $collPedidosucursals->getInternalIterator()->rewind();
+
+                    return $collPedidosucursals;
+                }
+
+                if ($partial && $this->collPedidosucursals) {
+                    foreach ($this->collPedidosucursals as $obj) {
+                        if ($obj->isNew()) {
+                            $collPedidosucursals[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPedidosucursals = $collPedidosucursals;
+                $this->collPedidosucursalsPartial = false;
+            }
+        }
+
+        return $this->collPedidosucursals;
+    }
+
+    /**
+     * Sets a collection of Pedidosucursal objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pedidosucursals A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setPedidosucursals(PropelCollection $pedidosucursals, PropelPDO $con = null)
+    {
+        $pedidosucursalsToDelete = $this->getPedidosucursals(new Criteria(), $con)->diff($pedidosucursals);
+
+
+        $this->pedidosucursalsScheduledForDeletion = $pedidosucursalsToDelete;
+
+        foreach ($pedidosucursalsToDelete as $pedidosucursalRemoved) {
+            $pedidosucursalRemoved->setEmpleado(null);
+        }
+
+        $this->collPedidosucursals = null;
+        foreach ($pedidosucursals as $pedidosucursal) {
+            $this->addPedidosucursal($pedidosucursal);
+        }
+
+        $this->collPedidosucursals = $pedidosucursals;
+        $this->collPedidosucursalsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Pedidosucursal objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Pedidosucursal objects.
+     * @throws PropelException
+     */
+    public function countPedidosucursals(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidosucursalsPartial && !$this->isNew();
+        if (null === $this->collPedidosucursals || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPedidosucursals) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPedidosucursals());
+            }
+            $query = PedidosucursalQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleado($this)
+                ->count($con);
+        }
+
+        return count($this->collPedidosucursals);
+    }
+
+    /**
+     * Method called to associate a Pedidosucursal object to this object
+     * through the Pedidosucursal foreign key attribute.
+     *
+     * @param    Pedidosucursal $l Pedidosucursal
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addPedidosucursal(Pedidosucursal $l)
+    {
+        if ($this->collPedidosucursals === null) {
+            $this->initPedidosucursals();
+            $this->collPedidosucursalsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPedidosucursals->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPedidosucursal($l);
+
+            if ($this->pedidosucursalsScheduledForDeletion and $this->pedidosucursalsScheduledForDeletion->contains($l)) {
+                $this->pedidosucursalsScheduledForDeletion->remove($this->pedidosucursalsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Pedidosucursal $pedidosucursal The pedidosucursal object to add.
+     */
+    protected function doAddPedidosucursal($pedidosucursal)
+    {
+        $this->collPedidosucursals[]= $pedidosucursal;
+        $pedidosucursal->setEmpleado($this);
+    }
+
+    /**
+     * @param	Pedidosucursal $pedidosucursal The pedidosucursal object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removePedidosucursal($pedidosucursal)
+    {
+        if ($this->getPedidosucursals()->contains($pedidosucursal)) {
+            $this->collPedidosucursals->remove($this->collPedidosucursals->search($pedidosucursal));
+            if (null === $this->pedidosucursalsScheduledForDeletion) {
+                $this->pedidosucursalsScheduledForDeletion = clone $this->collPedidosucursals;
+                $this->pedidosucursalsScheduledForDeletion->clear();
+            }
+            $this->pedidosucursalsScheduledForDeletion[]= clone $pedidosucursal;
+            $pedidosucursal->setEmpleado(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related Pedidosucursals from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pedidosucursal[] List of Pedidosucursal objects
+     */
+    public function getPedidosucursalsJoinSucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PedidosucursalQuery::create(null, $criteria);
+        $query->joinWith('Sucursal', $join_behavior);
+
+        return $this->getPedidosucursals($query, $con);
     }
 
     /**
@@ -4688,6 +4989,11 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPedidosucursals) {
+                foreach ($this->collPedidosucursals as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collSucursalempleados) {
                 foreach ($this->collSucursalempleados as $o) {
                     $o->clearAllReferences($deep);
@@ -4733,6 +5039,10 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->collCuentabancariamovimientos->clearIterator();
         }
         $this->collCuentabancariamovimientos = null;
+        if ($this->collPedidosucursals instanceof PropelCollection) {
+            $this->collPedidosucursals->clearIterator();
+        }
+        $this->collPedidosucursals = null;
         if ($this->collSucursalempleados instanceof PropelCollection) {
             $this->collSucursalempleados->clearIterator();
         }

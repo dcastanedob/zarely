@@ -96,198 +96,224 @@
           <nav id="sidenav" class="sidenav-collapse collapse">
             <ul class="sidenav">
               <li class="sidenav-heading">Menu</li>
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-book"></span>
-                    <span class="sidenav-label">Catálogos</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Catálogos</li>
-                    <li><a href="/catalogo/empleados" ><span class="icon icon-user" ></span>Empleados</a></li>
-                    <li><a href="/catalogo/clientes" >Clientes</a></li>
-                    <li><a href="/catalogo/proveedores" >Proveedores</a></li>
-                    <li><a href="/catalogo/cuentas" >Cuenta bancaria</a></li>
-                    <li><a href="/catalogo/sucursales" >Sucursales</a></li>  
-                    <li><a href="/catalogo/productos" >Productos</a></li>
-                    <li><a href="/catalogo/descuentos" >Descuentos</a></li>
-                    <li><a href="/catalogo/promociones" >Promociones</a></li>
-                    <li><a href="/catalogo/temporadas" >Temporadas</a></li>
-                    <li><a href="/catalogo/colores" >Colores</a></li>
-                    <li><a href="/catalogo/materiales" >Materiales</a></li>
-                    <li><a href="/catalogo/marcas" >Marcas</a></li>
-                    <li><a href="/catalogo/tipocalzados" >Tipo de calzado o línea</a></li>
-                    <li><a href="/catalogo/tallajes" >Tallajes</a></li>
-                    <li><a href="/catalogo/medidas" >Medidas</a></li>
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-book"></span>
+                      <span class="sidenav-label">Catálogos</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Catálogos</li>
+                      <li><a href="/catalogo/empleados" ><span class="icon icon-user" ></span>Empleados</a></li>
+                      <li><a href="/catalogo/clientes" >Clientes</a></li>
+                      <li><a href="/catalogo/proveedores" >Proveedores</a></li>
+                      <li><a href="/catalogo/cuentas" >Cuenta bancaria</a></li>
+                      <li><a href="/catalogo/sucursales" >Sucursales</a></li>  
+                      <li><a href="/catalogo/productos" >Productos</a></li>
+                      <li><a href="/catalogo/descuentos" >Descuentos</a></li>
+                      <li><a href="/catalogo/promociones" >Promociones</a></li>
+                      <li><a href="/catalogo/temporadas" >Temporadas</a></li>
+                      <li><a href="/catalogo/colores" >Colores</a></li>
+                      <li><a href="/catalogo/materiales" >Materiales</a></li>
+                      <li><a href="/catalogo/marcas" >Marcas</a></li>
+                      <li><a href="/catalogo/tipocalzados" >Tipo de calzado o línea</a></li>
+                      <li><a href="/catalogo/tallajes" >Tallajes</a></li>
+                      <li><a href="/catalogo/medidas" >Medidas</a></li>
+                      <li><a href="/catalogo/gastos" ><span class="icon icon-money"></span>Gastos</a></li>
+                    </ul>
+                  </li>
+                <?php }?>
 
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-exchange"></span>
+                      <span class="sidenav-label">Productos</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Productos</li>
+                      
+                      <li><a href="/producto/existencias">Existencia</a></li>
+                      <li><a href="/producto/reordenes">Reorden</a></li>
+                      <li><a href="/producto/precios">Precios</a></li>   
+                      <li><a href="/producto/enreorden">Productos en reorden</a></li>     
+                    </ul>
 
-                    <li><a href="/catalogo/gastos" ><span class="icon icon-money"></span>Gastos</a></li>
-                  </ul>
+                  </li>
+                <?php }?>
 
-                </li>
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-bus"></span>
+                      <span class="sidenav-label">Pedidos</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Pedidos</li>
+                      <li><a href="/pedidos/mayoristas" >Mayoristas</a></li>
+                      <li><a href="/pedidos/completados">Completados por sucursal</a></li>
+                      <li><a href="/pedidos/completados-producto">Completados por producto</a></li>
 
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-exchange"></span>
-                    <span class="sidenav-label">Productos</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Productos</li>
-                    
-                    <li><a href="/producto/existencias">Existencia</a></li>
-                    <li><a href="/producto/reordenes">Reorden</a></li>
-                    <li><a href="/producto/precios">Precios</a></li>   
-                    <li><a href="/producto/enreorden">Productos en reorden</a></li>     
-                  </ul>
+                      <li><a href="/pedidos/pendientes">Pendientes por sucursal</a></li>
+                      <li><a href="/pedidos/pendientes-producto">Pendientes por producto</a></li>
 
-                </li>
+                      <li><a href="/pedidos/solicitados">Solicitados por sucursal</a></li>
+                      <li><a href="/pedidos/solicitados-producto">Solicitados por producto</a></li>
+                      
+                      <li><a href="/pedidos/transitos">Tránsito por sucursal</a></li>
+                      <li><a href="/pedidos/transitos-producto">Tránsito por producto</a></li>
+                          
+                    </ul>
 
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-bus"></span>
-                    <span class="sidenav-label">Pedidos</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Pedidos</li>
-                    <li><a href="/pedidos/mayoristas" >Mayoristas</a></li>
-                    <li><a href="/pedidos/completados">Completados por sucursal</a></li>
-                    <li><a href="/pedidos/completados-producto">Completados por producto</a></li>
+                  </li>
+                <?php }?>
 
-                    <li><a href="/pedidos/pendientes">Pendientes por sucursal</a></li>
-                    <li><a href="/pedidos/pendientes-producto">Pendientes por producto</a></li>
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-bus"></span>
+                      <span class="sidenav-label">Pedidos sucursal</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Pedidos sucursal</li>
+                      <li><a href="/pedidos/mayoristas-sucursal" >Mayoristas</a></li>
+                    </ul>
+                  </li>
+                <?php }?>
 
-                    <li><a href="/pedidos/solicitados">Solicitados por sucursal</a></li>
-                    <li><a href="/pedidos/solicitados-producto">Solicitados por producto</a></li>
-                    
-                    <li><a href="/pedidos/transitos">Tránsito por sucursal</a></li>
-                    <li><a href="/pedidos/transitos-producto">Tránsito por producto</a></li>
-                        
-                  </ul>
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-credit-card"></span>
+                      <span class="sidenav-label">Compras</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Compras</li>
+                      
+                      <li><a href="/compras/generales">Generales</a></li>   
+                    </ul>
 
-                </li>
+                  </li>
+                <?php }?>
 
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-remove"></span>
+                      <span class="sidenav-label">Devoluciones</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Devoluciones</li>
+                      
+                      <li><a href="/devoluciones/generales">Generales</a></li>   
+                    </ul>
 
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-credit-card"></span>
-                    <span class="sidenav-label">Compras</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Compras</li>
-                    
-                    <li><a href="/compras/generales">Generales</a></li>   
-                  </ul>
+                  </li>
+                <?php }?>
 
-                </li>
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-money"></span>
+                      <span class="sidenav-label">Flujo de efectivo</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Flujo de efectivo</li>
+                      
+                      <li><a href="/flujo-efectivo/porpagar">Cuentas por pagar</a></li>   
+                      <li><a href="/flujo-efectivo/porcobrar">Cuentas por cobrar</a></li> 
+                    </ul>
 
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-remove"></span>
-                    <span class="sidenav-label">Devoluciones</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Devoluciones</li>
-                    
-                    <li><a href="/devoluciones/generales">Generales</a></li>   
-                  </ul>
+                  </li>
+                <?php }?>
 
-                </li>
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-bank"></span>
+                      <span class="sidenav-label">Transferencias adm.</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Transferencias adm.</li>
+                      
+                      <li><a href="/transferencias">Transferencia</a></li>   
+                    </ul>
 
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-money"></span>
-                    <span class="sidenav-label">Flujo de efectivo</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Flujo de efectivo</li>
-                    
-                    <li><a href="/flujo-efectivo/porpagar">Cuentas por pagar</a></li>   
-                    <li><a href="/flujo-efectivo/porcobrar">Cuentas por cobrar</a></li> 
-                  </ul>
+                  </li>
+                <?php }?>
 
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-cart-plus"></span>
+                      <span class="sidenav-label">Punto de venta</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Punto de venta</li>
+                      
+                      <li><a href="/puntodeventa">Punto de venta</a></li>   
+                    </ul>
+                  </li>
+                <?php }?>
+                
 
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-bar-chart"></span>
+                      <span class="sidenav-label">Reportes</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Reportes</li>
+                      
+                      <li><a href="/reporte/masvendidos">Productos más vendidos</a></li>  
+                      <li><a href="/reporte/variantes-mas-vendidas">Variantes más vendidas</a></li>     
 
-                </li>
+                      <li><a href="/reporte/mascreditos">Productos con más créditos</a></li>     
+                      <li><a href="/reporte/masapartados">Productos con más apartados</a></li>  
+                      <li><a href="/reporte/ventas">De ventas</a></li>     
+                      <li><a href="/reporte/por-pagar">Cuentas por pagar</a></li>     
+                      <li><a href="/reporte/bajas-existencias">Bajas existencias</a></li>     
+                    </ul>
 
+                  </li>
+                <?php }?>
+                
 
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-bank"></span>
-                    <span class="sidenav-label">Transferencias suc.</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Transferencias suc.</li>
-                    
-                    <li><a href="/transferencias">Transferencia</a></li>   
-                  </ul>
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-exchange"></span>
+                      <span class="sidenav-label">Productos sucursal</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Productos sucursal</li>
+                      
+                      <li><a href="/producto/existencias-sucursal">Existencia</a></li>
+                      <li><a href="/producto/reordenes-sucursal">Reorden</a></li>
+                      <li><a href="/producto/precios-sucursal">Precios</a></li>   
+                      <li><a href="/producto/enreorden-sucursal">Productos en reorden</a></li>     
+                    </ul>
 
+                  </li>
+                <?php }?>
+                
 
+                <?php if($session['idrol'] == 1){?>
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-bank"></span>
+                      <span class="sidenav-label">Transferencias </span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Transferencias </li>
+                      
+                      <li><a href="/transferencias-sucursal">Transferencia</a></li>   
+                    </ul>
 
-                </li>
-
-
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-cart-plus"></span>
-                    <span class="sidenav-label">Punto de venta</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Punto de venta</li>
-                    
-                    <li><a href="/puntodeventa">Punto de venta</a></li>   
-                  </ul>
-                </li>
-
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-bar-chart"></span>
-                    <span class="sidenav-label">Reportes</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Reportes</li>
-                    
-                    <li><a href="/reporte/masvendidos">Productos más vendidos</a></li>  
-                    <li><a href="/reporte/variantes-mas-vendidas">Variantes más vendidas</a></li>     
-
-                    <li><a href="/reporte/mascreditos">Productos con más créditos</a></li>     
-                    <li><a href="/reporte/masapartados">Productos con más apartados</a></li>  
-                    <li><a href="/reporte/ventas">De ventas</a></li>     
-                    <li><a href="/reporte/por-pagar">Cuentas por pagar</a></li>     
-                    <li><a href="/reporte/bajas-existencias">Bajas existencias</a></li>     
-                  </ul>
-
-                </li>
-
-
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-exchange"></span>
-                    <span class="sidenav-label">Productos sucursal</span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Productos sucursal</li>
-                    
-                    <li><a href="/producto/existencias-sucursal">Existencia</a></li>
-                    <li><a href="/producto/reordenes-sucursal">Reorden</a></li>
-                    <li><a href="/producto/precios-sucursal">Precios</a></li>   
-                    <li><a href="/producto/enreorden-sucursal">Productos en reorden</a></li>     
-                  </ul>
-
-                </li>
-
-                <li class="sidenav-item has-subnav">
-                  <a href="javascript:;" aria-haspopup="true">
-                    <span class="sidenav-icon icon icon-bank"></span>
-                    <span class="sidenav-label">Transferencias </span>
-                  </a>
-                  <ul class="sidenav-subnav collapse" aria-expanded="false">
-                    <li class="sidenav-subheading">Transferencias </li>
-                    
-                    <li><a href="/transferencias-sucursal">Transferencia</a></li>   
-                  </ul>
-
-
-
-                </li>
+                  </li>
+                <?php }?>
+                
 
 
             </ul>

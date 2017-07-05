@@ -315,7 +315,48 @@ class TransferenciaController extends AbstractActionController
 
                 $tmp['transferencia_estatus'] = $value['transferencia_estatus'];
 
-                $tmp['options'] = '<td><div class="btn-group dropdown">
+                if($user['idsucursal'] == $value['idsucursalorigen'])
+                {
+                    $tmp['options'] = '<td><div class="btn-group dropdown">
+                      <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
+                        <span class="icon icon-gear icon-lg icon-fw"></span>
+                        Opciones
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a href="/transferencias-sucursal/editar/' . $value['idtransferencia'] . '">
+                            <div class="media">
+                              <div class="media-left">
+                                <span class="icon icon-edit icon-lg icon-fw"></span>
+                              </div>
+                              <div class="media-body">
+                                <span class="d-b">Editar</span>
+                               
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="javascript:;" class="delete_modal">
+                            <div class="media">
+                              <div class="media-left">
+                                <span class="icon icon-trash icon-lg icon-fw"></span>
+                              </div>
+                              <div class="media-body">
+                                <span class="d-b">Eliminar</span>
+                           
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div></td>';
+                }
+
+                if($user['idsucursal'] == $value['idsucursaldestino'])
+                {
+                    $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
                     <span class="icon icon-gear icon-lg icon-fw"></span>
                     Opciones
@@ -323,7 +364,7 @@ class TransferenciaController extends AbstractActionController
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a href="/transferencias-sucursal/editar/' . $value['idtransferencia'] . '">
+                      <a href="/transferencias-sucursal/recibir/' . $value['idtransferencia'] . '">
                         <div class="media">
                           <div class="media-left">
                             <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -349,7 +390,9 @@ class TransferenciaController extends AbstractActionController
                       </a>
                     </li>
                   </ul>
-                </div></td>';
+                    </div></td>';
+                }
+                
 
 
                 $data[] = $tmp;
@@ -408,6 +451,8 @@ class TransferenciaController extends AbstractActionController
             $post_data['transferencia_fecharecepcion'] = date_create_from_format('d/m/Y', $post_data['transferencia_fecharecepcion']);
 
             $post_data['transferencia_fecha'] = date_create_from_format('d/m/Y', $post_data['transferencia_fecha']);
+
+            $post_data['transferencia_estatus'] = "aceptada";
             $user = new \Application\Session\AouthSession();
             $user = $user->getData();
 
@@ -928,6 +973,202 @@ class TransferenciaController extends AbstractActionController
 
 
     public function editarAction()
+    {
+        $request = $this->getRequest();
+        
+        $id = $this->params()->fromRoute('id');
+        
+        $exist = \TransferenciaQuery::create()->filterByIdtransferencia($id)->exists();
+        
+        if($exist){
+            
+            $entity = \TransferenciaQuery::create()->findPk($id);
+            
+            if($request->isPost()){
+                $post_data = $request->getPost();
+                $post_files = $request->getFiles();
+
+                $post_data['transferencia_fecharecepcion'] = date_create_from_format('d/m/Y', $post_data['transferencia_fecharecepcion']);
+
+                $post_data['transferencia_fecha'] = date_create_from_format('d/m/Y', $post_data['transferencia_fecha']);
+                $user = new \Application\Session\AouthSession();
+                $user = $user->getData();
+
+                $post_data['idempleadocreador'] = $user['idempleado'];
+
+                $post_data['idempleadocreador'] = $user['idempleado'];
+                
+                $precios = [];
+                $variantes = [];
+
+                foreach ($post_data as $key => $value){
+                    if(\TransferenciaPeer::getTableMap()->hasColumn($key)){
+                        $entity->setByName($key, $value, \BasePeer::TYPE_FIELDNAME);
+                    }
+
+                    if(substr( $key, 0, 6 ) === "precio")
+                    {
+                        $temp = array(
+                            "variante" => str_replace("preciounitario", "", $key),
+                            "valor" => $value
+                        );
+                        array_push($precios, $temp);
+                    }
+
+                    if(substr( $key, 0, 8 ) === "cantidad")
+                    {
+                        /*if($value != 0)
+                        {*/
+                            $temp = array(
+                                "variante" => str_replace("cantidad", "", $key),
+                                "valor" => $value
+                            );
+                            array_push($variantes, $temp);
+                        //}
+                        
+                    }
+                }
+
+                $detalles = \TransferenciadetalleQuery::create()->filterByIdtransferencia($id)->delete();
+                $entity->save();
+
+
+                //$total = 0;
+                foreach ($variantes as $variante) {
+                    $transferencia_detalle = new \Transferenciadetalle();
+                    $varianteTemp = \ProductovarianteQuery::create()->findPk($variante["variante"]);
+                    //encontrar a que precio le corresponde
+                    foreach ($precios as $key=>$precio) {
+
+                        //obtenemos la variante 
+                        $productovariante = \ProductovarianteQuery::create()->findPk($precio["variante"]);
+
+                        if($productovariante->getIdproducto() == $varianteTemp->getIdproducto() && $productovariante->getIdproductocolor() == $varianteTemp->getIdproductocolor() && $productovariante->getIdproductomaterial() == $varianteTemp->getIdproductomaterial())
+                            {
+
+
+                            //obtenemos el rango de los tallajes
+                            $tallajes = \ProductotallajeQuery::create()->JoinTallaje()->withColumn('Tallajerango')->filterByIdproducto($productovariante->getIdproducto())->find();
+
+                            $boolean = false;
+                            foreach ($tallajes->toArray() as $tallaje) {
+                                $rango = $tallaje["Tallajerango"];
+                                $inf = explode(" - ", $rango);
+
+
+                                //verificamos que este en el rango del precio asociado
+                                if($productovariante->getProductovarianteTalla()>=$inf[0] &&  $productovariante->getProductovarianteTalla()<=$inf[1] && $varianteTemp->getProductovarianteTalla()>=$inf[0] &&  $varianteTemp->getProductovarianteTalla()<=$inf[1])
+                                {
+                                    $transferencia_detalle->setIdtransferencia($entity->getIdtransferencia())
+                                                  ->setIdproductovariante($variante["variante"])
+                                                  ->setTransferenciadetalleCantidad($variante["valor"])
+                                                  ->setTransferenciadetallePreciounitario($precio["valor"])
+                                                  ->setTransferenciadetalleSubtotal(floatval($variante["valor"] * floatval($precio["valor"])))->save();
+
+                                    //$total+= $transferencia_detalle->getCompradetalleSubtotal();
+                                    $boolean = true;
+                                    break;
+                                }
+                            }
+
+                            //$entity->setCompraTotal($total);
+                            $entity->save();
+
+                            //unset($precios[$key]);
+                            if($boolean)
+                                break;
+                        }
+                        
+                    }
+                }
+
+
+                $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
+                return $this->redirect()->toUrl('/transferencias-sucursal');
+            }
+            
+                
+            //traer los proveedores
+            $empleados = \EmpleadoQuery::create()->find();
+            $empleados_array = array();
+
+            foreach ($empleados as $value){
+                $empleados_array[$value->getIdempleado()] = $value->getEmpleadoNombre()." " . $value->getEmpleadoApaterno() ." " . $value->getEmpleadoAmaterno();
+            }
+
+            //traer las sucursales
+            $sucursales = \SucursalQuery::create()->find();
+            $sucursales_array = array();
+
+            foreach ($sucursales as $value){
+                $sucursales_array[$value->getIdsucursal()] = $value->getSucursalNombrecomercial();
+            }
+
+
+            //traer los productosvariantes
+            $variantes = \ProductovarianteQuery::create()->groupByIdproductomaterial()->groupByIdproductocolor()->find();
+
+            $productosvariante_array = array();
+
+            foreach ($variantes as $value){
+                $producto = $value->getProducto();
+                $color = $value->getProductocolor();
+                $color = $color->getColor();
+                $material = $value->getProductomaterial();
+                $material = $material->getMaterial();
+
+
+                $information =$producto->getProductoModelo() .' - ' . $material->getMaterialNombre() .' / ' . $color->getColorNombre();
+
+                $productosvariante_array[$value->getIdproductovariante()] = $information;
+            }
+
+
+            //traer los productos generales
+            $generales = \ProductoQuery::create()->find();
+            $productos_generales_array = array();
+
+            foreach ($generales as $value){
+
+                $productos_generales_array[$value->getIdproducto()] = $value->getProductoModelo();
+            }
+
+
+            $form = new \Application\Transferencia\Form\TransferenciaForm($empleados_array,$sucursales_array,$productosvariante_array,$productos_generales_array);
+
+            $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
+
+            $form->get('transferencia_fecha')->setValue($entity->getTransferenciaFecha('d/m/Y'));
+            $form->get('transferencia_fecharecepcion')->setValue($entity->getTransferenciaFecharecepcion('d/m/Y'));
+
+            $form->get('idempleadocreador')->setValue($entity->getEmpleadoRelatedByIdempleadocreador()->toArray()['EmpleadoNombre']);
+
+            //verificamos que ya tenga un receptor
+            if($entity->getEmpleadoRelatedByIdempleadoreceptor() != null)
+            {
+                $form->get('idempleadoreceptor')->setValue($entity->getEmpleadoRelatedByIdempleadoreceptor()->toArray()['EmpleadoNombre']);
+            }
+            
+
+
+            $view_model = new ViewModel();
+            $view_model->setTemplate('application/transferencias-sucursal/ver');
+            $view_model->setVariables(array(
+                'form' => $form,
+                'entity' => $entity,
+            ));
+            return $view_model;
+            
+            
+        }else{
+            $this->flashMessenger()->addErrorMessage('Id Invalido.');
+            return $this->redirect()->toUrl('/transferencias');
+        }
+        return $view_model;
+    }
+
+
+    public function recibirAction()
     {
         $request = $this->getRequest();
         

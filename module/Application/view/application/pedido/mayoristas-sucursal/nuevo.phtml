@@ -1,46 +1,37 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title"> Transferencia - Editar </h1>
+	    <h1 class="title-bar-title"> Pedido mayorista - Registro </h1>
 	</div>
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
     		<div class="demo-form-wrapper">
-    			<form class="form form-horizontal" name="formulario" action="/transferencias-sucursal/editar/<?php echo $entity->getIdtransferencia() ?>" method="POST" enctype="multipart/form-data"">
+    			<form class="form form-horizontal" name="formulario" action="/pedidos/mayoristas-sucursal/nuevos" method="POST" enctype="multipart/form-data"">
     				<div class="row">
 		    			<div class="col-md-5">
-		    				<input type="hidden" name="idtransferencia" value="<?php echo $entity->getIdtransferencia()?>">
 			       			<div class="form-group">
-				           		<label  for="Modelo">Fecha de transferencia</label>
-				                <?php echo $this->formText($form->get('transferencia_fecha')) ?>
+				           		<label  for="solicitud">Fecha de solicitud </label>
+				                <?php echo $this->formText($form->get('pedidomayorista_fechasolicitud')) ?>
 			        		</div>
 
 			        		<div class="form-group">
-				           		<label  for="dirigido"> Sucursal de origen</label>
-				                <?php echo $this->formSelect($form->get('idsucursalorigen')) ?>
+				           		<label  for="Sucursal">Sucursal </label>
+				                <input class="form-control infput-thick" type="text" name="idsucursal" disabled>
 			        		</div>
 
-			        		<div class="form-group">
-				           		<label  for="tipo">Creador</label>
-				                <?php echo $this->formText($form->get('idempleadocreador')) ?>
-			        		</div>
 			        		
 			        		
-
 			        	</div>
 			        	<div class="col-md-1"></div>
 		        		<div class="col-md-5">
 			       			<div class="form-group">
-				           		<label  for="Proveedor">Estatus </label>
-				                <?php echo $this->formSelect($form->get('transferencia_estatus')) ?>
+				           		<label  for="entrega">Fecha de entrega </label>
+				                <?php echo $this->formText($form->get('pedidomayorista_fechaentrega')) ?>
 			        		</div>
-
 
 			        		<div class="form-group">
-				           		<label  for="Proveedor">Sucursal de destino </label>
-				                <?php echo $this->formSelect($form->get('idsucursaldestino')) ?>
+				           		<label  for="estatus">Estatus</label>
+				                <?php echo $this->formSelect($form->get('pedidomayorista_estatus')) ?>
 			        		</div>
-
-			        		
 
 			        		
 			        	</div>
@@ -100,16 +91,7 @@
 		                            	
 		                            </div>
 	                            </div>
-		        					<div class="row">
-		        						<div class="col-md-12">
-		        							<label  class="pull-right" >
-		        				              TOTAL:
-		        				              	<input id="total_transferencia" type="text" name="transferencia_total" disabled>
-		        				              
-		        				              </span>
-		        				            </label>
-		        						</div>
-		        					</div>
+		        					
 	        				</div>
 
 	        			</div>	
@@ -122,16 +104,7 @@
  						<div class="col-md-11 alineamiento" >
  							<div class="">
 				           		<label  for="nota">Notas</label>
-				                <?php echo $this->formTextarea($form->get('transferencia_nota')) ?>
-			        		</div>
- 						</div>
- 					</div>
-
- 					<div class="row">
- 						<div class="col-md-11 alineamiento" id="razon_row" hidden="">
- 							<div class="">
-				           		<label  for="nota">Razón de cancelación</label>
-				                <textarea name="transferencia_razon" name="transferencia_razon" required="required" class="form-control infput-thick" tabindex="7"></textarea>
+				                <?php echo $this->formTextarea($form->get('pedidomayorista_nota')) ?>
 			        		</div>
  						</div>
  					</div>
@@ -140,7 +113,7 @@
 		        		<div class="col-md-11 alineamiento" >
  							<div class="">
 				           		<label  for="guardar"></label>
-			                    <button id="btn_guardar" class="btn btn-primary btn-block btn-next" type="submit">
+			                    <button class="btn btn-primary btn-block btn-next" type="submit">
 		                         	Guardar
 		                        </button>
 		                    </div>
@@ -163,9 +136,15 @@
 <link rel="stylesheet"  href="/plugins/Select2/select2.min.css">
 <script src="/plugins/Select2/select2.min.js"></script>
 
-<script src="/js/transferencia/generalessucursal.js"></script>
+<script src="/js/pedido/mayoristas_sucursal.js"></script>
 <script>
-	var generalessucursal = $('.body_container').generalessucursal();
-	generalessucursal.initForm();
+	var mayoristas_sucursal = $('.body_container').mayoristas_sucursal();
+	mayoristas_sucursal.initForm();
 </script>
-
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('form').on('submit', function(e) {
+	    $(this).find('button, input[type=button]').prop('disabled', true);
+	  });
+	});
+</script>

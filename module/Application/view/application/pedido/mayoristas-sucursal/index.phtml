@@ -1,0 +1,68 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title">Pedidos mayoristas</h1>
+	    
+	</div>
+
+	<?php foreach ($messages->getSuccessMessages() as $message):?>
+	        <div class="alert alert-success alert-dismissable">
+	            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+	            <strong>Éxito!</strong>
+	            <?php echo $message?>
+	        </div>
+	<?php endforeach;?>
+
+	<?php foreach ($messages->geterrorMessages() as $message):?>
+	        <div class="alert alert-danger alert-dismissable">
+	            <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+	            <strong>Error!</strong>
+	            <?php echo $message?>
+	        </div>
+	<?php endforeach;?>
+
+	<div class="row">
+		<div class="col-md-12">
+			<a class="btn btn-bg btn-success btn-labeled pull-right" href="/pedidos/mayoristas-sucursal/nuevos">
+              Nuevo pedido
+              <span class="btn-label btn-label-right">
+                <span class="icon icon-plus-square icon-lg icon-fw"></span>
+              </span>
+            </a>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="card-body">
+		    <table id="" class="table table-striped table-nowrap dataTable" cellspacing="0" width="100%">
+		        <thead>
+		            <tr>
+		                <th>Sucursal</th>
+		                <th>Fecha solicitud</th>
+		                <th>Estatus</th>
+		                <th>Fecha entrega</th>
+		                <th>Opciones</th>
+		            </tr>
+		        </thead>
+		        <tfoot>
+		            <tr>
+		                <th>Sucursal</th>
+		                <th>Fecha solicitud</th>
+		                <th>Estatus</th>
+		                <th>Fecha entrega</th>
+		                <th>Opciones</th>
+		            </tr>
+		        </tfoot>
+		        <tbody>
+		            
+		        </tbody>
+		    </table>
+		</div>
+	</div>
+
+</div>
+<script src="/js/pedido/pedido_mayorista_sucursal.js"></script>
+
+<script>
+	var pedido_mayorista_sucursal = $('.body_container').pedido_mayorista_sucursal();
+	pedido_mayorista_sucursal.list();
+</script>

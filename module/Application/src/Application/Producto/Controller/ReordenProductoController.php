@@ -17,8 +17,8 @@ class ReordenProductoController extends AbstractActionController
 
     public $column_map = array(
         0 => 'Idproductotallaje',
-        1 => 'Idproducto',
-        2 => 'Idtallaje',
+        1 => 'a.ProductoModelo',
+        2 => 'b.Tallajerango',
     );
 
     public function serversideAction()
@@ -246,16 +246,15 @@ class ReordenProductoController extends AbstractActionController
                
                 $c1= $c->getNewCriterion('productotallaje.idproductotallaje', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c2= $c->getNewCriterion('productotallaje.idproducto', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('productotallaje.idtallaje', '%'.$search_value.'%', \Criteria::LIKE);
 
 
           
-                $c1->addOr($c2)->addOr($c3);
+                $c1->addOr($c2);
 
                 $query->addAnd($c1);
-                $query->groupByIdempleado();
+                $query->groupByIdproductotallaje();
                 
                 $records_filtered = $query->count();
                 

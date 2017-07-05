@@ -70,6 +70,10 @@
  * @method EmpleadoQuery rightJoinCuentabancariamovimiento($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cuentabancariamovimiento relation
  * @method EmpleadoQuery innerJoinCuentabancariamovimiento($relationAlias = null) Adds a INNER JOIN clause to the query using the Cuentabancariamovimiento relation
  *
+ * @method EmpleadoQuery leftJoinPedidosucursal($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedidosucursal relation
+ * @method EmpleadoQuery rightJoinPedidosucursal($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedidosucursal relation
+ * @method EmpleadoQuery innerJoinPedidosucursal($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedidosucursal relation
+ *
  * @method EmpleadoQuery leftJoinSucursalempleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Sucursalempleado relation
  * @method EmpleadoQuery rightJoinSucursalempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Sucursalempleado relation
  * @method EmpleadoQuery innerJoinSucursalempleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Sucursalempleado relation
@@ -1280,6 +1284,80 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
         return $this
             ->joinCuentabancariamovimiento($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Cuentabancariamovimiento', 'CuentabancariamovimientoQuery');
+    }
+
+    /**
+     * Filter the query by a related Pedidosucursal object
+     *
+     * @param   Pedidosucursal|PropelObjectCollection $pedidosucursal  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPedidosucursal($pedidosucursal, $comparison = null)
+    {
+        if ($pedidosucursal instanceof Pedidosucursal) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $pedidosucursal->getIdempleado(), $comparison);
+        } elseif ($pedidosucursal instanceof PropelObjectCollection) {
+            return $this
+                ->usePedidosucursalQuery()
+                ->filterByPrimaryKeys($pedidosucursal->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPedidosucursal() only accepts arguments of type Pedidosucursal or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Pedidosucursal relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinPedidosucursal($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Pedidosucursal');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Pedidosucursal');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Pedidosucursal relation Pedidosucursal object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PedidosucursalQuery A secondary query class using the current class as primary query
+     */
+    public function usePedidosucursalQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPedidosucursal($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Pedidosucursal', 'PedidosucursalQuery');
     }
 
     /**

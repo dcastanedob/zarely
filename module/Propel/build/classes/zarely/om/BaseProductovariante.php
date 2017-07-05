@@ -124,6 +124,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     protected $collPedidomayoristadetallesPartial;
 
     /**
+     * @var        PropelObjectCollection|Pedidosucursaldetalle[] Collection to store aggregation of Pedidosucursaldetalle objects.
+     */
+    protected $collPedidosucursaldetalles;
+    protected $collPedidosucursaldetallesPartial;
+
+    /**
      * @var        PropelObjectCollection|Productosucursal[] Collection to store aggregation of Productosucursal objects.
      */
     protected $collProductosucursals;
@@ -196,6 +202,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pedidomayoristadetallesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $pedidosucursaldetallesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -655,6 +667,8 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
 
             $this->collPedidomayoristadetalles = null;
 
+            $this->collPedidosucursaldetalles = null;
+
             $this->collProductosucursals = null;
 
             $this->collPromociondetalles = null;
@@ -892,6 +906,23 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
 
             if ($this->collPedidomayoristadetalles !== null) {
                 foreach ($this->collPedidomayoristadetalles as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pedidosucursaldetallesScheduledForDeletion !== null) {
+                if (!$this->pedidosucursaldetallesScheduledForDeletion->isEmpty()) {
+                    PedidosucursaldetalleQuery::create()
+                        ->filterByPrimaryKeys($this->pedidosucursaldetallesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pedidosucursaldetallesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPedidosucursaldetalles !== null) {
+                foreach ($this->collPedidosucursaldetalles as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1214,6 +1245,14 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPedidosucursaldetalles !== null) {
+                    foreach ($this->collPedidosucursaldetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collProductosucursals !== null) {
                     foreach ($this->collProductosucursals as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1372,6 +1411,9 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             }
             if (null !== $this->collPedidomayoristadetalles) {
                 $result['Pedidomayoristadetalles'] = $this->collPedidomayoristadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collPedidosucursaldetalles) {
+                $result['Pedidosucursaldetalles'] = $this->collPedidosucursaldetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collProductosucursals) {
                 $result['Productosucursals'] = $this->collProductosucursals->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1599,6 +1641,12 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             foreach ($this->getPedidomayoristadetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPedidomayoristadetalle($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getPedidosucursaldetalles() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPedidosucursaldetalle($relObj->copy($deepCopy));
                 }
             }
 
@@ -1857,6 +1905,9 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
         }
         if ('Pedidomayoristadetalle' == $relationName) {
             $this->initPedidomayoristadetalles();
+        }
+        if ('Pedidosucursaldetalle' == $relationName) {
+            $this->initPedidosucursaldetalles();
         }
         if ('Productosucursal' == $relationName) {
             $this->initProductosucursals();
@@ -3223,6 +3274,281 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collPedidosucursaldetalles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Productovariante The current object (for fluent API support)
+     * @see        addPedidosucursaldetalles()
+     */
+    public function clearPedidosucursaldetalles()
+    {
+        $this->collPedidosucursaldetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collPedidosucursaldetallesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPedidosucursaldetalles collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPedidosucursaldetalles($v = true)
+    {
+        $this->collPedidosucursaldetallesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPedidosucursaldetalles collection.
+     *
+     * By default this just sets the collPedidosucursaldetalles collection to an empty array (like clearcollPedidosucursaldetalles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPedidosucursaldetalles($overrideExisting = true)
+    {
+        if (null !== $this->collPedidosucursaldetalles && !$overrideExisting) {
+            return;
+        }
+        $this->collPedidosucursaldetalles = new PropelObjectCollection();
+        $this->collPedidosucursaldetalles->setModel('Pedidosucursaldetalle');
+    }
+
+    /**
+     * Gets an array of Pedidosucursaldetalle objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Productovariante is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Pedidosucursaldetalle[] List of Pedidosucursaldetalle objects
+     * @throws PropelException
+     */
+    public function getPedidosucursaldetalles($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidosucursaldetallesPartial && !$this->isNew();
+        if (null === $this->collPedidosucursaldetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPedidosucursaldetalles) {
+                // return empty collection
+                $this->initPedidosucursaldetalles();
+            } else {
+                $collPedidosucursaldetalles = PedidosucursaldetalleQuery::create(null, $criteria)
+                    ->filterByProductovariante($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPedidosucursaldetallesPartial && count($collPedidosucursaldetalles)) {
+                      $this->initPedidosucursaldetalles(false);
+
+                      foreach ($collPedidosucursaldetalles as $obj) {
+                        if (false == $this->collPedidosucursaldetalles->contains($obj)) {
+                          $this->collPedidosucursaldetalles->append($obj);
+                        }
+                      }
+
+                      $this->collPedidosucursaldetallesPartial = true;
+                    }
+
+                    $collPedidosucursaldetalles->getInternalIterator()->rewind();
+
+                    return $collPedidosucursaldetalles;
+                }
+
+                if ($partial && $this->collPedidosucursaldetalles) {
+                    foreach ($this->collPedidosucursaldetalles as $obj) {
+                        if ($obj->isNew()) {
+                            $collPedidosucursaldetalles[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPedidosucursaldetalles = $collPedidosucursaldetalles;
+                $this->collPedidosucursaldetallesPartial = false;
+            }
+        }
+
+        return $this->collPedidosucursaldetalles;
+    }
+
+    /**
+     * Sets a collection of Pedidosucursaldetalle objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pedidosucursaldetalles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function setPedidosucursaldetalles(PropelCollection $pedidosucursaldetalles, PropelPDO $con = null)
+    {
+        $pedidosucursaldetallesToDelete = $this->getPedidosucursaldetalles(new Criteria(), $con)->diff($pedidosucursaldetalles);
+
+
+        $this->pedidosucursaldetallesScheduledForDeletion = $pedidosucursaldetallesToDelete;
+
+        foreach ($pedidosucursaldetallesToDelete as $pedidosucursaldetalleRemoved) {
+            $pedidosucursaldetalleRemoved->setProductovariante(null);
+        }
+
+        $this->collPedidosucursaldetalles = null;
+        foreach ($pedidosucursaldetalles as $pedidosucursaldetalle) {
+            $this->addPedidosucursaldetalle($pedidosucursaldetalle);
+        }
+
+        $this->collPedidosucursaldetalles = $pedidosucursaldetalles;
+        $this->collPedidosucursaldetallesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Pedidosucursaldetalle objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Pedidosucursaldetalle objects.
+     * @throws PropelException
+     */
+    public function countPedidosucursaldetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidosucursaldetallesPartial && !$this->isNew();
+        if (null === $this->collPedidosucursaldetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPedidosucursaldetalles) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPedidosucursaldetalles());
+            }
+            $query = PedidosucursaldetalleQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProductovariante($this)
+                ->count($con);
+        }
+
+        return count($this->collPedidosucursaldetalles);
+    }
+
+    /**
+     * Method called to associate a Pedidosucursaldetalle object to this object
+     * through the Pedidosucursaldetalle foreign key attribute.
+     *
+     * @param    Pedidosucursaldetalle $l Pedidosucursaldetalle
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function addPedidosucursaldetalle(Pedidosucursaldetalle $l)
+    {
+        if ($this->collPedidosucursaldetalles === null) {
+            $this->initPedidosucursaldetalles();
+            $this->collPedidosucursaldetallesPartial = true;
+        }
+
+        if (!in_array($l, $this->collPedidosucursaldetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPedidosucursaldetalle($l);
+
+            if ($this->pedidosucursaldetallesScheduledForDeletion and $this->pedidosucursaldetallesScheduledForDeletion->contains($l)) {
+                $this->pedidosucursaldetallesScheduledForDeletion->remove($this->pedidosucursaldetallesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Pedidosucursaldetalle $pedidosucursaldetalle The pedidosucursaldetalle object to add.
+     */
+    protected function doAddPedidosucursaldetalle($pedidosucursaldetalle)
+    {
+        $this->collPedidosucursaldetalles[]= $pedidosucursaldetalle;
+        $pedidosucursaldetalle->setProductovariante($this);
+    }
+
+    /**
+     * @param	Pedidosucursaldetalle $pedidosucursaldetalle The pedidosucursaldetalle object to remove.
+     * @return Productovariante The current object (for fluent API support)
+     */
+    public function removePedidosucursaldetalle($pedidosucursaldetalle)
+    {
+        if ($this->getPedidosucursaldetalles()->contains($pedidosucursaldetalle)) {
+            $this->collPedidosucursaldetalles->remove($this->collPedidosucursaldetalles->search($pedidosucursaldetalle));
+            if (null === $this->pedidosucursaldetallesScheduledForDeletion) {
+                $this->pedidosucursaldetallesScheduledForDeletion = clone $this->collPedidosucursaldetalles;
+                $this->pedidosucursaldetallesScheduledForDeletion->clear();
+            }
+            $this->pedidosucursaldetallesScheduledForDeletion[]= $pedidosucursaldetalle;
+            $pedidosucursaldetalle->setProductovariante(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Productovariante is new, it will return
+     * an empty collection; or if this Productovariante has previously
+     * been saved, it will retrieve related Pedidosucursaldetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Productovariante.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pedidosucursaldetalle[] List of Pedidosucursaldetalle objects
+     */
+    public function getPedidosucursaldetallesJoinPedidosucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PedidosucursaldetalleQuery::create(null, $criteria);
+        $query->joinWith('Pedidosucursal', $join_behavior);
+
+        return $this->getPedidosucursaldetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Productovariante is new, it will return
+     * an empty collection; or if this Productovariante has previously
+     * been saved, it will retrieve related Pedidosucursaldetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Productovariante.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pedidosucursaldetalle[] List of Pedidosucursaldetalle objects
+     */
+    public function getPedidosucursaldetallesJoinProducto($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PedidosucursaldetalleQuery::create(null, $criteria);
+        $query->joinWith('Producto', $join_behavior);
+
+        return $this->getPedidosucursaldetalles($query, $con);
+    }
+
+    /**
      * Clears out the collProductosucursals collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -4333,6 +4659,11 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPedidosucursaldetalles) {
+                foreach ($this->collPedidosucursaldetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collProductosucursals) {
                 foreach ($this->collProductosucursals as $o) {
                     $o->clearAllReferences($deep);
@@ -4386,6 +4717,10 @@ abstract class BaseProductovariante extends BaseObject implements Persistent
             $this->collPedidomayoristadetalles->clearIterator();
         }
         $this->collPedidomayoristadetalles = null;
+        if ($this->collPedidosucursaldetalles instanceof PropelCollection) {
+            $this->collPedidosucursaldetalles->clearIterator();
+        }
+        $this->collPedidosucursaldetalles = null;
         if ($this->collProductosucursals instanceof PropelCollection) {
             $this->collProductosucursals->clearIterator();
         }

@@ -121,7 +121,8 @@ return array(
         'transitosproducto',
         'completados',
         'completadosproducto',
-
+        'mayoristas-sucursal',
+        
         //flujo efectivo
         'porpagar',
         'porcobrar',   

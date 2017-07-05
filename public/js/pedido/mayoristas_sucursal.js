@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.generalessucursal= function(data){
+    $.fn.mayoristas_sucursal= function(data){
         var _this = $(this);
-        var plugin = _this.data('generalessucursal');
+        var plugin = _this.data('mayoristas_sucursal');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.generalessucursal(this, data);
+            plugin = new $.mayoristas_sucursal(this, data);
             
-            _this.data('generalessucursal', plugin);
+            _this.data('mayoristas_sucursal', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.generalessucursal = function(container, options){
+    $.mayoristas_sucursal = function(container, options){
         
         var plugin = this;
        
@@ -51,79 +51,21 @@
         }
 
 
-        calcularTotal = function(){
-          var total = 0;
-          $container.find('#tables_information table tbody tr').filter(function(){
-            subtotal = accounting.unformat($(this).find('input.transferenciadetalle_subtotal').val());
-            total+= parseFloat(subtotal);
-
-          });
-          $container.find('input[name=transferencia_total]').val(accounting.formatMoney(total));
-
-        }
-
-        calcularSubtotal = function($row){
-          var cantidad = 0;
-
-          $row.find('input[name*=cantidad]').filter(function(){
-            cantidad+=parseInt($(this).val());
-
-          });
-
-          //var cantidad = parseFloat($row.find('input[name*=cantidad]').val());
-          console.log($row);
-          var precio = parseFloat($row.find('input#precio').val());
-          var subtotal = cantidad * precio;
-
-          $row.find('input.transferenciadetalle_subtotal').val(accounting.formatMoney(subtotal));
-          calcularTotal();
-        }
        
 
 
         plugin.initForm = function(){
-            $container.find('input[name=transferencia_fecha]').datepicker({
+
+            $container.find('input[name=pedidomayorista_fechasolicitud]').datepicker({
                 language:'es',
+            });
 
-            }).datepicker("setDate", "0");
-
-            $container.find('input[name=transferencia_fecharecepcion]').datepicker({
+            $container.find('input[name=pedidomayorista_fechaentrega]').datepicker({
                 language:'es',
+            });
 
-            }).datepicker("setDate", "0");
-
-            var option_selected = $container.find("select[name=transferencia_estatus] option:selected").val();
-
-            if(option_selected == "creada")
-            {
-              $container.find("select[name=transferencia_estatus] option[value='aceptada']").remove();
-              $container.find("select[name=transferencia_estatus] option[value='rechazada']").remove();
-              $container.find('select[name=transferencia_estatus]').on('change',function()
-              {
-                if($(this).val() == 'cancelada')
-                {
-                  $container.find('#razon_row').removeAttr('hidden');
-                }
-
-                if($(this).val() == 'aceptada')
-                {
-                  $container.find('#razon_row').attr('hidden',"");
-                }
-              });
-            }else{
-              $container.find('#btn_guardar').remove();
-              $container.find('input[name=transferencia_fecha]').attr('disabled',"");
-              $container.find('select[name=transferencia_estatus]').attr('disabled',"");
-              $container.find('select[name=idsucursaldestino]').attr('disabled',"");
-              $container.find('textarea[name=transferencia_nota]').attr('disabled',"");
-
-
-
-            }
-
-            
            
-
+            
             $container.find('select[name*=idproductovariante]').multipleSelect({
                 filter:true,
                 selectAllText: 'Seleccionar Todos',
@@ -134,10 +76,6 @@
                 //multipleWidth: 100
             });
 
-            
-            $container.find('select[name*=idempleadoreceptor]').select2();
-            
-            var idtransferencia = $('input[name=idtransferencia]').val();
 
             $.ajax({
               url:'/json/getsucursal',
@@ -146,23 +84,42 @@
               success:function(data){
                 
                   if(data.response){
-                    $container.find('select[name*=idsucursalorigen] option[value="'+data.data.Idsucursal+'"]');
-                    $container.find('select[name*=idsucursalorigen]').attr('disabled',"");
-
-
+                    $container.find('input[name*=idsucursal]').val(data.data.SucursalNombrecomercial);
                   }
 
               },
             });
 
+            var idpedidomayorista = $('input[name=idpedidomayorista]').val();
+
             $.ajax({
-                url:'/transferencias/getProductosvariantes',
+              url:'/pedidos/mayoristas-sucursal/getCliente',
+              dataType:'json',
+              async:false,
+              type: 'POST',
+              data:{
+                id:idpedidomayorista,
+              },
+              success:function(data){
+                
+                  if(data.response){
+                    $container.find('#empleado_creador').val(data.nombre);
+                  }
+
+              },
+            });
+
+            
+            
+            
+            $.ajax({
+                url:'/pedidos/mayoristas-sucursal/getProductosvariantessucursal',
                 type: 'POST',
                 dataType: 'JSON',
                 data:{
                     name: 'productosvariantes',
                     data: {
-                        idtransferencia:idtransferencia,
+                        idpedidosucursal:idpedidomayorista,
                     },
                 },
                 success: function (data, textStatus, jqXHR) {
@@ -170,13 +127,13 @@
 
                     $container.find('#btn_add_productovariante').trigger('click');
                     $.ajax({
-                      url:'/transferencias/getProductosvariantes',
+                      url:'/pedidos/mayoristas-sucursal/getProductosvariantessucursal',
                       type: 'POST',
                       dataType: 'JSON',
                       data:{
                           name: 'productosvariantes',
                           data: {
-                              idtransferencia:idtransferencia,
+                              idpedidosucursal:idpedidomayorista,
                           },
                       },
                       success: function (data, textStatus, jqXHR) {
@@ -184,13 +141,14 @@
 
                           $container.find('#btn_add_productovariante').trigger('click');
                           productosvariantes_added = data.selects;  
-                          
+                          console.log(data);
                           for(var i = 0; i<data.selects.length;i++)
                           {
                             
                             $container.find('input[name=cantidad'+data.selects[i]+']').attr('value',data.cantidad[i].replace(".00",""));
-                            $container.find('input[name=preciounitario'+data.selects[i]+']').attr('value',data.precio[i]);
-                            $container.find('input[name=preciounitario'+data.selects[i]+']').keyup();
+                            $container.find('select#'+data.selects[i]).val(1);
+                            $container.find('select#'+data.selects[i]).val(data.estatus[i]);
+                            $container.find('select#'+data.selects[i]).change();
                           }
                                             
                       }
@@ -199,16 +157,12 @@
                 }
             });
 
-            $container.find('select[name*=idsucursalorigen]').on('change',function(){
 
-               $container.find('select[name*=idsucursaldestino] option[style*=display]').show();
-               var id = $container.find('select[name*=idsucursalorigen] :selected').attr('value');
-               $container.find('select[name*=idsucursaldestino] option[value='+id+']').hide();
-            });
 
-            $container.find('select[name*=idsucursalorigen]').val(1);
-            $container.find('select[name*=idsucursalorigen]').change();
-            $container.find('select[name*=idsucursaldestino]').val(2);
+
+
+
+
             var productosvariantes_added = [];
 
 
@@ -228,7 +182,7 @@
                    
                   $.ajax({
                     method: 'POST',
-                    url:'/transferencias/initializetable',
+                    url:'/pedidos/mayoristas-sucursal/initializetable',
                     dataType:'JSON',
                     data:{
                       id:id,
@@ -301,8 +255,6 @@
                                       '<th id="tallaje340">34.0</th>',
                                       '<th id="tallaje345">34.5</th>',
                                       '<th id="tallaje350">35.0</th>',
-                                      '<th >Precio</th>',
-                                      '<th >Subtotal</th>',
                                       '<th>Acción</th>',
                                   '</thead>',
                                   '<tbody id="content">',
@@ -326,9 +278,11 @@
                           }
 
                           variantesDisponibles = [];
+                          idVariantesDisponibles = [];
                           var referencia = 0;
                           $.each(value,function(indexVariante, valueVariante){
                             variantesDisponibles.push(valueVariante.talla*10);
+                            idVariantesDisponibles.push(valueVariante.variante);
 
                             $input = $('<input>');
                             $input.attr('id',valueVariante.variante);
@@ -342,6 +296,9 @@
                             
                           });
 
+                          $trSelect = $('<tr>');
+                          $trSelect.append('<td></td><td></td>');
+
                           for(var i = 70; i<=350;)
                           {
                             var bandera = false;
@@ -349,6 +306,49 @@
                             {
                               if(i == parseInt(variantesDisponibles[j]))
                               {
+                                $td = $('<td>');
+                                $select = $('<select>');
+                                $select.attr('id',idVariantesDisponibles[j]);
+                                $select.attr('name','estatus'+idVariantesDisponibles[j]);
+                                $select.attr('style',"width:40px;");
+
+                                $select.append('<option value="pendiente">Pendiente</option>');
+                                $select.append('<option value="solicitado">Solicitado</option>');
+                                $select.append('<option value="completado">Completado</option>');
+                                $select.append('<option value="transito">Tránsito</option>');
+                                $select.append('<option value="cancelado">Cancelado</option>');
+                                $td.append($select);
+
+                                $td.find('select').on('change',function(){
+                                  var id = $(this).closest('select').find(':selected').text();
+                                  
+                                  if(id == 'Completado')
+                                  {
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorCompletado');
+                                  }
+                                  else if(id == 'Solicitado')
+                                  {
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorSolicitado');
+                                  }
+                                  else if(id == 'Tránsito')
+                                  {
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorTransito');
+                                  }
+                                  else if(id == 'Cancelado')
+                                  {
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorCancelado');
+                                  }
+                                  else{
+                                    $(this).closest('select').removeClass();
+                                    $(this).closest('select').addClass('selectColorPendiente');
+                                  }
+                                });
+
+                                $trSelect.append($td);
                                 bandera = true;
                                 break;
                               }
@@ -361,14 +361,13 @@
                             i+=5;
                           }
 
-                          $tr.append('<td><input type="text" size="5" id="precio" value="1.0" name="preciounitario'+referencia+'"></input></td>');
                           $tr.find('input').numeric();
-                          $tr.append('<td><input type="text" size="5" class="transferenciadetalle_subtotal" value="0.0" disabled></input></td>');
                           $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
 
                           
 
                           $information.find('#content').append($tr);
+                          $information.find('#content').append($trSelect);
 
                           $tr.find('a').on('click',function(){
                               var $information = $(this).closest('#details');
@@ -385,19 +384,17 @@
                                productosvariantes_added.splice(index,1);
                               }
                               $container.find('select[name*=idproductovariante]') .multipleSelect("setSelects", productovariantes);
-                              calcularTotal();
+                              
                           });
 
                           $tr.find('input').on('keyup',function(){
 
                             var $information = $(this).closest('#details');
-                            calcularSubtotal($information)
                           });
 
                           $container.find('#tables_information').append($information);
 
                           
-                          calcularSubtotal($tr);
 
                           productosvariantes_added.push(id);
                         
@@ -425,7 +422,7 @@
 
               $.ajax({
                   method: 'POST',
-                  url:'/transferencias/getdetails',
+                  url:'/pedidos/mayoristas-sucursal/getdetails',
                   dataType:'JSON',
                   data:{
                     idproductogeneral:idproductogeneral,
@@ -588,7 +585,7 @@
                               console.log(value);
                               $.ajax({
                                 method: 'POST',
-                                url:'/transferencias/initializetablegeneral',
+                                url:'/pedidos/mayoristas-sucursal/initializetablegeneral',
                                 dataType:'JSON',
                                 data:{
                                   id:id,
@@ -663,8 +660,6 @@
                                                     '<th id="tallaje340">34.0</th>',
                                                     '<th id="tallaje345">34.5</th>',
                                                     '<th id="tallaje350">35.0</th>',
-                                                    '<th >Precio</th>',
-                                                    '<th >Subtotal</th>',
                                                     '<th>Acción</th>',
                                                 '</thead>',
                                                 '<tbody id="content">',
@@ -681,6 +676,8 @@
 
                                         $tr.append('<td><input id="modelo" disabled></input></td>');
                                         $tr.append('<td>'+index+'</td>');
+
+
                                         for(var i = 70; i<=350;)
                                         {
                                           $tr.append('<td id="'+i+'"></td>'); 
@@ -689,8 +686,10 @@
 
                                         variantesDisponibles = [];
                                         var referencia = 0;
+                                        idVariantesDisponibles = [];
                                         $.each(value,function(indexVariante, valueVariante){
                                           variantesDisponibles.push(valueVariante.talla*10);
+                                          idVariantesDisponibles.push(valueVariante.variante);
 
                                           $input = $('<input>');
                                           $input.attr('id',valueVariante.variante);
@@ -704,6 +703,9 @@
                                           
                                         });
 
+                                        $trSelect = $('<tr>');
+                                        $trSelect.append('<td></td><td></td>');
+
                                         for(var i = 70; i<=350;)
                                         {
                                           var bandera = false;
@@ -711,6 +713,21 @@
                                           {
                                             if(i == parseInt(variantesDisponibles[j]))
                                             {
+                                              $td = $('<td>');
+                                              $select = $('<select>');
+                                              $select.attr('id',idVariantesDisponibles[j]);
+                                              $select.attr('name','estatus'+idVariantesDisponibles[j]);
+                                              $select.attr('style',"width:40px;");
+                                              $select.append('<option value="pendiente">Pendiente</option>');
+                                              $select.append('<option value="solicitado">Solicitado</option>');
+                                              $select.append('<option value="completado">Completado</option>');
+                                              $select.append('<option value="transito">Tránsito</option>');
+                                              $select.append('<option value="cancelado">Cancelado</option>');
+                                              $td.append($select);
+
+
+                                              $trSelect.append($td);
+
                                               bandera = true;
                                               break;
                                             }
@@ -723,14 +740,13 @@
                                           i+=5;
                                         }
 
-                                        $tr.append('<td><input type="text" size="5" id="precio" value="1.0" name="preciounitario'+referencia+'"></input></td>');
                                         $tr.find('input').numeric();
-                                        $tr.append('<td><input type="text" size="5" class="transferenciadetalle_subtotal" value="0.0" disabled></input></td>');
                                         $tr.append('<td><a href="javascript:;">Eliminar</a></td>');
 
                                         
 
                                         $information.find('#content').append($tr);
+                                        $information.find('#content').append($trSelect);
 
                                         $tr.find('a').on('click',function(){
                                             var $information = $(this).closest('#details');
@@ -747,7 +763,7 @@
                                              productosvariantes_added.splice(index,1);
                                             }
                                             $container.find('select[name*=idproductovariante]') .multipleSelect("setSelects", productovariantes);
-                                            calcularTotal();
+                                            
                                         });
 
                                         $tr.find('input[name*=cantidad'+id+']').attr('value',cantidadVariante);
@@ -755,13 +771,11 @@
                                         $tr.find('input').on('keyup',function(){
 
                                           var $information = $(this).closest('#details');
-                                          calcularSubtotal($information)
                                         });
 
                                         $container.find('#tables_information').append($information);
 
                                         
-                                        calcularSubtotal($tr);
 
                                         productosvariantes_added.push(id);
                                       

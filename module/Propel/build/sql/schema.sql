@@ -584,6 +584,71 @@ CREATE TABLE `pedidomayoristadetalle`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- pedidosucursal
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pedidosucursal`;
+
+CREATE TABLE `pedidosucursal`
+(
+    `idpedidosucursal` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `idempleado` INTEGER NOT NULL,
+    `pedidosucursal_fechasolicitud` DATE NOT NULL,
+    `pedidosucursal_fechaentrega` DATE NOT NULL,
+    `pedidosucursal_estatus` enum('pendiente','solicitado','transito','completado') NOT NULL,
+    `pedidosucursal_nota` TEXT,
+    PRIMARY KEY (`idpedidosucursal`),
+    INDEX `idempleado` (`idempleado`),
+    INDEX `idsucursal` (`idsucursal`),
+    CONSTRAINT `idempleado_pedidosucursal`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursal_pedidosucursal`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- pedidosucursaldetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pedidosucursaldetalle`;
+
+CREATE TABLE `pedidosucursaldetalle`
+(
+    `idpedidosucursaldetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idpedidosucursal` INTEGER NOT NULL,
+    `idproductovariante` INTEGER,
+    `idproducto` INTEGER,
+    `pedidosucursaldetalle_cantidad` INTEGER,
+    `pedidosucursaldetalle_estatus` enum('pendiente','solicitado','transito','completado','cancelado'),
+    PRIMARY KEY (`idpedidosucursaldetalle`),
+    INDEX `idpedidosucursal` (`idpedidosucursal`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    INDEX `idproducto` (`idproducto`),
+    CONSTRAINT `idpedidosucursal_pedidosucursaldetalle`
+        FOREIGN KEY (`idpedidosucursal`)
+        REFERENCES `pedidosucursal` (`idpedidosucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproducto_pedidosucursaldetalle`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductovariante_pedidosucursaldetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- producto
 -- ---------------------------------------------------------------------
 
@@ -1078,11 +1143,12 @@ CREATE TABLE `transferencia`
     `idsucursalorigen` INTEGER NOT NULL,
     `idsucursaldestino` INTEGER NOT NULL,
     `transferencia_fecha` DATETIME NOT NULL,
-    `transferencia_estatus` enum('creada','aceptada','rechazada') NOT NULL,
+    `transferencia_estatus` enum('creada','aceptada','rechazada','cancelada') NOT NULL,
     `idempleadocreador` INTEGER NOT NULL,
     `idempleadoreceptor` INTEGER,
     `transferencia_nota` VARCHAR(45),
     `transferencia_fecharecepcion` DATETIME,
+    `transferencia_razon` VARCHAR(45),
     PRIMARY KEY (`idtransferencia`),
     INDEX `idsucursalorigen` (`idsucursalorigen`),
     INDEX `idsucursaldestino` (`idsucursaldestino`),

@@ -307,6 +307,18 @@ return array(
                 ),
             ),
 
+            'mayoristas' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/mayoristas[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoMayorista',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
             'mayoristas-sucursal' => array(
                 'type' => 'Segment',
                 'options' => array(
