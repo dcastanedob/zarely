@@ -7,6 +7,13 @@ return array(
         'auth',
         'login/select',
         'login',
+        'mayoristas-sucursal',
+        'puntodeventa',
+        'reporte',
+        'transferencias-sucursal',
+        'mayoristas',
+        'transferencias',
+
         
     ),
     'Vendedora' => array(
@@ -15,6 +22,13 @@ return array(
         'auth',
         'login/select',
         'login',
+        'mayoristas-sucursal',
+        'puntodeventa',
+        'reporte',
+        'transferencias-sucursal',
+        'mayoristas',
+        'transferencias',
+
         
     ),
     'Secretaria B' => array(
@@ -155,6 +169,21 @@ return array(
         'reordenes-sucursal',
         'existencias-sucursal',
         'enreorden-sucursal', 
+
+    ),
+
+    'Cajero super' => array(
+        //login
+        'home',
+        'auth',
+        'login/select',
+        'login',
+        'mayoristas-sucursal',
+        'puntodeventa',
+        'reporte',
+        'transferencias-sucursal',
+        'mayoristas',
+        'transferencias',
 
     ),
 );

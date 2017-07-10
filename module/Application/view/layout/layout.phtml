@@ -124,14 +124,15 @@
                   </li>
                 <?php }?>
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 1 || $session['idrol'] == 2 || $session['idrol'] == 3){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-exchange"></span>
-                      <span class="sidenav-label">Productos</span>
+                      <span class="sidenav-label">Inventario</span>
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
-                      <li class="sidenav-subheading">Productos</li>
+                      <li class="sidenav-subheading">Inventario</li>
                       
                       <li><a href="/producto/existencias">Existencia</a></li>
                       <li><a href="/producto/reordenes">Reorden</a></li>
@@ -142,7 +143,8 @@
                   </li>
                 <?php }?>
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 1 || $session['idrol'] == 2 || $session['idrol'] == 3){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-bus"></span>
@@ -168,20 +170,22 @@
                   </li>
                 <?php }?>
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 4 || $session['idrol'] == 5 || $session['idrol'] == 6){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-bus"></span>
-                      <span class="sidenav-label">Pedidos sucursal</span>
+                      <span class="sidenav-label">Pedidos </span>
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
-                      <li class="sidenav-subheading">Pedidos sucursal</li>
+                      <li class="sidenav-subheading">Pedidos </li>
                       <li><a href="/pedidos/mayoristas-sucursal" >Mayoristas</a></li>
                     </ul>
                   </li>
                 <?php }?>
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 1 || $session['idrol'] == 2 || $session['idrol'] == 3){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-credit-card"></span>
@@ -196,7 +200,8 @@
                   </li>
                 <?php }?>
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 1 || $session['idrol'] == 2 || $session['idrol'] == 3){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-remove"></span>
@@ -211,7 +216,8 @@
                   </li>
                 <?php }?>
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 1 || $session['idrol'] == 2 || $session['idrol'] == 3){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-money"></span>
@@ -227,14 +233,15 @@
                   </li>
                 <?php }?>
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 1 || $session['idrol'] == 2 || $session['idrol'] == 3){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-bank"></span>
-                      <span class="sidenav-label">Transferencias adm.</span>
+                      <span class="sidenav-label">Transferencias</span>
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
-                      <li class="sidenav-subheading">Transferencias adm.</li>
+                      <li class="sidenav-subheading">Transferencias</li>
                       
                       <li><a href="/transferencias">Transferencia</a></li>   
                     </ul>
@@ -242,7 +249,8 @@
                   </li>
                 <?php }?>
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 4 || $session['idrol'] == 5 || $session['idrol'] == 6){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-cart-plus"></span>
@@ -257,7 +265,8 @@
                 <?php }?>
                 
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 4 || $session['idrol'] == 5 || $session['idrol'] == 6){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-bar-chart"></span>
@@ -280,14 +289,15 @@
                 <?php }?>
                 
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 4 || $session['idrol'] == 5 || $session['idrol'] == 6){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-exchange"></span>
-                      <span class="sidenav-label">Productos sucursal</span>
+                      <span class="sidenav-label">Inventarios</span>
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
-                      <li class="sidenav-subheading">Productos sucursal</li>
+                      <li class="sidenav-subheading">Inventarios</li>
                       
                       <li><a href="/producto/existencias-sucursal">Existencia</a></li>
                       <li><a href="/producto/reordenes-sucursal">Reorden</a></li>
@@ -299,7 +309,8 @@
                 <?php }?>
                 
 
-                <?php if($session['idrol'] == 1){?>
+                <?php if($session['idrol'] == 4 || $session['idrol'] == 5 || $session['idrol'] == 6){?>
+
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-bank"></span>

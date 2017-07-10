@@ -16,6 +16,9 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        $generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
+        echo $generator->getBarcode('niaz45', $generator::TYPE_CODE_128); 
+
         $session = new \Application\Session\AouthSession();
         $session = $session->getData();
         $graphic = array(

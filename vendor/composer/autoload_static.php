@@ -15,6 +15,10 @@ class ComposerStaticInit0891c76dd6804c92ae5e46e47c3728c7
         array (
             'Symfony\\Component\\Yaml\\' => 23,
         ),
+        'P' => 
+        array (
+            'Picqer\\Barcode\\' => 15,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -25,6 +29,10 @@ class ComposerStaticInit0891c76dd6804c92ae5e46e47c3728c7
         'Symfony\\Component\\Yaml\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
+        ),
+        'Picqer\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
         ),
     );
 
@@ -150,6 +158,12 @@ class ComposerStaticInit0891c76dd6804c92ae5e46e47c3728c7
         'BasePedidomayoristadetalle' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BasePedidomayoristadetalle.php',
         'BasePedidomayoristadetallePeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BasePedidomayoristadetallePeer.php',
         'BasePedidomayoristadetalleQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BasePedidomayoristadetalleQuery.php',
+        'BasePedidosucursal' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BasePedidosucursal.php',
+        'BasePedidosucursalPeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BasePedidosucursalPeer.php',
+        'BasePedidosucursalQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BasePedidosucursalQuery.php',
+        'BasePedidosucursaldetalle' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BasePedidosucursaldetalle.php',
+        'BasePedidosucursaldetallePeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BasePedidosucursaldetallePeer.php',
+        'BasePedidosucursaldetalleQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BasePedidosucursaldetalleQuery.php',
         'BasePeer' => __DIR__ . '/..' . '/propel/propel1/runtime/lib/util/BasePeer.php',
         'BaseProducto' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseProducto.php',
         'BaseProductoPeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseProductoPeer.php',
@@ -212,6 +226,9 @@ class ComposerStaticInit0891c76dd6804c92ae5e46e47c3728c7
         'BaseTransferenciadetalle' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseTransferenciadetalle.php',
         'BaseTransferenciadetallePeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseTransferenciadetallePeer.php',
         'BaseTransferenciadetalleQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseTransferenciadetalleQuery.php',
+        'BaseVale' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseVale.php',
+        'BaseValePeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseValePeer.php',
+        'BaseValeQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseValeQuery.php',
         'BaseVenta' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseVenta.php',
         'BaseVentaPeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseVentaPeer.php',
         'BaseVentaQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/om/BaseVentaQuery.php',
@@ -691,6 +708,14 @@ class ComposerStaticInit0891c76dd6804c92ae5e46e47c3728c7
         'PedidomayoristadetallePeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/PedidomayoristadetallePeer.php',
         'PedidomayoristadetalleQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/PedidomayoristadetalleQuery.php',
         'PedidomayoristadetalleTableMap' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/map/PedidomayoristadetalleTableMap.php',
+        'Pedidosucursal' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/Pedidosucursal.php',
+        'PedidosucursalPeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/PedidosucursalPeer.php',
+        'PedidosucursalQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/PedidosucursalQuery.php',
+        'PedidosucursalTableMap' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/map/PedidosucursalTableMap.php',
+        'Pedidosucursaldetalle' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/Pedidosucursaldetalle.php',
+        'PedidosucursaldetallePeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/PedidosucursaldetallePeer.php',
+        'PedidosucursaldetalleQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/PedidosucursaldetalleQuery.php',
+        'PedidosucursaldetalleTableMap' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/map/PedidosucursaldetalleTableMap.php',
         'PeerBuilder' => __DIR__ . '/..' . '/propel/propel1/generator/lib/builder/om/PeerBuilder.php',
         'Persistent' => __DIR__ . '/..' . '/propel/propel1/runtime/lib/om/Persistent.php',
         'PgsqlDataSQLBuilder' => __DIR__ . '/..' . '/propel/propel1/generator/lib/builder/sql/pgsql/PgsqlDataSQLBuilder.php',
@@ -1027,6 +1052,10 @@ class ComposerStaticInit0891c76dd6804c92ae5e46e47c3728c7
         'UntarTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/UntarTask.php',
         'UnzipTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/ext/UnzipTask.php',
         'UpToDateTask' => __DIR__ . '/..' . '/phing/phing/classes/phing/tasks/system/UpToDateTask.php',
+        'Vale' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/Vale.php',
+        'ValePeer' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/ValePeer.php',
+        'ValeQuery' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/ValeQuery.php',
+        'ValeTableMap' => __DIR__ . '/../..' . '/module/Propel/build/classes/zarely/map/ValeTableMap.php',
         'ValidValuesValidator' => __DIR__ . '/..' . '/propel/propel1/runtime/lib/validator/ValidValuesValidator.php',
         'ValidationFailed' => __DIR__ . '/..' . '/propel/propel1/runtime/lib/validator/ValidationFailed.php',
         'Validator' => __DIR__ . '/..' . '/propel/propel1/generator/lib/model/Validator.php',

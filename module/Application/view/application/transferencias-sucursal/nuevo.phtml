@@ -55,7 +55,7 @@
 								<label for="tallaje">Productos</label>
 								
 								<input type="radio" id="variante" name="validar" checked><label class="alinearTexto">Variante</label>
-								<input type="radio" id="general" name="validar"><label class="alinearTexto">Producto general</label>
+								<input type="radio" id="generalessucursalal" name="validar"><label class="alinearTexto">Producto general</label>
 							</div>
 
 	        				<div id="medidasInformation">
@@ -164,5 +164,17 @@
 	    $(this).find('button, input[type=button]').prop('disabled', true);
 	  });
 	});
+</script>
+
+<script type="text/javascript">
+
+	var date = new Date();
+	$('input[name=transferencia_fecha').datepicker({
+		language:'es',
+  		startDate: 'today',
+	}).datepicker("setDate",date);
+
+	$('select[name=transferencia_estatus').attr('disabled',"");
+
 </script>
 

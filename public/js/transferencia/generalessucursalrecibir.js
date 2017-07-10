@@ -5,16 +5,16 @@
     * Handle input. Call public functions and initializers
     */
    
-    $.fn.generalessucursal= function(data){
+    $.fn.generalessucursalrecibir= function(data){
         var _this = $(this);
-        var plugin = _this.data('generalessucursal');
+        var plugin = _this.data('generalessucursalrecibir');
         
         /*Inicializado ?*/
         if (!plugin) {
             
-            plugin = new $.generalessucursal(this, data);
+            plugin = new $.generalessucursalrecibir(this, data);
             
-            _this.data('generalessucursal', plugin);
+            _this.data('generalessucursalrecibir', plugin);
             
             return plugin;
         /*Si ya fue inizializado regresamos el plugin*/    
@@ -28,7 +28,7 @@
     * Plugin Constructor
     */
    
-    $.generalessucursal = function(container, options){
+    $.generalessucursalrecibir = function(container, options){
         
         var plugin = this;
        
@@ -96,31 +96,37 @@
 
             if(option_selected == "creada")
             {
-              $container.find("select[name=transferencia_estatus] option[value='aceptada']").remove();
-              $container.find("select[name=transferencia_estatus] option[value='rechazada']").remove();
+              $container.find("select[name=transferencia_estatus] option[value='creada']").remove();
+              $container.find("select[name=transferencia_estatus] option[value='cancelada']").remove();
+              $container.find('input[name=transferencia_fecha]').attr('disabled',"");
+              $container.find('select[name=idsucursaldestino]').attr('disabled',"");
+              $container.find('textarea[name=transferencia_nota]').attr('disabled',"");
+              $container.find('#razon_row textarea').removeAttr('required');
               $container.find('input[name=transferencia_fecharecepcion]').remove();
-              $container.find('input[name=idempleadoreceptor]').remove();
-
 
               $container.find('select[name=transferencia_estatus]').on('change',function()
               {
-                if($(this).val() == 'cancelada')
+                if($(this).val() == 'rechazada')
                 {
                   $container.find('#razon_row').removeAttr('hidden');
+                  $container.find('#razon_row textarea').attr('required',"");
+
                 }
 
                 if($(this).val() == 'aceptada')
                 {
                   $container.find('#razon_row').attr('hidden',"");
+                  $container.find('#razon_row textarea').removeAttr('required');
+
                 }
               });
             }else{
               $container.find('#btn_guardar').remove();
               $container.find('input[name=transferencia_fecha]').attr('disabled',"");
-              $container.find('input[name=transferencia_fecharecepcion]').attr('disabled',"");
               $container.find('select[name=transferencia_estatus]').attr('disabled',"");
               $container.find('select[name=idsucursaldestino]').attr('disabled',"");
               $container.find('textarea[name=transferencia_nota]').attr('disabled',"");
+              $container.find('input[name=transferencia_fecharecepcion]').attr('disabled',"");
 
 
             }

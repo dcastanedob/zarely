@@ -13,7 +13,8 @@
         "propel/propel1": "1.7.1",
         "phpoffice/phpexcel" : "1.8.1",
         "ext-xml" : "*",         
-        "ext-xmlwriter" : "*"
+        "ext-xmlwriter" : "*",
+        "picqer/php-barcode-generator": "^0.2.1"
     },
     "autoload": { "classmap": ["module/Propel/build/classes/"] }
 }
