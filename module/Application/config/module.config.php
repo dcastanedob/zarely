@@ -251,6 +251,17 @@ return array(
                 ),
             ),
 
+            'codigodebarras' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/codigodebarras[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\CodigoDeBarrasProducto',
+                        'action'     => 'ver',
+                    ),
+                ),
+            ),
+
             'enreorden' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -592,6 +603,7 @@ return array(
             'Application\Producto\Controller\ReordenProducto' => 'Application\Producto\Controller\ReordenProductoController',
 
             'Application\Producto\Controller\ExistenciaProducto' => 'Application\Producto\Controller\ExistenciaProductoController',
+            'Application\Producto\Controller\CodigoDeBarrasProducto' => 'Application\Producto\Controller\CodigoDeBarrasProductoController',
 
             'Application\Producto\Controller\EnReordenProducto' => 'Application\Producto\Controller\EnReordenProductoController',
 

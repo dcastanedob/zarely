@@ -147,6 +147,22 @@
 
                   <li class="sidenav-item has-subnav">
                     <a href="javascript:;" aria-haspopup="true">
+                      <span class="sidenav-icon icon icon-exchange"></span>
+                      <span class="sidenav-label">Codigo de barras</span>
+                    </a>
+                    <ul class="sidenav-subnav collapse" aria-expanded="false">
+                      <li class="sidenav-subheading">Codigo de barras</li>
+                      
+                      <li><a href="/producto/codigodebarras">Código de barras</a></li>   
+                    </ul>
+
+                  </li>
+                <?php }?>
+
+                <?php if($session['idrol'] == 1 || $session['idrol'] == 2 || $session['idrol'] == 3){?>
+
+                  <li class="sidenav-item has-subnav">
+                    <a href="javascript:;" aria-haspopup="true">
                       <span class="sidenav-icon icon icon-bus"></span>
                       <span class="sidenav-label">Pedidos</span>
                     </a>

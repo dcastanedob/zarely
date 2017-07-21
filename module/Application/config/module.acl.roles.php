@@ -13,6 +13,7 @@ return array(
         'transferencias-sucursal',
         'mayoristas',
         'transferencias',
+        'json',
 
         
     ),
@@ -28,6 +29,7 @@ return array(
         'transferencias-sucursal',
         'mayoristas',
         'transferencias',
+        'json',
 
         
     ),
@@ -146,6 +148,7 @@ return array(
         'reordenes',
         'existencias',
         'enreorden', 
+        'codigodebarras',
 
         //compras
         'comprasgenerales',
@@ -184,6 +187,7 @@ return array(
         'transferencias-sucursal',
         'mayoristas',
         'transferencias',
+        'json',
 
     ),
 );

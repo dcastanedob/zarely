@@ -15,4 +15,22 @@
  */
 class Producto extends BaseProducto
 {
+	public function generarCodigoDeBarras()
+	{
+		$productos_variantes = $this->getProductovariantes();
+		foreach ($productos_variantes as $variante) {
+			$producto = $variante->getProducto();
+            $color = $variante->getProductocolor();
+            $color = $color->getColor();
+            $material = $variante->getProductomaterial();
+            $material = $material->getMaterial();
+            $tallaje = $variante->getProductovarianteTalla();
+
+            $information =$producto->getProductoModelo() .'-' . $material->getMaterialNombre() .''  . $color->getColorNombre(). '-' . $tallaje;
+
+            $variante->setProductovarianteCodigobarras($information);
+            $variante->save();
+		}
+
+	}
 }

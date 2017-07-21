@@ -866,6 +866,51 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="tarjetapuntos" phpName="Tarjetapuntos" idMethod="native">
+    <column name="idtarjetapuntos" phpName="Idtarjetapuntos" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="tarjetapuntos_fechaactivacion" phpName="TarjetapuntosFechaactivacion" type="TIMESTAMP" required="true"/>
+    <column name="tarjetapuntos_estatus" phpName="TarjetapuntosEstatus" type="BOOLEAN" size="1" required="true"/>
+    <column name="tarjetapuntos_puntos" phpName="TarjetapuntosPuntos" type="INTEGER" required="true"/>
+    <column name="idempleadoactivador" phpName="Idempleadoactivador" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="empleado" name="idempleadoactivador_tarjetapuntos" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleadoactivador" foreign="idempleado"/>
+    </foreign-key>
+    <index name="idempleadoactivador_tarjetapuntos_idx">
+      <index-column name="idempleadoactivador"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tarjetapuntosdetalle" phpName="Tarjetapuntosdetalle" idMethod="native">
+    <column name="idtarjetapuntosdetalle" phpName="Idtarjetapuntosdetalle" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idtarjetapuntos" phpName="Idtarjetapuntos" type="INTEGER" required="true"/>
+    <column name="tarjetapuntosdetalle_tipo" phpName="TarjetapuntosdetalleTipo" type="CHAR" sqlType="enum('ingreso','egreso')" required="true"/>
+    <column name="tarjetapuntosdetalle_cantidad" phpName="TarjetapuntosdetalleCantidad" type="INTEGER" required="true"/>
+    <column name="idventa" phpName="Idventa" type="INTEGER" required="true"/>
+    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="empleado" name="idempleado_tarjetapuntosdetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleado" foreign="idempleado"/>
+    </foreign-key>
+    <foreign-key foreignTable="tarjetapuntos" name="idtarjetapuntos_tarjetapuntosdetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idtarjetapuntos" foreign="idtarjetapuntos"/>
+    </foreign-key>
+    <foreign-key foreignTable="venta" name="idventa_tarjetapuntosdetalle" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idventa" foreign="idventa"/>
+    </foreign-key>
+    <index name="idventa">
+      <index-column name="idventa"/>
+    </index>
+    <index name="idempleado">
+      <index-column name="idempleado"/>
+    </index>
+    <index name="idtarjetapuntos_tarjetapuntosdetalle_idx">
+      <index-column name="idtarjetapuntos"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="temporada" phpName="Temporada" idMethod="native">
     <column name="idtemporada" phpName="Idtemporada" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="temporada_nombre" phpName="TemporadaNombre" type="VARCHAR" size="100" required="true"/>
@@ -1034,7 +1079,7 @@
     <column name="idventa" phpName="Idventa" type="INTEGER" required="true"/>
     <column name="venta_fecha" phpName="VentaFecha" type="TIMESTAMP" required="true"/>
     <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
-    <column name="ventapago_metododepago" phpName="VentapagoMetododepago" type="CHAR" sqlType="enum('efectivo','vales','tarjeta')" required="true"/>
+    <column name="ventapago_metododepago" phpName="VentapagoMetododepago" type="CHAR" sqlType="enum('efectivo','vales','tarjeta','puntos')" required="true"/>
     <column name="ventapago_cantidad" phpName="VentapagoCantidad" type="DECIMAL" size="15" scale="5" required="false"/>
     <column name="ventapago_referencia" phpName="VentapagoReferencia" type="VARCHAR" size="50" required="false"/>
     <column name="ventapago_cuatrodigitos" phpName="VentapagoCuatrodigitos" type="VARCHAR" size="4" required="false"/>

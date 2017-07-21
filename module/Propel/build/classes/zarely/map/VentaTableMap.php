@@ -76,6 +76,7 @@ class VentaTableMap extends TableMap
         $this->addRelation('EmpleadoRelatedByIdempleadocajero', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleadocajero' => 'idempleado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('EmpleadoRelatedByIdempleadovendedor', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleadovendedor' => 'idempleado', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Sucursal', 'Sucursal', RelationMap::MANY_TO_ONE, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Tarjetapuntosdetalle', 'Tarjetapuntosdetalle', RelationMap::ONE_TO_MANY, array('idventa' => 'idventa', ), 'CASCADE', 'CASCADE', 'Tarjetapuntosdetalles');
         $this->addRelation('Ventadetalle', 'Ventadetalle', RelationMap::ONE_TO_MANY, array('idventa' => 'idventa', ), 'CASCADE', 'CASCADE', 'Ventadetalles');
         $this->addRelation('Ventapago', 'Ventapago', RelationMap::ONE_TO_MANY, array('idventa' => 'idventa', ), 'CASCADE', 'CASCADE', 'Ventapagos');
     } // buildRelations()

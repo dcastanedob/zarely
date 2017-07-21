@@ -197,6 +197,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
     protected $collSucursalempleadosPartial;
 
     /**
+     * @var        PropelObjectCollection|Tarjetapuntos[] Collection to store aggregation of Tarjetapuntos objects.
+     */
+    protected $collTarjetapuntoss;
+    protected $collTarjetapuntossPartial;
+
+    /**
+     * @var        PropelObjectCollection|Tarjetapuntosdetalle[] Collection to store aggregation of Tarjetapuntosdetalle objects.
+     */
+    protected $collTarjetapuntosdetalles;
+    protected $collTarjetapuntosdetallesPartial;
+
+    /**
      * @var        PropelObjectCollection|Transferencia[] Collection to store aggregation of Transferencia objects.
      */
     protected $collTransferenciasRelatedByIdempleadocreador;
@@ -269,6 +281,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $sucursalempleadosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $tarjetapuntossScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $tarjetapuntosdetallesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1256,6 +1280,10 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
             $this->collSucursalempleados = null;
 
+            $this->collTarjetapuntoss = null;
+
+            $this->collTarjetapuntosdetalles = null;
+
             $this->collTransferenciasRelatedByIdempleadocreador = null;
 
             $this->collTransferenciasRelatedByIdempleadoreceptor = null;
@@ -1464,6 +1492,40 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
 
             if ($this->collSucursalempleados !== null) {
                 foreach ($this->collSucursalempleados as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->tarjetapuntossScheduledForDeletion !== null) {
+                if (!$this->tarjetapuntossScheduledForDeletion->isEmpty()) {
+                    TarjetapuntosQuery::create()
+                        ->filterByPrimaryKeys($this->tarjetapuntossScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->tarjetapuntossScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTarjetapuntoss !== null) {
+                foreach ($this->collTarjetapuntoss as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->tarjetapuntosdetallesScheduledForDeletion !== null) {
+                if (!$this->tarjetapuntosdetallesScheduledForDeletion->isEmpty()) {
+                    TarjetapuntosdetalleQuery::create()
+                        ->filterByPrimaryKeys($this->tarjetapuntosdetallesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->tarjetapuntosdetallesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTarjetapuntosdetalles !== null) {
+                foreach ($this->collTarjetapuntosdetalles as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1873,6 +1935,22 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collTarjetapuntoss !== null) {
+                    foreach ($this->collTarjetapuntoss as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collTarjetapuntosdetalles !== null) {
+                    foreach ($this->collTarjetapuntosdetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collTransferenciasRelatedByIdempleadocreador !== null) {
                     foreach ($this->collTransferenciasRelatedByIdempleadocreador as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -2090,6 +2168,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             }
             if (null !== $this->collSucursalempleados) {
                 $result['Sucursalempleados'] = $this->collSucursalempleados->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collTarjetapuntoss) {
+                $result['Tarjetapuntoss'] = $this->collTarjetapuntoss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collTarjetapuntosdetalles) {
+                $result['Tarjetapuntosdetalles'] = $this->collTarjetapuntosdetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collTransferenciasRelatedByIdempleadocreador) {
                 $result['TransferenciasRelatedByIdempleadocreador'] = $this->collTransferenciasRelatedByIdempleadocreador->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2407,6 +2491,18 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getTarjetapuntoss() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTarjetapuntos($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getTarjetapuntosdetalles() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTarjetapuntosdetalle($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getTransferenciasRelatedByIdempleadocreador() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addTransferenciaRelatedByIdempleadocreador($relObj->copy($deepCopy));
@@ -2561,6 +2657,12 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         }
         if ('Sucursalempleado' == $relationName) {
             $this->initSucursalempleados();
+        }
+        if ('Tarjetapuntos' == $relationName) {
+            $this->initTarjetapuntoss();
+        }
+        if ('Tarjetapuntosdetalle' == $relationName) {
+            $this->initTarjetapuntosdetalles();
         }
         if ('TransferenciaRelatedByIdempleadocreador' == $relationName) {
             $this->initTransferenciasRelatedByIdempleadocreador();
@@ -3577,6 +3679,506 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
         $query->joinWith('Sucursal', $join_behavior);
 
         return $this->getSucursalempleados($query, $con);
+    }
+
+    /**
+     * Clears out the collTarjetapuntoss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addTarjetapuntoss()
+     */
+    public function clearTarjetapuntoss()
+    {
+        $this->collTarjetapuntoss = null; // important to set this to null since that means it is uninitialized
+        $this->collTarjetapuntossPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collTarjetapuntoss collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTarjetapuntoss($v = true)
+    {
+        $this->collTarjetapuntossPartial = $v;
+    }
+
+    /**
+     * Initializes the collTarjetapuntoss collection.
+     *
+     * By default this just sets the collTarjetapuntoss collection to an empty array (like clearcollTarjetapuntoss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTarjetapuntoss($overrideExisting = true)
+    {
+        if (null !== $this->collTarjetapuntoss && !$overrideExisting) {
+            return;
+        }
+        $this->collTarjetapuntoss = new PropelObjectCollection();
+        $this->collTarjetapuntoss->setModel('Tarjetapuntos');
+    }
+
+    /**
+     * Gets an array of Tarjetapuntos objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Tarjetapuntos[] List of Tarjetapuntos objects
+     * @throws PropelException
+     */
+    public function getTarjetapuntoss($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collTarjetapuntossPartial && !$this->isNew();
+        if (null === $this->collTarjetapuntoss || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTarjetapuntoss) {
+                // return empty collection
+                $this->initTarjetapuntoss();
+            } else {
+                $collTarjetapuntoss = TarjetapuntosQuery::create(null, $criteria)
+                    ->filterByEmpleado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collTarjetapuntossPartial && count($collTarjetapuntoss)) {
+                      $this->initTarjetapuntoss(false);
+
+                      foreach ($collTarjetapuntoss as $obj) {
+                        if (false == $this->collTarjetapuntoss->contains($obj)) {
+                          $this->collTarjetapuntoss->append($obj);
+                        }
+                      }
+
+                      $this->collTarjetapuntossPartial = true;
+                    }
+
+                    $collTarjetapuntoss->getInternalIterator()->rewind();
+
+                    return $collTarjetapuntoss;
+                }
+
+                if ($partial && $this->collTarjetapuntoss) {
+                    foreach ($this->collTarjetapuntoss as $obj) {
+                        if ($obj->isNew()) {
+                            $collTarjetapuntoss[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTarjetapuntoss = $collTarjetapuntoss;
+                $this->collTarjetapuntossPartial = false;
+            }
+        }
+
+        return $this->collTarjetapuntoss;
+    }
+
+    /**
+     * Sets a collection of Tarjetapuntos objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $tarjetapuntoss A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setTarjetapuntoss(PropelCollection $tarjetapuntoss, PropelPDO $con = null)
+    {
+        $tarjetapuntossToDelete = $this->getTarjetapuntoss(new Criteria(), $con)->diff($tarjetapuntoss);
+
+
+        $this->tarjetapuntossScheduledForDeletion = $tarjetapuntossToDelete;
+
+        foreach ($tarjetapuntossToDelete as $tarjetapuntosRemoved) {
+            $tarjetapuntosRemoved->setEmpleado(null);
+        }
+
+        $this->collTarjetapuntoss = null;
+        foreach ($tarjetapuntoss as $tarjetapuntos) {
+            $this->addTarjetapuntos($tarjetapuntos);
+        }
+
+        $this->collTarjetapuntoss = $tarjetapuntoss;
+        $this->collTarjetapuntossPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Tarjetapuntos objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Tarjetapuntos objects.
+     * @throws PropelException
+     */
+    public function countTarjetapuntoss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collTarjetapuntossPartial && !$this->isNew();
+        if (null === $this->collTarjetapuntoss || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTarjetapuntoss) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTarjetapuntoss());
+            }
+            $query = TarjetapuntosQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleado($this)
+                ->count($con);
+        }
+
+        return count($this->collTarjetapuntoss);
+    }
+
+    /**
+     * Method called to associate a Tarjetapuntos object to this object
+     * through the Tarjetapuntos foreign key attribute.
+     *
+     * @param    Tarjetapuntos $l Tarjetapuntos
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addTarjetapuntos(Tarjetapuntos $l)
+    {
+        if ($this->collTarjetapuntoss === null) {
+            $this->initTarjetapuntoss();
+            $this->collTarjetapuntossPartial = true;
+        }
+
+        if (!in_array($l, $this->collTarjetapuntoss->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddTarjetapuntos($l);
+
+            if ($this->tarjetapuntossScheduledForDeletion and $this->tarjetapuntossScheduledForDeletion->contains($l)) {
+                $this->tarjetapuntossScheduledForDeletion->remove($this->tarjetapuntossScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Tarjetapuntos $tarjetapuntos The tarjetapuntos object to add.
+     */
+    protected function doAddTarjetapuntos($tarjetapuntos)
+    {
+        $this->collTarjetapuntoss[]= $tarjetapuntos;
+        $tarjetapuntos->setEmpleado($this);
+    }
+
+    /**
+     * @param	Tarjetapuntos $tarjetapuntos The tarjetapuntos object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeTarjetapuntos($tarjetapuntos)
+    {
+        if ($this->getTarjetapuntoss()->contains($tarjetapuntos)) {
+            $this->collTarjetapuntoss->remove($this->collTarjetapuntoss->search($tarjetapuntos));
+            if (null === $this->tarjetapuntossScheduledForDeletion) {
+                $this->tarjetapuntossScheduledForDeletion = clone $this->collTarjetapuntoss;
+                $this->tarjetapuntossScheduledForDeletion->clear();
+            }
+            $this->tarjetapuntossScheduledForDeletion[]= clone $tarjetapuntos;
+            $tarjetapuntos->setEmpleado(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears out the collTarjetapuntosdetalles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Empleado The current object (for fluent API support)
+     * @see        addTarjetapuntosdetalles()
+     */
+    public function clearTarjetapuntosdetalles()
+    {
+        $this->collTarjetapuntosdetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collTarjetapuntosdetallesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collTarjetapuntosdetalles collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTarjetapuntosdetalles($v = true)
+    {
+        $this->collTarjetapuntosdetallesPartial = $v;
+    }
+
+    /**
+     * Initializes the collTarjetapuntosdetalles collection.
+     *
+     * By default this just sets the collTarjetapuntosdetalles collection to an empty array (like clearcollTarjetapuntosdetalles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTarjetapuntosdetalles($overrideExisting = true)
+    {
+        if (null !== $this->collTarjetapuntosdetalles && !$overrideExisting) {
+            return;
+        }
+        $this->collTarjetapuntosdetalles = new PropelObjectCollection();
+        $this->collTarjetapuntosdetalles->setModel('Tarjetapuntosdetalle');
+    }
+
+    /**
+     * Gets an array of Tarjetapuntosdetalle objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Empleado is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Tarjetapuntosdetalle[] List of Tarjetapuntosdetalle objects
+     * @throws PropelException
+     */
+    public function getTarjetapuntosdetalles($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collTarjetapuntosdetallesPartial && !$this->isNew();
+        if (null === $this->collTarjetapuntosdetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTarjetapuntosdetalles) {
+                // return empty collection
+                $this->initTarjetapuntosdetalles();
+            } else {
+                $collTarjetapuntosdetalles = TarjetapuntosdetalleQuery::create(null, $criteria)
+                    ->filterByEmpleado($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collTarjetapuntosdetallesPartial && count($collTarjetapuntosdetalles)) {
+                      $this->initTarjetapuntosdetalles(false);
+
+                      foreach ($collTarjetapuntosdetalles as $obj) {
+                        if (false == $this->collTarjetapuntosdetalles->contains($obj)) {
+                          $this->collTarjetapuntosdetalles->append($obj);
+                        }
+                      }
+
+                      $this->collTarjetapuntosdetallesPartial = true;
+                    }
+
+                    $collTarjetapuntosdetalles->getInternalIterator()->rewind();
+
+                    return $collTarjetapuntosdetalles;
+                }
+
+                if ($partial && $this->collTarjetapuntosdetalles) {
+                    foreach ($this->collTarjetapuntosdetalles as $obj) {
+                        if ($obj->isNew()) {
+                            $collTarjetapuntosdetalles[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTarjetapuntosdetalles = $collTarjetapuntosdetalles;
+                $this->collTarjetapuntosdetallesPartial = false;
+            }
+        }
+
+        return $this->collTarjetapuntosdetalles;
+    }
+
+    /**
+     * Sets a collection of Tarjetapuntosdetalle objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $tarjetapuntosdetalles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function setTarjetapuntosdetalles(PropelCollection $tarjetapuntosdetalles, PropelPDO $con = null)
+    {
+        $tarjetapuntosdetallesToDelete = $this->getTarjetapuntosdetalles(new Criteria(), $con)->diff($tarjetapuntosdetalles);
+
+
+        $this->tarjetapuntosdetallesScheduledForDeletion = $tarjetapuntosdetallesToDelete;
+
+        foreach ($tarjetapuntosdetallesToDelete as $tarjetapuntosdetalleRemoved) {
+            $tarjetapuntosdetalleRemoved->setEmpleado(null);
+        }
+
+        $this->collTarjetapuntosdetalles = null;
+        foreach ($tarjetapuntosdetalles as $tarjetapuntosdetalle) {
+            $this->addTarjetapuntosdetalle($tarjetapuntosdetalle);
+        }
+
+        $this->collTarjetapuntosdetalles = $tarjetapuntosdetalles;
+        $this->collTarjetapuntosdetallesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Tarjetapuntosdetalle objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Tarjetapuntosdetalle objects.
+     * @throws PropelException
+     */
+    public function countTarjetapuntosdetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collTarjetapuntosdetallesPartial && !$this->isNew();
+        if (null === $this->collTarjetapuntosdetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTarjetapuntosdetalles) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTarjetapuntosdetalles());
+            }
+            $query = TarjetapuntosdetalleQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEmpleado($this)
+                ->count($con);
+        }
+
+        return count($this->collTarjetapuntosdetalles);
+    }
+
+    /**
+     * Method called to associate a Tarjetapuntosdetalle object to this object
+     * through the Tarjetapuntosdetalle foreign key attribute.
+     *
+     * @param    Tarjetapuntosdetalle $l Tarjetapuntosdetalle
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function addTarjetapuntosdetalle(Tarjetapuntosdetalle $l)
+    {
+        if ($this->collTarjetapuntosdetalles === null) {
+            $this->initTarjetapuntosdetalles();
+            $this->collTarjetapuntosdetallesPartial = true;
+        }
+
+        if (!in_array($l, $this->collTarjetapuntosdetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddTarjetapuntosdetalle($l);
+
+            if ($this->tarjetapuntosdetallesScheduledForDeletion and $this->tarjetapuntosdetallesScheduledForDeletion->contains($l)) {
+                $this->tarjetapuntosdetallesScheduledForDeletion->remove($this->tarjetapuntosdetallesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Tarjetapuntosdetalle $tarjetapuntosdetalle The tarjetapuntosdetalle object to add.
+     */
+    protected function doAddTarjetapuntosdetalle($tarjetapuntosdetalle)
+    {
+        $this->collTarjetapuntosdetalles[]= $tarjetapuntosdetalle;
+        $tarjetapuntosdetalle->setEmpleado($this);
+    }
+
+    /**
+     * @param	Tarjetapuntosdetalle $tarjetapuntosdetalle The tarjetapuntosdetalle object to remove.
+     * @return Empleado The current object (for fluent API support)
+     */
+    public function removeTarjetapuntosdetalle($tarjetapuntosdetalle)
+    {
+        if ($this->getTarjetapuntosdetalles()->contains($tarjetapuntosdetalle)) {
+            $this->collTarjetapuntosdetalles->remove($this->collTarjetapuntosdetalles->search($tarjetapuntosdetalle));
+            if (null === $this->tarjetapuntosdetallesScheduledForDeletion) {
+                $this->tarjetapuntosdetallesScheduledForDeletion = clone $this->collTarjetapuntosdetalles;
+                $this->tarjetapuntosdetallesScheduledForDeletion->clear();
+            }
+            $this->tarjetapuntosdetallesScheduledForDeletion[]= clone $tarjetapuntosdetalle;
+            $tarjetapuntosdetalle->setEmpleado(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related Tarjetapuntosdetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Tarjetapuntosdetalle[] List of Tarjetapuntosdetalle objects
+     */
+    public function getTarjetapuntosdetallesJoinTarjetapuntos($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TarjetapuntosdetalleQuery::create(null, $criteria);
+        $query->joinWith('Tarjetapuntos', $join_behavior);
+
+        return $this->getTarjetapuntosdetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Empleado is new, it will return
+     * an empty collection; or if this Empleado has previously
+     * been saved, it will retrieve related Tarjetapuntosdetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Empleado.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Tarjetapuntosdetalle[] List of Tarjetapuntosdetalle objects
+     */
+    public function getTarjetapuntosdetallesJoinVenta($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = TarjetapuntosdetalleQuery::create(null, $criteria);
+        $query->joinWith('Venta', $join_behavior);
+
+        return $this->getTarjetapuntosdetalles($query, $con);
     }
 
     /**
@@ -4999,6 +5601,16 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collTarjetapuntoss) {
+                foreach ($this->collTarjetapuntoss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collTarjetapuntosdetalles) {
+                foreach ($this->collTarjetapuntosdetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collTransferenciasRelatedByIdempleadocreador) {
                 foreach ($this->collTransferenciasRelatedByIdempleadocreador as $o) {
                     $o->clearAllReferences($deep);
@@ -5047,6 +5659,14 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
             $this->collSucursalempleados->clearIterator();
         }
         $this->collSucursalempleados = null;
+        if ($this->collTarjetapuntoss instanceof PropelCollection) {
+            $this->collTarjetapuntoss->clearIterator();
+        }
+        $this->collTarjetapuntoss = null;
+        if ($this->collTarjetapuntosdetalles instanceof PropelCollection) {
+            $this->collTarjetapuntosdetalles->clearIterator();
+        }
+        $this->collTarjetapuntosdetalles = null;
         if ($this->collTransferenciasRelatedByIdempleadocreador instanceof PropelCollection) {
             $this->collTransferenciasRelatedByIdempleadocreador->clearIterator();
         }

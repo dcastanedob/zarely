@@ -1305,6 +1305,31 @@ class PuntoDeVentaController extends AbstractActionController
                     $vale->setValeEstatus(0)->save();
                 }
 
+
+                //verficiamos si pagó con puntos
+                if($post_data['metodo'] == 'puntos')
+                {
+                    $user = new \Application\Session\AouthSession();
+                    $user = $user->getData();
+
+                  //asignamos la referencia
+                    $venta_pago->setVentapagoReferencia($post_data['referencia']);
+                    $puntos = \BaseTarjetapuntosQuery::create()->findPk($post_data['referencia']);
+
+                    //restamos los puntos que hizo en la compra
+                    $puntos->setTarjetapuntosPuntos($puntos->getTarjetapuntosPuntos() - ($post_data['cantidad'] * 10))
+                            ->save();
+
+                    //guardamos la informacion
+                    $puntos_detalle = new \Tarjetapuntosdetalle();
+                    $puntos_detalle->setTarjetapuntosdetalleTipo('egreso')
+                                    ->setIdtarjetapuntos($post_data['referencia'])
+                                    ->setTarjetapuntosdetalleCantidad($post_data['cantidad'] * 10)
+                                    ->setIdventa($post_data['id'])
+                                    ->setIdempleado($user['idempleado'])
+                                    ->save();
+                }
+
                 if($post_data['metodo'] == 'tarjeta')
                 {
                     $venta_pago->setVentapagoReferencia($post_data['referencia']);
@@ -1313,6 +1338,8 @@ class PuntoDeVentaController extends AbstractActionController
 
                 //guardamos la entidad
                 $venta_pago->save();
+
+                $tarjetapuntos = 0;
 
                 $temp = $this->totalAlMomento($post_data['id'],0);
                 if($temp != 0)
@@ -1325,14 +1352,70 @@ class PuntoDeVentaController extends AbstractActionController
                     //completamos la compra y actualizamos el saldo del cliente
                     $entity->setVentaEstatuspago(1)->setVentaEstatus('completada')->save();
                     $this->updateInventory($post_data['id'],$entity->getIdsucursal(), $entity->getIdempleadocajero());
+                    $tarjetapuntos = $this->generarPuntos($post_data['id']);
                 }
-                return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Pago realizado')));
+                return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Pago realizado', 'puntos' => $tarjetapuntos)));
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false,'message'=>'No se pudo realizar el pago')));
             }
 
 
         }
+    }
+
+    //funcion para calcular los puntos 
+    private function generarPuntos($id)
+    {
+      //obtenemos los pagos
+      $pagos = \VentapagoQuery::create()->filterByIdventa($id)->find();
+      //puntos a acumular
+      $puntos = 0;
+      //variable para ver los puntos que se obtuvieron
+      $tienePuntos = false;
+      //variable para saber a cual tarjeta acumular los puntos
+      $referencia = 0;
+
+      foreach ($pagos->toArray() as $pago) 
+      {
+        if($pago['VentapagoMetododepago'] == 'efectivo')
+        {
+          $puntos += floatval($pago['VentapagoCantidad'] * 0.05);
+        }
+
+        if($pago['VentapagoMetododepago'] == 'tarjeta')
+        {
+          $puntos += floatval($pago['VentapagoCantidad'] * 0.03);
+        }
+
+        if($pago['VentapagoMetododepago'] == 'puntos' && !$tienePuntos)
+        {
+          $referencia = $pago['VentapagoReferencia'];
+          $tienePuntos = true;
+        }
+        
+      }
+
+      $tarjetapuntos = \BaseTarjetapuntosQuery::create()->findPk($referencia);
+
+      $user = new \Application\Session\AouthSession();
+      $user = $user->getData();
+
+      if($tarjetapuntos == null)
+      {
+        $tarjetapuntos = new \Tarjetapuntos();
+        $tarjetapuntos->setTarjetapuntosFechaactivacion(date("Y/m/d"))
+                      ->setTarjetapuntosEstatus(1)
+                      ->setTarjetapuntosPuntos(0)
+                      ->setIdempleadoactivador($user['idempleado'])
+                      ->save();
+      }
+
+
+      //sumamos los nuevos puntos
+      $tarjetapuntos->setTarjetapuntosPuntos($tarjetapuntos->getTarjetapuntosPuntos() + (intval($puntos)))
+                            ->save();
+
+      return $tarjetapuntos->getIdtarjetapuntos();
     }
 
     //funcion para calcular la cantidad de pago que llevamos al momento
@@ -1912,6 +1995,26 @@ class PuntoDeVentaController extends AbstractActionController
           }
         }
         return $this->getResponse()->setContent(json_encode(array('response' => false,'message' => 'Lo sentimos no existe dicho vale')));
+
+
+      }
+    }
+
+
+    public function verificarpuntosAction(){
+      $request = $this->getRequest();
+      
+      if($request->isPost()){
+        $post_data = $request->getPost();
+        $puntos = \BaseTarjetapuntosQuery::create()->findPk($post_data['referencia']);
+        if($puntos != null )
+        {
+          if($puntos->getTarjetapuntosEstatus())
+          {
+            return $this->getResponse()->setContent(json_encode(array('response' => true,'cantidad'=>($puntos->getTarjetapuntosPuntos() / 10),'message' => 'Lo sentimos solo cuentas con '.$puntos->getTarjetapuntosPuntos() .' puntos')));
+          }
+        }
+        return $this->getResponse()->setContent(json_encode(array('response' => false,'message' => 'Lo sentimos no existe dicha tarjta de puntos')));
 
 
       }

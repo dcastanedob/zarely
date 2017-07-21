@@ -493,6 +493,9 @@ abstract class BaseVentaPeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in TarjetapuntosdetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        TarjetapuntosdetallePeer::clearInstancePool();
         // Invalidate objects in VentadetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         VentadetallePeer::clearInstancePool();
@@ -2155,6 +2158,12 @@ abstract class BaseVentaPeer
         $objects = VentaPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
+
+            // delete related Tarjetapuntosdetalle objects
+            $criteria = new Criteria(TarjetapuntosdetallePeer::DATABASE_NAME);
+
+            $criteria->add(TarjetapuntosdetallePeer::IDVENTA, $obj->getIdventa());
+            $affectedRows += TarjetapuntosdetallePeer::doDelete($criteria, $con);
 
             // delete related Ventadetalle objects
             $criteria = new Criteria(VentadetallePeer::DATABASE_NAME);

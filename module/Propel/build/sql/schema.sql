@@ -1105,6 +1105,63 @@ CREATE TABLE `tallaje`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- tarjetapuntos
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tarjetapuntos`;
+
+CREATE TABLE `tarjetapuntos`
+(
+    `idtarjetapuntos` INTEGER NOT NULL AUTO_INCREMENT,
+    `tarjetapuntos_fechaactivacion` DATETIME NOT NULL,
+    `tarjetapuntos_estatus` TINYINT(1) NOT NULL,
+    `tarjetapuntos_puntos` INTEGER NOT NULL,
+    `idempleadoactivador` INTEGER NOT NULL,
+    PRIMARY KEY (`idtarjetapuntos`),
+    INDEX `idempleadoactivador_tarjetapuntos_idx` (`idempleadoactivador`),
+    CONSTRAINT `idempleadoactivador_tarjetapuntos`
+        FOREIGN KEY (`idempleadoactivador`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- tarjetapuntosdetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tarjetapuntosdetalle`;
+
+CREATE TABLE `tarjetapuntosdetalle`
+(
+    `idtarjetapuntosdetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idtarjetapuntos` INTEGER NOT NULL,
+    `tarjetapuntosdetalle_tipo` enum('ingreso','egreso') NOT NULL,
+    `tarjetapuntosdetalle_cantidad` INTEGER NOT NULL,
+    `idventa` INTEGER NOT NULL,
+    `idempleado` INTEGER NOT NULL,
+    PRIMARY KEY (`idtarjetapuntosdetalle`),
+    INDEX `idventa` (`idventa`),
+    INDEX `idempleado` (`idempleado`),
+    INDEX `idtarjetapuntos_tarjetapuntosdetalle_idx` (`idtarjetapuntos`),
+    CONSTRAINT `idempleado_tarjetapuntosdetalle`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idtarjetapuntos_tarjetapuntosdetalle`
+        FOREIGN KEY (`idtarjetapuntos`)
+        REFERENCES `tarjetapuntos` (`idtarjetapuntos`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idventa_tarjetapuntosdetalle`
+        FOREIGN KEY (`idventa`)
+        REFERENCES `venta` (`idventa`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- temporada
 -- ---------------------------------------------------------------------
 
@@ -1321,7 +1378,7 @@ CREATE TABLE `ventapago`
     `idventa` INTEGER NOT NULL,
     `venta_fecha` DATETIME NOT NULL,
     `idempleado` INTEGER NOT NULL,
-    `ventapago_metododepago` enum('efectivo','vales','tarjeta') NOT NULL,
+    `ventapago_metododepago` enum('efectivo','vales','tarjeta','puntos') NOT NULL,
     `ventapago_cantidad` DECIMAL(15,5),
     `ventapago_referencia` VARCHAR(50),
     `ventapago_cuatrodigitos` VARCHAR(4),

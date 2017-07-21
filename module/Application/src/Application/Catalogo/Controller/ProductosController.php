@@ -527,7 +527,7 @@ class ProductosController extends AbstractActionController
                                     ->save();
                 }
             }
-
+            $entity->generarCodigoDeBarras();
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
             return $this->redirect()->toUrl('/catalogo/productos');
@@ -788,6 +788,7 @@ class ProductosController extends AbstractActionController
                 }
 
                 $entity->save();
+                $entity->generarCodigoDeBarras();
 
 
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
@@ -894,6 +895,8 @@ class ProductosController extends AbstractActionController
         }
         return $view_model;
     }
+
+
 
     public function eliminarAction(){
         $request = $this->getRequest();

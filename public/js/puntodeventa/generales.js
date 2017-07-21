@@ -126,6 +126,8 @@
 
           var referencias_array = [];
 
+          var referencias_array_puntos = [];
+
            $container.find('input[name=venta_fecha]').datepicker({
                 language:'es',
                 orientation:'bottom'
@@ -1481,6 +1483,28 @@
             });
 
 
+            $container.find('#ver_puntos_1').on('click',function(){
+              var referencia = $container.find('#tarjeta_1').val();
+              $.ajax({
+                url:'/puntodeventa/verificarpuntos',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    referencia:referencia,
+                },success: function (data, textStatus, jqXHR) {
+                    if(data.response)
+                    {
+                      $container.find('#puntos_1').html((data.cantidad*10) + " puntos");
+                    }else
+                    {
+                      $container.find('#puntos_1').html("0 puntos");
+                    }
+                  }
+              });
+
+            });
+
+
             $container.find('#btn_venta_1').on('click',function(){
               $container.find('#venta_tipo1 select[name=venta_tipo]').removeAttr('disabled');
 
@@ -1526,6 +1550,7 @@
                                                       '<option value="efectivo">Efectivo</option>',
                                                       '<option value="tarjeta">Tarjeta</option>',
                                                       '<option value="vales">Vales</option>',
+                                                      '<option value="puntos">Puntos</option>',
                                                     '</select>',
                                                   '</div>',
                                                 '</div>',
@@ -1633,6 +1658,16 @@
                       $modal.find('#referencia').removeAttr('hidden');
                       $modal.find('#digitos').attr('hidden',"");
                     }
+
+                    if(this.value == "puntos")
+                    {
+                      $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#digitos').attr('hidden',"");
+                    }
+
+
+
+
                   });
 
                   var totalDeVenta =  parseFloat($modal.find('input[name=transferencia_total1]').val().replace("$","").replace(",",""));
@@ -1700,6 +1735,41 @@
                       }
 
                     }
+
+
+                    if(metodo == "puntos")
+                    {
+                      var referencia = $modal.find('#referencia_pago').val();
+                      if($.inArray(referencia,referencias_array_puntos) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarpuntos',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
+                                if(data.response && cantidad <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array_puntos.push(referencia);
+
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
+                      }
+
+                    }
                     
                     if(metodo == "tarjeta")
                     {
@@ -1746,6 +1816,7 @@
                         $modal.find('#btn_hacer_pago').off('click');
                         $modal.find('#btn_hacer_pago').removeAttr('disabled');
                         $modal.find('#btn_hacer_pago').on('click',function(){
+                          referencias_array_puntos = [];
                           
                           $modal.find('#detalles_de_venta tr').filter(function(){
                             var cantidadRow = $(this).find('#cantidadRow').html();
@@ -1884,6 +1955,7 @@
                                                       '<option value="efectivo">Efectivo</option>',
                                                       '<option value="tarjeta">Tarjeta</option>',
                                                       '<option value="vales">Vales</option>',
+                                                      '<option value="puntos">Puntos</option>',
                                                     '</select>',
                                                   '</div>',
                                                 '</div>',
@@ -1991,6 +2063,16 @@
                       $modal.find('#referencia').removeAttr('hidden');
                       $modal.find('#digitos').attr('hidden',"");
                     }
+
+                    if(this.value == "puntos")
+                    {
+                      $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#digitos').attr('hidden',"");
+                    }
+
+
+
+
                   });
 
                   var totalDeVenta =  parseFloat($modal.find('input[name=transferencia_total2]').val().replace("$","").replace(",",""));
@@ -2058,6 +2140,40 @@
                       }
 
                     }
+
+                    if(metodo == "puntos")
+                    {
+                      var referencia = $modal.find('#referencia_pago').val();
+                      if($.inArray(referencia,referencias_array_puntos) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarpuntos',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
+                                if(data.response && cantidad <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array_puntos.push(referencia);
+
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
+                      }
+
+                    }
                     
                     if(metodo == "tarjeta")
                     {
@@ -2101,6 +2217,7 @@
                       {
                         $modal.find('#btn_hacer_pago').removeAttr('disabled');
                         $modal.find('#btn_hacer_pago').on('click',function(){
+                          referencias_array_puntos = [];
                           
                           $modal.find('#detalles_de_venta tr').filter(function(){
                             var cantidadRow = $(this).find('#cantidadRow').html();
@@ -2239,6 +2356,7 @@
                                                       '<option value="efectivo">Efectivo</option>',
                                                       '<option value="tarjeta">Tarjeta</option>',
                                                       '<option value="vales">Vales</option>',
+                                                      '<option value="puntos">Puntos</option>',
                                                     '</select>',
                                                   '</div>',
                                                 '</div>',
@@ -2346,6 +2464,16 @@
                       $modal.find('#referencia').removeAttr('hidden');
                       $modal.find('#digitos').attr('hidden',"");
                     }
+
+                    if(this.value == "puntos")
+                    {
+                      $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#digitos').attr('hidden',"");
+                    }
+
+
+
+
                   });
 
                   var totalDeVenta =  parseFloat($modal.find('input[name=transferencia_total3]').val().replace("$","").replace(",",""));
@@ -2413,6 +2541,41 @@
                       }
 
                     }
+
+                    if(metodo == "puntos")
+                    {
+                      var referencia = $modal.find('#referencia_pago').val();
+                      if($.inArray(referencia,referencias_array_puntos) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarpuntos',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
+                                if(data.response && cantidad <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array_puntos.push(referencia);
+
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
+                      }
+
+                    }
+
                     
                     if(metodo == "tarjeta")
                     {
@@ -2456,6 +2619,7 @@
                       {
                         $modal.find('#btn_hacer_pago').removeAttr('disabled');
                         $modal.find('#btn_hacer_pago').on('click',function(){
+                          referencias_array_puntos = [];
                           
                           $modal.find('#detalles_de_venta tr').filter(function(){
                             var cantidadRow = $(this).find('#cantidadRow').html();
@@ -2594,6 +2758,7 @@
                                                       '<option value="efectivo">Efectivo</option>',
                                                       '<option value="tarjeta">Tarjeta</option>',
                                                       '<option value="vales">Vales</option>',
+                                                      '<option value="puntos">Puntos</option>',
                                                     '</select>',
                                                   '</div>',
                                                 '</div>',
@@ -2701,6 +2866,22 @@
                       $modal.find('#referencia').removeAttr('hidden');
                       $modal.find('#digitos').attr('hidden',"");
                     }
+
+                    if(this.value == "puntos")
+                    {
+                      $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#digitos').attr('hidden',"");
+                    }
+
+                    if(this.value == "puntos")
+                    {
+                      $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#digitos').attr('hidden',"");
+                    }
+
+
+
+
                   });
 
                   var totalDeVenta =  parseFloat($modal.find('input[name=transferencia_total4]').val().replace("$","").replace(",",""));
@@ -2770,6 +2951,40 @@
                       }
 
                     }
+
+                    if(metodo == "puntos")
+                    {
+                      var referencia = $modal.find('#referencia_pago').val();
+                      if($.inArray(referencia,referencias_array_puntos) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarpuntos',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
+                                if(data.response && cantidad <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array_puntos.push(referencia);
+
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
+                      }
+
+                    }
                     
                     if(metodo == "tarjeta")
                     {
@@ -2813,6 +3028,7 @@
                       {
                         $modal.find('#btn_hacer_pago').removeAttr('disabled');
                         $modal.find('#btn_hacer_pago').on('click',function(){
+                          referencias_array_puntos = [];
                           
                           $modal.find('#detalles_de_venta tr').filter(function(){
                             var cantidadRow = $(this).find('#cantidadRow').html();
@@ -2951,6 +3167,7 @@
                                                       '<option value="efectivo">Efectivo</option>',
                                                       '<option value="tarjeta">Tarjeta</option>',
                                                       '<option value="vales">Vales</option>',
+                                                      '<option value="puntos">Puntos</option>',
                                                     '</select>',
                                                   '</div>',
                                                 '</div>',
@@ -3058,6 +3275,16 @@
                       $modal.find('#referencia').removeAttr('hidden');
                       $modal.find('#digitos').attr('hidden',"");
                     }
+
+                    if(this.value == "puntos")
+                    {
+                      $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#digitos').attr('hidden',"");
+                    }
+
+
+
+
                   });
 
                   var totalDeVenta =  parseFloat($modal.find('input[name=transferencia_total5]').val().replace("$","").replace(",",""));
@@ -3126,6 +3353,42 @@
 
                     }
                     
+
+                    if(metodo == "puntos")
+                    {
+                      var referencia = $modal.find('#referencia_pago').val();
+                      if($.inArray(referencia,referencias_array_puntos) < 0){
+                        if(cantidad != "" && referencia != "")
+                        {
+                          $.ajax({
+                              url:'/puntodeventa/verificarpuntos',
+                              type: 'POST',
+                              dataType: 'JSON',
+                              data:{
+                                  referencia:referencia,
+                              },
+                              success: function (data, textStatus, jqXHR) {
+                                if(data.response && cantidad <= data.cantidad)
+                                {
+                                  $tr.append('<td id="referenciaRow">'+referencia+'</td>');
+                                  $tr.append('<td id="digitosRow">N/A</td>');
+                                  booleano = true;
+                                  referencias_array_puntos.push(referencia);
+
+                                }else{
+                                  swal("Oopss...",data.message,"error");
+                                  booleano = false;
+                                }
+                                
+                              }
+                            });
+                        }
+                          
+                      }
+
+                    }
+
+
                     if(metodo == "tarjeta")
                     {
                       var referencia = $modal.find('#referencia_pago').val();
@@ -3168,6 +3431,7 @@
                       {
                         $modal.find('#btn_hacer_pago').removeAttr('disabled');
                         $modal.find('#btn_hacer_pago').on('click',function(){
+                          referencias_array_puntos = [];
                           
                           $modal.find('#detalles_de_venta tr').filter(function(){
                             var cantidadRow = $(this).find('#cantidadRow').html();

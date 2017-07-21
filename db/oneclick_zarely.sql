@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-06-2017 a las 20:36:02
+-- Tiempo de generación: 21-07-2017 a las 19:00:45
 -- Versión del servidor: 5.6.31
 -- Versión de PHP: 7.0.10
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `oneclick_zarely`
 --
-CREATE DATABASE IF NOT EXISTS `oneclick_zarely` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `oneclick_zarely`;
 
 -- --------------------------------------------------------
 
@@ -29,7 +27,6 @@ USE `oneclick_zarely`;
 -- Estructura de tabla para la tabla `cliente`
 --
 
-DROP TABLE IF EXISTS `cliente`;
 CREATE TABLE IF NOT EXISTS `cliente` (
   `idcliente` int(11) NOT NULL,
   `cliente_nombre` varchar(45) NOT NULL,
@@ -74,7 +71,6 @@ INSERT INTO `cliente` (`idcliente`, `cliente_nombre`, `cliente_apaterno`, `clien
 -- Estructura de tabla para la tabla `clienterelacionado`
 --
 
-DROP TABLE IF EXISTS `clienterelacionado`;
 CREATE TABLE IF NOT EXISTS `clienterelacionado` (
   `idclienterelacionado` int(11) NOT NULL,
   `idcliente` int(11) NOT NULL,
@@ -95,7 +91,6 @@ INSERT INTO `clienterelacionado` (`idclienterelacionado`, `idcliente`, `idclient
 -- Estructura de tabla para la tabla `color`
 --
 
-DROP TABLE IF EXISTS `color`;
 CREATE TABLE IF NOT EXISTS `color` (
   `idcolor` int(11) NOT NULL,
   `color_nombre` text NOT NULL
@@ -124,27 +119,22 @@ INSERT INTO `color` (`idcolor`, `color_nombre`) VALUES
 -- Estructura de tabla para la tabla `comisiones`
 --
 
-DROP TABLE IF EXISTS `comisiones`;
 CREATE TABLE IF NOT EXISTS `comisiones` (
   `idcomisiones` int(11) NOT NULL,
   `idsucursal` int(11) NOT NULL,
   `idempleado` int(11) NOT NULL,
   `comisiones_cantidad` int(11) NOT NULL,
   `comisiones_fecha` date NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `comisiones`
 --
 
 INSERT INTO `comisiones` (`idcomisiones`, `idsucursal`, `idempleado`, `comisiones_cantidad`, `comisiones_fecha`) VALUES
-(52, 1, 4, 5, '2017-06-08'),
-(53, 1, 4, 13, '2017-06-09'),
-(54, 1, 4, 5, '2017-06-12'),
-(55, 1, 4, 6, '2017-06-14'),
-(56, 1, 4, -88, '2017-06-15'),
-(57, 1, 4, 87, '2017-06-16'),
-(58, 1, 4, 5, '2017-06-23');
+(63, 1, 4, 6, '2017-06-26'),
+(64, 1, 4, 64, '2017-07-20'),
+(65, 1, 4, 30, '2017-07-21');
 
 -- --------------------------------------------------------
 
@@ -152,7 +142,6 @@ INSERT INTO `comisiones` (`idcomisiones`, `idsucursal`, `idempleado`, `comisione
 -- Estructura de tabla para la tabla `compra`
 --
 
-DROP TABLE IF EXISTS `compra`;
 CREATE TABLE IF NOT EXISTS `compra` (
   `idcompra` int(11) NOT NULL,
   `idproveedor` int(11) NOT NULL,
@@ -179,7 +168,6 @@ INSERT INTO `compra` (`idcompra`, `idproveedor`, `compra_fechacreacion`, `compra
 -- Estructura de tabla para la tabla `compradetalle`
 --
 
-DROP TABLE IF EXISTS `compradetalle`;
 CREATE TABLE IF NOT EXISTS `compradetalle` (
   `idcompradetalle` int(11) NOT NULL,
   `idcompra` int(11) NOT NULL,
@@ -216,7 +204,6 @@ INSERT INTO `compradetalle` (`idcompradetalle`, `idcompra`, `idproductovariante`
 -- Estructura de tabla para la tabla `configuracion`
 --
 
-DROP TABLE IF EXISTS `configuracion`;
 CREATE TABLE IF NOT EXISTS `configuracion` (
   `idconfiguracion` int(11) NOT NULL,
   `configuracion_` varchar(45) DEFAULT NULL
@@ -228,7 +215,6 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
 -- Estructura de tabla para la tabla `cortecaja`
 --
 
-DROP TABLE IF EXISTS `cortecaja`;
 CREATE TABLE IF NOT EXISTS `cortecaja` (
   `idcortecaja` int(11) NOT NULL,
   `idsucursal` int(11) NOT NULL,
@@ -247,7 +233,6 @@ CREATE TABLE IF NOT EXISTS `cortecaja` (
 -- Estructura de tabla para la tabla `cuentabancaria`
 --
 
-DROP TABLE IF EXISTS `cuentabancaria`;
 CREATE TABLE IF NOT EXISTS `cuentabancaria` (
   `idcuentabancaria` int(11) NOT NULL,
   `cuentabancaria_banco` varchar(255) NOT NULL,
@@ -269,7 +254,6 @@ INSERT INTO `cuentabancaria` (`idcuentabancaria`, `cuentabancaria_banco`, `cuent
 -- Estructura de tabla para la tabla `cuentabancariamovimiento`
 --
 
-DROP TABLE IF EXISTS `cuentabancariamovimiento`;
 CREATE TABLE IF NOT EXISTS `cuentabancariamovimiento` (
   `idcuentabancariamovimiento` int(11) NOT NULL,
   `idcuentabancaria` int(11) NOT NULL,
@@ -311,7 +295,6 @@ INSERT INTO `cuentabancariamovimiento` (`idcuentabancariamovimiento`, `idcuentab
 -- Estructura de tabla para la tabla `descuento`
 --
 
-DROP TABLE IF EXISTS `descuento`;
 CREATE TABLE IF NOT EXISTS `descuento` (
   `iddescuento` int(11) NOT NULL,
   `descuento_nombre` text NOT NULL,
@@ -337,7 +320,6 @@ INSERT INTO `descuento` (`iddescuento`, `descuento_nombre`, `descuento_fechainic
 -- Estructura de tabla para la tabla `descuentodetalle`
 --
 
-DROP TABLE IF EXISTS `descuentodetalle`;
 CREATE TABLE IF NOT EXISTS `descuentodetalle` (
   `iddescuentodetalle` int(11) NOT NULL,
   `iddescuento` int(11) NOT NULL,
@@ -360,7 +342,6 @@ INSERT INTO `descuentodetalle` (`iddescuentodetalle`, `iddescuento`, `idproducto
 -- Estructura de tabla para la tabla `devolucion`
 --
 
-DROP TABLE IF EXISTS `devolucion`;
 CREATE TABLE IF NOT EXISTS `devolucion` (
   `iddevolucion` int(11) NOT NULL,
   `idproveedor` int(11) NOT NULL,
@@ -384,7 +365,6 @@ INSERT INTO `devolucion` (`iddevolucion`, `idproveedor`, `devolucion_fecha`, `de
 -- Estructura de tabla para la tabla `devoluciondetalle`
 --
 
-DROP TABLE IF EXISTS `devoluciondetalle`;
 CREATE TABLE IF NOT EXISTS `devoluciondetalle` (
   `iddevoluciondetalle` int(11) NOT NULL,
   `iddevolucion` int(11) NOT NULL,
@@ -431,7 +411,6 @@ INSERT INTO `devoluciondetalle` (`iddevoluciondetalle`, `iddevolucion`, `idprodu
 -- Estructura de tabla para la tabla `empleado`
 --
 
-DROP TABLE IF EXISTS `empleado`;
 CREATE TABLE IF NOT EXISTS `empleado` (
   `idempleado` int(11) NOT NULL,
   `empleado_nombre` varchar(45) NOT NULL,
@@ -456,7 +435,7 @@ CREATE TABLE IF NOT EXISTS `empleado` (
   `empleado_ciudad` varchar(45) DEFAULT NULL,
   `empleado_estado` varchar(45) DEFAULT NULL,
   `idrol` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `empleado`
@@ -468,7 +447,8 @@ INSERT INTO `empleado` (`idempleado`, `empleado_nombre`, `empleado_apaterno`, `e
 (3, 'Petra vendedor', 'Hernandez', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'asdf', 1, 'secretaria a', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-02-15 12:34:39', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 2),
 (4, 'Armando ', 'Alonso', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'arm_chiva@hotmail.com', 1, 'administrador', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-02-15 10:43:34', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 1),
 (5, 'Armando ', 'Alonso', '-Orozco', NULL, NULL, NULL, NULL, NULL, 1, 'secretaria b', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-03-23 11:23:07', '2017-03-23', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3),
-(6, 'Vendedor', 'Juarez', '', NULL, NULL, NULL, NULL, NULL, 0, 'vendedora', 'e10adc3949ba59abbe56e057f20f883e', 0, '0000-00-00 00:00:00', '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5);
+(6, 'Vendedor', 'Juarez', '', NULL, NULL, NULL, NULL, NULL, 0, 'vendedora', 'e10adc3949ba59abbe56e057f20f883e', 0, '0000-00-00 00:00:00', '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5),
+(7, 'Armando ', 'Alonso', '-Orozco', 'wf23fa', 'ajlksdf', 'asldjkf', '3317238689', 'arm_chiva@hotmail.com', 1, 'administradorb', 'e10adc3949ba59abbe56e057f20f883e', 0, '2017-02-15 10:43:34', '1996-04-18', 'Fletes', '260', '234', 'La AscenciÃ²n', '48500', 'Cocula', 'Jalisco', 1);
 
 -- --------------------------------------------------------
 
@@ -476,7 +456,6 @@ INSERT INTO `empleado` (`idempleado`, `empleado_nombre`, `empleado_apaterno`, `e
 -- Estructura de tabla para la tabla `gasto`
 --
 
-DROP TABLE IF EXISTS `gasto`;
 CREATE TABLE IF NOT EXISTS `gasto` (
   `idgasto` int(11) NOT NULL,
   `gasto_nombre` varchar(100) NOT NULL,
@@ -496,7 +475,6 @@ INSERT INTO `gasto` (`idgasto`, `gasto_nombre`, `gasto_descripcion`) VALUES
 -- Estructura de tabla para la tabla `marca`
 --
 
-DROP TABLE IF EXISTS `marca`;
 CREATE TABLE IF NOT EXISTS `marca` (
   `idmarca` int(11) NOT NULL,
   `marca_nombre` varchar(255) NOT NULL
@@ -519,7 +497,6 @@ INSERT INTO `marca` (`idmarca`, `marca_nombre`) VALUES
 -- Estructura de tabla para la tabla `marcatallaje`
 --
 
-DROP TABLE IF EXISTS `marcatallaje`;
 CREATE TABLE IF NOT EXISTS `marcatallaje` (
   `idmarcatallaje` int(11) NOT NULL,
   `idmarca` int(11) NOT NULL,
@@ -544,7 +521,6 @@ INSERT INTO `marcatallaje` (`idmarcatallaje`, `idmarca`, `idtallaje`) VALUES
 -- Estructura de tabla para la tabla `material`
 --
 
-DROP TABLE IF EXISTS `material`;
 CREATE TABLE IF NOT EXISTS `material` (
   `idmaterial` int(11) NOT NULL,
   `material_nombre` varchar(255) NOT NULL
@@ -564,7 +540,6 @@ INSERT INTO `material` (`idmaterial`, `material_nombre`) VALUES
 -- Estructura de tabla para la tabla `medida`
 --
 
-DROP TABLE IF EXISTS `medida`;
 CREATE TABLE IF NOT EXISTS `medida` (
   `idmedida` int(11) NOT NULL,
   `medida_nombre` varchar(45) DEFAULT NULL,
@@ -592,7 +567,6 @@ INSERT INTO `medida` (`idmedida`, `medida_nombre`, `medida_xs`, `medida_s`, `med
 -- Estructura de tabla para la tabla `pedido`
 --
 
-DROP TABLE IF EXISTS `pedido`;
 CREATE TABLE IF NOT EXISTS `pedido` (
   `idpedido` int(11) NOT NULL,
   `idsucursal` int(11) NOT NULL,
@@ -620,7 +594,6 @@ INSERT INTO `pedido` (`idpedido`, `idsucursal`, `pedido_fecha`, `idproducto`, `p
 -- Estructura de tabla para la tabla `pedidomayorista`
 --
 
-DROP TABLE IF EXISTS `pedidomayorista`;
 CREATE TABLE IF NOT EXISTS `pedidomayorista` (
   `idpedidomayorista` int(11) NOT NULL,
   `idcliente` int(11) NOT NULL,
@@ -628,14 +601,14 @@ CREATE TABLE IF NOT EXISTS `pedidomayorista` (
   `pedidomayorista_estatus` enum('pendiente','solicitado','transito','completado') NOT NULL,
   `pedidomayorista_fechaentrega` date NOT NULL,
   `pedidomayorista_nota` text
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `pedidomayorista`
 --
 
 INSERT INTO `pedidomayorista` (`idpedidomayorista`, `idcliente`, `pedidomayorista_fechasolicitud`, `pedidomayorista_estatus`, `pedidomayorista_fechaentrega`, `pedidomayorista_nota`) VALUES
-(35, 1, '2017-04-01', 'pendiente', '2017-04-05', 'asdfds');
+(36, 2, '2017-05-31', 'completado', '2017-06-07', 'qwer');
 
 -- --------------------------------------------------------
 
@@ -643,7 +616,6 @@ INSERT INTO `pedidomayorista` (`idpedidomayorista`, `idcliente`, `pedidomayorist
 -- Estructura de tabla para la tabla `pedidomayoristadetalle`
 --
 
-DROP TABLE IF EXISTS `pedidomayoristadetalle`;
 CREATE TABLE IF NOT EXISTS `pedidomayoristadetalle` (
   `idpedidomayoristadetalle` int(11) NOT NULL,
   `idpedidomayorista` int(11) NOT NULL,
@@ -652,27 +624,86 @@ CREATE TABLE IF NOT EXISTS `pedidomayoristadetalle` (
   `pedidomayoristadetalle_cantidad` int(11) NOT NULL,
   `pedidomayoristadetalle_estatus` enum('pendiente','solicitado','transito','completado','cancelado') NOT NULL,
   `pedidomayoristadetalle_fecha` date NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `pedidomayoristadetalle`
 --
 
 INSERT INTO `pedidomayoristadetalle` (`idpedidomayoristadetalle`, `idpedidomayorista`, `idproductovariante`, `idproducto`, `pedidomayoristadetalle_cantidad`, `pedidomayoristadetalle_estatus`, `pedidomayoristadetalle_fecha`) VALUES
-(192, 35, 6897, 117, 1, 'pendiente', '2017-04-01'),
-(193, 35, 6899, 117, 2, 'solicitado', '2017-04-01'),
-(194, 35, 6901, 117, 0, 'completado', '2017-04-01'),
-(195, 35, 6903, 117, 3, 'transito', '2017-04-01'),
-(196, 35, 6905, 117, 0, 'cancelado', '2017-04-01'),
-(197, 35, 6907, 117, 2, 'completado', '2017-04-01'),
-(198, 35, 6909, 117, 0, 'pendiente', '2017-04-01'),
-(199, 35, 6911, 117, 0, 'pendiente', '2017-04-01'),
-(200, 35, 6913, 117, 1, 'transito', '2017-04-01'),
-(201, 35, 6915, 117, 1, 'completado', '2017-04-01'),
-(202, 35, 6917, 117, 3, 'transito', '2017-04-01'),
-(203, 35, 6919, 117, 4, 'pendiente', '2017-04-01'),
-(204, 35, 6921, 117, 0, 'pendiente', '2017-04-01'),
-(205, 35, 6923, 117, 1, 'solicitado', '2017-04-01');
+(213, 36, 6926, 123, 1, 'pendiente', '2017-05-31'),
+(214, 36, 6929, 123, 32, 'pendiente', '2017-05-31'),
+(215, 36, 6932, 123, 45, 'completado', '2017-05-31'),
+(216, 36, 6935, 123, 2, 'completado', '2017-05-31'),
+(217, 36, 6938, 123, 0, 'pendiente', '2017-05-31'),
+(218, 36, 6941, 123, 0, 'pendiente', '2017-05-31'),
+(219, 36, 6944, 123, 0, 'pendiente', '2017-05-31');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidosucursal`
+--
+
+CREATE TABLE IF NOT EXISTS `pedidosucursal` (
+  `idpedidosucursal` int(11) NOT NULL,
+  `idsucursal` int(11) NOT NULL,
+  `idempleado` int(11) NOT NULL,
+  `pedidosucursal_fechasolicitud` date NOT NULL,
+  `pedidosucursal_fechaentrega` date NOT NULL,
+  `pedidosucursal_estatus` enum('pendiente','solicitado','transito','completado') NOT NULL,
+  `pedidosucursal_nota` text
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `pedidosucursal`
+--
+
+INSERT INTO `pedidosucursal` (`idpedidosucursal`, `idsucursal`, `idempleado`, `pedidosucursal_fechasolicitud`, `pedidosucursal_fechaentrega`, `pedidosucursal_estatus`, `pedidosucursal_nota`) VALUES
+(5, 1, 2, '2017-05-29', '2017-05-31', 'transito', 'Hola a todosasdf'),
+(6, 1, 4, '2017-05-30', '2017-06-06', 'pendiente', 'asdf');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidosucursaldetalle`
+--
+
+CREATE TABLE IF NOT EXISTS `pedidosucursaldetalle` (
+  `idpedidosucursaldetalle` int(11) NOT NULL,
+  `idpedidosucursal` int(11) NOT NULL,
+  `idproductovariante` int(11) DEFAULT NULL,
+  `idproducto` int(11) DEFAULT NULL,
+  `pedidosucursaldetalle_cantidad` int(11) DEFAULT NULL,
+  `pedidosucursaldetalle_estatus` enum('pendiente','solicitado','transito','completado','cancelado') DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `pedidosucursaldetalle`
+--
+
+INSERT INTO `pedidosucursaldetalle` (`idpedidosucursaldetalle`, `idpedidosucursal`, `idproductovariante`, `idproducto`, `pedidosucursaldetalle_cantidad`, `pedidosucursaldetalle_estatus`) VALUES
+(71, 5, 6897, 117, 23, 'pendiente'),
+(72, 5, 6899, 117, 2, 'pendiente'),
+(73, 5, 6901, 117, 0, 'pendiente'),
+(74, 5, 6903, 117, 4, 'pendiente'),
+(75, 5, 6905, 117, 0, 'pendiente'),
+(76, 5, 6907, 117, 6, 'pendiente'),
+(77, 5, 6909, 117, 0, 'pendiente'),
+(78, 5, 6911, 117, 8, 'pendiente'),
+(79, 5, 6913, 117, 0, 'pendiente'),
+(80, 5, 6915, 117, 10, 'transito'),
+(81, 5, 6917, 117, 0, 'transito'),
+(82, 5, 6919, 117, 12, 'transito'),
+(83, 5, 6921, 117, 0, 'transito'),
+(84, 5, 6923, 117, 14, 'transito'),
+(85, 6, 6926, 123, 10, 'completado'),
+(86, 6, 6929, 123, 30, 'transito'),
+(87, 6, 6932, 123, 4, 'completado'),
+(88, 6, 6935, 123, 2, 'cancelado'),
+(89, 6, 6938, 123, 3, 'pendiente'),
+(90, 6, 6941, 123, 3, 'pendiente'),
+(91, 6, 6944, 123, 2, 'pendiente');
 
 -- --------------------------------------------------------
 
@@ -680,7 +711,6 @@ INSERT INTO `pedidomayoristadetalle` (`idpedidomayoristadetalle`, `idpedidomayor
 -- Estructura de tabla para la tabla `producto`
 --
 
-DROP TABLE IF EXISTS `producto`;
 CREATE TABLE IF NOT EXISTS `producto` (
   `idproducto` int(11) NOT NULL,
   `producto_modelo` varchar(100) NOT NULL,
@@ -697,7 +727,7 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `idtipocalzado` int(11) NOT NULL,
   `producto_descripcion` varchar(500) DEFAULT NULL,
   `producto_costo` decimal(10,5) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `producto`
@@ -723,7 +753,27 @@ INSERT INTO `producto` (`idproducto`, `producto_modelo`, `idmarca`, `idtemporada
 (132, 'Pruena', 1, 1, 0, 1, 'jovenes', 120.00000, 120.00000, 5, 5, NULL, 4, NULL, 120.00000),
 (133, 'Pruena', 1, 1, 0, 1, 'jovenes', 120.00000, 120.00000, 5, 5, NULL, 4, NULL, 120.00000),
 (134, 'Pruena', 1, 1, 0, 1, 'jovenes', 120.00000, 120.00000, 5, 5, NULL, 4, NULL, 120.00000),
-(135, 'Prueba 2', 1, 1, 0, 1, 'dama', 120.00000, 120.00000, 5, 5, NULL, 4, NULL, 120.00000);
+(135, 'Prueba 2', 1, 1, 0, 1, 'dama', 120.00000, 120.00000, 5, 5, NULL, 4, NULL, 120.00000),
+(136, 'Jordan', 1, 1, 0, 1, 'dama', 234.00000, 324.00000, 43, 23, NULL, 4, NULL, 234.00000),
+(137, 'Jordan', 1, 1, 0, 1, 'dama', 234.00000, 324.00000, 43, 23, NULL, 4, NULL, 234.00000),
+(138, 'Jordan', 1, 1, 0, 1, 'dama', 234.00000, 324.00000, 43, 23, NULL, 4, NULL, 234.00000),
+(139, 'Jordan', 1, 1, 0, 1, 'dama', 234.00000, 324.00000, 43, 23, NULL, 4, NULL, 234.00000),
+(140, 'Jordan', 1, 1, 0, 1, 'dama', 234.00000, 324.00000, 43, 23, NULL, 4, NULL, 234.00000),
+(141, 'Jordan', 1, 1, 0, 1, 'dama', 234.00000, 324.00000, 43, 23, NULL, 4, NULL, 234.00000),
+(142, 'Jordan', 1, 1, 0, 1, 'dama', 234.00000, 324.00000, 43, 23, NULL, 4, NULL, 234.00000),
+(143, 'Jordan', 1, 1, 0, 1, 'dama', 234.00000, 324.00000, 43, 23, NULL, 4, NULL, 234.00000),
+(144, 'Jordan', 1, 1, 0, 1, 'dama', 234.00000, 324.00000, 43, 23, NULL, 4, NULL, 234.00000),
+(145, 'Test 5', 1, 1, 0, 1, 'dama', 324.00000, 342.00000, 234, 2147483647, NULL, 4, NULL, 99999.99999),
+(146, 'Test 6', 1, 1, 0, 1, 'dama', 32.00000, 890.00000, 8932, 893, NULL, 4, NULL, 38.00000),
+(147, 'Test 6', 1, 1, 0, 1, 'dama', 32.00000, 890.00000, 8932, 893, NULL, 4, NULL, 38.00000),
+(148, 'Test 6', 1, 1, 0, 1, 'dama', 32.00000, 890.00000, 8932, 893, NULL, 4, NULL, 38.00000),
+(149, 'Test 6', 1, 1, 0, 1, 'dama', 32.00000, 890.00000, 8932, 893, NULL, 4, NULL, 38.00000),
+(150, 'Test 6', 1, 1, 0, 1, 'dama', 32.00000, 890.00000, 8932, 893, NULL, 4, NULL, 38.00000),
+(151, 'Test 6', 1, 1, 0, 1, 'dama', 32.00000, 890.00000, 8932, 893, NULL, 4, NULL, 38.00000),
+(152, 'Test 6', 1, 1, 0, 1, 'dama', 89.00000, 89.00000, 89, 898, NULL, 4, NULL, 99.00000),
+(153, 'Test 6', 1, 1, 0, 1, 'dama', 89.00000, 89.00000, 89, 898, NULL, 4, NULL, 99.00000),
+(154, 'Test 6', 1, 1, 0, 1, 'dama', 89.00000, 89.00000, 89, 898, NULL, 4, NULL, 99.00000),
+(155, 'Test 6', 1, 1, 0, 1, 'dama', 89.00000, 89.00000, 89, 898, NULL, 4, NULL, 99.00000);
 
 -- --------------------------------------------------------
 
@@ -731,13 +781,12 @@ INSERT INTO `producto` (`idproducto`, `producto_modelo`, `idmarca`, `idtemporada
 -- Estructura de tabla para la tabla `productocolor`
 --
 
-DROP TABLE IF EXISTS `productocolor`;
 CREATE TABLE IF NOT EXISTS `productocolor` (
   `idproductocolor` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
   `idcolor` int(11) NOT NULL,
   `productocolor_foto` text
-) ENGINE=InnoDB AUTO_INCREMENT=356 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=376 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `productocolor`
@@ -771,7 +820,27 @@ INSERT INTO `productocolor` (`idproductocolor`, `idproducto`, `idcolor`, `produc
 (352, 133, 3, '/img/productocolor/352.'),
 (353, 134, 2, '/img/productocolor/353.'),
 (354, 134, 3, '/img/productocolor/354.'),
-(355, 135, 3, '/img/productocolor/355.js');
+(355, 135, 3, '/img/productocolor/355.js'),
+(356, 136, 2, '/img/productocolor/356.'),
+(357, 137, 2, '/img/productocolor/357.'),
+(358, 138, 2, '/img/productocolor/358.'),
+(359, 139, 2, '/img/productocolor/359.'),
+(360, 140, 2, '/img/productocolor/360.'),
+(361, 141, 2, '/img/productocolor/361.'),
+(362, 142, 2, '/img/productocolor/362.'),
+(363, 143, 2, '/img/productocolor/363.'),
+(364, 144, 2, '/img/productocolor/364.'),
+(365, 145, 2, '/img/productocolor/365.'),
+(366, 146, 2, '/img/productocolor/366.'),
+(367, 147, 2, '/img/productocolor/367.'),
+(368, 148, 2, '/img/productocolor/368.'),
+(369, 149, 2, '/img/productocolor/369.'),
+(370, 150, 2, '/img/productocolor/370.'),
+(371, 151, 2, '/img/productocolor/371.'),
+(372, 152, 2, '/img/productocolor/372.'),
+(373, 153, 2, '/img/productocolor/373.'),
+(374, 154, 2, '/img/productocolor/374.'),
+(375, 155, 2, '/img/productocolor/375.');
 
 -- --------------------------------------------------------
 
@@ -779,12 +848,11 @@ INSERT INTO `productocolor` (`idproductocolor`, `idproducto`, `idcolor`, `produc
 -- Estructura de tabla para la tabla `productomaterial`
 --
 
-DROP TABLE IF EXISTS `productomaterial`;
 CREATE TABLE IF NOT EXISTS `productomaterial` (
   `idproductomaterial` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
   `idmaterial` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=260 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=280 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `productomaterial`
@@ -816,7 +884,27 @@ INSERT INTO `productomaterial` (`idproductomaterial`, `idproducto`, `idmaterial`
 (256, 132, 2),
 (257, 133, 2),
 (258, 134, 2),
-(259, 135, 2);
+(259, 135, 2),
+(260, 136, 2),
+(261, 137, 2),
+(262, 138, 2),
+(263, 139, 2),
+(264, 140, 2),
+(265, 141, 2),
+(266, 142, 2),
+(267, 143, 2),
+(268, 144, 2),
+(269, 145, 2),
+(270, 146, 2),
+(271, 147, 2),
+(272, 148, 2),
+(273, 149, 2),
+(274, 150, 2),
+(275, 151, 2),
+(276, 152, 2),
+(277, 153, 2),
+(278, 154, 2),
+(279, 155, 2);
 
 -- --------------------------------------------------------
 
@@ -824,7 +912,6 @@ INSERT INTO `productomaterial` (`idproductomaterial`, `idproducto`, `idmaterial`
 -- Estructura de tabla para la tabla `productomedida`
 --
 
-DROP TABLE IF EXISTS `productomedida`;
 CREATE TABLE IF NOT EXISTS `productomedida` (
   `idproductomedida` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
@@ -849,7 +936,6 @@ INSERT INTO `productomedida` (`idproductomedida`, `idproducto`, `idmedida`) VALU
 -- Estructura de tabla para la tabla `productosucursal`
 --
 
-DROP TABLE IF EXISTS `productosucursal`;
 CREATE TABLE IF NOT EXISTS `productosucursal` (
   `idproductosucursal` int(11) NOT NULL,
   `idproductovariante` int(11) NOT NULL,
@@ -861,59 +947,59 @@ CREATE TABLE IF NOT EXISTS `productosucursal` (
   `productosucursal_preciomayoreo` decimal(10,5) NOT NULL,
   `productosucursal_estatus` tinyint(1) NOT NULL DEFAULT '1',
   `productosucursal_costo` decimal(10,5) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3263 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3559 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `productosucursal`
 --
 
 INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo`) VALUES
-(157, 6897, 1, 260, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(158, 6898, 1, 32, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(159, 6899, 1, 228, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(160, 6900, 1, 392, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(161, 6901, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(162, 6902, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(163, 6903, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(164, 6904, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(165, 6905, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(166, 6906, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(167, 6907, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(168, 6908, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(169, 6909, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(170, 6910, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(171, 6911, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(172, 6912, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(173, 6913, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(174, 6914, 1, 0, 2, 2, 6.00000, 120.00000, 1, 0.00000),
-(175, 6915, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(176, 6916, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(177, 6917, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(178, 6918, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(179, 6919, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(180, 6920, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(181, 6921, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(182, 6922, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(183, 6923, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(184, 6924, 1, 0, 2, 4, 5.00000, 120.00000, 1, 0.00000),
-(185, 6897, 2, 12, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(186, 6898, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(187, 6899, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(188, 6900, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(189, 6901, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(190, 6902, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(191, 6903, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(192, 6904, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(193, 6905, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(194, 6906, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(195, 6907, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(196, 6908, 2, 5, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(197, 6909, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(198, 6910, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(199, 6911, 2, 3, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(200, 6912, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(201, 6913, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
-(202, 6914, 2, 0, 1, 2, 9.00000, 120.00000, 1, 0.00000),
+(157, 6897, 1, 395, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(158, 6898, 1, 400, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(159, 6899, 1, 391, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(160, 6900, 1, 318, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(161, 6901, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(162, 6902, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(163, 6903, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(164, 6904, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(165, 6905, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(166, 6906, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(167, 6907, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(168, 6908, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(169, 6909, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(170, 6910, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(171, 6911, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(172, 6912, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(173, 6913, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(174, 6914, 1, 0, 10, 4, 8.00000, 120.00000, 1, 0.00000),
+(175, 6915, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(176, 6916, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(177, 6917, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(178, 6918, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(179, 6919, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(180, 6920, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(181, 6921, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(182, 6922, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(183, 6923, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(184, 6924, 1, 0, 29, 41, 5.00000, 120.00000, 1, 0.00000),
+(185, 6897, 2, 11, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(186, 6898, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(187, 6899, 2, -3, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(188, 6900, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(189, 6901, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(190, 6902, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(191, 6903, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(192, 6904, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(193, 6905, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(194, 6906, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(195, 6907, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(196, 6908, 2, 5, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(197, 6909, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(198, 6910, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(199, 6911, 2, 3, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(200, 6912, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(201, 6913, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
+(202, 6914, 2, 0, 2, 2, 9.00000, 120.00000, 1, 0.00000),
 (203, 6915, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
 (204, 6916, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
 (205, 6917, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
@@ -924,27 +1010,27 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (210, 6922, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
 (211, 6923, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
 (212, 6924, 2, 0, 10, 4, 12.00000, 120.00000, 1, 0.00000),
-(213, 6925, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(214, 6926, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(215, 6927, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(216, 6928, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(217, 6929, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(218, 6930, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(219, 6931, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(220, 6932, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(221, 6933, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(222, 6934, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(223, 6935, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(224, 6936, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(225, 6937, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(226, 6938, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(227, 6939, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(228, 6940, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(229, 6941, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(230, 6942, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(231, 6943, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(232, 6944, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
-(233, 6945, 1, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
+(213, 6925, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(214, 6926, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(215, 6927, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(216, 6928, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(217, 6929, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(218, 6930, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(219, 6931, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(220, 6932, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(221, 6933, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(222, 6934, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(223, 6935, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(224, 6936, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(225, 6937, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(226, 6938, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(227, 6939, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(228, 6940, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(229, 6941, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(230, 6942, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(231, 6943, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(232, 6944, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
+(233, 6945, 1, 0, 23, 23, 32.00000, 23.00000, 1, 0.00000),
 (234, 6925, 2, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
 (235, 6926, 2, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
 (236, 6927, 2, 0, 234, 23, 32.00000, 23.00000, 1, 0.00000),
@@ -1712,9 +1798,9 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (998, 7245, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000),
 (999, 7246, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000),
 (1000, 7247, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000),
-(1001, 7248, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000),
-(1002, 7249, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000);
+(1001, 7248, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000);
 INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo`) VALUES
+(1002, 7249, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000),
 (1003, 7250, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000),
 (1004, 7251, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000),
 (1005, 7252, 2, 0, 5, 100, 500.00000, 400.00000, 1, 0.00000),
@@ -2537,9 +2623,9 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (1822, 7785, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000),
 (1823, 7786, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000),
 (1824, 7787, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000),
-(1825, 7788, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000),
-(1826, 7789, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000);
+(1825, 7788, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000);
 INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo`) VALUES
+(1826, 7789, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000),
 (1827, 7790, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000),
 (1828, 7791, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000),
 (1829, 7792, 1, 0, 100, 100, 500.00000, 400.00000, 1, 0.00000),
@@ -3012,9 +3098,9 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (2892, 8278, 2, 0, 123, 4, 234.00000, 423.00000, 1, 243.00000),
 (2893, 8279, 2, 0, 123, 4, 234.00000, 423.00000, 1, 243.00000),
 (2894, 8280, 2, 0, 123, 4, 234.00000, 423.00000, 1, 243.00000),
-(2895, 8281, 1, 3, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
-(2896, 8282, 1, 5, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
-(2897, 8283, 1, 4, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
+(2895, 8281, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
+(2896, 8282, 1, 6, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
+(2897, 8283, 1, 1, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (2898, 8284, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (2899, 8285, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
 (2900, 8286, 1, 0, 10, 10, 899.00000, 800.00000, 1, 1323.00000),
@@ -3335,9 +3421,9 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (3215, 8442, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
 (3216, 8443, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
 (3217, 8444, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
-(3218, 8445, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
-(3219, 8446, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000);
+(3218, 8445, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000);
 INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo`) VALUES
+(3219, 8446, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
 (3220, 8447, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
 (3221, 8448, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
 (3222, 8449, 1, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
@@ -3380,7 +3466,303 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 (3259, 8461, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
 (3260, 8462, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
 (3261, 8463, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
-(3262, 8464, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000);
+(3262, 8464, 2, 0, 5, 5, 120.00000, 120.00000, 1, 120.00000),
+(3263, 8465, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3264, 8466, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3265, 8467, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3266, 8468, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3267, 8469, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3268, 8465, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3269, 8466, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3270, 8467, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3271, 8468, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3272, 8469, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3273, 8470, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3274, 8471, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3275, 8472, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3276, 8473, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3277, 8474, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3278, 8470, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3279, 8471, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3280, 8472, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3281, 8473, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3282, 8474, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3283, 8475, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3284, 8476, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3285, 8477, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3286, 8478, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3287, 8479, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3288, 8475, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3289, 8476, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3290, 8477, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3291, 8478, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3292, 8479, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3293, 8480, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3294, 8481, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3295, 8482, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3296, 8483, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3297, 8484, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3298, 8480, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3299, 8481, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3300, 8482, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3301, 8483, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3302, 8484, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3303, 8485, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3304, 8486, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3305, 8487, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3306, 8488, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3307, 8489, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3308, 8485, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3309, 8486, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3310, 8487, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3311, 8488, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3312, 8489, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3313, 8490, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3314, 8491, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3315, 8492, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3316, 8493, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3317, 8494, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3318, 8490, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3319, 8491, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3320, 8492, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3321, 8493, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3322, 8494, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3323, 8495, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3324, 8496, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3325, 8497, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3326, 8498, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3327, 8499, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3328, 8495, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3329, 8496, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3330, 8497, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3331, 8498, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3332, 8499, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3333, 8500, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3334, 8501, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3335, 8502, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3336, 8503, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3337, 8504, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3338, 8500, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3339, 8501, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3340, 8502, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3341, 8503, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3342, 8504, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3343, 8505, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3344, 8506, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3345, 8507, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3346, 8508, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3347, 8509, 1, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3348, 8505, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3349, 8506, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3350, 8507, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3351, 8508, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3352, 8509, 2, 0, 43, 23, 234.00000, 324.00000, 1, 234.00000),
+(3353, 8510, 1, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3354, 8511, 1, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3355, 8512, 1, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3356, 8513, 1, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3357, 8514, 1, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3358, 8510, 2, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3359, 8511, 2, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3360, 8512, 2, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3361, 8513, 2, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3362, 8514, 2, 0, 234, 2147483647, 324.00000, 342.00000, 1, 99999.99999),
+(3363, 8515, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3364, 8516, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3365, 8517, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3366, 8518, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3367, 8519, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3368, 8515, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3369, 8516, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3370, 8517, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3371, 8518, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3372, 8519, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3373, 8520, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3374, 8521, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3375, 8522, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3376, 8523, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3377, 8524, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3378, 8520, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3379, 8521, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3380, 8522, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3381, 8523, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3382, 8524, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3383, 8525, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3384, 8526, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3385, 8527, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3386, 8528, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3387, 8529, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3388, 8525, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3389, 8526, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3390, 8527, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3391, 8528, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3392, 8529, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3393, 8530, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3394, 8531, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3395, 8532, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3396, 8533, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3397, 8534, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3398, 8530, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3399, 8531, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3400, 8532, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3401, 8533, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3402, 8534, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3403, 8535, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3404, 8536, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3405, 8537, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3406, 8538, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3407, 8539, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3408, 8535, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3409, 8536, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3410, 8537, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3411, 8538, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3412, 8539, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3413, 8540, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3414, 8541, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3415, 8542, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3416, 8543, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3417, 8544, 1, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3418, 8540, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3419, 8541, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3420, 8542, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3421, 8543, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3422, 8544, 2, 0, 8932, 893, 32.00000, 890.00000, 1, 38.00000),
+(3423, 8545, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3424, 8546, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3425, 8547, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3426, 8548, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3427, 8549, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3428, 8550, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3429, 8551, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3430, 8552, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3431, 8553, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3432, 8554, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3433, 8555, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3434, 8556, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3435, 8557, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3436, 8558, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3437, 8559, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3438, 8560, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3439, 8561, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3440, 8545, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3441, 8546, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3442, 8547, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3443, 8548, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3444, 8549, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3445, 8550, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3446, 8551, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3447, 8552, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3448, 8553, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3449, 8554, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3450, 8555, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3451, 8556, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3452, 8557, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3453, 8558, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3454, 8559, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3455, 8560, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3456, 8561, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3457, 8562, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3458, 8563, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3459, 8564, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3460, 8565, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3461, 8566, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3462, 8567, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3463, 8568, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3464, 8569, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3465, 8570, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3466, 8571, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3467, 8572, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3468, 8573, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3469, 8574, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3470, 8575, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3471, 8576, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3472, 8577, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3473, 8578, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3474, 8562, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3475, 8563, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3476, 8564, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3477, 8565, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3478, 8566, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3479, 8567, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3480, 8568, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3481, 8569, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3482, 8570, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3483, 8571, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3484, 8572, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3485, 8573, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3486, 8574, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3487, 8575, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3488, 8576, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3489, 8577, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3490, 8578, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3491, 8579, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3492, 8580, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3493, 8581, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3494, 8582, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3495, 8583, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3496, 8584, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3497, 8585, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3498, 8586, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3499, 8587, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3500, 8588, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3501, 8589, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3502, 8590, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3503, 8591, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3504, 8592, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3505, 8593, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3506, 8594, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3507, 8595, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3508, 8579, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3509, 8580, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3510, 8581, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3511, 8582, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3512, 8583, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3513, 8584, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3514, 8585, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3515, 8586, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3516, 8587, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3517, 8588, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3518, 8589, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3519, 8590, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3520, 8591, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3521, 8592, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3522, 8593, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3523, 8594, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3524, 8595, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3525, 8596, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3526, 8597, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3527, 8598, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3528, 8599, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3529, 8600, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3530, 8601, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3531, 8602, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3532, 8603, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3533, 8604, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3534, 8605, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3535, 8606, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3536, 8607, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3537, 8608, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3538, 8609, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3539, 8610, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3540, 8611, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3541, 8612, 1, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3542, 8596, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3543, 8597, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3544, 8598, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3545, 8599, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3546, 8600, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3547, 8601, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3548, 8602, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3549, 8603, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3550, 8604, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3551, 8605, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3552, 8606, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3553, 8607, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3554, 8608, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3555, 8609, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3556, 8610, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3557, 8611, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000),
+(3558, 8612, 2, 0, 89, 898, 89.00000, 89.00000, 1, 99.00000);
 
 -- --------------------------------------------------------
 
@@ -3388,12 +3770,11 @@ INSERT INTO `productosucursal` (`idproductosucursal`, `idproductovariante`, `ids
 -- Estructura de tabla para la tabla `productotallaje`
 --
 
-DROP TABLE IF EXISTS `productotallaje`;
 CREATE TABLE IF NOT EXISTS `productotallaje` (
   `idproductotallaje` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
   `idtallaje` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `productotallaje`
@@ -3428,7 +3809,27 @@ INSERT INTO `productotallaje` (`idproductotallaje`, `idproducto`, `idtallaje`) V
 (40, 132, 6),
 (41, 133, 6),
 (42, 134, 6),
-(43, 135, 6);
+(43, 135, 6),
+(44, 136, 6),
+(45, 137, 6),
+(46, 138, 6),
+(47, 139, 6),
+(48, 140, 6),
+(49, 141, 6),
+(50, 142, 6),
+(51, 143, 6),
+(52, 144, 6),
+(53, 145, 6),
+(54, 146, 6),
+(55, 147, 6),
+(56, 148, 6),
+(57, 149, 6),
+(58, 150, 6),
+(59, 151, 6),
+(60, 152, 7),
+(61, 153, 7),
+(62, 154, 7),
+(63, 155, 7);
 
 -- --------------------------------------------------------
 
@@ -3436,7 +3837,6 @@ INSERT INTO `productotallaje` (`idproductotallaje`, `idproducto`, `idtallaje`) V
 -- Estructura de tabla para la tabla `productovariante`
 --
 
-DROP TABLE IF EXISTS `productovariante`;
 CREATE TABLE IF NOT EXISTS `productovariante` (
   `idproductovariante` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
@@ -3446,7 +3846,7 @@ CREATE TABLE IF NOT EXISTS `productovariante` (
   `productovariante_talla` varchar(45) NOT NULL,
   `productovariante_tallatipo` enum('medida','numero','ninguno') DEFAULT NULL,
   `productovariante_estatus` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=8465 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8613 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `productovariante`
@@ -3454,7 +3854,7 @@ CREATE TABLE IF NOT EXISTS `productovariante` (
 
 INSERT INTO `productovariante` (`idproductovariante`, `idproducto`, `idproductocolor`, `idproductomaterial`, `productovariante_codigobarras`, `productovariante_talla`, `productovariante_tallatipo`, `productovariante_estatus`) VALUES
 (6897, 117, 309, 221, NULL, '26', 'numero', 1),
-(6898, 117, 310, 221, NULL, '26', 'numero', 1),
+(6898, 117, 310, 221, 'adsf', '26', 'numero', 1),
 (6899, 117, 309, 221, NULL, '26.5', 'numero', 1),
 (6900, 117, 310, 221, NULL, '26.5', 'numero', 1),
 (6901, 117, 309, 221, NULL, '27', 'numero', 1),
@@ -4513,9 +4913,9 @@ INSERT INTO `productovariante` (`idproductovariante`, `idproducto`, `idproductoc
 (7954, 128, 321, 236, NULL, '23', 'numero', 1),
 (7955, 128, 322, 236, NULL, '23', 'numero', 1),
 (7956, 128, 321, 237, NULL, '23', 'numero', 1),
-(7957, 128, 322, 237, NULL, '23', 'numero', 1),
-(8107, 130, 334, 245, NULL, '7', 'numero', 1);
+(7957, 128, 322, 237, NULL, '23', 'numero', 1);
 INSERT INTO `productovariante` (`idproductovariante`, `idproducto`, `idproductocolor`, `idproductomaterial`, `productovariante_codigobarras`, `productovariante_talla`, `productovariante_tallatipo`, `productovariante_estatus`) VALUES
+(8107, 130, 334, 245, NULL, '7', 'numero', 1),
 (8108, 130, 334, 245, NULL, '7.5', 'numero', 1),
 (8109, 130, 334, 245, NULL, '8', 'numero', 1),
 (8110, 130, 334, 245, NULL, '8.5', 'numero', 1),
@@ -4708,7 +5108,155 @@ INSERT INTO `productovariante` (`idproductovariante`, `idproducto`, `idproductoc
 (8461, 135, 355, 259, NULL, '7.5', 'numero', 1),
 (8462, 135, 355, 259, NULL, '8', 'numero', 1),
 (8463, 135, 355, 259, NULL, '8.5', 'numero', 1),
-(8464, 135, 355, 259, NULL, '9', 'numero', 1);
+(8464, 135, 355, 259, NULL, '9', 'numero', 1),
+(8465, 136, 356, 260, NULL, '7', 'numero', 1),
+(8466, 136, 356, 260, NULL, '7.5', 'numero', 1),
+(8467, 136, 356, 260, NULL, '8', 'numero', 1),
+(8468, 136, 356, 260, NULL, '8.5', 'numero', 1),
+(8469, 136, 356, 260, NULL, '9', 'numero', 1),
+(8470, 137, 357, 261, NULL, '7', 'numero', 1),
+(8471, 137, 357, 261, NULL, '7.5', 'numero', 1),
+(8472, 137, 357, 261, NULL, '8', 'numero', 1),
+(8473, 137, 357, 261, NULL, '8.5', 'numero', 1),
+(8474, 137, 357, 261, NULL, '9', 'numero', 1),
+(8475, 138, 358, 262, NULL, '7', 'numero', 1),
+(8476, 138, 358, 262, NULL, '7.5', 'numero', 1),
+(8477, 138, 358, 262, NULL, '8', 'numero', 1),
+(8478, 138, 358, 262, NULL, '8.5', 'numero', 1),
+(8479, 138, 358, 262, NULL, '9', 'numero', 1),
+(8480, 139, 359, 263, NULL, '7', 'numero', 1),
+(8481, 139, 359, 263, NULL, '7.5', 'numero', 1),
+(8482, 139, 359, 263, NULL, '8', 'numero', 1),
+(8483, 139, 359, 263, NULL, '8.5', 'numero', 1),
+(8484, 139, 359, 263, NULL, '9', 'numero', 1),
+(8485, 140, 360, 264, NULL, '7', 'numero', 1),
+(8486, 140, 360, 264, NULL, '7.5', 'numero', 1),
+(8487, 140, 360, 264, NULL, '8', 'numero', 1),
+(8488, 140, 360, 264, NULL, '8.5', 'numero', 1),
+(8489, 140, 360, 264, NULL, '9', 'numero', 1),
+(8490, 141, 361, 265, NULL, '7', 'numero', 1),
+(8491, 141, 361, 265, NULL, '7.5', 'numero', 1),
+(8492, 141, 361, 265, NULL, '8', 'numero', 1),
+(8493, 141, 361, 265, NULL, '8.5', 'numero', 1),
+(8494, 141, 361, 265, NULL, '9', 'numero', 1),
+(8495, 142, 362, 266, NULL, '7', 'numero', 1),
+(8496, 142, 362, 266, NULL, '7.5', 'numero', 1),
+(8497, 142, 362, 266, NULL, '8', 'numero', 1),
+(8498, 142, 362, 266, NULL, '8.5', 'numero', 1),
+(8499, 142, 362, 266, NULL, '9', 'numero', 1),
+(8500, 143, 363, 267, NULL, '7', 'numero', 1),
+(8501, 143, 363, 267, NULL, '7.5', 'numero', 1),
+(8502, 143, 363, 267, NULL, '8', 'numero', 1),
+(8503, 143, 363, 267, NULL, '8.5', 'numero', 1),
+(8504, 143, 363, 267, NULL, '9', 'numero', 1),
+(8505, 144, 364, 268, NULL, '7', 'numero', 1),
+(8506, 144, 364, 268, NULL, '7.5', 'numero', 1),
+(8507, 144, 364, 268, NULL, '8', 'numero', 1),
+(8508, 144, 364, 268, NULL, '8.5', 'numero', 1),
+(8509, 144, 364, 268, NULL, '9', 'numero', 1),
+(8510, 145, 365, 269, NULL, '7', 'numero', 1),
+(8511, 145, 365, 269, NULL, '7.5', 'numero', 1),
+(8512, 145, 365, 269, NULL, '8', 'numero', 1),
+(8513, 145, 365, 269, NULL, '8.5', 'numero', 1),
+(8514, 145, 365, 269, NULL, '9', 'numero', 1),
+(8515, 146, 366, 270, NULL, '7', 'numero', 1),
+(8516, 146, 366, 270, NULL, '7.5', 'numero', 1),
+(8517, 146, 366, 270, NULL, '8', 'numero', 1),
+(8518, 146, 366, 270, NULL, '8.5', 'numero', 1),
+(8519, 146, 366, 270, NULL, '9', 'numero', 1),
+(8520, 147, 367, 271, NULL, '7', 'numero', 1),
+(8521, 147, 367, 271, NULL, '7.5', 'numero', 1),
+(8522, 147, 367, 271, NULL, '8', 'numero', 1),
+(8523, 147, 367, 271, NULL, '8.5', 'numero', 1),
+(8524, 147, 367, 271, NULL, '9', 'numero', 1),
+(8525, 148, 368, 272, NULL, '7', 'numero', 1),
+(8526, 148, 368, 272, NULL, '7.5', 'numero', 1),
+(8527, 148, 368, 272, NULL, '8', 'numero', 1),
+(8528, 148, 368, 272, NULL, '8.5', 'numero', 1),
+(8529, 148, 368, 272, NULL, '9', 'numero', 1),
+(8530, 149, 369, 273, NULL, '7', 'numero', 1),
+(8531, 149, 369, 273, NULL, '7.5', 'numero', 1),
+(8532, 149, 369, 273, NULL, '8', 'numero', 1),
+(8533, 149, 369, 273, NULL, '8.5', 'numero', 1),
+(8534, 149, 369, 273, NULL, '9', 'numero', 1),
+(8535, 150, 370, 274, NULL, '7', 'numero', 1),
+(8536, 150, 370, 274, NULL, '7.5', 'numero', 1),
+(8537, 150, 370, 274, NULL, '8', 'numero', 1),
+(8538, 150, 370, 274, NULL, '8.5', 'numero', 1),
+(8539, 150, 370, 274, NULL, '9', 'numero', 1),
+(8540, 151, 371, 275, 'Test 6 - Piel / Rojo / 7', '7', 'numero', 1),
+(8541, 151, 371, 275, 'Test 6 - Piel / Rojo / 7.5', '7.5', 'numero', 1),
+(8542, 151, 371, 275, 'Test 6 - Piel / Rojo / 8', '8', 'numero', 1),
+(8543, 151, 371, 275, 'Test 6 - Piel / Rojo / 8.5', '8.5', 'numero', 1),
+(8544, 151, 371, 275, 'Test 6 - Piel / Rojo / 9', '9', 'numero', 1),
+(8545, 152, 372, 276, 'Test 6 - Piel / Rojo / 15', '15', 'numero', 1),
+(8546, 152, 372, 276, NULL, '15.5', 'numero', 1),
+(8547, 152, 372, 276, NULL, '16', 'numero', 1),
+(8548, 152, 372, 276, NULL, '16.5', 'numero', 1),
+(8549, 152, 372, 276, NULL, '17', 'numero', 1),
+(8550, 152, 372, 276, NULL, '17.5', 'numero', 1),
+(8551, 152, 372, 276, NULL, '18', 'numero', 1),
+(8552, 152, 372, 276, NULL, '18.5', 'numero', 1),
+(8553, 152, 372, 276, NULL, '19', 'numero', 1),
+(8554, 152, 372, 276, NULL, '19.5', 'numero', 1),
+(8555, 152, 372, 276, NULL, '20', 'numero', 1),
+(8556, 152, 372, 276, NULL, '20.5', 'numero', 1),
+(8557, 152, 372, 276, NULL, '21', 'numero', 1),
+(8558, 152, 372, 276, NULL, '21.5', 'numero', 1),
+(8559, 152, 372, 276, NULL, '22', 'numero', 1),
+(8560, 152, 372, 276, NULL, '22.5', 'numero', 1),
+(8561, 152, 372, 276, NULL, '23', 'numero', 1),
+(8562, 153, 373, 277, 'Test 6PielRojo-15', '15', 'numero', 1),
+(8563, 153, 373, 277, NULL, '15.5', 'numero', 1),
+(8564, 153, 373, 277, NULL, '16', 'numero', 1),
+(8565, 153, 373, 277, NULL, '16.5', 'numero', 1),
+(8566, 153, 373, 277, NULL, '17', 'numero', 1),
+(8567, 153, 373, 277, NULL, '17.5', 'numero', 1),
+(8568, 153, 373, 277, NULL, '18', 'numero', 1),
+(8569, 153, 373, 277, NULL, '18.5', 'numero', 1),
+(8570, 153, 373, 277, NULL, '19', 'numero', 1),
+(8571, 153, 373, 277, NULL, '19.5', 'numero', 1),
+(8572, 153, 373, 277, NULL, '20', 'numero', 1),
+(8573, 153, 373, 277, NULL, '20.5', 'numero', 1),
+(8574, 153, 373, 277, NULL, '21', 'numero', 1),
+(8575, 153, 373, 277, NULL, '21.5', 'numero', 1),
+(8576, 153, 373, 277, NULL, '22', 'numero', 1),
+(8577, 153, 373, 277, NULL, '22.5', 'numero', 1),
+(8578, 153, 373, 277, NULL, '23', 'numero', 1),
+(8579, 154, 374, 278, 'Test 6PielRojo15', '15', 'numero', 1),
+(8580, 154, 374, 278, NULL, '15.5', 'numero', 1),
+(8581, 154, 374, 278, NULL, '16', 'numero', 1),
+(8582, 154, 374, 278, NULL, '16.5', 'numero', 1),
+(8583, 154, 374, 278, NULL, '17', 'numero', 1),
+(8584, 154, 374, 278, NULL, '17.5', 'numero', 1),
+(8585, 154, 374, 278, NULL, '18', 'numero', 1),
+(8586, 154, 374, 278, NULL, '18.5', 'numero', 1),
+(8587, 154, 374, 278, NULL, '19', 'numero', 1),
+(8588, 154, 374, 278, NULL, '19.5', 'numero', 1),
+(8589, 154, 374, 278, NULL, '20', 'numero', 1),
+(8590, 154, 374, 278, NULL, '20.5', 'numero', 1),
+(8591, 154, 374, 278, NULL, '21', 'numero', 1),
+(8592, 154, 374, 278, NULL, '21.5', 'numero', 1),
+(8593, 154, 374, 278, NULL, '22', 'numero', 1),
+(8594, 154, 374, 278, NULL, '22.5', 'numero', 1),
+(8595, 154, 374, 278, NULL, '23', 'numero', 1),
+(8596, 155, 375, 279, 'Test 6PielRojo15', '15', 'numero', 1),
+(8597, 155, 375, 279, 'Test 6PielRojo15.5', '15.5', 'numero', 1),
+(8598, 155, 375, 279, 'Test 6PielRojo16', '16', 'numero', 1),
+(8599, 155, 375, 279, 'Test 6PielRojo16.5', '16.5', 'numero', 1),
+(8600, 155, 375, 279, 'Test 6PielRojo17', '17', 'numero', 1),
+(8601, 155, 375, 279, 'Test 6PielRojo17.5', '17.5', 'numero', 1),
+(8602, 155, 375, 279, 'Test 6PielRojo18', '18', 'numero', 1),
+(8603, 155, 375, 279, 'Test 6PielRojo18.5', '18.5', 'numero', 1),
+(8604, 155, 375, 279, 'Test 6PielRojo19', '19', 'numero', 1),
+(8605, 155, 375, 279, 'Test 6PielRojo19.5', '19.5', 'numero', 1),
+(8606, 155, 375, 279, 'Test 6PielRojo20', '20', 'numero', 1),
+(8607, 155, 375, 279, 'Test 6PielRojo20.5', '20.5', 'numero', 1),
+(8608, 155, 375, 279, 'Test 6PielRojo21', '21', 'numero', 1),
+(8609, 155, 375, 279, 'Test 6PielRojo21.5', '21.5', 'numero', 1),
+(8610, 155, 375, 279, 'Test 6PielRojo22', '22', 'numero', 1),
+(8611, 155, 375, 279, 'Test 6PielRojo22.5', '22.5', 'numero', 1),
+(8612, 155, 375, 279, 'Test 6PielRojo23', '23', 'numero', 1);
 
 -- --------------------------------------------------------
 
@@ -4716,7 +5264,6 @@ INSERT INTO `productovariante` (`idproductovariante`, `idproducto`, `idproductoc
 -- Estructura de tabla para la tabla `promocion`
 --
 
-DROP TABLE IF EXISTS `promocion`;
 CREATE TABLE IF NOT EXISTS `promocion` (
   `idpromocion` int(11) NOT NULL,
   `promocion_nombre` text NOT NULL,
@@ -4739,7 +5286,6 @@ INSERT INTO `promocion` (`idpromocion`, `promocion_nombre`, `promocion_fechainic
 -- Estructura de tabla para la tabla `promociondetalle`
 --
 
-DROP TABLE IF EXISTS `promociondetalle`;
 CREATE TABLE IF NOT EXISTS `promociondetalle` (
   `idpromociondetalle` int(11) NOT NULL,
   `idpromocion` int(11) NOT NULL,
@@ -4761,7 +5307,6 @@ INSERT INTO `promociondetalle` (`idpromociondetalle`, `idpromocion`, `idmarca`, 
 -- Estructura de tabla para la tabla `proveedor`
 --
 
-DROP TABLE IF EXISTS `proveedor`;
 CREATE TABLE IF NOT EXISTS `proveedor` (
   `idproveedor` int(11) NOT NULL,
   `proveedor_nombrecomercial` varchar(45) DEFAULT NULL,
@@ -4786,7 +5331,6 @@ INSERT INTO `proveedor` (`idproveedor`, `proveedor_nombrecomercial`, `proveedor_
 -- Estructura de tabla para la tabla `proveedormarca`
 --
 
-DROP TABLE IF EXISTS `proveedormarca`;
 CREATE TABLE IF NOT EXISTS `proveedormarca` (
   `idproveedormarca` int(11) NOT NULL,
   `idproveedor` int(11) NOT NULL,
@@ -4799,7 +5343,6 @@ CREATE TABLE IF NOT EXISTS `proveedormarca` (
 -- Estructura de tabla para la tabla `rol`
 --
 
-DROP TABLE IF EXISTS `rol`;
 CREATE TABLE IF NOT EXISTS `rol` (
   `idrol` int(11) NOT NULL,
   `rol_nombre` varchar(45) NOT NULL,
@@ -4824,7 +5367,6 @@ INSERT INTO `rol` (`idrol`, `rol_nombre`, `rol_descripcion`) VALUES
 -- Estructura de tabla para la tabla `sucursal`
 --
 
-DROP TABLE IF EXISTS `sucursal`;
 CREATE TABLE IF NOT EXISTS `sucursal` (
   `idsucursal` int(11) NOT NULL,
   `sucursal_nombrecomercial` varchar(255) NOT NULL,
@@ -4852,13 +5394,12 @@ INSERT INTO `sucursal` (`idsucursal`, `sucursal_nombrecomercial`, `sucursal_razo
 -- Estructura de tabla para la tabla `sucursalempleado`
 --
 
-DROP TABLE IF EXISTS `sucursalempleado`;
 CREATE TABLE IF NOT EXISTS `sucursalempleado` (
   `idsucursalempleado` int(11) NOT NULL,
   `idsucursal` int(11) NOT NULL,
   `idempleado` int(11) NOT NULL,
   `sucursalempleado_estatus` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `sucursalempleado`
@@ -4870,7 +5411,8 @@ INSERT INTO `sucursalempleado` (`idsucursalempleado`, `idsucursal`, `idempleado`
 (59, 1, 2, 0),
 (60, 1, 4, 0),
 (61, 2, 3, 0),
-(62, 2, 1, 0);
+(62, 2, 1, 0),
+(63, 2, 7, 0);
 
 -- --------------------------------------------------------
 
@@ -4878,7 +5420,6 @@ INSERT INTO `sucursalempleado` (`idsucursalempleado`, `idsucursal`, `idempleado`
 -- Estructura de tabla para la tabla `tallaje`
 --
 
-DROP TABLE IF EXISTS `tallaje`;
 CREATE TABLE IF NOT EXISTS `tallaje` (
   `idtallaje` int(11) NOT NULL,
   `tallaje_nombre` varchar(45) NOT NULL,
@@ -4956,10 +5497,60 @@ INSERT INTO `tallaje` (`idtallaje`, `tallaje_nombre`, `talla_70`, `talla_75`, `t
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tarjetapuntos`
+--
+
+CREATE TABLE IF NOT EXISTS `tarjetapuntos` (
+  `idtarjetapuntos` int(11) NOT NULL,
+  `tarjetapuntos_fechaactivacion` datetime NOT NULL,
+  `tarjetapuntos_estatus` tinyint(1) NOT NULL,
+  `tarjetapuntos_puntos` int(11) NOT NULL,
+  `idempleadoactivador` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tarjetapuntos`
+--
+
+INSERT INTO `tarjetapuntos` (`idtarjetapuntos`, `tarjetapuntos_fechaactivacion`, `tarjetapuntos_estatus`, `tarjetapuntos_puntos`, `idempleadoactivador`) VALUES
+(1, '0000-00-00 00:00:00', 1, 5, 1),
+(3, '2017-07-20 00:00:00', 1, 3, 4),
+(4, '2017-07-20 00:00:00', 1, 4, 4),
+(5, '2017-07-20 00:00:00', 1, 3, 4),
+(6, '2017-07-21 00:00:00', 1, 4, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tarjetapuntosdetalle`
+--
+
+CREATE TABLE IF NOT EXISTS `tarjetapuntosdetalle` (
+  `idtarjetapuntosdetalle` int(11) NOT NULL,
+  `idtarjetapuntos` int(11) NOT NULL,
+  `tarjetapuntosdetalle_tipo` enum('ingreso','egreso') NOT NULL,
+  `tarjetapuntosdetalle_cantidad` int(11) NOT NULL,
+  `idventa` int(11) NOT NULL,
+  `idempleado` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tarjetapuntosdetalle`
+--
+
+INSERT INTO `tarjetapuntosdetalle` (`idtarjetapuntosdetalle`, `idtarjetapuntos`, `tarjetapuntosdetalle_tipo`, `tarjetapuntosdetalle_cantidad`, `idventa`, `idempleado`) VALUES
+(1, 1, 'egreso', 5, 533, 4),
+(2, 3, 'egreso', 5, 541, 4),
+(3, 4, 'egreso', 0, 542, 4),
+(4, 3, 'egreso', 5, 543, 4),
+(5, 3, 'egreso', 10, 548, 4);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `temporada`
 --
 
-DROP TABLE IF EXISTS `temporada`;
 CREATE TABLE IF NOT EXISTS `temporada` (
   `idtemporada` int(11) NOT NULL,
   `temporada_nombre` varchar(100) NOT NULL
@@ -4982,7 +5573,6 @@ INSERT INTO `temporada` (`idtemporada`, `temporada_nombre`) VALUES
 -- Estructura de tabla para la tabla `tipocalzado`
 --
 
-DROP TABLE IF EXISTS `tipocalzado`;
 CREATE TABLE IF NOT EXISTS `tipocalzado` (
   `idtipocalzado` int(11) NOT NULL,
   `tipocalzado_nombre` varchar(45) NOT NULL,
@@ -5002,26 +5592,26 @@ INSERT INTO `tipocalzado` (`idtipocalzado`, `tipocalzado_nombre`, `tipocalzado_d
 -- Estructura de tabla para la tabla `transferencia`
 --
 
-DROP TABLE IF EXISTS `transferencia`;
 CREATE TABLE IF NOT EXISTS `transferencia` (
   `idtransferencia` int(11) NOT NULL,
   `idsucursalorigen` int(11) NOT NULL,
   `idsucursaldestino` int(11) NOT NULL,
   `transferencia_fecha` datetime NOT NULL,
-  `transferencia_estatus` enum('creada','aceptada','rechazada') NOT NULL,
+  `transferencia_estatus` enum('creada','aceptada','rechazada','cancelada') NOT NULL,
   `idempleadocreador` int(11) NOT NULL,
   `idempleadoreceptor` int(11) DEFAULT NULL,
   `transferencia_nota` varchar(45) DEFAULT NULL,
-  `transferencia_fecharecepcion` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  `transferencia_fecharecepcion` datetime DEFAULT NULL,
+  `transferencia_razon` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `transferencia`
 --
 
-INSERT INTO `transferencia` (`idtransferencia`, `idsucursalorigen`, `idsucursaldestino`, `transferencia_fecha`, `transferencia_estatus`, `idempleadocreador`, `idempleadoreceptor`, `transferencia_nota`, `transferencia_fecharecepcion`) VALUES
-(5, 1, 2, '2017-04-13 11:09:11', 'rechazada', 4, 1, 'asdfasdf', '2017-04-20 11:09:11'),
-(9, 1, 2, '2017-04-07 11:00:54', 'creada', 4, NULL, 'asdfadsf', '2017-04-19 11:00:54');
+INSERT INTO `transferencia` (`idtransferencia`, `idsucursalorigen`, `idsucursaldestino`, `transferencia_fecha`, `transferencia_estatus`, `idempleadocreador`, `idempleadoreceptor`, `transferencia_nota`, `transferencia_fecharecepcion`, `transferencia_razon`) VALUES
+(5, 1, 2, '2017-07-04 19:34:27', 'cancelada', 4, 1, 'asdfasdf', '2017-07-04 19:34:27', 'asdfasdf'),
+(7, 1, 2, '2017-07-07 00:05:05', 'aceptada', 4, 7, 'adsfasd', '2017-07-07 00:00:00', 'asdfasdfasdfasdf');
 
 -- --------------------------------------------------------
 
@@ -5029,7 +5619,6 @@ INSERT INTO `transferencia` (`idtransferencia`, `idsucursalorigen`, `idsucursald
 -- Estructura de tabla para la tabla `transferenciadetalle`
 --
 
-DROP TABLE IF EXISTS `transferenciadetalle`;
 CREATE TABLE IF NOT EXISTS `transferenciadetalle` (
   `idtransferenciadetalle` int(11) NOT NULL,
   `idtransferencia` int(11) NOT NULL,
@@ -5037,41 +5626,41 @@ CREATE TABLE IF NOT EXISTS `transferenciadetalle` (
   `transferenciadetalle_cantidad` decimal(10,2) NOT NULL,
   `transferenciadetalle_preciounitario` decimal(10,2) NOT NULL,
   `transferenciadetalle_subtotal` decimal(10,2) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `transferenciadetalle`
 --
 
 INSERT INTO `transferenciadetalle` (`idtransferenciadetalle`, `idtransferencia`, `idproductovariante`, `transferenciadetalle_cantidad`, `transferenciadetalle_preciounitario`, `transferenciadetalle_subtotal`) VALUES
-(85, 9, 6897, 1.00, 1.00, 1.00),
-(86, 9, 6899, 1.00, 1.00, 1.00),
-(87, 9, 6901, 1.00, 1.00, 1.00),
-(88, 9, 6903, 1.00, 1.00, 1.00),
-(89, 9, 6905, 1.00, 1.00, 1.00),
-(90, 9, 6907, 1.00, 1.00, 1.00),
-(91, 9, 6909, 1.00, 1.00, 1.00),
-(92, 9, 6911, 1.00, 1.00, 1.00),
-(93, 9, 6913, 1.00, 1.00, 1.00),
-(94, 9, 6915, 1.00, 1.00, 1.00),
-(95, 9, 6917, 1.00, 1.00, 1.00),
-(96, 9, 6919, 1.00, 1.00, 1.00),
-(97, 9, 6921, 1.00, 1.00, 1.00),
-(98, 9, 6923, 1.00, 1.00, 1.00),
-(99, 5, 6897, 1.00, 1.00, 1.00),
-(100, 5, 6899, 1.00, 1.00, 1.00),
-(101, 5, 6901, 1.00, 1.00, 1.00),
-(102, 5, 6903, 1.00, 1.00, 1.00),
-(103, 5, 6905, 1.00, 1.00, 1.00),
-(104, 5, 6907, 1.00, 1.00, 1.00),
-(105, 5, 6909, 1.00, 1.00, 1.00),
-(106, 5, 6911, 1.00, 1.00, 1.00),
-(107, 5, 6913, 1.00, 1.00, 1.00),
-(108, 5, 6915, 2.00, 2.00, 4.00),
-(109, 5, 6917, 2.00, 2.00, 4.00),
-(110, 5, 6919, 2.00, 2.00, 4.00),
-(111, 5, 6921, 2.00, 2.00, 4.00),
-(112, 5, 6923, 2.00, 2.00, 4.00);
+(127, 5, 6897, 1.00, 1.00, 1.00),
+(128, 5, 6899, 1.00, 1.00, 1.00),
+(129, 5, 6901, 1.00, 1.00, 1.00),
+(130, 5, 6903, 1.00, 1.00, 1.00),
+(131, 5, 6905, 1.00, 1.00, 1.00),
+(132, 5, 6907, 1.00, 1.00, 1.00),
+(133, 5, 6909, 1.00, 1.00, 1.00),
+(134, 5, 6911, 1.00, 1.00, 1.00),
+(135, 5, 6913, 1.00, 1.00, 1.00),
+(136, 5, 6915, 2.00, 2.00, 4.00),
+(137, 5, 6917, 2.00, 2.00, 4.00),
+(138, 5, 6919, 2.00, 2.00, 4.00),
+(139, 5, 6921, 2.00, 2.00, 4.00),
+(140, 5, 6923, 2.00, 2.00, 4.00),
+(197, 7, 6897, 1.00, 1.00, 1.00),
+(198, 7, 6899, 3.00, 1.00, 3.00),
+(199, 7, 6901, 0.00, 1.00, 0.00),
+(200, 7, 6903, 0.00, 1.00, 0.00),
+(201, 7, 6905, 0.00, 1.00, 0.00),
+(202, 7, 6907, 0.00, 1.00, 0.00),
+(203, 7, 6909, 0.00, 1.00, 0.00),
+(204, 7, 6911, 0.00, 1.00, 0.00),
+(205, 7, 6913, 0.00, 1.00, 0.00),
+(206, 7, 6915, 0.00, 1.00, 0.00),
+(207, 7, 6917, 0.00, 1.00, 0.00),
+(208, 7, 6919, 0.00, 1.00, 0.00),
+(209, 7, 6921, 0.00, 1.00, 0.00),
+(210, 7, 6923, 0.00, 1.00, 0.00);
 
 -- --------------------------------------------------------
 
@@ -5079,7 +5668,6 @@ INSERT INTO `transferenciadetalle` (`idtransferenciadetalle`, `idtransferencia`,
 -- Estructura de tabla para la tabla `vale`
 --
 
-DROP TABLE IF EXISTS `vale`;
 CREATE TABLE IF NOT EXISTS `vale` (
   `idvale` int(11) NOT NULL,
   `idsucursal` int(11) NOT NULL,
@@ -5088,15 +5676,17 @@ CREATE TABLE IF NOT EXISTS `vale` (
   `vale_vigenciadesde` datetime NOT NULL,
   `vale_vigenciahasta` datetime NOT NULL,
   `vale_cantidadutilizada` decimal(10,5) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `vale`
 --
 
 INSERT INTO `vale` (`idvale`, `idsucursal`, `vale_cantidad`, `vale_estatus`, `vale_vigenciadesde`, `vale_vigenciahasta`, `vale_cantidadutilizada`) VALUES
-(1, 1, 656.27000, 1, '2017-06-23 00:00:00', '2017-06-23 00:00:00', NULL),
-(2, 1, 656.27000, 1, '2017-06-23 00:00:00', '2017-06-23 00:00:00', NULL);
+(35, 1, 100.00000, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 20.00000),
+(36, 1, 80.00000, 1, '2017-06-26 00:00:00', '2017-09-26 00:00:00', NULL),
+(37, 1, 5.40000, 1, '2017-06-26 00:00:00', '2017-09-26 00:00:00', NULL),
+(38, 1, 6.00000, 1, '2017-06-26 00:00:00', '2017-09-26 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -5104,7 +5694,6 @@ INSERT INTO `vale` (`idvale`, `idsucursal`, `vale_cantidad`, `vale_estatus`, `va
 -- Estructura de tabla para la tabla `venta`
 --
 
-DROP TABLE IF EXISTS `venta`;
 CREATE TABLE IF NOT EXISTS `venta` (
   `idventa` int(11) NOT NULL,
   `idempleadocajero` int(11) NOT NULL,
@@ -5120,19 +5709,33 @@ CREATE TABLE IF NOT EXISTS `venta` (
   `venta_iva` decimal(15,5) NOT NULL,
   `venta_estatus` enum('cancelada','completada','procesando','devolucion','defecto') NOT NULL,
   `venta_facturacion` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=503 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=549 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `venta`
 --
 
 INSERT INTO `venta` (`idventa`, `idempleadocajero`, `idempleadovendedor`, `idcliente`, `venta_total`, `venta_fecha`, `venta_comprobante`, `idsucursal`, `venta_estatuspago`, `venta_tipo`, `venta_subtotal`, `venta_iva`, `venta_estatus`, `venta_facturacion`) VALUES
-(493, 4, 6, 2, 42.00000, '2017-06-19 11:53:13', NULL, 1, 1, 'credito', 36.20690, 5.79310, 'completada', NULL),
-(494, 4, 6, 2, 30.00000, '2017-06-19 10:52:29', NULL, 1, 1, 'credito', 25.86207, 4.13793, 'completada', NULL),
-(499, 4, 6, 1, 45.60000, '2017-06-19 14:40:16', NULL, 1, 1, 'venta', 39.31034, 6.28966, 'completada', NULL),
-(500, 4, 6, 2, 78.00000, '2017-06-21 23:53:22', NULL, 1, 0, 'credito', 67.24138, 10.75862, 'procesando', NULL),
-(501, 4, 6, 1, 1426.42000, '2017-06-23 12:06:24', NULL, 1, 1, 'venta', 1229.67241, 196.74759, 'completada', NULL),
-(502, 4, 6, 1, 733.61000, '2017-06-23 15:16:58', NULL, 1, 1, 'venta', 632.42241, 101.18759, 'devolucion', NULL);
+(525, 4, 6, 1, 34.80000, '2017-06-26 14:57:36', NULL, 1, 1, 'venta', 30.00000, 4.80000, 'devolucion', NULL),
+(528, 4, 6, 1, 7.20000, '2017-07-20 00:59:55', NULL, 1, 0, 'venta', 6.20690, 0.99310, 'procesando', NULL),
+(529, 4, 6, 1, 7.20000, '2017-07-20 01:12:39', NULL, 1, 0, 'venta', 6.20690, 0.99310, 'procesando', NULL),
+(530, 4, 6, 1, 7.20000, '2017-07-20 01:16:07', NULL, 1, 0, 'venta', 6.20690, 0.99310, 'procesando', NULL),
+(532, 4, 6, 1, 7.20000, '2017-07-20 01:18:07', NULL, 1, 0, 'venta', 6.20690, 0.99310, 'procesando', NULL),
+(533, 4, 6, 1, 7.20000, '2017-07-20 01:19:48', NULL, 1, 1, 'venta', 6.20690, 0.99310, 'completada', NULL),
+(534, 4, 6, 1, 7.20000, '2017-07-20 14:38:42', NULL, 1, 1, 'venta', 6.20690, 0.99310, 'completada', NULL),
+(535, 4, 6, 1, 7.20000, '2017-07-20 14:39:43', NULL, 1, 1, 'venta', 6.20690, 0.99310, 'completada', NULL),
+(536, 4, 6, 1, 7.20000, '2017-07-20 14:42:36', NULL, 1, 1, 'venta', 6.20690, 0.99310, 'completada', NULL),
+(537, 4, 6, 1, 80.00000, '2017-07-20 14:58:09', NULL, 1, 1, 'venta', 68.96552, 11.03448, 'completada', NULL),
+(538, 4, 6, 1, 80.00000, '2017-07-20 15:01:48', NULL, 1, 1, 'venta', 68.96552, 11.03448, 'completada', NULL),
+(539, 4, 6, 1, 80.00000, '2017-07-20 15:04:06', NULL, 1, 1, 'venta', 68.96552, 11.03448, 'completada', NULL),
+(540, 4, 6, 1, 80.00000, '2017-07-20 15:06:43', NULL, 1, 1, 'venta', 68.96552, 11.03448, 'completada', NULL),
+(541, 4, 6, 1, 80.00000, '2017-07-20 15:08:01', NULL, 1, 1, 'venta', 68.96552, 11.03448, 'completada', NULL),
+(542, 4, 6, 1, 80.00000, '2017-07-20 15:13:22', NULL, 1, 1, 'venta', 68.96552, 11.03448, 'completada', NULL),
+(543, 4, 6, 1, 80.00000, '2017-07-21 13:06:33', NULL, 1, 1, 'venta', 68.96552, 11.03448, 'completada', NULL),
+(544, 4, 6, 1, 80.00000, '2017-07-21 13:09:30', NULL, 1, 1, 'venta', 68.96552, 11.03448, 'completada', NULL),
+(545, 4, 6, 1, 7.20000, '2017-07-21 13:12:19', NULL, 1, 0, 'venta', 6.20690, 0.99310, 'procesando', NULL),
+(546, 4, 6, 1, 7.20000, '2017-07-21 13:12:40', NULL, 1, 0, 'venta', 6.20690, 0.99310, 'procesando', NULL),
+(548, 4, 6, 1, 80.00000, '2017-07-21 13:20:11', NULL, 1, 1, 'venta', 68.96552, 11.03448, 'completada', NULL);
 
 -- --------------------------------------------------------
 
@@ -5140,7 +5743,6 @@ INSERT INTO `venta` (`idventa`, `idempleadocajero`, `idempleadovendedor`, `idcli
 -- Estructura de tabla para la tabla `ventadetalle`
 --
 
-DROP TABLE IF EXISTS `ventadetalle`;
 CREATE TABLE IF NOT EXISTS `ventadetalle` (
   `idventadetalle` int(11) NOT NULL,
   `idventa` int(11) NOT NULL,
@@ -5150,35 +5752,35 @@ CREATE TABLE IF NOT EXISTS `ventadetalle` (
   `ventadetalle_preciounitario` decimal(15,5) NOT NULL,
   `ventadetalle_estatus` enum('completo','defecto','cambio') NOT NULL,
   `ventadetalle_descuento` float DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=863 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1429 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `ventadetalle`
 --
 
 INSERT INTO `ventadetalle` (`idventadetalle`, `idventa`, `idproductovariante`, `ventadetalle_cantidad`, `ventadetalle_subtotal`, `ventadetalle_preciounitario`, `ventadetalle_estatus`, `ventadetalle_descuento`) VALUES
-(596, 493, 6897, 3, 18.00000, 6.00000, 'cambio', 0),
-(597, 493, 6899, 4, 24.00000, 6.00000, 'cambio', 0),
-(598, 494, 6899, 2, 12.00000, 6.00000, 'completo', 0),
-(599, 494, 6897, 3, 18.00000, 6.00000, 'completo', 0),
-(815, 499, 6897, 4, 21.60000, 6.00000, 'completo', 10),
-(816, 499, 6899, 4, 24.00000, 6.00000, 'completo', 0),
-(817, 499, 6897, 2, -12.00000, 6.00000, 'cambio', 0),
-(818, 499, 6899, 2, -12.00000, 6.00000, 'cambio', 0),
-(819, 499, 6897, 2, -12.00000, 6.00000, 'defecto', 0),
-(820, 499, 6899, 2, -12.00000, 6.00000, 'defecto', 0),
-(821, 499, 6897, 2, -12.00000, 6.00000, 'defecto', 0),
-(822, 499, 6899, 2, -12.00000, 6.00000, 'defecto', 0),
-(823, 500, 6897, 12, 72.00000, 6.00000, 'completo', 0),
-(824, 500, 6899, 1, 6.00000, 6.00000, 'completo', 0),
-(825, 501, 6899, 1, 6.00000, 6.00000, 'completo', 0),
-(826, 501, 8281, 1, 710.21000, 899.00000, 'completo', 21),
-(827, 501, 8283, 1, 710.21000, 899.00000, 'completo', 21),
-(858, 502, 6899, 1, 6.00000, 6.00000, 'completo', 0),
-(859, 502, 6900, 1, 6.00000, 6.00000, 'completo', 0),
-(860, 502, 8281, 1, 710.21000, 899.00000, 'completo', 21),
-(861, 502, 6897, 1, 5.40000, 6.00000, 'completo', 10),
-(862, 502, 6898, 1, 6.00000, 6.00000, 'completo', 0);
+(1403, 525, 6897, 2, 10.80000, 6.00000, 'completo', 10),
+(1404, 525, 6900, 2, 12.00000, 6.00000, 'completo', 0),
+(1405, 525, 6899, 2, 12.00000, 6.00000, 'completo', 0),
+(1408, 528, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1409, 529, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1410, 530, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1412, 532, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1413, 533, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1414, 534, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1415, 535, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1416, 536, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1417, 537, 6899, 10, 80.00000, 8.00000, 'completo', 0),
+(1418, 538, 6900, 10, 80.00000, 8.00000, 'completo', 0),
+(1419, 539, 6900, 10, 80.00000, 8.00000, 'completo', 0),
+(1420, 540, 6900, 10, 80.00000, 8.00000, 'completo', 0),
+(1421, 541, 6900, 10, 80.00000, 8.00000, 'completo', 0),
+(1422, 542, 6900, 10, 80.00000, 8.00000, 'completo', 0),
+(1423, 543, 6900, 10, 80.00000, 8.00000, 'completo', 0),
+(1424, 544, 6900, 10, 80.00000, 8.00000, 'completo', 0),
+(1425, 545, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1426, 546, 6897, 1, 7.20000, 8.00000, 'completo', 10),
+(1428, 548, 6900, 10, 80.00000, 8.00000, 'completo', 0);
 
 -- --------------------------------------------------------
 
@@ -5186,37 +5788,54 @@ INSERT INTO `ventadetalle` (`idventadetalle`, `idventa`, `idproductovariante`, `
 -- Estructura de tabla para la tabla `ventapago`
 --
 
-DROP TABLE IF EXISTS `ventapago`;
 CREATE TABLE IF NOT EXISTS `ventapago` (
   `idventapago` int(11) NOT NULL,
   `idventa` int(11) NOT NULL,
   `venta_fecha` datetime NOT NULL,
   `idempleado` int(11) NOT NULL,
-  `ventapago_metododepago` enum('efectivo','vales','tarjeta') NOT NULL,
+  `ventapago_metododepago` enum('efectivo','vales','tarjeta','puntos') NOT NULL,
   `ventapago_cantidad` decimal(15,5) DEFAULT NULL,
   `ventapago_referencia` varchar(50) DEFAULT NULL,
   `ventapago_cuatrodigitos` varchar(4) DEFAULT NULL,
   `idvale` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=256 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=327 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `ventapago`
 --
 
 INSERT INTO `ventapago` (`idventapago`, `idventa`, `venta_fecha`, `idempleado`, `ventapago_metododepago`, `ventapago_cantidad`, `ventapago_referencia`, `ventapago_cuatrodigitos`, `idvale`) VALUES
-(231, 493, '2017-06-09 11:53:13', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
-(232, 493, '2017-06-09 11:53:13', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
-(233, 493, '2017-06-09 11:53:13', 4, 'efectivo', 2.00000, NULL, NULL, NULL),
-(234, 494, '2017-06-12 10:52:29', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
-(235, 494, '2017-06-12 10:52:29', 4, 'efectivo', 3.00000, NULL, NULL, NULL),
-(236, 494, '2017-06-12 10:52:29', 4, 'efectivo', 4.00000, NULL, NULL, NULL),
-(237, 494, '2017-06-12 10:52:29', 4, 'efectivo', 3.00000, NULL, NULL, NULL),
-(250, 499, '2017-06-16 14:40:16', 4, 'efectivo', 114.00000, NULL, NULL, NULL),
-(251, 500, '2017-06-21 23:53:22', 4, 'efectivo', 50.00000, NULL, NULL, NULL),
-(252, 501, '2017-06-23 12:06:24', 4, 'efectivo', 1426.42000, NULL, NULL, NULL),
-(253, 502, '2017-06-23 15:16:58', 4, 'efectivo', 11.40000, NULL, NULL, NULL),
-(254, 502, '2017-06-23 15:16:58', 4, 'efectivo', 5.40000, NULL, NULL, NULL),
-(255, 502, '2017-06-23 15:16:58', 4, 'efectivo', 2148.63000, NULL, NULL, NULL);
+(296, 525, '2017-06-26 14:57:36', 4, 'vales', 20.00000, '35', NULL, NULL),
+(297, 525, '2017-06-26 14:57:36', 4, 'efectivo', 14.80000, NULL, NULL, NULL),
+(298, 529, '2017-07-20 01:12:39', 4, 'efectivo', 5.20000, NULL, NULL, NULL),
+(299, 533, '2017-07-20 01:19:48', 4, 'puntos', 1.00000, '1', NULL, NULL),
+(300, 533, '2017-07-20 01:19:48', 4, 'efectivo', 6.20000, NULL, NULL, NULL),
+(301, 534, '2017-07-20 14:38:42', 4, 'efectivo', 4.00000, NULL, NULL, NULL),
+(302, 534, '2017-07-20 14:38:42', 4, 'efectivo', 3.20000, NULL, NULL, NULL),
+(303, 535, '2017-07-20 14:39:43', 4, 'efectivo', 4.00000, NULL, NULL, NULL),
+(304, 535, '2017-07-20 14:39:43', 4, 'efectivo', 3.20000, NULL, NULL, NULL),
+(305, 536, '2017-07-20 14:42:36', 4, 'efectivo', 7.20000, NULL, NULL, NULL),
+(306, 537, '2017-07-20 14:58:09', 4, 'efectivo', 30.00000, NULL, NULL, NULL),
+(307, 537, '2017-07-20 14:58:09', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
+(308, 537, '2017-07-20 14:58:09', 4, 'tarjeta', 30.00000, '1', '4323', NULL),
+(309, 538, '2017-07-20 15:01:48', 4, 'efectivo', 30.00000, NULL, NULL, NULL),
+(310, 538, '2017-07-20 15:01:48', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
+(311, 538, '2017-07-20 15:01:48', 4, 'tarjeta', 30.00000, '3', '2343', NULL),
+(312, 539, '2017-07-20 15:04:06', 4, 'efectivo', 30.00000, NULL, NULL, NULL),
+(313, 539, '2017-07-20 15:04:06', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
+(314, 539, '2017-07-20 15:04:06', 4, 'tarjeta', 30.00000, '324', '4323', NULL),
+(315, 540, '2017-07-20 15:06:43', 4, 'efectivo', 30.00000, NULL, NULL, NULL),
+(316, 540, '2017-07-20 15:06:43', 4, 'efectivo', 20.00000, NULL, NULL, NULL),
+(317, 540, '2017-07-20 15:06:43', 4, 'tarjeta', 30.00000, '234', '4324', NULL),
+(318, 541, '2017-07-20 15:08:01', 4, 'puntos', 1.00000, '3', NULL, NULL),
+(319, 541, '2017-07-20 15:08:01', 4, 'efectivo', 79.00000, NULL, NULL, NULL),
+(320, 542, '2017-07-20 15:13:22', 4, 'puntos', 0.00000, '4', NULL, NULL),
+(321, 542, '2017-07-20 15:13:22', 4, 'efectivo', 80.00000, NULL, NULL, NULL),
+(322, 543, '2017-07-21 13:06:33', 4, 'puntos', 1.00000, '3', NULL, NULL),
+(323, 543, '2017-07-21 13:06:33', 4, 'efectivo', 79.00000, NULL, NULL, NULL),
+(324, 544, '2017-07-21 13:09:30', 4, 'efectivo', 80.00000, NULL, NULL, NULL),
+(325, 548, '2017-07-21 13:20:11', 4, 'puntos', 1.00000, '3', NULL, NULL),
+(326, 548, '2017-07-21 13:20:11', 4, 'efectivo', 79.00000, NULL, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -5388,6 +6007,23 @@ ALTER TABLE `pedidomayoristadetalle`
   ADD KEY `idproductovariante_pedidomayoristadetalle_idx` (`idproductovariante`);
 
 --
+-- Indices de la tabla `pedidosucursal`
+--
+ALTER TABLE `pedidosucursal`
+  ADD PRIMARY KEY (`idpedidosucursal`),
+  ADD KEY `idempleado` (`idempleado`),
+  ADD KEY `idsucursal` (`idsucursal`);
+
+--
+-- Indices de la tabla `pedidosucursaldetalle`
+--
+ALTER TABLE `pedidosucursaldetalle`
+  ADD PRIMARY KEY (`idpedidosucursaldetalle`),
+  ADD KEY `idpedidosucursal` (`idpedidosucursal`),
+  ADD KEY `idproductovariante` (`idproductovariante`),
+  ADD KEY `idproducto` (`idproducto`);
+
+--
 -- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
@@ -5503,6 +6139,22 @@ ALTER TABLE `tallaje`
   ADD PRIMARY KEY (`idtallaje`);
 
 --
+-- Indices de la tabla `tarjetapuntos`
+--
+ALTER TABLE `tarjetapuntos`
+  ADD PRIMARY KEY (`idtarjetapuntos`),
+  ADD KEY `idempleadoactivador_tarjetapuntos_idx` (`idempleadoactivador`);
+
+--
+-- Indices de la tabla `tarjetapuntosdetalle`
+--
+ALTER TABLE `tarjetapuntosdetalle`
+  ADD PRIMARY KEY (`idtarjetapuntosdetalle`),
+  ADD KEY `idventa` (`idventa`),
+  ADD KEY `idempleado` (`idempleado`),
+  ADD KEY `idtarjetapuntos_tarjetapuntosdetalle_idx` (`idtarjetapuntos`);
+
+--
 -- Indices de la tabla `temporada`
 --
 ALTER TABLE `temporada`
@@ -5588,7 +6240,7 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT de la tabla `comisiones`
 --
 ALTER TABLE `comisiones`
-  MODIFY `idcomisiones` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=59;
+  MODIFY `idcomisiones` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=66;
 --
 -- AUTO_INCREMENT de la tabla `compra`
 --
@@ -5643,7 +6295,7 @@ ALTER TABLE `devoluciondetalle`
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `idempleado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `idempleado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `gasto`
 --
@@ -5678,27 +6330,37 @@ ALTER TABLE `pedido`
 -- AUTO_INCREMENT de la tabla `pedidomayorista`
 --
 ALTER TABLE `pedidomayorista`
-  MODIFY `idpedidomayorista` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
+  MODIFY `idpedidomayorista` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT de la tabla `pedidomayoristadetalle`
 --
 ALTER TABLE `pedidomayoristadetalle`
-  MODIFY `idpedidomayoristadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=206;
+  MODIFY `idpedidomayoristadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=220;
+--
+-- AUTO_INCREMENT de la tabla `pedidosucursal`
+--
+ALTER TABLE `pedidosucursal`
+  MODIFY `idpedidosucursal` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT de la tabla `pedidosucursaldetalle`
+--
+ALTER TABLE `pedidosucursaldetalle`
+  MODIFY `idpedidosucursaldetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=92;
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `idproducto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=136;
+  MODIFY `idproducto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=156;
 --
 -- AUTO_INCREMENT de la tabla `productocolor`
 --
 ALTER TABLE `productocolor`
-  MODIFY `idproductocolor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=356;
+  MODIFY `idproductocolor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=376;
 --
 -- AUTO_INCREMENT de la tabla `productomaterial`
 --
 ALTER TABLE `productomaterial`
-  MODIFY `idproductomaterial` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=260;
+  MODIFY `idproductomaterial` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=280;
 --
 -- AUTO_INCREMENT de la tabla `productomedida`
 --
@@ -5708,17 +6370,17 @@ ALTER TABLE `productomedida`
 -- AUTO_INCREMENT de la tabla `productosucursal`
 --
 ALTER TABLE `productosucursal`
-  MODIFY `idproductosucursal` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3263;
+  MODIFY `idproductosucursal` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3559;
 --
 -- AUTO_INCREMENT de la tabla `productotallaje`
 --
 ALTER TABLE `productotallaje`
-  MODIFY `idproductotallaje` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
+  MODIFY `idproductotallaje` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT de la tabla `productovariante`
 --
 ALTER TABLE `productovariante`
-  MODIFY `idproductovariante` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8465;
+  MODIFY `idproductovariante` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8613;
 --
 -- AUTO_INCREMENT de la tabla `promocion`
 --
@@ -5753,12 +6415,22 @@ ALTER TABLE `sucursal`
 -- AUTO_INCREMENT de la tabla `sucursalempleado`
 --
 ALTER TABLE `sucursalempleado`
-  MODIFY `idsucursalempleado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=63;
+  MODIFY `idsucursalempleado` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT de la tabla `tallaje`
 --
 ALTER TABLE `tallaje`
   MODIFY `idtallaje` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT de la tabla `tarjetapuntos`
+--
+ALTER TABLE `tarjetapuntos`
+  MODIFY `idtarjetapuntos` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT de la tabla `tarjetapuntosdetalle`
+--
+ALTER TABLE `tarjetapuntosdetalle`
+  MODIFY `idtarjetapuntosdetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `temporada`
 --
@@ -5773,32 +6445,32 @@ ALTER TABLE `tipocalzado`
 -- AUTO_INCREMENT de la tabla `transferencia`
 --
 ALTER TABLE `transferencia`
-  MODIFY `idtransferencia` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+  MODIFY `idtransferencia` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `transferenciadetalle`
 --
 ALTER TABLE `transferenciadetalle`
-  MODIFY `idtransferenciadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=113;
+  MODIFY `idtransferenciadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=211;
 --
 -- AUTO_INCREMENT de la tabla `vale`
 --
 ALTER TABLE `vale`
-  MODIFY `idvale` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `idvale` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=503;
+  MODIFY `idventa` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=549;
 --
 -- AUTO_INCREMENT de la tabla `ventadetalle`
 --
 ALTER TABLE `ventadetalle`
-  MODIFY `idventadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=863;
+  MODIFY `idventadetalle` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1429;
 --
 -- AUTO_INCREMENT de la tabla `ventapago`
 --
 ALTER TABLE `ventapago`
-  MODIFY `idventapago` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=256;
+  MODIFY `idventapago` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=327;
 --
 -- Restricciones para tablas volcadas
 --
@@ -5895,6 +6567,21 @@ ALTER TABLE `pedidomayoristadetalle`
   ADD CONSTRAINT `idproductovariante_pedidomayoristadetalle` FOREIGN KEY (`idproductovariante`) REFERENCES `productovariante` (`idproductovariante`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `pedidosucursal`
+--
+ALTER TABLE `pedidosucursal`
+  ADD CONSTRAINT `idempleado_pedidosucursal` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idsucursal_pedidosucursal` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `pedidosucursaldetalle`
+--
+ALTER TABLE `pedidosucursaldetalle`
+  ADD CONSTRAINT `idpedidosucursal_pedidosucursaldetalle` FOREIGN KEY (`idpedidosucursal`) REFERENCES `pedidosucursal` (`idpedidosucursal`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idproducto_pedidosucursaldetalle` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idproductovariante_pedidosucursaldetalle` FOREIGN KEY (`idproductovariante`) REFERENCES `productovariante` (`idproductovariante`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `producto`
 --
 ALTER TABLE `producto`
@@ -5968,6 +6655,20 @@ ALTER TABLE `proveedormarca`
 ALTER TABLE `sucursalempleado`
   ADD CONSTRAINT `idempleado_sucursalempleado` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `idsucursal_sucursalempleado` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `tarjetapuntos`
+--
+ALTER TABLE `tarjetapuntos`
+  ADD CONSTRAINT `idempleadoactivador_tarjetapuntos` FOREIGN KEY (`idempleadoactivador`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `tarjetapuntosdetalle`
+--
+ALTER TABLE `tarjetapuntosdetalle`
+  ADD CONSTRAINT `idempleado_tarjetapuntosdetalle` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idtarjetapuntos_tarjetapuntosdetalle` FOREIGN KEY (`idtarjetapuntos`) REFERENCES `tarjetapuntos` (`idtarjetapuntos`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `idventa_tarjetapuntosdetalle` FOREIGN KEY (`idventa`) REFERENCES `venta` (`idventa`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `transferencia`
