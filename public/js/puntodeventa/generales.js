@@ -1505,6 +1505,94 @@
             });
 
 
+            $container.find('#ver_puntos_2').on('click',function(){
+              var referencia = $container.find('#tarjeta_2').val();
+              $.ajax({
+                url:'/puntodeventa/verificarpuntos',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    referencia:referencia,
+                },success: function (data, textStatus, jqXHR) {
+                    if(data.response)
+                    {
+                      $container.find('#puntos_2').html((data.cantidad*10) + " puntos");
+                    }else
+                    {
+                      $container.find('#puntos_2').html("0 puntos");
+                    }
+                  }
+              });
+
+            });
+
+
+            $container.find('#ver_puntos_3').on('click',function(){
+              var referencia = $container.find('#tarjeta_3').val();
+              $.ajax({
+                url:'/puntodeventa/verificarpuntos',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    referencia:referencia,
+                },success: function (data, textStatus, jqXHR) {
+                    if(data.response)
+                    {
+                      $container.find('#puntos_3').html((data.cantidad*10) + " puntos");
+                    }else
+                    {
+                      $container.find('#puntos_3').html("0 puntos");
+                    }
+                  }
+              });
+
+            });
+
+
+            $container.find('#ver_puntos_4').on('click',function(){
+              var referencia = $container.find('#tarjeta_4').val();
+              $.ajax({
+                url:'/puntodeventa/verificarpuntos',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    referencia:referencia,
+                },success: function (data, textStatus, jqXHR) {
+                    if(data.response)
+                    {
+                      $container.find('#puntos_4').html((data.cantidad*10) + " puntos");
+                    }else
+                    {
+                      $container.find('#puntos_4').html("0 puntos");
+                    }
+                  }
+              });
+
+            });
+
+
+            $container.find('#ver_puntos_5').on('click',function(){
+              var referencia = $container.find('#tarjeta_5').val();
+              $.ajax({
+                url:'/puntodeventa/verificarpuntos',
+                type: 'POST',
+                dataType: 'JSON',
+                data:{
+                    referencia:referencia,
+                },success: function (data, textStatus, jqXHR) {
+                    if(data.response)
+                    {
+                      $container.find('#puntos_5').html((data.cantidad*10) + " puntos");
+                    }else
+                    {
+                      $container.find('#puntos_5').html("0 puntos");
+                    }
+                  }
+              });
+
+            });
+
+
             $container.find('#btn_venta_1').on('click',function(){
               $container.find('#venta_tipo1 select[name=venta_tipo]').removeAttr('disabled');
 
@@ -1662,6 +1750,7 @@
                     if(this.value == "puntos")
                     {
                       $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#referencia input').val($container.find('#tarjeta_1').val());
                       $modal.find('#digitos').attr('hidden',"");
                     }
 
@@ -1838,6 +1927,7 @@
                                     metodo:metodoRow,
                                     credito:creditoCliente,
                                     cliente:id_cliente,
+                                    tarjeta: $container.find('#tarjeta_1').val(),
                                   }
                               
                               });
@@ -2067,6 +2157,7 @@
                     if(this.value == "puntos")
                     {
                       $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#referencia input').val($container.find('#tarjeta_2').val());
                       $modal.find('#digitos').attr('hidden',"");
                     }
 
@@ -2468,6 +2559,7 @@
                     if(this.value == "puntos")
                     {
                       $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#referencia input').val($container.find('#tarjeta_3').val());
                       $modal.find('#digitos').attr('hidden',"");
                     }
 
@@ -2870,14 +2962,11 @@
                     if(this.value == "puntos")
                     {
                       $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#referencia input').val($container.find('#tarjeta_4').val());
                       $modal.find('#digitos').attr('hidden',"");
                     }
 
-                    if(this.value == "puntos")
-                    {
-                      $modal.find('#referencia').removeAttr('hidden');
-                      $modal.find('#digitos').attr('hidden',"");
-                    }
+                    
 
 
 
@@ -3279,6 +3368,7 @@
                     if(this.value == "puntos")
                     {
                       $modal.find('#referencia').removeAttr('hidden');
+                      $modal.find('#referencia input').val($container.find('#tarjeta_5').val());
                       $modal.find('#digitos').attr('hidden',"");
                     }
 

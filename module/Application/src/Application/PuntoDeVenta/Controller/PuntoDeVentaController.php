@@ -1264,6 +1264,7 @@ class PuntoDeVentaController extends AbstractActionController
 
     public function hacerPagoAction()
     {
+
         $request = $this->getRequest();
         if($request->isPost()){
 
@@ -1352,7 +1353,7 @@ class PuntoDeVentaController extends AbstractActionController
                     //completamos la compra y actualizamos el saldo del cliente
                     $entity->setVentaEstatuspago(1)->setVentaEstatus('completada')->save();
                     $this->updateInventory($post_data['id'],$entity->getIdsucursal(), $entity->getIdempleadocajero());
-                    $tarjetapuntos = $this->generarPuntos($post_data['id']);
+                    $tarjetapuntos = $this->generarPuntos($post_data['id'], $post_data['tarjeta']);
                 }
                 return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Pago realizado', 'puntos' => $tarjetapuntos)));
             }else{
@@ -1364,16 +1365,13 @@ class PuntoDeVentaController extends AbstractActionController
     }
 
     //funcion para calcular los puntos 
-    private function generarPuntos($id)
+    private function generarPuntos($id, $tarjeta)
     {
       //obtenemos los pagos
       $pagos = \VentapagoQuery::create()->filterByIdventa($id)->find();
       //puntos a acumular
       $puntos = 0;
-      //variable para ver los puntos que se obtuvieron
-      $tienePuntos = false;
-      //variable para saber a cual tarjeta acumular los puntos
-      $referencia = 0;
+      
 
       foreach ($pagos->toArray() as $pago) 
       {
@@ -1386,16 +1384,10 @@ class PuntoDeVentaController extends AbstractActionController
         {
           $puntos += floatval($pago['VentapagoCantidad'] * 0.03);
         }
-
-        if($pago['VentapagoMetododepago'] == 'puntos' && !$tienePuntos)
-        {
-          $referencia = $pago['VentapagoReferencia'];
-          $tienePuntos = true;
-        }
         
       }
 
-      $tarjetapuntos = \BaseTarjetapuntosQuery::create()->findPk($referencia);
+      $tarjetapuntos = \BaseTarjetapuntosQuery::create()->findPk($tarjeta);
 
       $user = new \Application\Session\AouthSession();
       $user = $user->getData();
@@ -1409,6 +1401,24 @@ class PuntoDeVentaController extends AbstractActionController
                       ->setIdempleadoactivador($user['idempleado'])
                       ->save();
       }
+
+      $user = new \Application\Session\AouthSession();
+      $user = $user->getData();
+
+
+      //verificamos que se generen puntos para agregarlos a la tarjeta
+      if(intval($puntos) > 0)
+      {
+        //guardamos la informacion del detalle
+        $puntos_detalle = new \Tarjetapuntosdetalle();
+        $puntos_detalle->setTarjetapuntosdetalleTipo('ingreso')
+                        ->setIdtarjetapuntos($tarjeta)
+                        ->setTarjetapuntosdetalleCantidad(intval($puntos))
+                        ->setIdventa($id)
+                        ->setIdempleado($user['idempleado'])
+                        ->save();
+      }
+     
 
 
       //sumamos los nuevos puntos
