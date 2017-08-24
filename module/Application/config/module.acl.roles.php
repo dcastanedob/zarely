@@ -150,6 +150,88 @@ return array(
         'enreorden', 
         'codigodebarras',
 
+        //reportes
+        'reporte-administracion',
+
+        //compras
+        'comprasgenerales',
+
+         //devoluciones
+        'devolucionesgenerales',
+
+        //transferencias
+        'transferencias',
+        'transferencias-sucursal',
+
+        //Punto de venta
+        'puntodeventa',
+
+        //reportes
+
+        'reporte',    
+
+        //inventarios
+        'precios-sucursal',
+        'reordenes-sucursal',
+        'existencias-sucursal',
+        'enreorden-sucursal', 
+
+    ),
+
+    'Sat' => array(
+        //login
+        'home',
+        'auth',
+        'login/select',
+        'login',
+
+        //catalogos
+        'empleados',
+        'clientes',
+        'proveedores',
+        'cuentas',
+        'temporadas',
+        'medidas',
+        'sucursales',
+        'tallajes',
+        'colores',
+        'materiales',
+        'marcas',
+        'productos',
+        'descuentos',
+        'promociones',
+        'tipocalzados',
+        'gastos',
+
+        //Json
+        'json',
+
+        //pedidos
+        'mayoristas',
+        'pendientes',
+        'pendientesproducto',
+        'solicitados',
+        'solicitadosproducto',
+        'transitos',
+        'transitosproducto',
+        'completados',
+        'completadosproducto',
+        'mayoristas-sucursal',
+        
+        //flujo efectivo
+        'porpagar',
+        'porcobrar',   
+
+        //inventarios
+        'precios',
+        'reordenes',
+        'existencias',
+        'enreorden', 
+        'codigodebarras',
+
+        //reportes
+        'reporte-administracion',
+
         //compras
         'comprasgenerales',
 
