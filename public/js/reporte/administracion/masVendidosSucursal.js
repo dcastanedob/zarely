@@ -99,9 +99,9 @@
                     
 
                     columns:[
-                        {"data":"cliente_nombre","name":"cliente_nombre","orderable":true},
-                        {"data":"idpedidomayorista","name":"idpedidomayorista","orderable":true},
-                        {"data":"pedidomayorista_fechasolicitud","name":"pedidomayorista_fechasolicitud","orderable":true},
+                        {"data":"proveedor_nombre","name":"proveedor_nombre","orderable":true},
+                        {"data":"producto_nombre","name":"producto_nombre","orderable":true},
+                        {"data":"ventadetalle_cantidad","name":"ventadetalle_cantidad","orderable":true},
                         
 
                     ],

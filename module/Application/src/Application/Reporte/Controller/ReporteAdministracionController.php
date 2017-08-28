@@ -33,6 +33,12 @@ class ReporteAdministracionController extends AbstractActionController
         3 => 'PedidomayoristaEstatus'
     );
 
+    public $sucursal_map = array(
+        0 => 'd.ProveedorNombrecomercial',
+        1 => 'b.ProductoModelo',
+        2 => 'ventadetalle_cantidad'
+    );
+
 
 
 
@@ -252,22 +258,8 @@ class ReporteAdministracionController extends AbstractActionController
 
             $query = new \VentadetalleQuery();
             
-            /*$query->useProductovarianteQuery('a')->useProductoQuery('b')->useProveedorQuery('d')->endUse()->useProductotallajeQuery('pt')->useTallajeQuery('t')->endUse()->endUse()->useMarcaQuery('c')->endUse()->endUse()->endUse();
-			*/
-
-			$query->useProductovarianteQuery('a')->useProductoQuery('b')->useProductotallajeQuery('pt')->groupByIdtallaje()->useTallajeQuery('t')->endUse()->endUse()->endUse()->endUse();
-
-
-			$query->withColumn('b.ProductoModelo', 'producto_nombre');
-			//$query->withColumn('SUM(ventadetalle_cantidad)','ventadetalle_cantidad_total');
-            //$query->withColumn('SUM(ventadetalle_subtotal)','ventadetalle_subtotal_total');
-            $query->withColumn('t.Idtallaje', 'tallaje_nombre');
-            //query->groupBy("t.Idtallaje");
-
-
-            
-            
-            var_dump($query->find()->toArray());exit();
+            $query->useProductovarianteQuery('a')->useProductoQuery('b')->useProveedorQuery('d')->endUse()->useProductotallajeQuery('pt')->useTallajeQuery('t')->endUse()->endUse()->useMarcaQuery('c')->endUse()->endUse()->endUse();
+			
 
             $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('venta')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->endUse();
 
@@ -277,6 +269,7 @@ class ReporteAdministracionController extends AbstractActionController
             $query->withColumn('d.ProveedorNombrecomercial', 'proveedor_nombre');
             $query->withColumn('c.MarcaNombre', 'producto_marca');
             $query->withColumn('t.TallajeNombre', 'tallaje_nombre');
+            $query->withColumn('SUM(ventadetalle_cantidad)','ventadetalle_cantidad_total');
             
 
 
@@ -1136,9 +1129,6 @@ class ReporteAdministracionController extends AbstractActionController
         $request = $this->getRequest();
         if($request->isPost()){
 
-            //Creamos una instancia de la sesión
-            $user = new \Application\Session\AouthSession();
-            $user = $user->getData();
 
             $post_data = $request->getPost();
 
@@ -1155,22 +1145,17 @@ class ReporteAdministracionController extends AbstractActionController
 
             $query = new \VentadetalleQuery();
             
-            $query->useProductovarianteQuery('a')->useProductoQuery('b')->useMarcaQuery('c')->endUse()->endUse()->endUse();
+            $query->useProductovarianteQuery('a')->useProductoQuery('b')->useProveedorQuery('d')->endUse()->endUse()->endUse();
 
-            $query->useProductovarianteQuery('x')->useProductoQuery('y')->useProveedorQuery('d')->endUse()->endUse()->endUse();
+            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('venta')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->filterByIdsucursal($post_data['sucursal'],\Criteria::IN)->endUse();
 
-            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('venta')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->endUse();
-
-            $query->useProductovarianteQuery()->useProductoQuery()->useMarcaQuery()->endUse()->endUse()->endUse();
 
             $query->withColumn('b.ProductoModelo', 'producto_nombre');
             $query->withColumn('d.ProveedorNombrecomercial', 'proveedor_nombre');
-            $query->withColumn('c.MarcaNombre', 'producto_marca');
             $query->withColumn('SUM(ventadetalle_cantidad)','ventadetalle_cantidad_total');
-            $query->withColumn('SUM(ventadetalle_subtotal)','ventadetalle_subtotal_total');
 
 
-            $query->groupBy("b.idproducto");
+            $query->groupBy("b.Idproducto");
 
             $records_filtered = $query->count();
             
@@ -1229,7 +1214,7 @@ class ReporteAdministracionController extends AbstractActionController
             
             //ORDER
             $order_column = $post_data['order'][0]['column'];
-            $order_column = $this->column_map[$order_column];
+            $order_column = $this->sucursal_map[$order_column];
             $dir = $post_data['order'][0]['dir'];
             if($dir == 'desc'){
                 $query->orderBy($order_column,  \Criteria::DESC);
@@ -1251,11 +1236,7 @@ class ReporteAdministracionController extends AbstractActionController
                 $tmp['idventadetalle'] = $value['idventadetalle'];
                 $tmp['producto_nombre'] = $value['producto_nombre'];
                 $tmp['proveedor_nombre'] = $value['proveedor_nombre'];
-
-                $tmp['producto_marca'] = $value['producto_marca'];
-
                 $tmp['ventadetalle_cantidad'] = $value['ventadetalle_cantidad_total'];
-                $tmp['ventadetalle_subtotal'] = "$" . $value['ventadetalle_subtotal_total'];
 
                 $data[] = $tmp;
  
