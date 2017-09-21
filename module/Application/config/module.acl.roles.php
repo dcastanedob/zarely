@@ -176,6 +176,10 @@ return array(
         'existencias-sucursal',
         'enreorden-sucursal', 
 
+        //reportes 
+        'reporte-administracion-comparacion',
+        'reporte-administracion-remision'
+
     ),
 
     'Sat' => array(
@@ -254,6 +258,10 @@ return array(
         'reordenes-sucursal',
         'existencias-sucursal',
         'enreorden-sucursal', 
+
+        //reportes 
+        'reporte-administracion-comparacion',
+        'reporte-administracion-remision'
 
     ),
 

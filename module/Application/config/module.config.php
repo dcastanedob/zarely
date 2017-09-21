@@ -535,6 +535,29 @@ return array(
                 ),
             ),
 
+            'reporte-administracion-comparacion' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reporte-administracion-comparacion[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Reporte\Controller\ReporteAdministracionComparacion',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+            'reporte-administracion-remision' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reporte-administracion-remision[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Reporte\Controller\ReporteAdministracionRemision',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
 
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
@@ -648,6 +671,8 @@ return array(
             'Application\PuntoDeVenta\Controller\PuntoDeVenta' => 'Application\PuntoDeVenta\Controller\PuntoDeVentaController',
             'Application\Reporte\Controller\Reporte' => 'Application\Reporte\Controller\ReporteController',
             'Application\Reporte\Controller\ReporteAdministracion' => 'Application\Reporte\Controller\ReporteAdministracionController',
+            'Application\Reporte\Controller\ReporteAdministracionComparacion' => 'Application\Reporte\Controller\ReporteAdministracionComparacionController',
+            'Application\Reporte\Controller\ReporteAdministracionRemision' => 'Application\Reporte\Controller\ReporteAdministracionRemisionController',
 
 
 
