@@ -15,7 +15,7 @@ use Zend\View\Model\ViewModel;
 class ReporteAdministracionComparacionController extends AbstractActionController
 {
     public $sucursal_map = array(
-        0 => 'd.ProveedorNombrecomercial',
+        0 => 'a.SucursalNombrecomercial',
         1 => 'b.ProductoModelo',
         2 => 'ventadetalle_cantidad'
     );
@@ -39,19 +39,20 @@ class ReporteAdministracionComparacionController extends AbstractActionControlle
 
 
 
-            $query = new \VentadetalleQuery();
+            $query = new \VentaQuery();
             
-            $query->useProductovarianteQuery('a')->useProductoQuery('b')->useProveedorQuery('d')->endUse()->endUse()->endUse();
+            $query->useSucursalQuery('a')->endUse();
 
-            $query->useVentaQuery()->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaTipo('venta')->filterByVentaEstatuspago(1)->filterByVentaEstatus('completada')->filterByIdsucursal($post_data['sucursal'],\Criteria::IN)->endUse();
-
-
-            $query->withColumn('b.ProductoModelo', 'producto_nombre');
-            $query->withColumn('d.ProveedorNombrecomercial', 'proveedor_nombre');
-            $query->withColumn('SUM(ventadetalle_cantidad)','ventadetalle_cantidad_total');
+            $query->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaEstatuspago(1)->filterByIdsucursal($post_data['sucursal'],\Criteria::IN);
 
 
-            $query->groupBy("b.Idproducto");
+            $query->withColumn('a.SucursalNombrecomercial', 'sucursal_nombre');
+            $query->withColumn('SUM(venta_total)','cantidad_flujo');
+            $query->withColumn('SUM(idventa)','cantidad_ventas');
+
+            $query->groupBy("a.Idsucursal");
+
+
 
             $records_filtered = $query->count();
             
@@ -88,12 +89,11 @@ class ReporteAdministracionComparacionController extends AbstractActionControlle
                 $c = new \Criteria();
                
                 
-                $c1= $c->getNewCriterion('ventadetalle.idventadetalle', '%'.$search_value.'%', \Criteria::LIKE);
+                $c1= $c->getNewCriterion('venta.idventa', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
-                $c3= $c->getNewCriterion('marca.marca_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('sucursal.sucursal_nombrecomercial', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c1->addOr($c2)->addOr($c3);
+                $c1->addOr($c2);
 
                 $query->addAnd($c1);
 
@@ -125,14 +125,12 @@ class ReporteAdministracionComparacionController extends AbstractActionControlle
             
 
            
-            $query->filterByVentadetalleEstatus('completo');
 
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
-                $tmp['DT_RowId'] = $value['idventadetalle'];
-                $tmp['idventadetalle'] = $value['idventadetalle'];
-                $tmp['producto_nombre'] = $value['producto_nombre'];
-                $tmp['proveedor_nombre'] = $value['proveedor_nombre'];
-                $tmp['ventadetalle_cantidad'] = $value['ventadetalle_cantidad_total'];
+                $tmp['DT_RowId'] = $value['idventa'];
+                $tmp['sucursal_nombre'] = $value['sucursal_nombre'];
+                $tmp['cantidad_ventas'] = $value['cantidad_ventas'];
+                $tmp['cantidad_flujo'] = $value['cantidad_flujo'];
 
                 $data[] = $tmp;
  
