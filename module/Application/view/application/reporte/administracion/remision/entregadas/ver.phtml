@@ -1,6 +1,6 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title">Remisiones emitidas </h1>
+	    <h1 class="title-bar-title">Remisiones entregadas </h1>
 	    <input type="text" id="btn_download" hidden="" disabled="">
 	</div>
 	<br>
@@ -21,7 +21,6 @@
 			<select name="idestatus[]" required="required" class="" tabindex="5">
 				<option value="1">Pagada</option>
 				<option value="0">No pagada</option>
-				
 			</select>
 		</div>
 		
@@ -43,7 +42,7 @@
 		    <table id="" class="table table-striped table-nowrap dataTable" cellspacing="0" width="100%">
 		        <thead>
 		            <tr>
-		                <th>Cliente</th>
+		                <th>Proveedor</th>
 		                <th>Total</th>
 		                <th>Pedido</th>
 		                <th>Fecha</th>
@@ -52,7 +51,7 @@
 		        </thead>
 		        <tfoot>
 		            <tr>
-		                <th>Cliente</th>
+		                <th>Proveedor</th>
 		                <th>Total</th>
 		                <th>Pedido</th>
 		                <th>Fecha</th>
@@ -67,8 +66,8 @@
 	</div>
 
 </div>
-<script src="/js/reporte/administracion/remision/emitidas.js"></script>
+<script src="/js/reporte/administracion/remision/entregadas.js"></script>
 <script>
-	var emitidas = $('.body_container').emitidas();
-	emitidas.list();
+	var entregadas = $('.body_container').entregadas();
+	entregadas.list();
 </script>
