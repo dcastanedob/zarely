@@ -20,6 +20,10 @@ class ReporteAdministracionComparacionController extends AbstractActionControlle
         2 => 'ventadetalle_cantidad'
     );
 
+    public $articulos_map = array(
+        0 => 'c.ProductoModelo'
+    );
+
     public function ventasAction()
     {
         $request = $this->getRequest();
@@ -203,6 +207,248 @@ class ReporteAdministracionComparacionController extends AbstractActionControlle
         ));
 
         return $view_model;
+    }
+
+
+    public function articulosAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+
+            $post_data = $request->getPost();
+
+            //convertir la fecha
+            $temp = explode('/',$post_data['desde']);
+
+
+            $post_data['desde'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 00:00:00';
+
+            $temp = explode('/',$post_data['hasta']);
+            $post_data['hasta'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 23:59:59';
+
+
+
+            $query = new \VentaQuery();
+            
+
+            $query->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaEstatuspago(1)->filterByIdsucursal($post_data['sucursal'],\Criteria::IN);
+
+
+            $query->useSucursalQuery('d')->endUse();
+            $query->useVentadetalleQuery('a')->useProductovarianteQuery('b')->useProductoQuery('c')->endUse()->endUse()->endUse();
+
+            $query->withColumn('c.ProductoModelo', 'nombre_producto');
+            $query->withColumn('SUM(a.VentadetalleCantidad)','cantidad_producto');
+            $query->groupBy("c.Idproducto");
+            $query->groupBy("d.Idsucursal");
+
+
+            $records_filtered = $query->count();
+            
+            //SEARCH
+            if(!empty($post_data['search']['value'])){
+                $search_value = $post_data['search']['value'];
+                
+                $search_value = str_replace("Ñ", "Ã‘", $search_value);
+                $search_value = str_replace("L'", "L'", $search_value);
+                $search_value = str_replace("Ç", "Ã‡", $search_value);
+                $search_value = str_replace("À", "Ã€", $search_value);
+                $search_value = str_replace("È", "Ãˆ", $search_value);
+                $search_value = str_replace("Û", "Ã›", $search_value);
+                $search_value = str_replace("´", "Â´", $search_value);
+                $search_value = str_replace("ñ", "Ã±", $search_value);
+                $search_value = str_replace("Ú", "Ãš", $search_value);
+                $search_value = str_replace("é", "Ã©", $search_value);
+                $search_value = str_replace("Á", "Ã", $search_value);
+                $search_value = str_replace("ó", "Ã³", $search_value);
+                $search_value = str_replace("'", "'", $search_value);
+                $search_value = str_replace("ú", "Ãº", $search_value);
+                if ( strpos($search_value, 'Ð') !== false)
+                {
+                    $search_value = str_replace("Ð", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Á') !== false )
+                {
+                    $search_value = str_replace("Á", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Í') !== false )
+                {
+                    $search_value = str_replace("Í", "Ã", $search_value);
+                }
+                $c = new \Criteria();
+               
+                
+                $c1= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
+
+
+
+                $query->addAnd($c1);
+
+              
+
+
+                $records_filtered = $query->count();
+                
+            }
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+            
+            //ORDER
+            $order_column = $post_data['order'][0]['column'];
+            $order_column = $this->articulos_map[$order_column];
+            $dir = $post_data['order'][0]['dir'];
+            if($dir == 'desc'){
+                $query->orderBy($order_column,  \Criteria::DESC);
+            }else{
+                $query->orderBy($order_column,  \Criteria::ASC);
+            }
+
+            
+            
+            //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+            $temp = array();
+            
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                $tmp['DT_RowId'] = $value['idventa'];
+                $tmp['nombre_producto'] = $value['nombre_producto'];
+                $tmp['cantidad_producto'] = $value['cantidad_producto'];
+                $temp['row'+$value['idsucursal']][] = $tmp;
+ 
+            }   
+
+            $data = array();
+            foreach ($temp as $key => $value) {
+
+                foreach ($value as $sucursal) {
+                    $data['sucursal'.$key][] = $sucursal['nombre_producto'] . ' - ' . $sucursal['cantidad_producto']; 
+                }
+                
+            }
+
+            //ciclo para ver que todas las sucursales tengan valores
+            foreach ($post_data['sucursal'] as $idSucursal) {
+                if(!isset($data['sucursal'.$idSucursal]))
+                {
+                    $data['sucursal'.$idSucursal] = array();
+                }
+            }
+
+            $newData = [];
+            foreach ($data as $index => $info) {
+                $i = 0; 
+
+                foreach ($info as $value ) {
+                    $newData[$i][$index] = $value;
+                    $i++;
+                }
+
+            }
+
+            $i=0;
+            foreach ($newData as $info) {
+                foreach ($post_data['sucursal'] as $idSucursal) {
+                    if(!isset($info['sucursal'.$idSucursal]))
+                    {
+                        $newData[$i]['sucursal'.$idSucursal] = '';
+                    }
+                }
+                $i++;
+            }
+
+            //El arreglo que regresamos
+            $json_data = array(
+                'order' => $order_column,
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => $records_filtered,
+                "data"            => $newData
+            );
+            
+            if($post_data['btn'] == 'excel')
+            {
+                $phpreport = new \Application\Shared\PHPReport();
+                $phpreport->load(array(
+                    array(
+                        'id' => 'reporte',
+                        'repeat' => true,
+                        'data' => $data,
+                        'minRows' => 2,
+                    )
+                ));
+                $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                $json_data['base64'] = $base_64;
+            }
+
+            if(count($json_data['data']) > 0){
+                $index = count($json_data['data']) -1;
+                if($post_data['btn'] == 'excel'){
+                    
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                    array(
+                           'id' => 'reporte',
+                           'repeat' => true,
+                           'data' => $data,
+                           'minRows' => 2,
+                       )));
+                    $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                    $json_data['data'][$index]['base64'] = $base_64;
+                    $json_data['output'] = 'excel';
+                    
+                    
+                }
+            }
+            return $this->getResponse()->setContent(json_encode($json_data));
+        }
+
+        //traer las sucursales
+        $generales = \SucursalQuery::create()->find();
+        $sucursal_array = array();
+
+        foreach ($generales as $value){
+
+            $sucursal_array[$value->getIdsucursal()] = $value->getSucursalNombrecomercial();
+        }
+
+        $form = new \Application\Reporte\Form\MasVendidosForm();
+
+
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/reporte/administracion/comparacion/articulos/ver');
+
+        $view_model->setVariables(array(
+            'form' => $form,
+            'sucursales' => $sucursal_array
+        ));
+
+        return $view_model;
+    }
+
+
+
+    public function getSucursalesAction()
+    {
+        $request = $this->getRequest();
+        
+        if ($request->isPost()) {
+            
+            $post_data = $request->getPost();
+
+            $sucursal_array = array();
+
+            //obtengo las sucursales que mandaron en el request
+            foreach ($post_data['sucursales'] as $idSucursal){
+                $sucursal = \SucursalQuery::create()->findPk($idSucursal);
+                $sucursal_array[$sucursal->getIdsucursal()] = $sucursal->getSucursalNombrecomercial();
+            }
+
+            return $this->getResponse()->setContent(json_encode($sucursal_array));
+
+        }
+
     }
 
 
