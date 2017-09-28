@@ -20,6 +20,13 @@ class ReporteAdministracionBodegaController extends AbstractActionController
         1 => 'productos_existencia'
     );
 
+    public $proveedor_pedido_map = array(
+        0 => 'a.ClienteNombre',
+        1 => 'Idpedidomayorista',
+        2 => 'PedidomayoristaFechasolicitud',
+        3 => 'PedidomayoristaEstatus'
+    );
+
 
     public function inventarioAction(){
         
@@ -142,6 +149,186 @@ class ReporteAdministracionBodegaController extends AbstractActionController
         $view_model->setVariables(array(
              'messages' => $this->flashMessenger(),
         ));
+        return $view_model;
+    }
+
+
+    public function pendientesProveedorAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            
+            $post_data = $request->getPost();
+            //convertir la fecha
+            $temp = explode('/',$post_data['desde']);
+
+            $post_data['desde'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 00:00:00';
+
+            $temp = explode('/',$post_data['hasta']);
+            $post_data['hasta'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 23:59:59';
+
+            $query = new \PedidomayoristaQuery();
+            
+            $query->useClienteQuery('a')->endUse();
+            $query->usePedidomayoristadetalleQuery('b')->endUse();
+            
+
+            
+            $query->filterByPedidomayoristaFechasolicitud(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByPedidomayoristaEstatus('pendiente');
+
+
+            $query->withColumn('a.ClienteNombre', 'cliente_nombre');
+            $query->withColumn('SUM(b.PedidomayoristadetalleCantidad)', 'cantidad');
+
+            $records_filtered = $query->count();
+
+            $query->groupByIdpedidomayorista();
+
+            
+            //SEARCH
+            if(!empty($post_data['search']['value'])){
+                $search_value = $post_data['search']['value'];
+                
+                $search_value = str_replace("Ñ", "Ã‘", $search_value);
+                $search_value = str_replace("L'", "L'", $search_value);
+                $search_value = str_replace("Ç", "Ã‡", $search_value);
+                $search_value = str_replace("À", "Ã€", $search_value);
+                $search_value = str_replace("È", "Ãˆ", $search_value);
+                $search_value = str_replace("Û", "Ã›", $search_value);
+                $search_value = str_replace("´", "Â´", $search_value);
+                $search_value = str_replace("ñ", "Ã±", $search_value);
+                $search_value = str_replace("Ú", "Ãš", $search_value);
+                $search_value = str_replace("é", "Ã©", $search_value);
+                $search_value = str_replace("Á", "Ã", $search_value);
+                $search_value = str_replace("ó", "Ã³", $search_value);
+                $search_value = str_replace("'", "'", $search_value);
+                $search_value = str_replace("ú", "Ãº", $search_value);
+                if ( strpos($search_value, 'Ð') !== false)
+                {
+                    $search_value = str_replace("Ð", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Á') !== false )
+                {
+                    $search_value = str_replace("Á", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Í') !== false )
+                {
+                    $search_value = str_replace("Í", "Ã", $search_value);
+                }
+                $c = new \Criteria();
+               
+                
+                $c1= $c->getNewCriterion('cliente.cliente_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+
+                
+                
+
+
+                $query->addAnd($c1);
+
+              
+                $query->groupByIdpedidomayorista();
+
+                $records_filtered = $query->count();
+                
+            }
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+            
+            //ORDER
+            $order_column = $post_data['order'][0]['column'];
+            $order_column = $this->proveedor_pedido_map[$order_column];
+            $dir = $post_data['order'][0]['dir'];
+            if($dir == 'desc'){
+                $query->orderBy($order_column,  \Criteria::DESC);
+            }else{
+                $query->orderBy($order_column,  \Criteria::ASC);
+            }
+
+            
+            //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+            $data = array();
+            
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                
+                $tmp['DT_RowId'] = $value['idpedidomayorista'];
+                $tmp['cliente_nombre'] = $value['cliente_nombre'];
+                $tmp['idpedidomayorista'] = $value['idpedidomayorista'];
+                $tmp['cantidad_pares'] = $value['cantidad'];
+
+                $tmp['pedidomayorista_fechasolicitud'] = $value['pedidomayorista_fechasolicitud'];
+
+                
+
+                $data[] = $tmp;
+ 
+            }   
+      
+            //El arreglo que regresamos
+            $json_data = array(
+                'order' => $order_column,
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => $records_filtered,
+                "data"            => $data
+            );
+            
+            if($post_data['btn'] == 'excel')
+            {
+                $phpreport = new \Application\Shared\PHPReport();
+                $phpreport->load(array(
+                    array(
+                        'id' => 'reporte',
+                        'repeat' => true,
+                        'data' => $data,
+                        'minRows' => 2,
+                    )
+                ));
+                $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                $json_data['base64'] = $base_64;
+            }
+
+            if(count($json_data['data']) > 0){
+                $index = count($json_data['data']) -1;
+                if($post_data['btn'] == 'excel'){
+                    
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                    array(
+                           'id' => 'reporte',
+                           'repeat' => true,
+                           'data' => $data,
+                           'minRows' => 2,
+                       )));
+                    $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                    $json_data['data'][$index]['base64'] = $base_64;
+                    $json_data['output'] = 'excel';
+                    
+                    
+                }
+            }
+            return $this->getResponse()->setContent(json_encode($json_data));
+        }
+
+        $empleados = \EmpleadoQuery::create()->filterByIdrol(5)->find();
+        $empleados_array = array();
+        foreach ($empleados as $empleado){
+            $empleados_array[$empleado->getIdempleado()] = $empleado->getEmpleadonombre() ." " .$empleado->getEmpleadoapaterno() ." " .$empleado->getEmpleadoamaterno();
+        }
+
+        $form = new \Application\Reporte\Form\VentasForm($empleados_array);
+
+
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/reporte/administracion/bodega/proveedor/pendientes');
+
+        $view_model->setVariables(array(
+            'form' => $form,
+        ));
+
         return $view_model;
     }
 
