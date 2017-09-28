@@ -559,6 +559,18 @@ return array(
             ),
 
 
+            'reporte-bodega' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reporte-bodega[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Reporte\Controller\ReporteAdministracionBodega',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -673,6 +685,7 @@ return array(
             'Application\Reporte\Controller\ReporteAdministracion' => 'Application\Reporte\Controller\ReporteAdministracionController',
             'Application\Reporte\Controller\ReporteAdministracionComparacion' => 'Application\Reporte\Controller\ReporteAdministracionComparacionController',
             'Application\Reporte\Controller\ReporteAdministracionRemision' => 'Application\Reporte\Controller\ReporteAdministracionRemisionController',
+            'Application\Reporte\Controller\ReporteAdministracionBodega' => 'Application\Reporte\Controller\ReporteAdministracionBodegaController',
 
 
 

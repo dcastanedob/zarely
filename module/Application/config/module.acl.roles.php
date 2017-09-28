@@ -178,7 +178,8 @@ return array(
 
         //reportes 
         'reporte-administracion-comparacion',
-        'reporte-administracion-remision'
+        'reporte-administracion-remision',
+        'reporte-bodega'
 
     ),
 
@@ -261,7 +262,8 @@ return array(
 
         //reportes 
         'reporte-administracion-comparacion',
-        'reporte-administracion-remision'
+        'reporte-administracion-remision',
+        'reporte-bodega'
 
     ),
 
