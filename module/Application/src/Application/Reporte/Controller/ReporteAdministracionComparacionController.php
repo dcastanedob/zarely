@@ -52,7 +52,7 @@ class ReporteAdministracionComparacionController extends AbstractActionControlle
 
             $query->withColumn('a.SucursalNombrecomercial', 'sucursal_nombre');
             $query->withColumn('SUM(venta_total)','cantidad_flujo');
-            $query->withColumn('SUM(idventa)','cantidad_ventas');
+            $query->withColumn('count(idventa)','cantidad_ventas');
 
             $query->groupBy("a.Idsucursal");
 

@@ -133,7 +133,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
                 $tmp['producto_nombre'] = $value['producto_nombre'];
 
                 $tmp['options'] = '
-                <a href="/reporte-bodega/inventario/ver/' . $value['idproductosucursal'] . '">
+                <a href="/reporte-bodega/ver/' . $value['idproductosucursal'] . '">
                 <button class="btn btn-info dropdown-toggle" aria-expanded="false" style="padding: 2px 6px;">
                     <span class="icon icon-eye icon-lg icon-fw"></span>
                     Ver 
@@ -716,6 +716,25 @@ class ReporteAdministracionBodegaController extends AbstractActionController
         ));
 
         return $view_model;
+    }
+
+    public function verAction()
+    {
+        $req = $this->getRequest();
+        
+        $id = $this->params()->fromRoute('id');
+        
+        $exist = \TemporadaQuery::create()->filterByIdtemporada($id)->exists();
+        
+        if($exist){
+            
+            
+            
+            
+        }else{
+            $this->flashMessenger()->addErrorMessage('Id Invalido.');
+            return $this->redirect()->toUrl('/reporte-bodega/inventario');
+        }
     }
 
 
