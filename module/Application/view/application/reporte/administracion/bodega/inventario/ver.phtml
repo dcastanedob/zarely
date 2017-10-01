@@ -1,0 +1,49 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title"><?php echo $producto->getProductomodelo()?></h1>
+	    
+	</div>
+
+
+
+	<input id="producto_id" hidden disabled value="<?php echo $id?>">
+	<div class="row">
+		<div class="card-body">
+			<input type="hidden" name="idproducto" value="<?php echo $id ?>">
+		    <table id="" class="table table-bordered table-nowrap dataTable" cellspacing="0" width="100%">
+		        <thead>
+		            <tr>
+		                <th>Variante</th>
+		                <th>Fotografía</th>
+		                <?php foreach ($tallas as $talla):?>
+	                		<th><?php echo $talla?></th>    
+		                <?php endforeach;?>
+		                	
+		            </tr>
+		        </thead>
+		        <tfoot>
+		            <tr>
+		                <th>Variante</th>
+		                <th>Fotografía</th>
+		                <?php foreach ($tallas as $talla):?>
+	                		<th><?php echo $talla?></th>    
+		                <?php endforeach;?>
+		                	
+		    
+		            </tr>
+		        </tfoot>
+		        <tbody>
+		            
+		        </tbody>
+		    </table>
+		</div>
+	</div>
+
+</div>
+
+<script src="/js/reporte/administracion/bodega/inventarioVer.js"></script>
+
+<script>
+	var inventarioVer = $('.body_container').inventarioVer();
+	inventarioVer.list(<?php echo $id ?>);
+</script>

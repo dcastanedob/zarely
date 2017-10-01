@@ -60,7 +60,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
             $query->withColumn('a.ProductoModelo', 'producto_nombre');
 
             $query->withColumn('SUM(productosucursal_existencia)','productos_existencia');
-
+            $query->withColumn('a.Idproducto','idproducto');
             $query->groupBy("a.Idproducto");
 
             //WHERE
@@ -133,7 +133,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
                 $tmp['producto_nombre'] = $value['producto_nombre'];
 
                 $tmp['options'] = '
-                <a href="/reporte-bodega/ver/' . $value['idproductosucursal'] . '">
+                <a href="/reporte-bodega/ver/' . $value['idproducto'] . '">
                 <button class="btn btn-info dropdown-toggle" aria-expanded="false" style="padding: 2px 6px;">
                     <span class="icon icon-eye icon-lg icon-fw"></span>
                     Ver 
@@ -720,20 +720,238 @@ class ReporteAdministracionBodegaController extends AbstractActionController
 
     public function verAction()
     {
-        $req = $this->getRequest();
         
         $id = $this->params()->fromRoute('id');
         
-        $exist = \TemporadaQuery::create()->filterByIdtemporada($id)->exists();
+        $exist = \ProductoQuery::create()->filterByIdproducto($id)->exists();
         
         if($exist){
-            
+            $request = $this->getRequest();
+            $producto = \ProductoQuery::create()->findPk($id);
+            if($request->isPost()){
+
+                $query = new \ProductosucursalQuery();
+                $query->filterByIdsucursal(1);
+                
+                $query->useProductovarianteQuery('a')->useProductoQuery('b')->filterByIdproducto($id)->endUse()->useProductomaterialQuery('pm')->useMaterialQuery('m')->endUse()->endUse()->useProductocolorQuery('pc')->useColorQuery('c')->endUse()->endUse()->endUse();
+
+
+                
+                $query->withColumn('m.MaterialNombre', 'producto_material');
+                $query->withColumn('c.ColorNombre', 'producto_color');
+                $query->withColumn('pc.ProductocolorFoto', 'producto_foto');
+                $query->withColumn('a.ProductovarianteTalla', 'producto_talla');
+
+
+
+
+
+                $query->groupBy("idproductosucursal");
+
+                $records_filtered = $query->count();
+                
+                //SEARCH
+                if(!empty($post_data['search']['value'])){
+                    $search_value = $post_data['search']['value'];
+                    
+                    $search_value = str_replace("Ñ", "Ã‘", $search_value);
+                    $search_value = str_replace("L'", "L'", $search_value);
+                    $search_value = str_replace("Ç", "Ã‡", $search_value);
+                    $search_value = str_replace("À", "Ã€", $search_value);
+                    $search_value = str_replace("È", "Ãˆ", $search_value);
+                    $search_value = str_replace("Û", "Ã›", $search_value);
+                    $search_value = str_replace("´", "Â´", $search_value);
+                    $search_value = str_replace("ñ", "Ã±", $search_value);
+                    $search_value = str_replace("Ú", "Ãš", $search_value);
+                    $search_value = str_replace("é", "Ã©", $search_value);
+                    $search_value = str_replace("Á", "Ã", $search_value);
+                    $search_value = str_replace("ó", "Ã³", $search_value);
+                    $search_value = str_replace("'", "'", $search_value);
+                    $search_value = str_replace("ú", "Ãº", $search_value);
+                    if ( strpos($search_value, 'Ð') !== false)
+                    {
+                        $search_value = str_replace("Ð", "Ã", $search_value);
+                    }
+                    if ( strpos($search_value, 'Á') !== false )
+                    {
+                        $search_value = str_replace("Á", "Ã", $search_value);
+                    }
+                    if ( strpos($search_value, 'Í') !== false )
+                    {
+                        $search_value = str_replace("Í", "Ã", $search_value);
+                    }
+                    $c = new \Criteria();
+                   
+                    
+                    $c1= $c->getNewCriterion('ventadetalle.idventadetalle', '%'.$search_value.'%', \Criteria::LIKE);
+
+                    $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
+                    $c3= $c->getNewCriterion('marca.marca_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+
+                    $c1->addOr($c2)->addOr($c3);
+
+                    $query->addAnd($c1);
+
+                  
+
+
+                    
+                }
+                //LIMIT
+                $query->setOffset((int)$post_data['start']);
+                $query->setLimit((int)$post_data['length']);
+                
+                
+                //ORDER
+                /*$order_column = $post_data['order'][0]['column'];
+                $order_column = $this->mas_vendidos[$order_column];
+                $dir = $post_data['order'][0]['dir'];
+                if($dir == 'desc'){
+                    $query->orderBy($order_column,  \Criteria::DESC);
+                }else{
+                    $query->orderBy($order_column,  \Criteria::ASC);
+                }*/
+
+                
+                
+                //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+                
+                $preData = array();
+                foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+
+                    $tmp['DT_RowId'] = $value['idproductosucursal'];
+
+                    $preData[$value['producto_color'] . ' - ' . $value['producto_material']]['tallas'][$value['producto_talla']] = $value['productosucursal_existencia'];     
+                    $preData[$value['producto_color'] . ' - ' . $value['producto_material']]['foto'] = $value['producto_foto'];
+
+                }  
+
+                $data = array();
+
+                foreach ($preData as $combinacion => $value) {
+                    $temp = [];
+                    $temp['producto_variante'] = $combinacion;
+                    $temp['producto_fotografia'] = '<img src="'.$value['foto'].'"</img>';
+
+                    foreach ($value['tallas'] as $talla => $existencia) {
+                        $temp['talla_'.str_replace('.', "_", $talla)] = $existencia;
+                    }
+                    $data[] = $temp;
+
+                }
+
+
+
+
+
+                
+                //El arreglo que regresamos
+                $json_data = array(
+                    'order' => $order_column,
+                    "draw"            => (int)$post_data['draw'],
+                    //"recordsTotal"    => 100,
+                    "recordsFiltered" => count($data),
+                    "data"            => $data
+                );
+                
+                if($post_data['btn'] == 'excel')
+                {
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                        array(
+                            'id' => 'reporte',
+                            'repeat' => true,
+                            'data' => $data,
+                            'minRows' => 2,
+                        )
+                    ));
+                    $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                    $json_data['base64'] = $base_64;
+                }
+
+                if(count($json_data['data']) > 0){
+                    $index = count($json_data['data']) -1;
+                    if($post_data['btn'] == 'excel'){
+                        
+                        $phpreport = new \Application\Shared\PHPReport();
+                        $phpreport->load(array(
+                        array(
+                               'id' => 'reporte',
+                               'repeat' => true,
+                               'data' => $data,
+                               'minRows' => 2,
+                           )));
+                        $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                        $json_data['data'][$index]['base64'] = $base_64;
+                        $json_data['output'] = 'excel';
+                        
+                        
+                    }
+                }
+                return $this->getResponse()->setContent(json_encode($json_data));
+
+            }else{
+                $form = new \Application\Reporte\Form\VentasForm($empleados_array);
+
+                $tallas = $this->getRows($id);
+                $view_model = new ViewModel();
+                $view_model->setTemplate('application/reporte/administracion/bodega/inventario/ver');
+
+                $view_model->setVariables(array(
+                    'form' => $form,
+                    'producto' => $producto,
+                    'tallas' => $tallas,
+                    'id'   => $id
+                ));
+
+                return $view_model;
+            }
             
             
             
         }else{
             $this->flashMessenger()->addErrorMessage('Id Invalido.');
             return $this->redirect()->toUrl('/reporte-bodega/inventario');
+        }
+    }
+
+
+    private function getRows($id)
+    {
+
+        //filtramos por sucursal
+        $query = new \ProductosucursalQuery();
+        $query->filterByIdsucursal(1);
+        
+        //obtenemos el rango
+        $query->useProductovarianteQuery('a')->useProductoQuery('b')->filterByIdproducto($id)->endUse()->endUse();
+
+        $query->withColumn('a.ProductovarianteTalla', 'producto_talla');
+
+        $query->groupBy("idproductosucursal");
+
+        //iteramos sobre cada talla
+        $array = [];
+        foreach ($query->find()->toArray() as $key => $value) {
+            $array[] = (float)$value['producto_talla'];
+        }
+
+        //eleiminamos los duplicados y ordenamos
+        $array = array_unique($array);
+
+        //sort($array);
+
+        return $array;
+    }
+
+    public function rowsAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost())
+        {
+            $post_data = $request->getPost();
+            $array = $this->getRows($post_data['id']);
+            return $this->getResponse()->setContent(json_encode($array));
         }
     }
 
