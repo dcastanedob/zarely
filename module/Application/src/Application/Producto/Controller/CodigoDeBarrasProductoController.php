@@ -143,6 +143,7 @@ class CodigoDeBarrasProductoController extends AbstractActionController
                       <span class="custom-control-indicator"></span>
 
                     </label>
+                    <a href="/producto/codigodebarras/imagen/'.$value['idproductovariante'].'">Ver
                   
                   ';
 
@@ -196,6 +197,20 @@ class CodigoDeBarrasProductoController extends AbstractActionController
             'sucursales' => $sucursales,
         ));
         return $view_model;
+    }
+
+    public function imagenAction()
+    {
+        //obtenemos el proudcto variante
+        $id = $this->params()->fromRoute('id');
+        $pv = \ProductovarianteQuery::create()->findPk($id);
+
+        //generamos el codigo de barras
+        $generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
+
+        $barcode = $generator->getBarcode($pv->getProductovarianteCodigobarras(), $generator::TYPE_CODE_128) . $pv->getProductovarianteCodigobarras()
+        ; 
+        echo($barcode);exit();
     }
 
     

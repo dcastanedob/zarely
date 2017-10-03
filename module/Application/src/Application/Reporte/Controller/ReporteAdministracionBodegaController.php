@@ -831,7 +831,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
                 foreach ($preData as $combinacion => $value) {
                     $temp = [];
                     $temp['producto_variante'] = $combinacion;
-                    $temp['producto_fotografia'] = '<img src="'.$value['foto'].'"</img>';
+                    $temp['producto_fotografia'] = '<img class="center-block" src="'.$value['foto'].'" width="40%">';
 
                     foreach ($value['tallas'] as $talla => $existencia) {
                         $temp['talla_'.str_replace('.', "_", $talla)] = $existencia;
@@ -939,7 +939,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
         //eleiminamos los duplicados y ordenamos
         $array = array_unique($array);
 
-        //sort($array);
+        sort($array);
 
         return $array;
     }
