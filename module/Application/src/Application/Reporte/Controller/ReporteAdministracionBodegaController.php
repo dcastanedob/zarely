@@ -981,48 +981,41 @@ class ReporteAdministracionBodegaController extends AbstractActionController
             //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
             $data = array();
 
-            //traer las sucursales
-            $generales = \SucursalQuery::create()->find();
-            $sucursal_array = array();
-
-            foreach ($generales as $value){
-
-                $sucursal_array[str_replace(' ', '_', $value->getSucursalNombrecomercial())] = array();
-            }
+            
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
 
                 $tmp['DT_RowId'] = $value['idventapago'];
-                $sucursal_array[$value['sucursal_nombre']][] = '$' . money_format('%.2n', $value['ventapago_cantidad']); 
+                //verificamos que ya exista el tipo de venta
+                if(isset($sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']]))
+                {
+                    //le sumamos lo nuevo mas lo anterior
+                    $sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']] = $sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']] +  money_format('%.2n', $value['ventapago_cantidad']); 
+                }else{
+                    //Creamos el metodo
+                    $sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']] =  money_format('%.2n', $value['ventapago_cantidad']); 
+                }
+                
  
             }   
-
-            //obtengo el màximo numero 
-            $max = 0;
-            foreach ($sucursal_array as $sucursal => $values) {
-                if(count($values)> $max)
-                    $max = count($values);
-            }
+            
 
             //itero sobre todas las combinaciones para hacerle push al arreglo
             foreach ($sucursal_array as $sucursal => $values) {
-                $i = 0;
-                for(; $i < $max ; $i++)
-                {
-                    //verifico que exista el valor, si no agrego otro
-                    if(isset($values[$i])){
-                        $data[$i][str_replace(' ', '_', $sucursal)] = $values[$i];
-                    }else{
-                        $data[$i][str_replace(' ', '_', $sucursal)] = '';
-                    }
-                }
+                $data[0][str_replace(' ', '_', $sucursal)] = '$' . ($values['efectivo'] + $values['vales'] + $values['tarjeta'] + $values['puntos']) . '  (Total)';
+
+                $data[1][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['efectivo']) . '  (Efectivo)';
+                $data[2][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['vales']) . '  (Vales)';
+                $data[3][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['tarjeta']) . '  (Tarjeta)';
+                $data[4][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['puntos']) . '  (Puntos)';
             }
+
             
             //El arreglo que regresamos
             $json_data = array(
                 'order' => $order_column,
                 "draw"            => (int)$post_data['draw'],
                 //"recordsTotal"    => 100,
-                "recordsFiltered" => $max,
+                "recordsFiltered" => 5,
                 "data"            => $data
             );
             
