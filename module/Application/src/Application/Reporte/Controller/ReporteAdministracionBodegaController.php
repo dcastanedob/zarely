@@ -956,4 +956,158 @@ class ReporteAdministracionBodegaController extends AbstractActionController
     }
 
 
+
+    public function ventasSucursalAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $post_data  = $request->getPost();
+            $query = new \VentapagoQuery();
+            $query->filterByVentaFecha(array('min'=>str_replace('/', '-', $post_data['desde']) ,'max'=>str_replace('/', '-', $post_data['hasta'])));
+
+
+            $query->useVentaQuery('a')->useSucursalQuery('b')->endUse()->endUse();
+
+            
+            $query->withColumn('b.SucursalNombrecomercial', 'sucursal_nombre');
+
+
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+
+            
+            //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+            $data = array();
+
+            //traer las sucursales
+            $generales = \SucursalQuery::create()->find();
+            $sucursal_array = array();
+
+            foreach ($generales as $value){
+
+                $sucursal_array[str_replace(' ', '_', $value->getSucursalNombrecomercial())] = array();
+            }
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+
+                $tmp['DT_RowId'] = $value['idventapago'];
+                $sucursal_array[$value['sucursal_nombre']][] = '$' . money_format('%.2n', $value['ventapago_cantidad']); 
+ 
+            }   
+
+            //obtengo el màximo numero 
+            $max = 0;
+            foreach ($sucursal_array as $sucursal => $values) {
+                if(count($values)> $max)
+                    $max = count($values);
+            }
+
+            //itero sobre todas las combinaciones para hacerle push al arreglo
+            foreach ($sucursal_array as $sucursal => $values) {
+                $i = 0;
+                for(; $i < $max ; $i++)
+                {
+                    //verifico que exista el valor, si no agrego otro
+                    if(isset($values[$i])){
+                        $data[$i][str_replace(' ', '_', $sucursal)] = $values[$i];
+                    }else{
+                        $data[$i][str_replace(' ', '_', $sucursal)] = '';
+                    }
+                }
+            }
+            
+            //El arreglo que regresamos
+            $json_data = array(
+                'order' => $order_column,
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => $max,
+                "data"            => $data
+            );
+            
+            if($post_data['btn'] == 'excel')
+            {
+                $phpreport = new \Application\Shared\PHPReport();
+                $phpreport->load(array(
+                    array(
+                        'id' => 'reporte',
+                        'repeat' => true,
+                        'data' => $data,
+                        'minRows' => 2,
+                    )
+                ));
+                $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                $json_data['base64'] = $base_64;
+            }
+
+            if(count($json_data['data']) > 0){
+                $index = count($json_data['data']) -1;
+                if($post_data['btn'] == 'excel'){
+                    
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                    array(
+                           'id' => 'reporte',
+                           'repeat' => true,
+                           'data' => $data,
+                           'minRows' => 2,
+                       )));
+                    $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                    $json_data['data'][$index]['base64'] = $base_64;
+                    $json_data['output'] = 'excel';
+                    
+                    
+                }
+            }
+            return $this->getResponse()->setContent(json_encode($json_data));
+
+
+        }
+
+        //traer las sucursales
+        $generales = \SucursalQuery::create()->find();
+        $sucursal_array = array();
+
+        foreach ($generales as $value){
+
+            $sucursal_array[$value->getIdsucursal()] = $value->getSucursalNombrecomercial();
+        }
+
+        $form = new \Application\Reporte\Form\MasVendidosForm();
+
+
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/reporte/administracion/bodega/ventasSucursal/ver');
+
+        $view_model->setVariables(array(
+            'form' => $form,
+            'sucursales' => $sucursal_array
+        ));
+
+        return $view_model;
+    }
+
+
+    public function getSucursalesAction()
+    {
+        $request = $this->getRequest();
+        
+        if ($request->isPost()) {
+            
+            //traer las sucursales
+            $generales = \SucursalQuery::create()->find();
+            $sucursal_array = array();
+
+            foreach ($generales as $value){
+
+                $sucursal_array[$value->getIdsucursal()] = str_replace(' ', '_', $value->getSucursalNombrecomercial());
+            }
+
+            return $this->getResponse()->setContent(json_encode($sucursal_array));
+
+        }
+    }
+
+
 }
