@@ -1328,13 +1328,14 @@ class ReporteAdministracionBodegaController extends AbstractActionController
 
 
             $query->useSucursalQuery('d')->endUse();
-            $query->useVentadetalleQuery('a')->useProductovarianteQuery('b')->useProductoQuery('c')->endUse()->endUse()->endUse();
+            $query->useVentadetalleQuery('a')->useProductovarianteQuery('b')->useProductocolorQuery('pc')->useColorQuery('cl')->endUse()->endUse()->useProductoQuery('c')->endUse()->endUse()->endUse();
 
             $query->withColumn('c.ProductoModelo', 'nombre_producto');
             $query->withColumn('SUM(a.VentadetalleCantidad)','cantidad_producto');
+            $query->withColumn('cl.ColorNombre', 'color_nombre');
             $query->groupBy("c.Idproducto");
             $query->groupBy("d.Idsucursal");
-
+            $query->groupBy("b.Idproductocolor");
 
             $records_filtered = $query->count();
             
@@ -1407,6 +1408,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
                 $tmp['DT_RowId'] = $value['idventa'];
                 $tmp['nombre_producto'] = $value['nombre_producto'];
                 $tmp['cantidad_producto'] = $value['cantidad_producto'];
+                $tmp['color_nombre'] = $value['color_nombre'];
                 $temp['row'+$value['idsucursal']][] = $tmp;
  
             }   
@@ -1415,7 +1417,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
             foreach ($temp as $key => $value) {
                 //$value = array_reverse($value);
                 foreach ($value as $sucursal) {
-                    $data['sucursal'.$key][] = $sucursal['nombre_producto'] . ' - ' . $sucursal['cantidad_producto']; 
+                    $data['sucursal'.$key][] = $sucursal['nombre_producto'] . ' ' . $sucursal['color_nombre'] . ' - ' . $sucursal['cantidad_producto'] . ' pares'; 
                 }
                 
             }
