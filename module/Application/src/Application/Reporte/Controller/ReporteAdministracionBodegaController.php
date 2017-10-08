@@ -1551,14 +1551,21 @@ class ReporteAdministracionBodegaController extends AbstractActionController
         $request = $this->getRequest();
         if($request->isPost()){
             $post_data  = $request->getPost();
-            $query = new \VentapagoQuery();
+            $query = new \VentaQuery();
             $query->filterByVentaFecha(array('min'=>str_replace('/', '-', $post_data['desde']) ,'max'=>str_replace('/', '-', $post_data['hasta'])));
 
 
-            $query->useVentaQuery('a')->useSucursalQuery('b')->endUse()->endUse();
-
+            $query->useEmpleadoRelatedByIdempleadovendedorQuery('b')->endUse();
+            $query->useSucursalQuery('a')->endUse();
             
-            $query->withColumn('b.SucursalNombrecomercial', 'sucursal_nombre');
+            $query->withColumn('b.EmpleadoNombre', 'empleado_nombre');
+            $query->withColumn('b.EmpleadoApaterno', 'empleado_apaterno');
+            $query->withColumn('b.EmpleadoAmaterno', 'empleado_amaterno');
+            $query->withColumn('a.SucursalNombrecomercial', 'sucursal_nombrecomercial');
+            $query->withColumn('SUM(venta_total)','ventas_total');
+
+            $query->groupBy('Idempleadovendedor');
+            $query->groupBy('Idsucursal');
 
 
             //LIMIT
@@ -1569,42 +1576,37 @@ class ReporteAdministracionBodegaController extends AbstractActionController
             
             //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
             $data = array();
-
+            $query->orderBy('ventas_total',  \Criteria::DESC);
+            $temp = array();
             
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
 
-                $tmp['DT_RowId'] = $value['idventapago'];
-                //verificamos que ya exista el tipo de venta
-                if(isset($sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']]))
-                {
-                    //le sumamos lo nuevo mas lo anterior
-                    $sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']] = $sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']] +  money_format('%.2n', $value['ventapago_cantidad']); 
-                }else{
-                    //Creamos el metodo
-                    $sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']] =  money_format('%.2n', $value['ventapago_cantidad']); 
-                }
-                
+                $temp[$value['sucursal_nombrecomercial']][] = $value['empleado_nombre']  . ' '. $value['empleado_apaterno']  . ' '. $value['empleado_amaterno']  . ' - $'. $value['ventas_total'];
  
             }   
-            
 
-            //itero sobre todas las combinaciones para hacerle push al arreglo
-            foreach ($sucursal_array as $sucursal => $values) {
-                $data[0][str_replace(' ', '_', $sucursal)] = '$' . ($values['efectivo'] + $values['vales'] + $values['tarjeta'] + $values['puntos']) . '  (Total)';
-
-                $data[1][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['efectivo']) . '  (Efectivo)';
-                $data[2][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['vales']) . '  (Vales)';
-                $data[3][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['tarjeta']) . '  (Tarjeta)';
-                $data[4][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['puntos']) . '  (Puntos)';
+            //obtenemos el màximo numero de empleados por sucursal
+            $max = 0;
+            foreach ($temp as  $vendedores) {
+                if($max < count($vendedores))
+                    $max = count($vendedores); 
             }
-
             
+            //iteramos sobre todos los valores
+            foreach ($temp as $sucursal => $vendedores) {
+                //recorremos todos los valores y lo agregamos a la nueva data
+                for ($i=0; $i < $max; $i++) { 
+                    $data[$i][str_replace(' ', '_', $sucursal)] = $vendedores[$i];
+                }
+            }
+           
+            //var_dump($data);exit();
             //El arreglo que regresamos
             $json_data = array(
                 'order' => $order_column,
                 "draw"            => (int)$post_data['draw'],
                 //"recordsTotal"    => 100,
-                "recordsFiltered" => 5,
+                "recordsFiltered" => $max,
                 "data"            => $data
             );
             
