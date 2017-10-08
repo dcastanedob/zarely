@@ -1673,4 +1673,243 @@ class ReporteAdministracionBodegaController extends AbstractActionController
     }
 
 
+    public function ventasDiaAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $post_data  = $request->getPost();
+            $query = new \VentaQuery();
+            $query->filterByVentaFecha(array('min'=>str_replace('/', '-', $post_data['desde']) ,'max'=>str_replace('/', '-', $post_data['hasta'])));
+
+
+            $query->useSucursalQuery('a')->endUse();
+            $query->withColumn('a.SucursalNombrecomercial', 'sucursal_nombrecomercial');
+
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+
+            
+            //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+            $data = array();
+            
+            $temp = array();
+            
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                //obtenemos el día de la seamna
+                $day = date( "l", strtotime($value['venta_fecha']));
+                
+                //verificamos si ya se agregò informaciòn
+                if(isset($temp[$value['sucursal_nombrecomercial']][$day])) {
+                    //sumamos la cantidad
+                    $temp[$value['sucursal_nombrecomercial']][$day] = $temp[$value['sucursal_nombrecomercial']][$day] + $value['venta_total'];
+                } else {
+                     $temp[$value['sucursal_nombrecomercial']][$day] =  $value['venta_total'];
+                }
+ 
+            }   
+
+            //iteramos sobre cada sucursal para obtener su valor
+            foreach ($temp as $sucursal => $values) {
+                $data[0][str_replace(' ', '_', $sucursal)] = 'Lunes - $'.  money_format('%.2n', $values['Monday']);
+                $data[1][str_replace(' ', '_', $sucursal)] = 'Martes - $'.  money_format('%.2n', $values['Tuesday']);
+                $data[2][str_replace(' ', '_', $sucursal)] = 'Miércoles - $'.  money_format('%.2n', $values['Wednesday']);
+                $data[3][str_replace(' ', '_', $sucursal)] = 'Jueves - $'.  money_format('%.2n', $values['Thursday']);
+                $data[4][str_replace(' ', '_', $sucursal)] = 'Viernes - $'.  money_format('%.2n', $values['Friday']);
+                $data[5][str_replace(' ', '_', $sucursal)] = 'Sábado - $'.  money_format('%.2n', $values['Saturday']);
+                $data[6][str_replace(' ', '_', $sucursal)] = 'Domingo - $'.  money_format('%.2n', $values['Sunday']);
+            }
+            
+            //El arreglo que regresamos
+            $json_data = array(
+                'order' => $order_column,
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => 7,
+                "data"            => $data
+            );
+            
+            if($post_data['btn'] == 'excel')
+            {
+                $phpreport = new \Application\Shared\PHPReport();
+                $phpreport->load(array(
+                    array(
+                        'id' => 'reporte',
+                        'repeat' => true,
+                        'data' => $data,
+                        'minRows' => 2,
+                    )
+                ));
+                $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                $json_data['base64'] = $base_64;
+            }
+
+            if(count($json_data['data']) > 0){
+                $index = count($json_data['data']) -1;
+                if($post_data['btn'] == 'excel'){
+                    
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                    array(
+                           'id' => 'reporte',
+                           'repeat' => true,
+                           'data' => $data,
+                           'minRows' => 2,
+                       )));
+                    $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                    $json_data['data'][$index]['base64'] = $base_64;
+                    $json_data['output'] = 'excel';
+                    
+                    
+                }
+            }
+            return $this->getResponse()->setContent(json_encode($json_data));
+
+
+        }
+
+        //traer las sucursales
+        $generales = \SucursalQuery::create()->find();
+        $sucursal_array = array();
+
+        foreach ($generales as $value){
+
+            $sucursal_array[$value->getIdsucursal()] = $value->getSucursalNombrecomercial();
+        }
+
+        $form = new \Application\Reporte\Form\MasVendidosForm();
+
+
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/reporte/administracion/bodega/ventasDia/ver');
+
+        $view_model->setVariables(array(
+            'form' => $form,
+            'sucursales' => $sucursal_array
+        ));
+
+        return $view_model;
+    }
+
+    public function ventasHoraAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $post_data  = $request->getPost();
+            $query = new \VentaQuery();
+            $query->filterByVentaFecha(array('min'=>str_replace('/', '-', $post_data['desde']) ,'max'=>str_replace('/', '-', $post_data['hasta'])));
+
+
+            $query->useSucursalQuery('a')->endUse();
+            $query->withColumn('a.SucursalNombrecomercial', 'sucursal_nombrecomercial');
+
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+
+            
+            //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+            $data = array();
+            
+            $temp = array();
+            
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                //obtenemos el día de la seamna
+                $day = date( "l", strtotime($value['venta_fecha']));
+                
+                //verificamos si ya se agregò informaciòn
+                if(isset($temp[$value['sucursal_nombrecomercial']][$day])) {
+                    //sumamos la cantidad
+                    $temp[$value['sucursal_nombrecomercial']][$day] = $temp[$value['sucursal_nombrecomercial']][$day] + $value['venta_total'];
+                } else {
+                     $temp[$value['sucursal_nombrecomercial']][$day] =  $value['venta_total'];
+                }
+ 
+            }   
+
+            //iteramos sobre cada sucursal para obtener su valor
+            foreach ($temp as $sucursal => $values) {
+                $data[0][str_replace(' ', '_', $sucursal)] = 'Lunes - $'.  money_format('%.2n', $values['Monday']);
+                $data[1][str_replace(' ', '_', $sucursal)] = 'Martes - $'.  money_format('%.2n', $values['Tuesday']);
+                $data[2][str_replace(' ', '_', $sucursal)] = 'Miércoles - $'.  money_format('%.2n', $values['Wednesday']);
+                $data[3][str_replace(' ', '_', $sucursal)] = 'Jueves - $'.  money_format('%.2n', $values['Thursday']);
+                $data[4][str_replace(' ', '_', $sucursal)] = 'Viernes - $'.  money_format('%.2n', $values['Friday']);
+                $data[5][str_replace(' ', '_', $sucursal)] = 'Sábado - $'.  money_format('%.2n', $values['Saturday']);
+                $data[6][str_replace(' ', '_', $sucursal)] = 'Domingo - $'.  money_format('%.2n', $values['Sunday']);
+            }
+            
+            //El arreglo que regresamos
+            $json_data = array(
+                'order' => $order_column,
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => 7,
+                "data"            => $data
+            );
+            
+            if($post_data['btn'] == 'excel')
+            {
+                $phpreport = new \Application\Shared\PHPReport();
+                $phpreport->load(array(
+                    array(
+                        'id' => 'reporte',
+                        'repeat' => true,
+                        'data' => $data,
+                        'minRows' => 2,
+                    )
+                ));
+                $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                $json_data['base64'] = $base_64;
+            }
+
+            if(count($json_data['data']) > 0){
+                $index = count($json_data['data']) -1;
+                if($post_data['btn'] == 'excel'){
+                    
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                    array(
+                           'id' => 'reporte',
+                           'repeat' => true,
+                           'data' => $data,
+                           'minRows' => 2,
+                       )));
+                    $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                    $json_data['data'][$index]['base64'] = $base_64;
+                    $json_data['output'] = 'excel';
+                    
+                    
+                }
+            }
+            return $this->getResponse()->setContent(json_encode($json_data));
+
+
+        }
+
+        //traer las sucursales
+        $generales = \SucursalQuery::create()->find();
+        $sucursal_array = array();
+
+        foreach ($generales as $value){
+
+            $sucursal_array[$value->getIdsucursal()] = $value->getSucursalNombrecomercial();
+        }
+
+        $form = new \Application\Reporte\Form\MasVendidosForm();
+
+
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/reporte/administracion/bodega/ventasHora/ver');
+
+        $view_model->setVariables(array(
+            'form' => $form,
+            'sucursales' => $sucursal_array
+        ));
+
+        return $view_model;
+    }
+
+
 }
