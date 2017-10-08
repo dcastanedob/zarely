@@ -1816,29 +1816,40 @@ class ReporteAdministracionBodegaController extends AbstractActionController
             $temp = array();
             
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
-                //obtenemos el día de la seamna
-                $day = date( "l", strtotime($value['venta_fecha']));
+                //obtenemos el tiempo
+                $time = explode(' ', $value['venta_fecha'])[1];
+                //obtenemos lahora
+                $hour = explode(':', $time)[0];
+
+
                 
                 //verificamos si ya se agregò informaciòn
-                if(isset($temp[$value['sucursal_nombrecomercial']][$day])) {
+                if(isset($temp[$value['sucursal_nombrecomercial']][$hour])) {
                     //sumamos la cantidad
-                    $temp[$value['sucursal_nombrecomercial']][$day] = $temp[$value['sucursal_nombrecomercial']][$day] + $value['venta_total'];
+                    $temp[$value['sucursal_nombrecomercial']][$hour] = $temp[$value['sucursal_nombrecomercial']][$hour] + $value['venta_total'];
                 } else {
-                     $temp[$value['sucursal_nombrecomercial']][$day] =  $value['venta_total'];
+                     $temp[$value['sucursal_nombrecomercial']][$hour] =  $value['venta_total'];
                 }
  
             }   
+            
 
             //iteramos sobre cada sucursal para obtener su valor
             foreach ($temp as $sucursal => $values) {
-                $data[0][str_replace(' ', '_', $sucursal)] = 'Lunes - $'.  money_format('%.2n', $values['Monday']);
-                $data[1][str_replace(' ', '_', $sucursal)] = 'Martes - $'.  money_format('%.2n', $values['Tuesday']);
-                $data[2][str_replace(' ', '_', $sucursal)] = 'Miércoles - $'.  money_format('%.2n', $values['Wednesday']);
-                $data[3][str_replace(' ', '_', $sucursal)] = 'Jueves - $'.  money_format('%.2n', $values['Thursday']);
-                $data[4][str_replace(' ', '_', $sucursal)] = 'Viernes - $'.  money_format('%.2n', $values['Friday']);
-                $data[5][str_replace(' ', '_', $sucursal)] = 'Sábado - $'.  money_format('%.2n', $values['Saturday']);
-                $data[6][str_replace(' ', '_', $sucursal)] = 'Domingo - $'.  money_format('%.2n', $values['Sunday']);
+                $data[0][str_replace(' ', '_', $sucursal)] = '9:00 am - 9:59 am  - $'.  money_format('%.2n', $values[9]);
+                $data[1][str_replace(' ', '_', $sucursal)] = '10:00 am - 10:59 am  - $'.  money_format('%.2n', $values[10]);
+                $data[2][str_replace(' ', '_', $sucursal)] = '11:00 am - 11:59 am  - $'.  money_format('%.2n', $values[11]);
+                $data[3][str_replace(' ', '_', $sucursal)] = '12:00 pm - 12:59 pm  - $'.  money_format('%.2n', $values[12]);
+                $data[4][str_replace(' ', '_', $sucursal)] = '1:00 pm - 1:59 pm  - $'.  money_format('%.2n', $values[13]);
+                $data[5][str_replace(' ', '_', $sucursal)] = '2:00 pm - 2:59 pm  - $'.  money_format('%.2n', $values[14]);
+                $data[6][str_replace(' ', '_', $sucursal)] = '3:00 pm - 3:59 pm  - $'.  money_format('%.2n', $values[15]);
+                $data[7][str_replace(' ', '_', $sucursal)] = '4:00 pm - 4:59 pm  - $'.  money_format('%.2n', $values[16]);
+                $data[8][str_replace(' ', '_', $sucursal)] = '5:00 pm - 9:59 pm  - $'.  money_format('%.2n', $values[17]);
+                $data[9][str_replace(' ', '_', $sucursal)] = '6:00 pm - 6:59 pm  - $'.  money_format('%.2n', $values[18]);
+                $data[10][str_replace(' ', '_', $sucursal)] = '7:00 pm - 7:59 pm  - $'.  money_format('%.2n', $values[19]);
+                $data[11][str_replace(' ', '_', $sucursal)] = '8:00 pm - 8:59 pm  - $'.  money_format('%.2n', $values[20]);
             }
+
             
             //El arreglo que regresamos
             $json_data = array(
