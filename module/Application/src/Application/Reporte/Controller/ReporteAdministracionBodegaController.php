@@ -1002,16 +1002,19 @@ class ReporteAdministracionBodegaController extends AbstractActionController
  
             }   
             
+            if($sucursal_array != null)
+            {
+                //itero sobre todas las combinaciones para hacerle push al arreglo
+                foreach ($sucursal_array as $sucursal => $values) {
+                    $data[0][str_replace(' ', '_', $sucursal)] = '$' . ($values['efectivo'] + $values['vales'] + $values['tarjeta'] + $values['puntos']) . '  (Total)';
 
-            //itero sobre todas las combinaciones para hacerle push al arreglo
-            foreach ($sucursal_array as $sucursal => $values) {
-                $data[0][str_replace(' ', '_', $sucursal)] = '$' . ($values['efectivo'] + $values['vales'] + $values['tarjeta'] + $values['puntos']) . '  (Total)';
-
-                $data[1][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['efectivo']) . '  (Efectivo)';
-                $data[2][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['vales']) . '  (Vales)';
-                $data[3][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['tarjeta']) . '  (Tarjeta)';
-                $data[4][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['puntos']) . '  (Puntos)';
+                    $data[1][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['efectivo']) . '  (Efectivo)';
+                    $data[2][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['vales']) . '  (Vales)';
+                    $data[3][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['tarjeta']) . '  (Tarjeta)';
+                    $data[4][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['puntos']) . '  (Puntos)';
+                }
             }
+            
 
             
             //El arreglo que regresamos
@@ -1540,6 +1543,131 @@ class ReporteAdministracionBodegaController extends AbstractActionController
             return $this->getResponse()->setContent(json_encode($sucursal_array));
 
         }
+    }
+
+
+    public function ventasVendedorAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+            $post_data  = $request->getPost();
+            $query = new \VentapagoQuery();
+            $query->filterByVentaFecha(array('min'=>str_replace('/', '-', $post_data['desde']) ,'max'=>str_replace('/', '-', $post_data['hasta'])));
+
+
+            $query->useVentaQuery('a')->useSucursalQuery('b')->endUse()->endUse();
+
+            
+            $query->withColumn('b.SucursalNombrecomercial', 'sucursal_nombre');
+
+
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+
+            
+            //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+            $data = array();
+
+            
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+
+                $tmp['DT_RowId'] = $value['idventapago'];
+                //verificamos que ya exista el tipo de venta
+                if(isset($sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']]))
+                {
+                    //le sumamos lo nuevo mas lo anterior
+                    $sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']] = $sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']] +  money_format('%.2n', $value['ventapago_cantidad']); 
+                }else{
+                    //Creamos el metodo
+                    $sucursal_array[$value['sucursal_nombre']][$value['ventapago_metododepago']] =  money_format('%.2n', $value['ventapago_cantidad']); 
+                }
+                
+ 
+            }   
+            
+
+            //itero sobre todas las combinaciones para hacerle push al arreglo
+            foreach ($sucursal_array as $sucursal => $values) {
+                $data[0][str_replace(' ', '_', $sucursal)] = '$' . ($values['efectivo'] + $values['vales'] + $values['tarjeta'] + $values['puntos']) . '  (Total)';
+
+                $data[1][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['efectivo']) . '  (Efectivo)';
+                $data[2][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['vales']) . '  (Vales)';
+                $data[3][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['tarjeta']) . '  (Tarjeta)';
+                $data[4][str_replace(' ', '_', $sucursal)] = '$' . ( 0.00 +$values['puntos']) . '  (Puntos)';
+            }
+
+            
+            //El arreglo que regresamos
+            $json_data = array(
+                'order' => $order_column,
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => 5,
+                "data"            => $data
+            );
+            
+            if($post_data['btn'] == 'excel')
+            {
+                $phpreport = new \Application\Shared\PHPReport();
+                $phpreport->load(array(
+                    array(
+                        'id' => 'reporte',
+                        'repeat' => true,
+                        'data' => $data,
+                        'minRows' => 2,
+                    )
+                ));
+                $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                $json_data['base64'] = $base_64;
+            }
+
+            if(count($json_data['data']) > 0){
+                $index = count($json_data['data']) -1;
+                if($post_data['btn'] == 'excel'){
+                    
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                    array(
+                           'id' => 'reporte',
+                           'repeat' => true,
+                           'data' => $data,
+                           'minRows' => 2,
+                       )));
+                    $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+                    $json_data['data'][$index]['base64'] = $base_64;
+                    $json_data['output'] = 'excel';
+                    
+                    
+                }
+            }
+            return $this->getResponse()->setContent(json_encode($json_data));
+
+
+        }
+
+        //traer las sucursales
+        $generales = \SucursalQuery::create()->find();
+        $sucursal_array = array();
+
+        foreach ($generales as $value){
+
+            $sucursal_array[$value->getIdsucursal()] = $value->getSucursalNombrecomercial();
+        }
+
+        $form = new \Application\Reporte\Form\MasVendidosForm();
+
+
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/reporte/administracion/bodega/ventasVendedor/ver');
+
+        $view_model->setVariables(array(
+            'form' => $form,
+            'sucursales' => $sucursal_array
+        ));
+
+        return $view_model;
     }
 
 
