@@ -204,11 +204,21 @@ class CodigoDeBarrasProductoController extends AbstractActionController
         //obtenemos el proudcto variante
         $id = $this->params()->fromRoute('id');
         $pv = \ProductovarianteQuery::create()->findPk($id);
+        
+        $producto = $pv->getProducto();
+        $color = $pv->getProductocolor();
+        $color = $color->getColor();
+        $material = $pv->getProductomaterial();
+        $material = $material->getMaterial();
+        $tallaje = $pv->getProductovarianteTalla();
+
+        $information =$producto->getProductoModelo() .'-' . $material->getMaterialNombre() .'-'  . $color->getColorNombre(). '-' . $tallaje;
+
 
         //generamos el codigo de barras
         $generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
 
-        $barcode = $generator->getBarcode($pv->getProductovarianteCodigobarras(), $generator::TYPE_CODE_128) . $pv->getProductovarianteCodigobarras()
+        $barcode = $generator->getBarcode($pv->getProductovarianteCodigobarras(), $generator::TYPE_CODE_128) . $information
         ; 
         echo($barcode);exit();
     }
