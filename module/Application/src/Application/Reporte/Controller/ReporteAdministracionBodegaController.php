@@ -1107,21 +1107,22 @@ class ReporteAdministracionBodegaController extends AbstractActionController
 
 
 
-            $query = new \VentaQuery();
+            $query = new \VentadetalleQuery();
             
 
-            $query->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaEstatuspago(1)->filterByIdsucursal($post_data['sucursal'],\Criteria::IN);
+            $query->useVentaQuery('vq')->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaEstatuspago(1)->filterByIdsucursal($post_data['sucursal'],\Criteria::IN)->endUse();
 
 
-            $query->useSucursalQuery('d')->endUse();
-            $query->useVentadetalleQuery('a')->useProductovarianteQuery('b')->useProductoQuery('c')->endUse()->endUse()->endUse();
+            $query->useVentaQuery('vq')->useSucursalQuery('d')->endUse()->endUse();
+
+            $query->useProductovarianteQuery('b')->useProductoQuery('c')->endUse()->endUse();
 
             $query->withColumn('c.ProductoModelo', 'nombre_producto');
-            $query->withColumn('SUM(a.VentadetalleCantidad)','cantidad_producto');
+            $query->withColumn('SUM(ventadetalle_cantidad)','cantidad_producto')->orderBy('cantidad_producto',\Criteria::DESC);
+            $query->withColumn('vq.Idsucursal', 'idsucursal');
+
             $query->groupBy("c.Idproducto");
             $query->groupBy("d.Idsucursal");
-
-
             $records_filtered = $query->count();
             
             //SEARCH
@@ -1185,7 +1186,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
             }
 
             
-            
+                
             //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
             $temp = array();
             $query->orderBy('cantidad_producto',  \Criteria::ASC);
@@ -1201,7 +1202,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
             foreach ($temp as $key => $value) {
                 //$value = array_reverse($value);
                 foreach ($value as $sucursal) {
-                    $data['sucursal'.$key][] = $sucursal['nombre_producto'] . ' - ' . $sucursal['cantidad_producto']; 
+                    $data['sucursal'.$key][] = $sucursal['nombre_producto'] . ' - ' . $sucursal['cantidad_producto'] . " pares"; 
                 }
                 
             }
@@ -1324,21 +1325,27 @@ class ReporteAdministracionBodegaController extends AbstractActionController
 
 
 
-            $query = new \VentaQuery();
+
+            $query = new \VentadetalleQuery();
             
 
-            $query->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaEstatuspago(1)->filterByIdsucursal($post_data['sucursal'],\Criteria::IN);
+            $query->useVentaQuery('vq')->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaEstatuspago(1)->filterByIdsucursal($post_data['sucursal'],\Criteria::IN)->endUse();
 
 
-            $query->useSucursalQuery('d')->endUse();
-            $query->useVentadetalleQuery('a')->useProductovarianteQuery('b')->useProductocolorQuery('pc')->useColorQuery('cl')->endUse()->endUse()->useProductoQuery('c')->endUse()->endUse()->endUse();
+            $query->useVentaQuery('vq')->useSucursalQuery('d')->endUse()->endUse();
+
+            $query->useProductovarianteQuery('b')->useProductocolorQuery('pc')->useColorQuery('cl')->endUse()->endUse()->useProductoQuery('c')->endUse()->endUse();
 
             $query->withColumn('c.ProductoModelo', 'nombre_producto');
-            $query->withColumn('SUM(a.VentadetalleCantidad)','cantidad_producto');
+            $query->withColumn('SUM(ventadetalle_cantidad)','cantidad_producto')->orderBy('cantidad_producto',\Criteria::DESC);
             $query->withColumn('cl.ColorNombre', 'color_nombre');
-            $query->groupBy("c.Idproducto");
-            $query->groupBy("d.Idsucursal");
+            $query->withColumn('vq.Idsucursal', 'idsucursal');
+
             $query->groupBy("b.Idproductocolor");
+            $query->groupBy("d.Idsucursal");
+
+            $records_filtered = $query->count();
+            
 
             $records_filtered = $query->count();
             
@@ -1402,7 +1409,6 @@ class ReporteAdministracionBodegaController extends AbstractActionController
                 $query->orderBy($order_column,  \Criteria::ASC);
             }
 
-            
             
             //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
             $temp = array();
@@ -1562,7 +1568,7 @@ class ReporteAdministracionBodegaController extends AbstractActionController
             $query->withColumn('b.EmpleadoApaterno', 'empleado_apaterno');
             $query->withColumn('b.EmpleadoAmaterno', 'empleado_amaterno');
             $query->withColumn('a.SucursalNombrecomercial', 'sucursal_nombrecomercial');
-            $query->withColumn('SUM(venta_total)','ventas_total');
+            $query->withColumn('SUM(venta_total)','ventas_total')->orderBy('ventas_total',\Criteria::DESC);;
 
             $query->groupBy('Idempleadovendedor');
             $query->groupBy('Idsucursal');
@@ -1917,6 +1923,233 @@ class ReporteAdministracionBodegaController extends AbstractActionController
         $view_model->setVariables(array(
             'form' => $form,
             'sucursales' => $sucursal_array
+        ));
+
+        return $view_model;
+    }
+
+
+    public function medidasMasVendidasAction()
+    {
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+
+            $post_data = $request->getPost();
+
+            //convertir la fecha
+            $temp = explode('/',$post_data['desde']);
+
+
+            $post_data['desde'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 00:00:00';
+
+            $temp = explode('/',$post_data['hasta']);
+            $post_data['hasta'] = $temp[2] . '-' . $temp[1] . '-' . $temp[0] . ' 23:59:59';
+
+
+
+            $query = new \VentadetalleQuery();
+            
+
+            $query->useVentaQuery('vq')->filterByVentaFecha(array('min'=>$post_data['desde'],'max'=>$post_data['hasta']))->filterByVentaEstatuspago(1)->endUse();
+
+
+            $query->useVentaQuery('vq')->useSucursalQuery('d')->endUse()->endUse();
+
+            $query->useProductovarianteQuery('b')->useProductoQuery('c')->endUse()->endUse();
+
+            $query->withColumn('c.ProductoModelo', 'nombre_producto');
+            $query->withColumn('b.ProductovarianteTalla', 'talla_producto');
+            $query->withColumn('b.Idproductovariante', 'id_pv');
+            $query->withColumn('SUM(ventadetalle_cantidad)','cantidad_producto')->orderBy('cantidad_producto',\Criteria::DESC);
+            $query->withColumn('d.SucursalNombrecomercial', 'sucursal_nombre');
+            $query->withColumn('vq.Idsucursal', 'idsucursal');
+
+            $query->groupBy("b.Idproductovariante");
+            $query->groupBy("d.Idsucursal");
+
+
+
+
+            
+            $records_filtered = $query->count();
+            
+            //SEARCH
+            if(!empty($post_data['search']['value'])){
+                $search_value = $post_data['search']['value'];
+                
+                $search_value = str_replace("Ñ", "Ã‘", $search_value);
+                $search_value = str_replace("L'", "L'", $search_value);
+                $search_value = str_replace("Ç", "Ã‡", $search_value);
+                $search_value = str_replace("À", "Ã€", $search_value);
+                $search_value = str_replace("È", "Ãˆ", $search_value);
+                $search_value = str_replace("Û", "Ã›", $search_value);
+                $search_value = str_replace("´", "Â´", $search_value);
+                $search_value = str_replace("ñ", "Ã±", $search_value);
+                $search_value = str_replace("Ú", "Ãš", $search_value);
+                $search_value = str_replace("é", "Ã©", $search_value);
+                $search_value = str_replace("Á", "Ã", $search_value);
+                $search_value = str_replace("ó", "Ã³", $search_value);
+                $search_value = str_replace("'", "'", $search_value);
+                $search_value = str_replace("ú", "Ãº", $search_value);
+                if ( strpos($search_value, 'Ð') !== false)
+                {
+                    $search_value = str_replace("Ð", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Á') !== false )
+                {
+                    $search_value = str_replace("Á", "Ã", $search_value);
+                }
+                if ( strpos($search_value, 'Í') !== false )
+                {
+                    $search_value = str_replace("Í", "Ã", $search_value);
+                }
+                $c = new \Criteria();
+               
+                
+                $c1= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
+
+
+
+                $query->addAnd($c1);
+
+              
+
+
+                $records_filtered = $query->count();
+                
+            }
+            //LIMIT
+            $query->setOffset((int)$post_data['start']);
+            $query->setLimit((int)$post_data['length']);
+            
+            
+            //ORDER
+            $order_column = $post_data['order'][0]['column'];
+            $order_column = $this->articulos_map[$order_column];
+            $dir = $post_data['order'][0]['dir'];
+            if($dir == 'desc'){
+                $query->orderBy($order_column,  \Criteria::DESC);
+            }else{
+                $query->orderBy($order_column,  \Criteria::ASC);
+            }
+            
+            //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
+            $temp = array();
+            $query->orderBy('cantidad_producto',  \Criteria::ASC);
+            foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
+                $pv = \ProductovarianteQuery::create()->findPk($value['id_pv']);
+                if($pv->getIdproducto() == $post_data['producto'])
+                {
+                    $tmp['DT_RowId'] = $value['idventa'];
+                    $tmp['nombre_producto'] = $value['nombre_producto'];
+                    $tmp['cantidad_producto'] = $value['cantidad_producto'];
+                    $tmp['talla_producto'] = $value['talla_producto'];
+                    $temp[$value['sucursal_nombre']][] = $tmp;
+                }
+                
+ 
+            }   
+
+
+            $data = array();
+            foreach ($temp as $key => $value) {
+                foreach ($value as $sucursal) {
+                    $data[str_replace(' ', '_', $key)][] = $sucursal['nombre_producto'] . " ".$sucursal['talla_producto'].' - ' . $sucursal['cantidad_producto'] . " pares"; 
+                }
+                
+            }
+
+
+            $newData = [];
+            foreach ($data as $index => $info) {
+                $i = 0; 
+
+                for(;$i<5;$i++)
+                {
+                    $newData[$i][$index] = $info[$i];
+
+                }
+                
+            }
+
+            
+
+
+            //El arreglo que regresamos
+            $json_data = array(
+                'order' => $order_column,
+                "draw"            => (int)$post_data['draw'],
+                //"recordsTotal"    => 100,
+                "recordsFiltered" => 5,
+                "data"            => $newData
+            );
+            
+            if($post_data['btn'] == 'excel')
+            {
+                $phpreport = new \Application\Shared\PHPReport();
+                $phpreport->load(array(
+                    array(
+                        'id' => 'reporte',
+                        'repeat' => true,
+                        'data' => $data,
+                        'minRows' => 2,
+                    )
+                ));
+                $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                $json_data['base64'] = $base_64;
+            }
+
+            if(count($json_data['data']) > 0){
+                $index = count($json_data['data']) -1;
+                if($post_data['btn'] == 'excel'){
+                    
+                    $phpreport = new \Application\Shared\PHPReport();
+                    $phpreport->load(array(
+                    array(
+                           'id' => 'reporte',
+                           'repeat' => true,
+                           'data' => $data,
+                           'minRows' => 2,
+                       )));
+                    $base_64 = $phpreport->render('excel2003','reporte_contrarecibo',true);
+                    $json_data['data'][$index]['base64'] = $base_64;
+                    $json_data['output'] = 'excel';
+                    
+                    
+                }
+            }
+            return $this->getResponse()->setContent(json_encode($json_data));
+        }
+
+        //traer los productos
+        $generales = \ProductoQuery::create()->find();
+        $producto_array = array();
+
+        foreach ($generales as $value){
+
+            $producto_array[$value->getIdproducto()] = $value->getProductoModelo();
+        }
+
+        //traer las sucursales
+        $generales = \SucursalQuery::create()->find();
+        $sucursal_array = array();
+
+        foreach ($generales as $value){
+
+            $sucursal_array[$value->getIdsucursal()] = $value->getSucursalNombrecomercial();
+        }
+
+        $form = new \Application\Reporte\Form\MasVendidosForm();
+
+
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/reporte/administracion/bodega/medidasMasVendidas/ver');
+
+        $view_model->setVariables(array(
+            'form' => $form,
+            'productos' => $producto_array,
+            'sucursales' =>$sucursal_array
         ));
 
         return $view_model;
