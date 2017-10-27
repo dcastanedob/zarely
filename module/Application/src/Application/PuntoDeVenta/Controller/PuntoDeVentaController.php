@@ -1364,6 +1364,37 @@ class PuntoDeVentaController extends AbstractActionController
         }
     }
 
+    public function ticketAction()
+    { 
+      //cargamos el template
+      $template = '/puntodeventa.xlsx';
+      $templateDir = $_SERVER['DOCUMENT_ROOT'] . '/application/files/templates';
+      
+
+      $config = array(
+                      'template' => $template,
+                      'templateDir' => $templateDir
+                      );
+
+
+      //$phpreport = new \Application\Shared\PHPReport($config);
+      $phpreport = new \Application\Shared\PHPReport();
+
+      $phpreport->load(array(
+          array(
+              'id' => 'reporte',
+              'repeat' => true,
+              'data' => array(['hola','adios'],['hola','adios']),
+              'minRows' => 2,
+          )
+      ));
+      $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+      $json_data['base64'] = $base_64;  
+
+      return $this->getResponse()->setContent(json_encode($json_data));
+
+    }
+
     //funcion para calcular los puntos 
     private function generarPuntos($id, $tarjeta)
     {

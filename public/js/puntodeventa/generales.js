@@ -1931,9 +1931,26 @@
                                   }
                               
                               });
-                              $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
-                              $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
+
+                              $modal.find('#btn_hacer_pago').attr('disbled',"").text('Imprimir ticket');
                               $modal.find('#btn_hacer_pago').off('click');
+                              $modal.find('#btn_hacer_pago').click(function() { 
+                                $.ajax({
+                                  method: 'POST',
+                                  url:'/puntodeventa/ticket',
+                                  dataType:'JSON',
+                                  data:{
+                                    id:id
+                                  },success:function(response)
+                                  {
+                                    if(typeof response.base64 != 'undefined'){
+                                        download("data:application/xls;base64,"+response.base64,"reporteventa.XLS", "application/xls");
+                                    }   
+                                  }
+                              
+                              });
+                              }); // Adds another click event
+
 
                               $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
                               $modal.find('#btn_cancelar_pago').off('click');
@@ -2736,8 +2753,8 @@
                                   }
                               
                               });
-                              $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
-                              $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
+                              $modal.find('#btn_hacer_pago').attr('',"").text('Imprimir ticket');
+                              $modal.find('#btn_hacer_pago').click(function() {  alert("hola"); }); // Adds another click event
                               $modal.find('#btn_hacer_pago').off('click');
 
                               $modal.find('#btn_cancelar_pago').click(function() { return false; }); // Adds another click event
@@ -3142,7 +3159,7 @@
                                   }
                               
                               });
-                              $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
+                              $modal.find('#btn_hacer_pago').attr('',"").text('Imprimir ticket');
                               $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
                               $modal.find('#btn_hacer_pago').off('click');
 
@@ -3546,7 +3563,7 @@
                                   }
                               
                               });
-                              $modal.find('#btn_hacer_pago').attr('disabled',"").text('Imprimir ticket');
+                              $modal.find('#btn_hacer_pago').attr('',"").text('Imprimir ticket');
                               $modal.find('#btn_hacer_pago').click(function() { return false; }); // Adds another click event
                               $modal.find('#btn_hacer_pago').off('click');
 
