@@ -1366,32 +1366,95 @@ class PuntoDeVentaController extends AbstractActionController
 
     public function ticketAction()
     { 
-      //cargamos el template
-      $template = '/puntodeventa.xlsx';
-      $templateDir = $_SERVER['DOCUMENT_ROOT'] . '/application/files/templates';
+      $request = $this->getRequest();
+        if($request->isPost()){
+            
+          $post_data = $request->getPost();
+          
+          //obtenemos la venta
+          $venta = \VentaQuery::Create()->findPk($post_data['id']);
+
+          //obtenemos la sucursal
+          $sucursal = $venta->getSucursal();
+          $sucursalNombre = $sucursal->getSucursalNombrecomercial();
+          $sucursalDireccion = $sucursal->getSucursalEstado(). ', ' . $sucursal->getSucursalCiudad();
+
+          //obtenemos el empleado
+          $empleado = $venta->getEmpleadoRelatedByIdempleadovendedor();
+
+          //obtenemos los detalles de la venta
+          $detalles = $venta->getVentadetalles();
+
+          $data = [];
+          foreach ($detalles as $detalle) {
+
+            //obtenemos la información del producto variante
+            $variante = $detalle->getProductovariante();
+            $producto = $variante->getProducto();
+
+            $color = $variante->getProductocolor();
+            $color = $color->getColor();
+            $material = $variante->getProductomaterial();
+            $material = $material->getMaterial();
+            $tallaje = $variante->getProductovarianteTalla();
+
+
+            
+            $temp = [];
+            $temp['uno'] = $detalle->getVentadetalleCantidad();
+            $temp['dos'] = $producto->getProductoModelo() .' - ' . $color->getColorNombre().' / ' . $material->getMaterialNombre().' / ' . $tallaje;
+            $temp['tres'] = $producto->getProductoDescripcion();
+            $temp['cuatro'] = ' $ '.$detalle->getVentadetallePreciounitario();
+            $temp['cinco'] = $detalle->getVentadetalleDescuento().'%';
+            $temp['seis'] = ' $ '.$detalle->getVentadetalleSubtotal();
+            $data[] = $temp;
+          }
+
+          //cargamos el template
+          $template = '/puntodeventa.xlsx';
+          $templateDir = $_SERVER['DOCUMENT_ROOT'] . '/application/files/templates';
+          
+
+          $config = array(
+                          'template' => $template,
+                          'templateDir' => $templateDir
+                          );
+
+
+          $phpreport = new \Application\Shared\PHPReport($config);
+          //$phpreport = new \Application\Shared\PHPReport();
+
+          $phpreport->load(array(
+              array(
+                  'id' => 'compania',
+                  'data' => array('nombre' => 'ZARELY', 'sucursal' => $sucursalNombre)
+              ),
+              array(
+                  'id' => 'sucursal',
+                  'data' => array('direccion' => $sucursalDireccion, 'mensaje' => 'No se aceptan devoluciones')
+              ),
+              array(
+                  'id' => 'venta',
+                  'data' => array('fecha' => $venta->getVentaFecha(),'creado' => $empleado->getEmpleadoNombre().' ' .$empleado->getEmpleadoApaterno(). ' ' .$empleado->getEmpleadoAmaterno(), 'folio' => $venta->getIdventa())
+              ),
+              array(
+                  'id' => 'costo',
+                  'data' => array('total' => ' $ '.$venta->getVentaTotal(),'iva' => ' $ '.$venta->getVentaIva(), 'sub' => ' $ '.$venta->getVentaSubtotal())
+              ),
+              array(
+                  'id' => 'col',
+                  'repeat' => true,
+                  'data' => $data,
+                  'minRows' => 2,
+              )
+          ));
+          $base_64 = $phpreport->render('excel2003','reporte_venta',true);
+          $json_data['base64'] = $base_64;  
+
+          return $this->getResponse()->setContent(json_encode($json_data));
+      };
+
       
-
-      $config = array(
-                      'template' => $template,
-                      'templateDir' => $templateDir
-                      );
-
-
-      //$phpreport = new \Application\Shared\PHPReport($config);
-      $phpreport = new \Application\Shared\PHPReport();
-
-      $phpreport->load(array(
-          array(
-              'id' => 'reporte',
-              'repeat' => true,
-              'data' => array(['hola','adios'],['hola','adios']),
-              'minRows' => 2,
-          )
-      ));
-      $base_64 = $phpreport->render('excel2003','reporte_venta',true);
-      $json_data['base64'] = $base_64;  
-
-      return $this->getResponse()->setContent(json_encode($json_data));
 
     }
 
