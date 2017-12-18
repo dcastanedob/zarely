@@ -108,7 +108,7 @@ class TallajesController extends AbstractActionController
 
                 $tmp['DT_RowId'] = $value['idtallaje'];
                 $tmp['idtallaje'] = $value['idtallaje'];
-                $tmp['tallaje_nombre'] = $value['tallaje_nombre'];
+                $tmp['tallaje_nombre'] = utf8_encode($value['tallaje_nombre']);
                 $tmp['tallajerango'] = $value['tallajerango'];
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
@@ -160,8 +160,7 @@ class TallajesController extends AbstractActionController
                 "recordsFiltered" => $records_filtered,
                 "data"            => $data
             );
-            
-            
+
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }
