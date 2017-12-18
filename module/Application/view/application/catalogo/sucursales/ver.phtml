@@ -6,83 +6,109 @@
         <div class="col-md-offset-1 col-md-10">
     		<div class="demo-form-wrapper">
     			<form class="form form-horizontal" action="/catalogo/sucursales/ver/<?php echo $entity->getIdsucursal() ?>" method="POST">
-	    			<div class="col-xs-5">
-		       			<div class="form-group">
-			           		<label  for="Nombre comercial">Nombre comercial </label>
-			                <?php echo $this->formText($form->get('sucursal_nombrecomercial')) ?>
-		        		</div>
-		        		<input type="hidden" name="idsucursal" value="<?php echo $entity->getIdsucursal()?>">
+    				<input type="hidden" name="idsucursal" value="<?php echo $entity->getIdsucursal()?>">
+	    			<div class="panel panel-info">
+						<div class="panel-heading"><h4>INFORMACIÓN SUCURSAL</h4></div>
 
-		        		<div class="form-group">
-			           		<label  for="Calle">Calle</label>
-			                <?php echo $this->formText($form->get('sucursal_calle')) ?>
-		        		</div>
+						 <div class="panel-body">
+		          			<div class="col-xs-5">
+		      	       			
+		      	        		<div class="form-group">
+					           		<label  for="Nombre comercial">Nombre comercial </label>
+					                <?php echo $this->formText($form->get('sucursal_nombrecomercial')) ?>
+				        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Número interior">Número interior</label>
-			                <?php echo $this->formText($form->get('sucursal_numinterior')) ?>
-		        		</div>
+				        		
 
-		        		<div class="form-group">
-			           		<label  for="Estado"> Estado</label>
-			                <?php echo $this->formText($form->get('sucursal_estado')) ?>
-		        		</div>
-		        		
-		        		<div class="form-group">
-			           		<label  for="Código postal">Código postal</label>
-			                <?php echo $this->formText($form->get('sucursal_codigopostal')) ?>
-		        		</div>
-		        		
+				        		<div class="form-group">
+					           		<label  for="Número exterior">Asignar vendedor</label>
+					                <?php echo $this->formSelect($form->get('idempleadovendedor[]')) ?>
+				        		</div>
 
-		        		
 
-		        		
-		        		<div class="form-group">
-			           		<label  for="Número exterior">Asignar vendedor</label>
-			                <?php echo $this->formSelect($form->get('idempleadovendedor[]')) ?>
-		        		</div>
+		      	        	</div>
 
-		        		
-		        	</div>
-		        	<div class="col-xs-1"></div>
-	        		<div class="col-xs-5">
-		       			<div class="form-group">
-			           		<label  for="Razón social">Razón social</label>
-			                <?php echo $this->formText($form->get('sucursal_razonsocial')) ?>
-		        		</div>
+		      	        	<div class="col-xs-1"></div>
 
-		        		<div class="form-group">
-			           		<label  for="Número exterior">Número exterior</label>
-			                <?php echo $this->formText($form->get('sucursal_numexterno')) ?>
-		        		</div>
+		      	        	<div class="col-xs-5">
+	   			       			<div class="form-group">
+					           		<label  for="Razón social">Razón social</label>
+					                <?php echo $this->formText($form->get('sucursal_razonsocial')) ?>
+				        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Ciudad"> Ciudad</label>
-			                <?php echo $this->formText($form->get('sucursal_ciudad')) ?>
-		        		</div>
+				        		
+				        		
 
-		        		
+				        		<div class="form-group">
+					           		<label  for="Número exterior">Asignar cajero</label>
+					                <?php echo $this->formSelect($form->get('idempleadocajero[]')) ?>
+				        		</div>
+		      	        	</div>
+						</div>
+					</div>
+					<br>
 
-		        		<div class="form-group">
-			           		<label  for="Colonia">Colonia</label>
-			                <?php echo $this->formText($form->get('sucursal_colonia')) ?>
-		        		</div>
-		        		
-		        		<div class="form-group">
-			           		<label  for="Número exterior">Asignar cajero</label>
-			                <?php echo $this->formSelect($form->get('idempleadocajero[]')) ?>
-		        		</div>
-		        		
+    				<div class="panel panel-info">
+						<div class="panel-heading"><h4>DIRECCIÓN</h4></div>
 
-		        	</div>
-		        	
+						 <div class="panel-body">
+		          			<div class="col-xs-5">
+		      	       			
+		      	        		<div class="form-group">
+					           		<label  for="Calle">Calle</label>
+					                <?php echo $this->formText($form->get('sucursal_calle')) ?>
+				        		</div>
 
-		     
+				        		<div class="form-group">
+					           		<label  for="Número interior">Número interior</label>
+					                <?php echo $this->formText($form->get('sucursal_numinterior')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="Estado"> Estado</label>
+					                <?php echo $this->formText($form->get('sucursal_estado')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="Código postal">Código postal</label>
+					                <?php echo $this->formText($form->get('sucursal_codigopostal')) ?>
+				        		</div>
+
+		      	        	</div>
+
+		      	        	<div class="col-xs-1"></div>
+
+		      	        	<div class="col-xs-5">
+	   			       			<div class="form-group">
+					           		<label  for="Número exterior">Número exterior</label>
+					                <?php echo $this->formText($form->get('sucursal_numexterno')) ?>
+				        		</div>
+
+
+				        		
+				        		<div class="form-group">
+					           		<label  for="Ciudad"> Ciudad</label>
+					                <?php echo $this->formText($form->get('sucursal_ciudad')) ?>
+				        		</div>
+				        		
+
+				        		
+				        		<div class="form-group">
+					           		<label  for="Colonia">Colonia</label>
+					                <?php echo $this->formText($form->get('sucursal_colonia')) ?>
+				        		</div>
+		      	        	</div>
+						</div>
+					</div>
+
+					
+
+                    
 
 		        	<div class="form-group">
 		           		<label  for="guardar"></label>
-		                <button class="btn btn-primary btn-block btn-next" type="submit">Guardar</button>
-	        		</div>
+		                <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="23">Guardar</button>
+		    		</div>
  
     			</form>
     		</div>

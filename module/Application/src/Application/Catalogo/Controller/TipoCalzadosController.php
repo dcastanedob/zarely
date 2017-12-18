@@ -83,7 +83,7 @@ class TipoCalzadosController extends AbstractActionController
                 $c1->addOr($c2)->addOr($c3);
 
                 $query->addAnd($c1);
-                $query->groupByIdtipocalzados();
+                $query->groupByIdtipocalzado();
                 
                 $records_filtered = $query->count();
                 

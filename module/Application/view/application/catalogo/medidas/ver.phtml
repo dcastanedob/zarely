@@ -1,76 +1,85 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title"><?php echo $entity->getMedidaNombre() ?></h1>
+	    <h1 class="title-bar-title"></h1>
 	</div>
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
     		<div class="demo-form-wrapper">
     			<form class="form form-horizontal" action="/catalogo/medidas/ver/<?php echo $entity->getIdmedida() ?>" method="POST">
-	    			<div class="col-xs-10">
-		       			<div class="form-group">
-			           		<label  for="Nombre">Nombre del tallaje</label>
-			                <?php echo $this->formText($form->get('medida_nombre')) ?>
-		        		</div>
+	    			<div class="panel panel-info">
+						<div class="panel-heading"><h4>Modificando medida: <?php echo $entity->getMedidaNombre() ?></h4></div>
 
+						 <div class="panel-body">
+			       			<div class="form-group">
+				           		<label  class="col-sm-3 control-label" for="Nombre">Nombre de la medida</label>
+				           		<div class="col-sm-8">
+				           			<?php echo $this->formText($form->get('medida_nombre')) ?>
+				           		</div>
+			        		</div>
 
-			        	<div class="form-group">
-			        		<label  for="Tallas">Seleccione las medidas</label>
-			        	
-				        	<div class="row" >
-				        		<table class="table table-bordered">
+			        		<div class="form-group">
+				        		<label  class="col-sm-3 control-label" for="Tallas">Seleccione las medidas</label>
+				        		<div class="col-sm-8">
+						        	<div class="row" >
+						        		<table class="table table-bordered">
 
-								    <tbody>
-								      <tr>
-								        <td>
-								        	<label style="text-align: center; display: block">XS </label>
-		                					<?php echo $this->formCheckbox($form->get('medida_xs')) ?>
-								        </td>
+										    <tbody>
+										      <tr>
+										        <td>
+										        	<label style="text-align: center; display: block">XS </label>
+				                					<?php echo $this->formCheckbox($form->get('medida_xs')) ?>
+										        </td>
 
-								        <td>
-								        	<label style="text-align: center; display: block">S </label>
-		                					<?php echo $this->formCheckbox($form->get('medida_s')) ?>
-								        </td>
+										        <td>
+										        	<label style="text-align: center; display: block">S </label>
+				                					<?php echo $this->formCheckbox($form->get('medida_s')) ?>
+										        </td>
 
-								        <td>
-								        	<label style="text-align: center; display: block">M </label>
-		                					<?php echo $this->formCheckbox($form->get('medida_m')) ?>
-								        </td>
+										        <td>
+										        	<label style="text-align: center; display: block">M </label>
+				                					<?php echo $this->formCheckbox($form->get('medida_m')) ?>
+										        </td>
 
-								        <td>
-								        	<label style="text-align: center; display: block">L</label>
-		                					<?php echo $this->formCheckbox($form->get('medida_l')) ?>
-								        </td>
+										        <td>
+										        	<label style="text-align: center; display: block">L</label>
+				                					<?php echo $this->formCheckbox($form->get('medida_l')) ?>
+										        </td>
 
-								        <td>
-								        	<label style="text-align: center; display: block">XL</label>
-		                					<?php echo $this->formCheckbox($form->get('medida_xl')) ?>
-								        </td>
+										        <td>
+										        	<label style="text-align: center; display: block">XL</label>
+				                					<?php echo $this->formCheckbox($form->get('medida_xl')) ?>
+										        </td>
 
-								        <td>
-								        	<label style="text-align: center; display: block">XXL </label>
-		                					<?php echo $this->formCheckbox($form->get('medida_xxl')) ?>
-								        </td>
+										        <td>
+										        	<label style="text-align: center; display: block">XXL </label>
+				                					<?php echo $this->formCheckbox($form->get('medida_xxl')) ?>
+										        </td>
 
-								        <td>
-								        	<label style="text-align: center; display: block">UNI</label>
-		                					<?php echo $this->formCheckbox($form->get('medida_unitalla')) ?>
-								        </td>
+										        <td>
+										        	<label style="text-align: center; display: block">UNI</label>
+				                					<?php echo $this->formCheckbox($form->get('medida_unitalla')) ?>
+										        </td>
 
-								      
+										      
 
-								      </tr>
+										      </tr>
 
-								    </tbody>
-								</table>
+										    </tbody>
+										</table>
 
-							</div>
+									</div>
+								</div>
+				        	</div>
 			        	</div>
+			        </div>
 
+
+                    
 
 		        	<div class="form-group">
 		           		<label  for="guardar"></label>
-		                <button class="btn btn-primary btn-block btn-next" type="submit">Guardar</button>
-	        		</div>
+		                <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="23">Guardar</button>
+		    		</div>
  
     			</form>
     		</div>

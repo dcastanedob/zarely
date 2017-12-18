@@ -6,81 +6,118 @@
         <div class="col-md-offset-1 col-md-10">
     		<div class="demo-form-wrapper">
     			<form class="form form-horizontal" action="/catalogo/productos/ver/<?php echo $entity->getIdproducto() ?>" method="POST">
-    				<div class="row">
-		    			<div class="col-md-5">
-			       			<div class="form-group">
-				           		<label  for="Modelo">Modelo </label>
-				                <?php echo $this->formText($form->get('producto_modelo')) ?>
-			        		</div>
-			        		<input type="hidden" name="idproducto" value="<?php echo $entity->getIdproducto()?>">
+    				<input type="hidden" name="idproducto" value="<?php echo $entity->getIdproducto()?>">
 
-			        		<div class="form-group">
-				           		<label  for="dirigido"> Dirigido a:</label>
-				                <?php echo $this->formSelect($form->get('producto_dirigidoa')) ?>
-			        		</div>
 
-			        		<div class="form-group">
-				           		<label  for="tipo">Tipo de calzado</label>
-				                <?php echo $this->formSelect($form->get('idtipocalzado')) ?>
-			        		</div>
 
-			        		<div class="form-group">
-				           		<label  for="venta">Precio de venta</label>
-				                <?php echo $this->formText($form->get('producto_precioventa')) ?>
-			        		</div>
+    				<div class="panel panel-info">
+						<div class="panel-heading"><h4>DESCRIPCIÓN DEL PRODUCTO</h4></div>
 
-			        		<div class="form-group">
-				           		<label  for="minimo">Mínimo</label>
-				                <?php echo $this->formText($form->get('producto_minimo')) ?>
-			        		</div>
+						 <div class="panel-body">
+		          			<div class="col-xs-5">
+		      	       			
+		      	        		<div class="form-group">
+					           		<label  for="Modelo">Modelo </label>
+					                <?php echo $this->formText($form->get('producto_modelo')) ?>
+				        		</div>
 
-			        		<div class="form-group">
-				           		<label  for="comisionable">Comisionable</label>
-				                <?php echo $this->formSelect($form->get('producto_comisionable')) ?>
-			        		</div>
-			        		
-			        	</div>
-			        	<div class="col-md-1"></div>
-		        		<div class="col-md-5">
-			       			<div class="form-group">
-				           		<label  for="Proveedor">Proveedor </label>
-				                <?php echo $this->formSelect($form->get('idproveedor')) ?>
-			        		</div>
+				        		<div class="form-group">
+					           		<label  for="dirigido"> Dirigido a:</label>
+					                <?php echo $this->formSelect($form->get('producto_dirigidoa')) ?>
+				        		</div>
 
-			        		<div class="form-group">
-				           		<label  for="marca"> Marca</label>
-				                <?php echo $this->formSelect($form->get('idmarca')) ?>
-			        		</div>
+				        		<div class="form-group">
+					           		<label  for="tipo">Tipo de calzado</label>
+					                <?php echo $this->formSelect($form->get('idtipocalzado')) ?>
+				        		</div>
 
-			        		<div class="form-group">
-				           		<label  for="Temporada">Temporada</label>
-				                <?php echo $this->formSelect($form->get('idtemporada')) ?>
-			        		</div>
 
-			        		<div class="form-group">
-				           		<label  for="mayoreo">Precio mayoreo</label>
-				                <?php echo $this->formText($form->get('producto_preciomayoreo')) ?>
-			        		</div>
+		      	        	</div>
 
-			        		<div class="form-group">
-				           		<label  for="reorden">Reorden</label>
-				                <?php echo $this->formText($form->get('producto_reorden')) ?>
-			        		</div>
+		      	        	<div class="col-xs-1"></div>
 
-			        		<div class="form-group">
-				           		<label  for="costo">Costo</label>
-				                <?php echo $this->formText($form->get('producto_costo')) ?>
-			        		</div>
+		      	        	<div class="col-xs-5">
+		      	        		<div class="form-group">
+					           		<label  for="Proveedor">Proveedor </label>
+					                <?php echo $this->formSelect($form->get('idproveedor')) ?>
+				        		</div>
 
-			        		
-			        	</div>
-		        	
- 					</div> <!--end class row-->
+				        		<div class="form-group">
+					           		<label  for="marca"> Marca</label>
+					                <?php echo $this->formSelect($form->get('idmarca')) ?>
+				        		</div>
 
-	 					<div class="row">
-			        		
-	    					<div class="col-md-5 alineamiento" >
-	    						
+				        		<div class="form-group">
+					           		<label  for="Temporada">Temporada</label>
+					                <?php echo $this->formSelect($form->get('idtemporada')) ?>
+				        		</div>
+		      	        		
+				        		
+		      	        	</div>
+						</div>
+					</div>
+					<br>
+
+					
+					<br>
+
+
+					<div class="panel panel-info">
+						<div class="panel-heading"><h4>INVENTARIO Y PRECIOS</h4></div>
+
+						 <div class="panel-body">
+		          			<div class="col-xs-5">
+		      	       			
+		      	        		<div class="form-group">
+					           		<label  for="venta">Precio de venta</label>
+					                <?php echo $this->formText($form->get('producto_precioventa')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="minimo">Mínimo</label>
+					                <?php echo $this->formText($form->get('producto_minimo')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="comisionable">Comisionable</label>
+					                <?php echo $this->formSelect($form->get('producto_comisionable')) ?>
+				        		</div>
+
+
+		      	        	</div>
+
+		      	        	<div class="col-xs-1"></div>
+
+		      	        	<div class="col-xs-5">
+
+		      	        		<div class="form-group">
+					           		<label  for="mayoreo">Precio mayoreo</label>
+					                <?php echo $this->formText($form->get('producto_preciomayoreo')) ?>
+				        		</div>
+
+				        		<div class="form-group" >
+					           		<label  for="reorden">Reorden</label>
+					                <?php echo $this->formText($form->get('producto_reorden')) ?>
+				        		</div>
+
+				        		<div class="form-group" >
+					           		<label  for="costo">Costo</label>
+					                <?php echo $this->formText($form->get('producto_costo')) ?>
+				        		</div>
+				        		
+		      	        	</div>
+						</div>
+					</div>
+					<br>
+
+					<div class="panel panel-info">
+						<div class="panel-heading"><h4>CARACTERÍSTICAS DEL PRODUCTO</h4></div>
+
+						 <div class="panel-body">
+		          			<div class="col-xs-5">
+		      	       			
+		      	        		
+    						
 								<div class="form-group" >
 									<label for="tallaje">Tallaje</label>
 									
@@ -97,7 +134,7 @@
 			        				</div>
 			        				<div class="col-md-1"></div>
 
-					        		<div class="col-md-3">		
+					        		<div class="col-md-4">		
 					        			<div class="form-group" style="margin-top: -23px">
 							           		<label  for="guardar"></label>
 		                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_tallaje">			Agregar
@@ -157,7 +194,7 @@
 		        				</div>
 		        				<div class="col-md-1"></div>
 
-				        		<div class="col-md-3">		
+				        		<div class="col-md-4">		
 				        			<div class="form-group">
 						           		<label  for="guardar"></label>
 	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_material">			Agregar
@@ -176,12 +213,15 @@
 
 		        				    </tbody>
 		        				</table>
-		        				
 
 
-		        			</div>	
-		        			<div class="col-md-1"></div>
-		        			<div class="col-md-5 alineamiento" >
+		      	        	</div>
+
+		      	        	<div class="col-xs-1"></div>
+
+		      	        	<div class="col-xs-5">
+
+		      	        		
 		        				<div class="col-md-8">
 				                    <div class="form-group">
 						           		<label for="tallaje">Colores</label>
@@ -190,7 +230,7 @@
 		        				</div>
 		        				<div class="col-md-1"></div>
 
-				        		<div class="col-md-3">		
+				        		<div class="col-md-4">		
 				        			<div class="form-group">
 						           		<label  for="guardar"></label>
 	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_color">			Agregar
@@ -202,6 +242,7 @@
 		        				    <thead>
 		        				      <tr>
 		        				        <th>Nombre</th>
+		        				        <th>Fotografía</th>
 		        				        <th>Opciones</th>
 		        				      </tr>
 		        				    </thead>
@@ -209,11 +250,13 @@
 
 		        				    </tbody>
 		        				</table>
-			        				
+				        		
+		      	        	</div>
+						</div>
+					</div>
+    				
 
-		        			</div>
-
-			        	</div>
+ 					
 
 
 		        	<div class="form-group">

@@ -82,10 +82,10 @@ class ProveedoresController extends AbstractActionController
 
                  $c4= $c->getNewCriterion('proveedor.proveedor_email', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c5= $c->getNewCriterion('proveedor.proveedor_fechainicio', '%'.$search_value.'%', \Criteria::LIKE);
+                
 
           
-                $c1->addOr($c2)->addOr($c3)->addOr($c4)->addOr($c5);
+                $c1->addOr($c2)->addOr($c3)->addOr($c4);
 
                 $query->addAnd($c1);
                 $query->groupByIdproveedor();
@@ -174,7 +174,6 @@ class ProveedoresController extends AbstractActionController
             );
             
 
-            
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }

@@ -76,14 +76,14 @@ class MedidasController extends AbstractActionController
                 $c1= $c->getNewCriterion('medida.idmedida', '%'.$search_value.'%', \Criteria::LIKE);
                 $c2= $c->getNewCriterion('medida.medida_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('medida.medidarango', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c3= $c->getNewCriterion('medida.medidasrango', '%'.$search_value.'%', \Criteria::LIKE);
 
 
           
                 $c1->addOr($c2)->addOr($c3);
 
                 $query->addAnd($c1);
-                $query->groupByIdempleado();
+                $query->groupByIdmedida();
                 
                 $records_filtered = $query->count();
                 

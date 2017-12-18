@@ -208,9 +208,8 @@ abstract class BaseProveedor extends BaseObject implements Persistent
             // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
         }
-
         if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
+            return strftime($format, intval($dt->format('U')));
         }
 
         return $dt->format($format);
