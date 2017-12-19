@@ -2,167 +2,192 @@
 	<div class="title-bar">
 	    <h1 class="title-bar-title">Cliente  -  Registro</h1>
 	</div>
-    <div class="row">
-        <div class="col-md-offset-1 col-md-10">
-    		<div class="demo-form-wrapper">
-    			<form class="form form-horizontal" action="/catalogo/clientes/nuevo" method="POST">
-	    			<div class="col-xs-5">
-		       			<div class="form-group">
-			           		<label  for="fecha">Fecha</label>
-			                <?php echo $this->formDate($form->get('cliente_fecharegistro')) ?>
-		        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="Paterno">Apellido paterno</label>
-			                <?php echo $this->formText($form->get('cliente_apaterno')) ?>
-		        		</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<form class="form form-horizontal" action="/catalogo/clientes/nuevo" method="POST">
+	    		<div class="demo-form-wrapper">
+					<div class="panel panel-info">
+						<div class="panel-heading"><h4>DATOS PERSONALES</h4></div>
 
-		        		<div class="form-group">
-			           		<label  for="tipo">Tipo</label>
-			                <?php echo $this->formSelect($form->get('cliente_tipo')) ?>
-		        		</div>
+						 <div class="panel-body">
+		          			<div class="col-xs-5">
+		      	       			<div class="form-group">
+		      		           		<label  for="fecha">Fecha</label>
+		      		                <?php echo $this->formText($form->get('cliente_fecharegistro')) ?>
+		      	        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="tipo">Crédito?</label>
-			                <?php echo $this->formSelect($form->get('cliente_credito')) ?>
-		        		</div>
+		      	        		<div class="form-group">
+		      		           		<label  for="Paterno">Apellido paterno</label>
+		      		                <?php echo $this->formText($form->get('cliente_apaterno')) ?>
+		      	        		</div>
+
+		      	        		<div class="form-group">
+		      		           		<label  for="tipo">Tipo</label>
+		      		                <?php echo $this->formSelect($form->get('cliente_tipo')) ?>
+		      	        		</div>
+
+		      	        		<div class="form-group">
+		      		           		<label  for="tipo">Crédito?</label>
+		      		                <?php echo $this->formSelect($form->get('cliente_credito')) ?>
+		      	        		</div>
+		      	        		
+
+		      	        	</div>
+
+		      	        	<div class="col-xs-1"></div>
+
+		      	        	<div class="col-xs-5">
+	   			       			<div class="form-group">
+	   				           		<label  for="nombre">Nombre</label>
+	   				                <?php echo $this->formText($form->get('cliente_nombre')) ?>
+	   			        		</div>
+
+	   			        		<div class="form-group">
+	   				           		<label  for="materno">Apellido materno</label>
+	   				                <?php echo $this->formText($form->get('cliente_amaterno')) ?>
+	   			        		</div>
+
+	   			        		<div class="form-group">
+	   				           		<label  for="estatus">Estatus</label>
+	   				                <?php echo $this->formSelect($form->get('cliente_estatus')) ?>
+	   			        		</div>
+
+	   			        		<div class="form-group">
+	   				           		<label  for="limite">Límite de crédito</label>
+	   				                <?php echo $this->formText($form->get('cliente_limitecredito')) ?>
+	   			        		</div>
+
+		      	        	</div>
+						</div>
+					</div>
+
+					<br>
+					<br>
+					<div class="panel panel-info">
+						<div class="panel-heading"><h4>DIRECCIÓN</h4></div>
+
+						 <div class="panel-body">
+		          			<div class="col-xs-5">
+		      	       			<div class="form-group">
+					           		<label  for="calle">Calle</label>
+					                <?php echo $this->formText($form->get('cliente_calle')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="interior">Num. interior</label>
+					                <?php echo $this->formText($form->get('cliente_interior')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="cp">Código Postal</label>
+					                <?php echo $this->formText($form->get('cliente_cp')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="estado">Estado</label>
+					                <?php echo $this->formText($form->get('cliente_estado')) ?>
+				        		</div>
+		      	        		
+
+		      	        	</div>
+
+		      	        	<div class="col-xs-1"></div>
+
+		      	        	<div class="col-xs-5">
+	   			       			<div class="form-group">
+					           		<label  for="exteriorfiscal">Num. exterior</label>
+					                <?php echo $this->formText($form->get('cliente_numerofiscal')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="coloniafiscal">Colonia</label>
+					                <?php echo $this->formText($form->get('cliente_coloniafiscal')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="ciudad">Ciudad</label>
+					                <?php echo $this->formText($form->get('cliente_ciudadfiscal')) ?>
+				        		</div>
+
+		      	        	</div>
+						</div>
+					</div>
+
+					<br>
+					<br>
+					<div class="panel panel-info">
+						<div class="panel-heading"><h4>DATOS FISCALES</h4></div>
+
+						 <div class="panel-body">
+		          			<div class="col-xs-5">
+		      	       			<div class="form-group">
+					           		<label  for="razon">Razón social</label>
+					                <?php echo $this->formText($form->get('cliente_razonsocial')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="callefiscal">Calle</label>
+					                <?php echo $this->formText($form->get('cliente_callefiscal')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="interiorfiscal">Num. interior</label>
+					                <?php echo $this->formText($form->get('cliente_interiorfiscal')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="cpfiscal">Código Postal</label>
+					                <?php echo $this->formText($form->get('cliente_cpfiscal')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="estadofiscal">Estado</label>
+					                <?php echo $this->formText($form->get('cliente_estadofiscal')) ?>
+				        		</div>
+		      	        		
+
+		      	        	</div>
+
+		      	        	<div class="col-xs-1"></div>
+
+		      	        	<div class="col-xs-5">
+	   			       			<div class="form-group">
+					           		<label  for="rfc">RFC</label>
+					                <?php echo $this->formText($form->get('cliente_rfc')) ?>
+				        		</div>
 
 
-		        		<div class="form-group">
-			           		<h3  for="razon"><b>Dirección</b></h3>
-		        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="calle">Calle</label>
-			                <?php echo $this->formText($form->get('cliente_calle')) ?>
-		        		</div>
+				        		<div class="form-group">
+					           		<label  for="exteriorfiscal">Num. exterior</label>
+					                <?php echo $this->formText($form->get('cliente_numerofiscal')) ?>
+				        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="interior">Num. interior</label>
-			                <?php echo $this->formText($form->get('cliente_interior')) ?>
-		        		</div>
+				        		<div class="form-group">
+					           		<label  for="coloniafiscal">Colonia</label>
+					                <?php echo $this->formText($form->get('cliente_coloniafiscal')) ?>
+				        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="cp">Código Postal</label>
-			                <?php echo $this->formText($form->get('cliente_cp')) ?>
-		        		</div>
+				        		<div class="form-group">
+					           		<label  for="ciudad">Ciudad</label>
+					                <?php echo $this->formText($form->get('cliente_ciudadfiscal')) ?>
+				        		</div>
 
-		        		<div class="form-group">
-			           		<label  for="estado">Estado</label>
-			                <?php echo $this->formText($form->get('cliente_estado')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<h3  for="razon"><b>Datos fiscales</b></h3>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="razon">Razón social</label>
-			                <?php echo $this->formText($form->get('cliente_razonsocial')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="callefiscal">Calle</label>
-			                <?php echo $this->formText($form->get('cliente_callefiscal')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="interiorfiscal">Num. interior</label>
-			                <?php echo $this->formText($form->get('cliente_interiorfiscal')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="cpfiscal">Código Postal</label>
-			                <?php echo $this->formText($form->get('cliente_cpfiscal')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="estadofiscal">Estado</label>
-			                <?php echo $this->formText($form->get('cliente_estadofiscal')) ?>
-		        		</div>
-
-		        	</div>
-		        	<div class="col-xs-1"></div>
-	        		<div class="col-xs-5">
-		       			<div class="form-group">
-			           		<label  for="nombre">Nombre</label>
-			                <?php echo $this->formText($form->get('cliente_nombre')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="materno">Apellido materno</label>
-			                <?php echo $this->formText($form->get('cliente_amaterno')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="estatus">Estatus</label>
-			                <?php echo $this->formSelect($form->get('cliente_estatus')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="limite">Límite de crédito</label>
-			                <?php echo $this->formText($form->get('cliente_limitecredito')) ?>
-		        		</div>
-
-		        		<br>
-		        		<br>
-		        		<br>
-		        		<br>
-		        		<div class="form-group">
-			           		<label  for="exterior">Num. exterior</label>
-			                <?php echo $this->formText($form->get('cliente_numero')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="colonia">Colonia</label>
-			                <?php echo $this->formText($form->get('cliente_colonia')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="ciudad">Ciudad</label>
-			                <?php echo $this->formText($form->get('cliente_ciudad')) ?>
-		        		</div>
-		        		<br>
-		        		<br>
-		        		<br>
-		        		<br>
-		        		<br>
-		        		<br>
-		        		<br>
-		        		<div class="form-group">
-			           		<label  for="rfc">RFC</label>
-			                <?php echo $this->formDate($form->get('cliente_rfc')) ?>
-		        		</div>
+		      	        	</div>
+						</div>
+					</div>
 
 
+					<br>
+					<br>
+					<div class="panel panel-info">
+						<div class="panel-heading"><h4>CLIENTES ASOCIADOS</h4></div>
 
-		        		<div class="form-group">
-			           		<label  for="exteriorfiscal">Num. exterior</label>
-			                <?php echo $this->formDate($form->get('cliente_numerofiscal')) ?>
-		        		</div>
+						 <div class="panel-body">
+		          			
 
-		        		<div class="form-group">
-			           		<label  for="coloniafiscal">Colonia</label>
-			                <?php echo $this->formDate($form->get('cliente_coloniafiscal')) ?>
-		        		</div>
-
-		        		<div class="form-group">
-			           		<label  for="ciudad">Ciudad</label>
-			                <?php echo $this->formText($form->get('cliente_ciudadfiscal')) ?>
-		        		</div>
-
-		        		
-
-		        	</div>
-
-		     		<br>
-		        	<br>
-
-		        	<div class="row">
-
-      					<div class="col-md-11 alineamiento" >
-
-	        				<div id="medidasInformation">
+		      	        	<div id="medidasInformation">
 
 	        					<h3  for="clientes"><b>Clientes asociados</b></h3>
 	        					<div id="variantes">
@@ -209,19 +234,22 @@
 		        					<br>
 		        			
 	        				</div>
+						</div>
+					</div>
 
-	        			</div>	
-      				</div>
 
-		        	<div class="form-group">
-		           		<label  for="guardar"></label>
-		                <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="23">Guardar</button>
-	        		</div>
- 
-    			</form>
-    		</div>
-    	</div>
+				</div>
+
+				<div class="form-group">
+	           		<label  for="guardar"></label>
+	                <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="23">Guardar</button>
+	    		</div>
+	    	</form>
+		</div>
 	</div>
+
+
+    
 </div>
 <script src="/js/catalogo/clientes.js"></script>
 <script>

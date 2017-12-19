@@ -129,6 +129,7 @@ class TransferenciaForm extends Form
                     'creada' => 'Creada',
                     'aceptada' => 'Aceptada',
                     'rechazada' => 'Rechazada',
+                    'cancelada' => 'Cancelada',
 
                 ),
             ),

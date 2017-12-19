@@ -43,6 +43,7 @@ class PromocionTableMap extends TableMap
         $this->addColumn('promocion_fechainicio', 'PromocionFechainicio', 'DATE', true, null, null);
         $this->addColumn('promocion_fechafin', 'PromocionFechafin', 'DATE', true, null, null);
         $this->addColumn('promocion_estatus', 'PromocionEstatus', 'BOOLEAN', true, 1, null);
+        $this->addColumn('promocion_descripcion', 'PromocionDescripcion', 'LONGVARCHAR', false, null, null);
         // validators
     } // initialize()
 

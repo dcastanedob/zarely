@@ -80,6 +80,22 @@ CREATE TABLE `color`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- comisiones
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `comisiones`;
+
+CREATE TABLE `comisiones`
+(
+    `idcomisiones` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `idempleado` INTEGER NOT NULL,
+    `comisiones_cantidad` INTEGER NOT NULL,
+    `comisiones_fecha` DATE NOT NULL,
+    PRIMARY KEY (`idcomisiones`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- compra
 -- ---------------------------------------------------------------------
 
@@ -246,6 +262,8 @@ CREATE TABLE `descuento`
     `descuento_fechafin` DATE NOT NULL,
     `descuento_estatus` TINYINT(1) NOT NULL,
     `descuento_tipo` enum('porcentaje','cantidad') NOT NULL,
+    `descuento_descripcion` TEXT,
+    `descuento_cantidad` DECIMAL(10,5),
     PRIMARY KEY (`iddescuento`)
 ) ENGINE=InnoDB;
 
@@ -257,14 +275,16 @@ DROP TABLE IF EXISTS `descuentodetalle`;
 
 CREATE TABLE `descuentodetalle`
 (
-    `iddescuentodetalle` INTEGER NOT NULL,
+    `iddescuentodetalle` INTEGER NOT NULL AUTO_INCREMENT,
     `iddescuento` INTEGER NOT NULL,
     `idproducto` INTEGER,
     `idmarca` INTEGER,
+    `idproductovariante` INTEGER,
     PRIMARY KEY (`iddescuentodetalle`),
     INDEX `iddescuento` (`iddescuento`),
     INDEX `idproducto` (`idproducto`),
     INDEX `idmarca` (`idmarca`),
+    INDEX `idproductovariante` (`idproductovariante`),
     CONSTRAINT `iddescuento_descuentodetalle`
         FOREIGN KEY (`iddescuento`)
         REFERENCES `descuento` (`iddescuento`)
@@ -278,6 +298,11 @@ CREATE TABLE `descuentodetalle`
     CONSTRAINT `idproducto_descuentodetalle`
         FOREIGN KEY (`idproducto`)
         REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductovariante_descuentodetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -559,6 +584,71 @@ CREATE TABLE `pedidomayoristadetalle`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- pedidosucursal
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pedidosucursal`;
+
+CREATE TABLE `pedidosucursal`
+(
+    `idpedidosucursal` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `idempleado` INTEGER NOT NULL,
+    `pedidosucursal_fechasolicitud` DATE NOT NULL,
+    `pedidosucursal_fechaentrega` DATE NOT NULL,
+    `pedidosucursal_estatus` enum('pendiente','solicitado','transito','completado') NOT NULL,
+    `pedidosucursal_nota` TEXT,
+    PRIMARY KEY (`idpedidosucursal`),
+    INDEX `idempleado` (`idempleado`),
+    INDEX `idsucursal` (`idsucursal`),
+    CONSTRAINT `idempleado_pedidosucursal`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idsucursal_pedidosucursal`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- pedidosucursaldetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pedidosucursaldetalle`;
+
+CREATE TABLE `pedidosucursaldetalle`
+(
+    `idpedidosucursaldetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idpedidosucursal` INTEGER NOT NULL,
+    `idproductovariante` INTEGER,
+    `idproducto` INTEGER,
+    `pedidosucursaldetalle_cantidad` INTEGER,
+    `pedidosucursaldetalle_estatus` enum('pendiente','solicitado','transito','completado','cancelado'),
+    PRIMARY KEY (`idpedidosucursaldetalle`),
+    INDEX `idpedidosucursal` (`idpedidosucursal`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    INDEX `idproducto` (`idproducto`),
+    CONSTRAINT `idpedidosucursal_pedidosucursaldetalle`
+        FOREIGN KEY (`idpedidosucursal`)
+        REFERENCES `pedidosucursal` (`idpedidosucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproducto_pedidosucursaldetalle`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idproductovariante_pedidosucursaldetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- producto
 -- ---------------------------------------------------------------------
 
@@ -794,6 +884,7 @@ CREATE TABLE `promocion`
     `promocion_fechainicio` DATE NOT NULL,
     `promocion_fechafin` DATE NOT NULL,
     `promocion_estatus` TINYINT(1) NOT NULL,
+    `promocion_descripcion` TEXT,
     PRIMARY KEY (`idpromocion`)
 ) ENGINE=InnoDB;
 
@@ -807,36 +898,27 @@ CREATE TABLE `promociondetalle`
 (
     `idpromociondetalle` INTEGER NOT NULL AUTO_INCREMENT,
     `idpromocion` INTEGER NOT NULL,
-    `idmarcaoperando` INTEGER NOT NULL,
-    `idproductooperando` INTEGER NOT NULL,
-    `promociondetalle_cantidadoperando` DECIMAL(10,2) NOT NULL,
-    `idmarcaresultado` INTEGER NOT NULL,
-    `idproductoresultado` INTEGER NOT NULL,
-    `promociondetalle_cantidadresultado` DECIMAL(10,2) NOT NULL,
+    `idmarca` INTEGER,
+    `idproducto` INTEGER,
+    `idproductovariante` INTEGER,
     PRIMARY KEY (`idpromociondetalle`),
     INDEX `idpromocion` (`idpromocion`),
-    INDEX `idmarcaoperando` (`idmarcaoperando`),
-    INDEX `idproductooperando` (`idproductooperando`),
-    INDEX `idmarcaresultado` (`idmarcaresultado`),
-    INDEX `idproductoresultado` (`idproductoresultado`),
-    CONSTRAINT `idmarcaoperando_promociondetalle`
-        FOREIGN KEY (`idmarcaoperando`)
+    INDEX `idmarca` (`idmarca`),
+    INDEX `idproducto` (`idproducto`),
+    INDEX `idproductovariante` (`idproductovariante`),
+    CONSTRAINT `idmarca_promociondetalle`
+        FOREIGN KEY (`idmarca`)
         REFERENCES `marca` (`idmarca`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `idmarcaresultado_promociondetalle`
-        FOREIGN KEY (`idmarcaresultado`)
-        REFERENCES `marca` (`idmarca`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `idproductooperando_promociondetalle`
-        FOREIGN KEY (`idproductooperando`)
+    CONSTRAINT `idproducto_promociondetalle`
+        FOREIGN KEY (`idproducto`)
         REFERENCES `producto` (`idproducto`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT `idproductoresultado_promociondetalle`
-        FOREIGN KEY (`idproductoresultado`)
-        REFERENCES `producto` (`idproducto`)
+    CONSTRAINT `idproductovariante_promociondetalle`
+        FOREIGN KEY (`idproductovariante`)
+        REFERENCES `productovariante` (`idproductovariante`)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idpromocion_promociondetalle`
@@ -1023,6 +1105,63 @@ CREATE TABLE `tallaje`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- tarjetapuntos
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tarjetapuntos`;
+
+CREATE TABLE `tarjetapuntos`
+(
+    `idtarjetapuntos` INTEGER NOT NULL AUTO_INCREMENT,
+    `tarjetapuntos_fechaactivacion` DATETIME NOT NULL,
+    `tarjetapuntos_estatus` TINYINT(1) NOT NULL,
+    `tarjetapuntos_puntos` INTEGER NOT NULL,
+    `idempleadoactivador` INTEGER NOT NULL,
+    PRIMARY KEY (`idtarjetapuntos`),
+    INDEX `idempleadoactivador_tarjetapuntos_idx` (`idempleadoactivador`),
+    CONSTRAINT `idempleadoactivador_tarjetapuntos`
+        FOREIGN KEY (`idempleadoactivador`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- tarjetapuntosdetalle
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tarjetapuntosdetalle`;
+
+CREATE TABLE `tarjetapuntosdetalle`
+(
+    `idtarjetapuntosdetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idtarjetapuntos` INTEGER NOT NULL,
+    `tarjetapuntosdetalle_tipo` enum('ingreso','egreso') NOT NULL,
+    `tarjetapuntosdetalle_cantidad` INTEGER NOT NULL,
+    `idventa` INTEGER NOT NULL,
+    `idempleado` INTEGER NOT NULL,
+    PRIMARY KEY (`idtarjetapuntosdetalle`),
+    INDEX `idventa` (`idventa`),
+    INDEX `idempleado` (`idempleado`),
+    INDEX `idtarjetapuntos_tarjetapuntosdetalle_idx` (`idtarjetapuntos`),
+    CONSTRAINT `idempleado_tarjetapuntosdetalle`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idtarjetapuntos_tarjetapuntosdetalle`
+        FOREIGN KEY (`idtarjetapuntos`)
+        REFERENCES `tarjetapuntos` (`idtarjetapuntos`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `idventa_tarjetapuntosdetalle`
+        FOREIGN KEY (`idventa`)
+        REFERENCES `venta` (`idventa`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- temporada
 -- ---------------------------------------------------------------------
 
@@ -1061,11 +1200,12 @@ CREATE TABLE `transferencia`
     `idsucursalorigen` INTEGER NOT NULL,
     `idsucursaldestino` INTEGER NOT NULL,
     `transferencia_fecha` DATETIME NOT NULL,
-    `transferencia_estatus` enum('creada','aceptada','rechazada') NOT NULL,
+    `transferencia_estatus` enum('creada','aceptada','rechazada','cancelada') NOT NULL,
     `idempleadocreador` INTEGER NOT NULL,
     `idempleadoreceptor` INTEGER,
     `transferencia_nota` VARCHAR(45),
     `transferencia_fecharecepcion` DATETIME,
+    `transferencia_razon` VARCHAR(45),
     PRIMARY KEY (`idtransferencia`),
     INDEX `idsucursalorigen` (`idsucursalorigen`),
     INDEX `idsucursaldestino` (`idsucursaldestino`),
@@ -1123,6 +1263,30 @@ CREATE TABLE `transferenciadetalle`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- vale
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `vale`;
+
+CREATE TABLE `vale`
+(
+    `idvale` INTEGER NOT NULL AUTO_INCREMENT,
+    `idsucursal` INTEGER NOT NULL,
+    `vale_cantidad` DECIMAL(10,5) NOT NULL,
+    `vale_estatus` TINYINT(1) NOT NULL,
+    `vale_vigenciadesde` DATETIME NOT NULL,
+    `vale_vigenciahasta` DATETIME NOT NULL,
+    `vale_cantidadutilizada` DECIMAL(10,5),
+    PRIMARY KEY (`idvale`),
+    INDEX `idsucursal` (`idsucursal`),
+    CONSTRAINT `idsucursal_vale`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- venta
 -- ---------------------------------------------------------------------
 
@@ -1142,7 +1306,7 @@ CREATE TABLE `venta`
     `venta_tipo` enum('venta','credito','apartado') NOT NULL,
     `venta_subtotal` DECIMAL(15,5) NOT NULL,
     `venta_iva` DECIMAL(15,5) NOT NULL,
-    `venta_estatus` enum('cancelada','completada','procesando') NOT NULL,
+    `venta_estatus` enum('cancelada','completada','procesando','devolucion','defecto') NOT NULL,
     `venta_facturacion` TINYINT(1),
     PRIMARY KEY (`idventa`),
     INDEX `idempleadocajero` (`idempleadocajero`),
@@ -1214,7 +1378,7 @@ CREATE TABLE `ventapago`
     `idventa` INTEGER NOT NULL,
     `venta_fecha` DATETIME NOT NULL,
     `idempleado` INTEGER NOT NULL,
-    `ventapago_metododepago` enum('efectivo','vales','tarjeta') NOT NULL,
+    `ventapago_metododepago` enum('efectivo','vales','tarjeta','puntos') NOT NULL,
     `ventapago_cantidad` DECIMAL(15,5),
     `ventapago_referencia` VARCHAR(50),
     `ventapago_cuatrodigitos` VARCHAR(4),

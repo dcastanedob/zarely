@@ -58,10 +58,12 @@ class SucursalTableMap extends TableMap
     {
         $this->addRelation('Cortecaja', 'Cortecaja', RelationMap::ONE_TO_MANY, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE', 'Cortecajas');
         $this->addRelation('Pedido', 'Pedido', RelationMap::ONE_TO_MANY, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE', 'Pedidos');
+        $this->addRelation('Pedidosucursal', 'Pedidosucursal', RelationMap::ONE_TO_MANY, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE', 'Pedidosucursals');
         $this->addRelation('Productosucursal', 'Productosucursal', RelationMap::ONE_TO_MANY, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE', 'Productosucursals');
         $this->addRelation('Sucursalempleado', 'Sucursalempleado', RelationMap::ONE_TO_MANY, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE', 'Sucursalempleados');
         $this->addRelation('TransferenciaRelatedByIdsucursaldestino', 'Transferencia', RelationMap::ONE_TO_MANY, array('idsucursal' => 'idsucursaldestino', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdsucursaldestino');
         $this->addRelation('TransferenciaRelatedByIdsucursalorigen', 'Transferencia', RelationMap::ONE_TO_MANY, array('idsucursal' => 'idsucursalorigen', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdsucursalorigen');
+        $this->addRelation('Vale', 'Vale', RelationMap::ONE_TO_MANY, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE', 'Vales');
         $this->addRelation('Venta', 'Venta', RelationMap::ONE_TO_MANY, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE', 'Ventas');
     } // buildRelations()
 

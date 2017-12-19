@@ -12,6 +12,8 @@
  * @method DescuentoQuery orderByDescuentoFechafin($order = Criteria::ASC) Order by the descuento_fechafin column
  * @method DescuentoQuery orderByDescuentoEstatus($order = Criteria::ASC) Order by the descuento_estatus column
  * @method DescuentoQuery orderByDescuentoTipo($order = Criteria::ASC) Order by the descuento_tipo column
+ * @method DescuentoQuery orderByDescuentoDescripcion($order = Criteria::ASC) Order by the descuento_descripcion column
+ * @method DescuentoQuery orderByDescuentoCantidad($order = Criteria::ASC) Order by the descuento_cantidad column
  *
  * @method DescuentoQuery groupByIddescuento() Group by the iddescuento column
  * @method DescuentoQuery groupByDescuentoNombre() Group by the descuento_nombre column
@@ -19,6 +21,8 @@
  * @method DescuentoQuery groupByDescuentoFechafin() Group by the descuento_fechafin column
  * @method DescuentoQuery groupByDescuentoEstatus() Group by the descuento_estatus column
  * @method DescuentoQuery groupByDescuentoTipo() Group by the descuento_tipo column
+ * @method DescuentoQuery groupByDescuentoDescripcion() Group by the descuento_descripcion column
+ * @method DescuentoQuery groupByDescuentoCantidad() Group by the descuento_cantidad column
  *
  * @method DescuentoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method DescuentoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -36,6 +40,8 @@
  * @method Descuento findOneByDescuentoFechafin(string $descuento_fechafin) Return the first Descuento filtered by the descuento_fechafin column
  * @method Descuento findOneByDescuentoEstatus(boolean $descuento_estatus) Return the first Descuento filtered by the descuento_estatus column
  * @method Descuento findOneByDescuentoTipo(string $descuento_tipo) Return the first Descuento filtered by the descuento_tipo column
+ * @method Descuento findOneByDescuentoDescripcion(string $descuento_descripcion) Return the first Descuento filtered by the descuento_descripcion column
+ * @method Descuento findOneByDescuentoCantidad(string $descuento_cantidad) Return the first Descuento filtered by the descuento_cantidad column
  *
  * @method array findByIddescuento(int $iddescuento) Return Descuento objects filtered by the iddescuento column
  * @method array findByDescuentoNombre(string $descuento_nombre) Return Descuento objects filtered by the descuento_nombre column
@@ -43,6 +49,8 @@
  * @method array findByDescuentoFechafin(string $descuento_fechafin) Return Descuento objects filtered by the descuento_fechafin column
  * @method array findByDescuentoEstatus(boolean $descuento_estatus) Return Descuento objects filtered by the descuento_estatus column
  * @method array findByDescuentoTipo(string $descuento_tipo) Return Descuento objects filtered by the descuento_tipo column
+ * @method array findByDescuentoDescripcion(string $descuento_descripcion) Return Descuento objects filtered by the descuento_descripcion column
+ * @method array findByDescuentoCantidad(string $descuento_cantidad) Return Descuento objects filtered by the descuento_cantidad column
  *
  * @package    propel.generator.zarely.om
  */
@@ -150,7 +158,7 @@ abstract class BaseDescuentoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `iddescuento`, `descuento_nombre`, `descuento_fechainicio`, `descuento_fechafin`, `descuento_estatus`, `descuento_tipo` FROM `descuento` WHERE `iddescuento` = :p0';
+        $sql = 'SELECT `iddescuento`, `descuento_nombre`, `descuento_fechainicio`, `descuento_fechafin`, `descuento_estatus`, `descuento_tipo`, `descuento_descripcion`, `descuento_cantidad` FROM `descuento` WHERE `iddescuento` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -450,6 +458,77 @@ abstract class BaseDescuentoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(DescuentoPeer::DESCUENTO_TIPO, $descuentoTipo, $comparison);
+    }
+
+    /**
+     * Filter the query on the descuento_descripcion column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDescuentoDescripcion('fooValue');   // WHERE descuento_descripcion = 'fooValue'
+     * $query->filterByDescuentoDescripcion('%fooValue%'); // WHERE descuento_descripcion LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $descuentoDescripcion The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return DescuentoQuery The current query, for fluid interface
+     */
+    public function filterByDescuentoDescripcion($descuentoDescripcion = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($descuentoDescripcion)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $descuentoDescripcion)) {
+                $descuentoDescripcion = str_replace('*', '%', $descuentoDescripcion);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(DescuentoPeer::DESCUENTO_DESCRIPCION, $descuentoDescripcion, $comparison);
+    }
+
+    /**
+     * Filter the query on the descuento_cantidad column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDescuentoCantidad(1234); // WHERE descuento_cantidad = 1234
+     * $query->filterByDescuentoCantidad(array(12, 34)); // WHERE descuento_cantidad IN (12, 34)
+     * $query->filterByDescuentoCantidad(array('min' => 12)); // WHERE descuento_cantidad >= 12
+     * $query->filterByDescuentoCantidad(array('max' => 12)); // WHERE descuento_cantidad <= 12
+     * </code>
+     *
+     * @param     mixed $descuentoCantidad The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return DescuentoQuery The current query, for fluid interface
+     */
+    public function filterByDescuentoCantidad($descuentoCantidad = null, $comparison = null)
+    {
+        if (is_array($descuentoCantidad)) {
+            $useMinMax = false;
+            if (isset($descuentoCantidad['min'])) {
+                $this->addUsingAlias(DescuentoPeer::DESCUENTO_CANTIDAD, $descuentoCantidad['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($descuentoCantidad['max'])) {
+                $this->addUsingAlias(DescuentoPeer::DESCUENTO_CANTIDAD, $descuentoCantidad['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(DescuentoPeer::DESCUENTO_CANTIDAD, $descuentoCantidad, $comparison);
     }
 
     /**

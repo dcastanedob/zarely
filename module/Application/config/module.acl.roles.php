@@ -7,6 +7,14 @@ return array(
         'auth',
         'login/select',
         'login',
+        'mayoristas-sucursal',
+        'puntodeventa',
+        'reporte',
+        'transferencias-sucursal',
+        'mayoristas',
+        'transferencias',
+        'json',
+
         
     ),
     'Vendedora' => array(
@@ -15,6 +23,14 @@ return array(
         'auth',
         'login/select',
         'login',
+        'mayoristas-sucursal',
+        'puntodeventa',
+        'reporte',
+        'transferencias-sucursal',
+        'mayoristas',
+        'transferencias',
+        'json',
+
         
     ),
     'Secretaria B' => array(
@@ -103,6 +119,8 @@ return array(
         'materiales',
         'marcas',
         'productos',
+        'descuentos',
+        'promociones',
         'tipocalzados',
         'gastos',
 
@@ -119,7 +137,8 @@ return array(
         'transitosproducto',
         'completados',
         'completadosproducto',
-
+        'mayoristas-sucursal',
+        
         //flujo efectivo
         'porpagar',
         'porcobrar',   
@@ -129,6 +148,10 @@ return array(
         'reordenes',
         'existencias',
         'enreorden', 
+        'codigodebarras',
+
+        //reportes
+        'reporte-administracion',
 
         //compras
         'comprasgenerales',
@@ -138,9 +161,125 @@ return array(
 
         //transferencias
         'transferencias',
+        'transferencias-sucursal',
 
         //Punto de venta
         'puntodeventa',
+
+        //reportes
+
+        'reporte',    
+
+        //inventarios
+        'precios-sucursal',
+        'reordenes-sucursal',
+        'existencias-sucursal',
+        'enreorden-sucursal', 
+
+        //reportes 
+        'reporte-administracion-comparacion',
+        'reporte-administracion-remision',
+        'reporte-bodega'
+
+    ),
+
+    'Sat' => array(
+        //login
+        'home',
+        'auth',
+        'login/select',
+        'login',
+
+        //catalogos
+        'empleados',
+        'clientes',
+        'proveedores',
+        'cuentas',
+        'temporadas',
+        'medidas',
+        'sucursales',
+        'tallajes',
+        'colores',
+        'materiales',
+        'marcas',
+        'productos',
+        'descuentos',
+        'promociones',
+        'tipocalzados',
+        'gastos',
+
+        //Json
+        'json',
+
+        //pedidos
+        'mayoristas',
+        'pendientes',
+        'pendientesproducto',
+        'solicitados',
+        'solicitadosproducto',
+        'transitos',
+        'transitosproducto',
+        'completados',
+        'completadosproducto',
+        'mayoristas-sucursal',
         
+        //flujo efectivo
+        'porpagar',
+        'porcobrar',   
+
+        //inventarios
+        'precios',
+        'reordenes',
+        'existencias',
+        'enreorden', 
+        'codigodebarras',
+
+        //reportes
+        'reporte-administracion',
+
+        //compras
+        'comprasgenerales',
+
+         //devoluciones
+        'devolucionesgenerales',
+
+        //transferencias
+        'transferencias',
+        'transferencias-sucursal',
+
+        //Punto de venta
+        'puntodeventa',
+
+        //reportes
+
+        'reporte',    
+
+        //inventarios
+        'precios-sucursal',
+        'reordenes-sucursal',
+        'existencias-sucursal',
+        'enreorden-sucursal', 
+
+        //reportes 
+        'reporte-administracion-comparacion',
+        'reporte-administracion-remision',
+        'reporte-bodega'
+
+    ),
+
+    'Cajero super' => array(
+        //login
+        'home',
+        'auth',
+        'login/select',
+        'login',
+        'mayoristas-sucursal',
+        'puntodeventa',
+        'reporte',
+        'transferencias-sucursal',
+        'mayoristas',
+        'transferencias',
+        'json',
+
     ),
 );

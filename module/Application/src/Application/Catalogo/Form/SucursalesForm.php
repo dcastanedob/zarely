@@ -23,6 +23,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => '1'
             ),
         ));
 
@@ -32,6 +33,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => '2'
             ),
         ));
 
@@ -42,6 +44,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => '3'
             ),
         ));
 
@@ -51,6 +54,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => '4'
             ),
         ));
 
@@ -60,6 +64,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => '5'
             ),
         ));
 
@@ -69,6 +74,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => '8'
             ),
         ));
 
@@ -78,6 +84,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => '9'
             ),
         ));
 
@@ -87,6 +94,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => '6'
             ),
         ));
 
@@ -96,6 +104,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control infput-thick',
+                'tabindex' => '7'
             ),
         ));
 
@@ -109,6 +118,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => '',
+                'tabindex' => '11'
                
             ),
         ));
@@ -123,6 +133,7 @@ class SucursalesForm extends Form
             'attributes' => array(
                 'required' => true,
                 'class' => '',
+                'tabindex' => '10'
                
             ),
         ));

@@ -29,14 +29,7 @@ class TallajesController extends AbstractActionController
            
             $query = new \TallajeQuery();
             
-             /*JOIN
-            $query->useCategoriaRelatedByIdcategoriaQuery('a')->endUse();
-            $query->useCategoriaRelatedByIdsubcategoriaQuery('b')->endUse();
-            $query->useUnidadmedidaQuery('c')->endUse();
-            $query->withColumn('a.CategoriaNombre', 'categoria_nombre')
-                  ->withColumn('b.CategoriaNombre', 'subcategoria_nombre')
-                  ->withColumn('c.UnidadmedidaNombre', 'unidadmedida_nombre');
-            */
+
 
 
             $records_filtered = $query->count();
@@ -76,14 +69,14 @@ class TallajesController extends AbstractActionController
                 $c1= $c->getNewCriterion('tallaje.idtallaje', '%'.$search_value.'%', \Criteria::LIKE);
                 $c2= $c->getNewCriterion('tallaje.tallaje_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('talaje.tallajerango', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c3= $c->getNewCriterion('tallaje.tallajerango', '%'.$search_value.'%', \Criteria::LIKE);
 
 
           
                 $c1->addOr($c2)->addOr($c3);
 
                 $query->addAnd($c1);
-                $query->groupByIdempleado();
+                $query->groupByIdtallaje();
                 
                 $records_filtered = $query->count();
                 
@@ -115,7 +108,7 @@ class TallajesController extends AbstractActionController
 
                 $tmp['DT_RowId'] = $value['idtallaje'];
                 $tmp['idtallaje'] = $value['idtallaje'];
-                $tmp['tallaje_nombre'] = $value['tallaje_nombre'];
+                $tmp['tallaje_nombre'] = utf8_encode($value['tallaje_nombre']);
                 $tmp['tallajerango'] = $value['tallajerango'];
                 $tmp['options'] = '<td><div class="btn-group dropdown">
                   <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button" aria-expanded="false" style="padding: 2px 6px;">
@@ -156,6 +149,8 @@ class TallajesController extends AbstractActionController
                 $data[] = $tmp;
  
             }   
+
+
       
             //El arreglo que regresamos
             $json_data = array(
@@ -165,9 +160,7 @@ class TallajesController extends AbstractActionController
                 "recordsFiltered" => $records_filtered,
                 "data"            => $data
             );
-            
 
-            
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }

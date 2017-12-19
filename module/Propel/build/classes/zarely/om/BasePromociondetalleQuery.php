@@ -8,41 +8,31 @@
  *
  * @method PromociondetalleQuery orderByIdpromociondetalle($order = Criteria::ASC) Order by the idpromociondetalle column
  * @method PromociondetalleQuery orderByIdpromocion($order = Criteria::ASC) Order by the idpromocion column
- * @method PromociondetalleQuery orderByIdmarcaoperando($order = Criteria::ASC) Order by the idmarcaoperando column
- * @method PromociondetalleQuery orderByIdproductooperando($order = Criteria::ASC) Order by the idproductooperando column
- * @method PromociondetalleQuery orderByPromociondetalleCantidadoperando($order = Criteria::ASC) Order by the promociondetalle_cantidadoperando column
- * @method PromociondetalleQuery orderByIdmarcaresultado($order = Criteria::ASC) Order by the idmarcaresultado column
- * @method PromociondetalleQuery orderByIdproductoresultado($order = Criteria::ASC) Order by the idproductoresultado column
- * @method PromociondetalleQuery orderByPromociondetalleCantidadresultado($order = Criteria::ASC) Order by the promociondetalle_cantidadresultado column
+ * @method PromociondetalleQuery orderByIdmarca($order = Criteria::ASC) Order by the idmarca column
+ * @method PromociondetalleQuery orderByIdproducto($order = Criteria::ASC) Order by the idproducto column
+ * @method PromociondetalleQuery orderByIdproductovariante($order = Criteria::ASC) Order by the idproductovariante column
  *
  * @method PromociondetalleQuery groupByIdpromociondetalle() Group by the idpromociondetalle column
  * @method PromociondetalleQuery groupByIdpromocion() Group by the idpromocion column
- * @method PromociondetalleQuery groupByIdmarcaoperando() Group by the idmarcaoperando column
- * @method PromociondetalleQuery groupByIdproductooperando() Group by the idproductooperando column
- * @method PromociondetalleQuery groupByPromociondetalleCantidadoperando() Group by the promociondetalle_cantidadoperando column
- * @method PromociondetalleQuery groupByIdmarcaresultado() Group by the idmarcaresultado column
- * @method PromociondetalleQuery groupByIdproductoresultado() Group by the idproductoresultado column
- * @method PromociondetalleQuery groupByPromociondetalleCantidadresultado() Group by the promociondetalle_cantidadresultado column
+ * @method PromociondetalleQuery groupByIdmarca() Group by the idmarca column
+ * @method PromociondetalleQuery groupByIdproducto() Group by the idproducto column
+ * @method PromociondetalleQuery groupByIdproductovariante() Group by the idproductovariante column
  *
  * @method PromociondetalleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PromociondetalleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method PromociondetalleQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method PromociondetalleQuery leftJoinMarcaRelatedByIdmarcaoperando($relationAlias = null) Adds a LEFT JOIN clause to the query using the MarcaRelatedByIdmarcaoperando relation
- * @method PromociondetalleQuery rightJoinMarcaRelatedByIdmarcaoperando($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MarcaRelatedByIdmarcaoperando relation
- * @method PromociondetalleQuery innerJoinMarcaRelatedByIdmarcaoperando($relationAlias = null) Adds a INNER JOIN clause to the query using the MarcaRelatedByIdmarcaoperando relation
+ * @method PromociondetalleQuery leftJoinMarca($relationAlias = null) Adds a LEFT JOIN clause to the query using the Marca relation
+ * @method PromociondetalleQuery rightJoinMarca($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Marca relation
+ * @method PromociondetalleQuery innerJoinMarca($relationAlias = null) Adds a INNER JOIN clause to the query using the Marca relation
  *
- * @method PromociondetalleQuery leftJoinMarcaRelatedByIdmarcaresultado($relationAlias = null) Adds a LEFT JOIN clause to the query using the MarcaRelatedByIdmarcaresultado relation
- * @method PromociondetalleQuery rightJoinMarcaRelatedByIdmarcaresultado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MarcaRelatedByIdmarcaresultado relation
- * @method PromociondetalleQuery innerJoinMarcaRelatedByIdmarcaresultado($relationAlias = null) Adds a INNER JOIN clause to the query using the MarcaRelatedByIdmarcaresultado relation
+ * @method PromociondetalleQuery leftJoinProducto($relationAlias = null) Adds a LEFT JOIN clause to the query using the Producto relation
+ * @method PromociondetalleQuery rightJoinProducto($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Producto relation
+ * @method PromociondetalleQuery innerJoinProducto($relationAlias = null) Adds a INNER JOIN clause to the query using the Producto relation
  *
- * @method PromociondetalleQuery leftJoinProductoRelatedByIdproductooperando($relationAlias = null) Adds a LEFT JOIN clause to the query using the ProductoRelatedByIdproductooperando relation
- * @method PromociondetalleQuery rightJoinProductoRelatedByIdproductooperando($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ProductoRelatedByIdproductooperando relation
- * @method PromociondetalleQuery innerJoinProductoRelatedByIdproductooperando($relationAlias = null) Adds a INNER JOIN clause to the query using the ProductoRelatedByIdproductooperando relation
- *
- * @method PromociondetalleQuery leftJoinProductoRelatedByIdproductoresultado($relationAlias = null) Adds a LEFT JOIN clause to the query using the ProductoRelatedByIdproductoresultado relation
- * @method PromociondetalleQuery rightJoinProductoRelatedByIdproductoresultado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ProductoRelatedByIdproductoresultado relation
- * @method PromociondetalleQuery innerJoinProductoRelatedByIdproductoresultado($relationAlias = null) Adds a INNER JOIN clause to the query using the ProductoRelatedByIdproductoresultado relation
+ * @method PromociondetalleQuery leftJoinProductovariante($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productovariante relation
+ * @method PromociondetalleQuery rightJoinProductovariante($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productovariante relation
+ * @method PromociondetalleQuery innerJoinProductovariante($relationAlias = null) Adds a INNER JOIN clause to the query using the Productovariante relation
  *
  * @method PromociondetalleQuery leftJoinPromocion($relationAlias = null) Adds a LEFT JOIN clause to the query using the Promocion relation
  * @method PromociondetalleQuery rightJoinPromocion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Promocion relation
@@ -52,21 +42,15 @@
  * @method Promociondetalle findOneOrCreate(PropelPDO $con = null) Return the first Promociondetalle matching the query, or a new Promociondetalle object populated from the query conditions when no match is found
  *
  * @method Promociondetalle findOneByIdpromocion(int $idpromocion) Return the first Promociondetalle filtered by the idpromocion column
- * @method Promociondetalle findOneByIdmarcaoperando(int $idmarcaoperando) Return the first Promociondetalle filtered by the idmarcaoperando column
- * @method Promociondetalle findOneByIdproductooperando(int $idproductooperando) Return the first Promociondetalle filtered by the idproductooperando column
- * @method Promociondetalle findOneByPromociondetalleCantidadoperando(string $promociondetalle_cantidadoperando) Return the first Promociondetalle filtered by the promociondetalle_cantidadoperando column
- * @method Promociondetalle findOneByIdmarcaresultado(int $idmarcaresultado) Return the first Promociondetalle filtered by the idmarcaresultado column
- * @method Promociondetalle findOneByIdproductoresultado(int $idproductoresultado) Return the first Promociondetalle filtered by the idproductoresultado column
- * @method Promociondetalle findOneByPromociondetalleCantidadresultado(string $promociondetalle_cantidadresultado) Return the first Promociondetalle filtered by the promociondetalle_cantidadresultado column
+ * @method Promociondetalle findOneByIdmarca(int $idmarca) Return the first Promociondetalle filtered by the idmarca column
+ * @method Promociondetalle findOneByIdproducto(int $idproducto) Return the first Promociondetalle filtered by the idproducto column
+ * @method Promociondetalle findOneByIdproductovariante(int $idproductovariante) Return the first Promociondetalle filtered by the idproductovariante column
  *
  * @method array findByIdpromociondetalle(int $idpromociondetalle) Return Promociondetalle objects filtered by the idpromociondetalle column
  * @method array findByIdpromocion(int $idpromocion) Return Promociondetalle objects filtered by the idpromocion column
- * @method array findByIdmarcaoperando(int $idmarcaoperando) Return Promociondetalle objects filtered by the idmarcaoperando column
- * @method array findByIdproductooperando(int $idproductooperando) Return Promociondetalle objects filtered by the idproductooperando column
- * @method array findByPromociondetalleCantidadoperando(string $promociondetalle_cantidadoperando) Return Promociondetalle objects filtered by the promociondetalle_cantidadoperando column
- * @method array findByIdmarcaresultado(int $idmarcaresultado) Return Promociondetalle objects filtered by the idmarcaresultado column
- * @method array findByIdproductoresultado(int $idproductoresultado) Return Promociondetalle objects filtered by the idproductoresultado column
- * @method array findByPromociondetalleCantidadresultado(string $promociondetalle_cantidadresultado) Return Promociondetalle objects filtered by the promociondetalle_cantidadresultado column
+ * @method array findByIdmarca(int $idmarca) Return Promociondetalle objects filtered by the idmarca column
+ * @method array findByIdproducto(int $idproducto) Return Promociondetalle objects filtered by the idproducto column
+ * @method array findByIdproductovariante(int $idproductovariante) Return Promociondetalle objects filtered by the idproductovariante column
  *
  * @package    propel.generator.zarely.om
  */
@@ -174,7 +158,7 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idpromociondetalle`, `idpromocion`, `idmarcaoperando`, `idproductooperando`, `promociondetalle_cantidadoperando`, `idmarcaresultado`, `idproductoresultado`, `promociondetalle_cantidadresultado` FROM `promociondetalle` WHERE `idpromociondetalle` = :p0';
+        $sql = 'SELECT `idpromociondetalle`, `idpromocion`, `idmarca`, `idproducto`, `idproductovariante` FROM `promociondetalle` WHERE `idpromociondetalle` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -350,19 +334,19 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the idmarcaoperando column
+     * Filter the query on the idmarca column
      *
      * Example usage:
      * <code>
-     * $query->filterByIdmarcaoperando(1234); // WHERE idmarcaoperando = 1234
-     * $query->filterByIdmarcaoperando(array(12, 34)); // WHERE idmarcaoperando IN (12, 34)
-     * $query->filterByIdmarcaoperando(array('min' => 12)); // WHERE idmarcaoperando >= 12
-     * $query->filterByIdmarcaoperando(array('max' => 12)); // WHERE idmarcaoperando <= 12
+     * $query->filterByIdmarca(1234); // WHERE idmarca = 1234
+     * $query->filterByIdmarca(array(12, 34)); // WHERE idmarca IN (12, 34)
+     * $query->filterByIdmarca(array('min' => 12)); // WHERE idmarca >= 12
+     * $query->filterByIdmarca(array('max' => 12)); // WHERE idmarca <= 12
      * </code>
      *
-     * @see       filterByMarcaRelatedByIdmarcaoperando()
+     * @see       filterByMarca()
      *
-     * @param     mixed $idmarcaoperando The value to use as filter.
+     * @param     mixed $idmarca The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -370,16 +354,16 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
      *
      * @return PromociondetalleQuery The current query, for fluid interface
      */
-    public function filterByIdmarcaoperando($idmarcaoperando = null, $comparison = null)
+    public function filterByIdmarca($idmarca = null, $comparison = null)
     {
-        if (is_array($idmarcaoperando)) {
+        if (is_array($idmarca)) {
             $useMinMax = false;
-            if (isset($idmarcaoperando['min'])) {
-                $this->addUsingAlias(PromociondetallePeer::IDMARCAOPERANDO, $idmarcaoperando['min'], Criteria::GREATER_EQUAL);
+            if (isset($idmarca['min'])) {
+                $this->addUsingAlias(PromociondetallePeer::IDMARCA, $idmarca['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($idmarcaoperando['max'])) {
-                $this->addUsingAlias(PromociondetallePeer::IDMARCAOPERANDO, $idmarcaoperando['max'], Criteria::LESS_EQUAL);
+            if (isset($idmarca['max'])) {
+                $this->addUsingAlias(PromociondetallePeer::IDMARCA, $idmarca['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -390,23 +374,23 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PromociondetallePeer::IDMARCAOPERANDO, $idmarcaoperando, $comparison);
+        return $this->addUsingAlias(PromociondetallePeer::IDMARCA, $idmarca, $comparison);
     }
 
     /**
-     * Filter the query on the idproductooperando column
+     * Filter the query on the idproducto column
      *
      * Example usage:
      * <code>
-     * $query->filterByIdproductooperando(1234); // WHERE idproductooperando = 1234
-     * $query->filterByIdproductooperando(array(12, 34)); // WHERE idproductooperando IN (12, 34)
-     * $query->filterByIdproductooperando(array('min' => 12)); // WHERE idproductooperando >= 12
-     * $query->filterByIdproductooperando(array('max' => 12)); // WHERE idproductooperando <= 12
+     * $query->filterByIdproducto(1234); // WHERE idproducto = 1234
+     * $query->filterByIdproducto(array(12, 34)); // WHERE idproducto IN (12, 34)
+     * $query->filterByIdproducto(array('min' => 12)); // WHERE idproducto >= 12
+     * $query->filterByIdproducto(array('max' => 12)); // WHERE idproducto <= 12
      * </code>
      *
-     * @see       filterByProductoRelatedByIdproductooperando()
+     * @see       filterByProducto()
      *
-     * @param     mixed $idproductooperando The value to use as filter.
+     * @param     mixed $idproducto The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -414,16 +398,16 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
      *
      * @return PromociondetalleQuery The current query, for fluid interface
      */
-    public function filterByIdproductooperando($idproductooperando = null, $comparison = null)
+    public function filterByIdproducto($idproducto = null, $comparison = null)
     {
-        if (is_array($idproductooperando)) {
+        if (is_array($idproducto)) {
             $useMinMax = false;
-            if (isset($idproductooperando['min'])) {
-                $this->addUsingAlias(PromociondetallePeer::IDPRODUCTOOPERANDO, $idproductooperando['min'], Criteria::GREATER_EQUAL);
+            if (isset($idproducto['min'])) {
+                $this->addUsingAlias(PromociondetallePeer::IDPRODUCTO, $idproducto['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($idproductooperando['max'])) {
-                $this->addUsingAlias(PromociondetallePeer::IDPRODUCTOOPERANDO, $idproductooperando['max'], Criteria::LESS_EQUAL);
+            if (isset($idproducto['max'])) {
+                $this->addUsingAlias(PromociondetallePeer::IDPRODUCTO, $idproducto['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -434,21 +418,23 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PromociondetallePeer::IDPRODUCTOOPERANDO, $idproductooperando, $comparison);
+        return $this->addUsingAlias(PromociondetallePeer::IDPRODUCTO, $idproducto, $comparison);
     }
 
     /**
-     * Filter the query on the promociondetalle_cantidadoperando column
+     * Filter the query on the idproductovariante column
      *
      * Example usage:
      * <code>
-     * $query->filterByPromociondetalleCantidadoperando(1234); // WHERE promociondetalle_cantidadoperando = 1234
-     * $query->filterByPromociondetalleCantidadoperando(array(12, 34)); // WHERE promociondetalle_cantidadoperando IN (12, 34)
-     * $query->filterByPromociondetalleCantidadoperando(array('min' => 12)); // WHERE promociondetalle_cantidadoperando >= 12
-     * $query->filterByPromociondetalleCantidadoperando(array('max' => 12)); // WHERE promociondetalle_cantidadoperando <= 12
+     * $query->filterByIdproductovariante(1234); // WHERE idproductovariante = 1234
+     * $query->filterByIdproductovariante(array(12, 34)); // WHERE idproductovariante IN (12, 34)
+     * $query->filterByIdproductovariante(array('min' => 12)); // WHERE idproductovariante >= 12
+     * $query->filterByIdproductovariante(array('max' => 12)); // WHERE idproductovariante <= 12
      * </code>
      *
-     * @param     mixed $promociondetalleCantidadoperando The value to use as filter.
+     * @see       filterByProductovariante()
+     *
+     * @param     mixed $idproductovariante The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -456,16 +442,16 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
      *
      * @return PromociondetalleQuery The current query, for fluid interface
      */
-    public function filterByPromociondetalleCantidadoperando($promociondetalleCantidadoperando = null, $comparison = null)
+    public function filterByIdproductovariante($idproductovariante = null, $comparison = null)
     {
-        if (is_array($promociondetalleCantidadoperando)) {
+        if (is_array($idproductovariante)) {
             $useMinMax = false;
-            if (isset($promociondetalleCantidadoperando['min'])) {
-                $this->addUsingAlias(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO, $promociondetalleCantidadoperando['min'], Criteria::GREATER_EQUAL);
+            if (isset($idproductovariante['min'])) {
+                $this->addUsingAlias(PromociondetallePeer::IDPRODUCTOVARIANTE, $idproductovariante['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($promociondetalleCantidadoperando['max'])) {
-                $this->addUsingAlias(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO, $promociondetalleCantidadoperando['max'], Criteria::LESS_EQUAL);
+            if (isset($idproductovariante['max'])) {
+                $this->addUsingAlias(PromociondetallePeer::IDPRODUCTOVARIANTE, $idproductovariante['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -476,137 +462,7 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO, $promociondetalleCantidadoperando, $comparison);
-    }
-
-    /**
-     * Filter the query on the idmarcaresultado column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByIdmarcaresultado(1234); // WHERE idmarcaresultado = 1234
-     * $query->filterByIdmarcaresultado(array(12, 34)); // WHERE idmarcaresultado IN (12, 34)
-     * $query->filterByIdmarcaresultado(array('min' => 12)); // WHERE idmarcaresultado >= 12
-     * $query->filterByIdmarcaresultado(array('max' => 12)); // WHERE idmarcaresultado <= 12
-     * </code>
-     *
-     * @see       filterByMarcaRelatedByIdmarcaresultado()
-     *
-     * @param     mixed $idmarcaresultado The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PromociondetalleQuery The current query, for fluid interface
-     */
-    public function filterByIdmarcaresultado($idmarcaresultado = null, $comparison = null)
-    {
-        if (is_array($idmarcaresultado)) {
-            $useMinMax = false;
-            if (isset($idmarcaresultado['min'])) {
-                $this->addUsingAlias(PromociondetallePeer::IDMARCARESULTADO, $idmarcaresultado['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($idmarcaresultado['max'])) {
-                $this->addUsingAlias(PromociondetallePeer::IDMARCARESULTADO, $idmarcaresultado['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PromociondetallePeer::IDMARCARESULTADO, $idmarcaresultado, $comparison);
-    }
-
-    /**
-     * Filter the query on the idproductoresultado column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByIdproductoresultado(1234); // WHERE idproductoresultado = 1234
-     * $query->filterByIdproductoresultado(array(12, 34)); // WHERE idproductoresultado IN (12, 34)
-     * $query->filterByIdproductoresultado(array('min' => 12)); // WHERE idproductoresultado >= 12
-     * $query->filterByIdproductoresultado(array('max' => 12)); // WHERE idproductoresultado <= 12
-     * </code>
-     *
-     * @see       filterByProductoRelatedByIdproductoresultado()
-     *
-     * @param     mixed $idproductoresultado The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PromociondetalleQuery The current query, for fluid interface
-     */
-    public function filterByIdproductoresultado($idproductoresultado = null, $comparison = null)
-    {
-        if (is_array($idproductoresultado)) {
-            $useMinMax = false;
-            if (isset($idproductoresultado['min'])) {
-                $this->addUsingAlias(PromociondetallePeer::IDPRODUCTORESULTADO, $idproductoresultado['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($idproductoresultado['max'])) {
-                $this->addUsingAlias(PromociondetallePeer::IDPRODUCTORESULTADO, $idproductoresultado['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PromociondetallePeer::IDPRODUCTORESULTADO, $idproductoresultado, $comparison);
-    }
-
-    /**
-     * Filter the query on the promociondetalle_cantidadresultado column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPromociondetalleCantidadresultado(1234); // WHERE promociondetalle_cantidadresultado = 1234
-     * $query->filterByPromociondetalleCantidadresultado(array(12, 34)); // WHERE promociondetalle_cantidadresultado IN (12, 34)
-     * $query->filterByPromociondetalleCantidadresultado(array('min' => 12)); // WHERE promociondetalle_cantidadresultado >= 12
-     * $query->filterByPromociondetalleCantidadresultado(array('max' => 12)); // WHERE promociondetalle_cantidadresultado <= 12
-     * </code>
-     *
-     * @param     mixed $promociondetalleCantidadresultado The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PromociondetalleQuery The current query, for fluid interface
-     */
-    public function filterByPromociondetalleCantidadresultado($promociondetalleCantidadresultado = null, $comparison = null)
-    {
-        if (is_array($promociondetalleCantidadresultado)) {
-            $useMinMax = false;
-            if (isset($promociondetalleCantidadresultado['min'])) {
-                $this->addUsingAlias(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO, $promociondetalleCantidadresultado['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($promociondetalleCantidadresultado['max'])) {
-                $this->addUsingAlias(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO, $promociondetalleCantidadresultado['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO, $promociondetalleCantidadresultado, $comparison);
+        return $this->addUsingAlias(PromociondetallePeer::IDPRODUCTOVARIANTE, $idproductovariante, $comparison);
     }
 
     /**
@@ -618,35 +474,35 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
      * @return                 PromociondetalleQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByMarcaRelatedByIdmarcaoperando($marca, $comparison = null)
+    public function filterByMarca($marca, $comparison = null)
     {
         if ($marca instanceof Marca) {
             return $this
-                ->addUsingAlias(PromociondetallePeer::IDMARCAOPERANDO, $marca->getIdmarca(), $comparison);
+                ->addUsingAlias(PromociondetallePeer::IDMARCA, $marca->getIdmarca(), $comparison);
         } elseif ($marca instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PromociondetallePeer::IDMARCAOPERANDO, $marca->toKeyValue('PrimaryKey', 'Idmarca'), $comparison);
+                ->addUsingAlias(PromociondetallePeer::IDMARCA, $marca->toKeyValue('PrimaryKey', 'Idmarca'), $comparison);
         } else {
-            throw new PropelException('filterByMarcaRelatedByIdmarcaoperando() only accepts arguments of type Marca or PropelCollection');
+            throw new PropelException('filterByMarca() only accepts arguments of type Marca or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the MarcaRelatedByIdmarcaoperando relation
+     * Adds a JOIN clause to the query using the Marca relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PromociondetalleQuery The current query, for fluid interface
      */
-    public function joinMarcaRelatedByIdmarcaoperando($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinMarca($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('MarcaRelatedByIdmarcaoperando');
+        $relationMap = $tableMap->getRelation('Marca');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -661,14 +517,14 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'MarcaRelatedByIdmarcaoperando');
+            $this->addJoinObject($join, 'Marca');
         }
 
         return $this;
     }
 
     /**
-     * Use the MarcaRelatedByIdmarcaoperando relation Marca object
+     * Use the Marca relation Marca object
      *
      * @see       useQuery()
      *
@@ -678,87 +534,11 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
      *
      * @return   MarcaQuery A secondary query class using the current class as primary query
      */
-    public function useMarcaRelatedByIdmarcaoperandoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useMarcaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinMarcaRelatedByIdmarcaoperando($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'MarcaRelatedByIdmarcaoperando', 'MarcaQuery');
-    }
-
-    /**
-     * Filter the query by a related Marca object
-     *
-     * @param   Marca|PropelObjectCollection $marca The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 PromociondetalleQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByMarcaRelatedByIdmarcaresultado($marca, $comparison = null)
-    {
-        if ($marca instanceof Marca) {
-            return $this
-                ->addUsingAlias(PromociondetallePeer::IDMARCARESULTADO, $marca->getIdmarca(), $comparison);
-        } elseif ($marca instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(PromociondetallePeer::IDMARCARESULTADO, $marca->toKeyValue('PrimaryKey', 'Idmarca'), $comparison);
-        } else {
-            throw new PropelException('filterByMarcaRelatedByIdmarcaresultado() only accepts arguments of type Marca or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the MarcaRelatedByIdmarcaresultado relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return PromociondetalleQuery The current query, for fluid interface
-     */
-    public function joinMarcaRelatedByIdmarcaresultado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('MarcaRelatedByIdmarcaresultado');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'MarcaRelatedByIdmarcaresultado');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the MarcaRelatedByIdmarcaresultado relation Marca object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   MarcaQuery A secondary query class using the current class as primary query
-     */
-    public function useMarcaRelatedByIdmarcaresultadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinMarcaRelatedByIdmarcaresultado($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'MarcaRelatedByIdmarcaresultado', 'MarcaQuery');
+            ->joinMarca($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Marca', 'MarcaQuery');
     }
 
     /**
@@ -770,35 +550,35 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
      * @return                 PromociondetalleQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByProductoRelatedByIdproductooperando($producto, $comparison = null)
+    public function filterByProducto($producto, $comparison = null)
     {
         if ($producto instanceof Producto) {
             return $this
-                ->addUsingAlias(PromociondetallePeer::IDPRODUCTOOPERANDO, $producto->getIdproducto(), $comparison);
+                ->addUsingAlias(PromociondetallePeer::IDPRODUCTO, $producto->getIdproducto(), $comparison);
         } elseif ($producto instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PromociondetallePeer::IDPRODUCTOOPERANDO, $producto->toKeyValue('PrimaryKey', 'Idproducto'), $comparison);
+                ->addUsingAlias(PromociondetallePeer::IDPRODUCTO, $producto->toKeyValue('PrimaryKey', 'Idproducto'), $comparison);
         } else {
-            throw new PropelException('filterByProductoRelatedByIdproductooperando() only accepts arguments of type Producto or PropelCollection');
+            throw new PropelException('filterByProducto() only accepts arguments of type Producto or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the ProductoRelatedByIdproductooperando relation
+     * Adds a JOIN clause to the query using the Producto relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PromociondetalleQuery The current query, for fluid interface
      */
-    public function joinProductoRelatedByIdproductooperando($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinProducto($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ProductoRelatedByIdproductooperando');
+        $relationMap = $tableMap->getRelation('Producto');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -813,14 +593,14 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'ProductoRelatedByIdproductooperando');
+            $this->addJoinObject($join, 'Producto');
         }
 
         return $this;
     }
 
     /**
-     * Use the ProductoRelatedByIdproductooperando relation Producto object
+     * Use the Producto relation Producto object
      *
      * @see       useQuery()
      *
@@ -830,51 +610,51 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
      *
      * @return   ProductoQuery A secondary query class using the current class as primary query
      */
-    public function useProductoRelatedByIdproductooperandoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useProductoQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinProductoRelatedByIdproductooperando($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ProductoRelatedByIdproductooperando', 'ProductoQuery');
+            ->joinProducto($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Producto', 'ProductoQuery');
     }
 
     /**
-     * Filter the query by a related Producto object
+     * Filter the query by a related Productovariante object
      *
-     * @param   Producto|PropelObjectCollection $producto The related object(s) to use as filter
+     * @param   Productovariante|PropelObjectCollection $productovariante The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 PromociondetalleQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByProductoRelatedByIdproductoresultado($producto, $comparison = null)
+    public function filterByProductovariante($productovariante, $comparison = null)
     {
-        if ($producto instanceof Producto) {
+        if ($productovariante instanceof Productovariante) {
             return $this
-                ->addUsingAlias(PromociondetallePeer::IDPRODUCTORESULTADO, $producto->getIdproducto(), $comparison);
-        } elseif ($producto instanceof PropelObjectCollection) {
+                ->addUsingAlias(PromociondetallePeer::IDPRODUCTOVARIANTE, $productovariante->getIdproductovariante(), $comparison);
+        } elseif ($productovariante instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(PromociondetallePeer::IDPRODUCTORESULTADO, $producto->toKeyValue('PrimaryKey', 'Idproducto'), $comparison);
+                ->addUsingAlias(PromociondetallePeer::IDPRODUCTOVARIANTE, $productovariante->toKeyValue('PrimaryKey', 'Idproductovariante'), $comparison);
         } else {
-            throw new PropelException('filterByProductoRelatedByIdproductoresultado() only accepts arguments of type Producto or PropelCollection');
+            throw new PropelException('filterByProductovariante() only accepts arguments of type Productovariante or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the ProductoRelatedByIdproductoresultado relation
+     * Adds a JOIN clause to the query using the Productovariante relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return PromociondetalleQuery The current query, for fluid interface
      */
-    public function joinProductoRelatedByIdproductoresultado($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinProductovariante($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ProductoRelatedByIdproductoresultado');
+        $relationMap = $tableMap->getRelation('Productovariante');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -889,14 +669,14 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'ProductoRelatedByIdproductoresultado');
+            $this->addJoinObject($join, 'Productovariante');
         }
 
         return $this;
     }
 
     /**
-     * Use the ProductoRelatedByIdproductoresultado relation Producto object
+     * Use the Productovariante relation Productovariante object
      *
      * @see       useQuery()
      *
@@ -904,13 +684,13 @@ abstract class BasePromociondetalleQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   ProductoQuery A secondary query class using the current class as primary query
+     * @return   ProductovarianteQuery A secondary query class using the current class as primary query
      */
-    public function useProductoRelatedByIdproductoresultadoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useProductovarianteQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinProductoRelatedByIdproductoresultado($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ProductoRelatedByIdproductoresultado', 'ProductoQuery');
+            ->joinProductovariante($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Productovariante', 'ProductovarianteQuery');
     }
 
     /**

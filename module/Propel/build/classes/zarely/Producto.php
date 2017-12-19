@@ -15,4 +15,13 @@
  */
 class Producto extends BaseProducto
 {
+	public function generarCodigoDeBarras()
+	{
+		$productos_variantes = $this->getProductovariantes();
+		foreach ($productos_variantes as $variante) {
+                  $variante->setProductovarianteCodigobarras('zarely'.$variante->getIdproductovariante());
+                  $variante->save();
+		}
+
+	}
 }

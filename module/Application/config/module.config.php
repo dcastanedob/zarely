@@ -184,6 +184,29 @@ return array(
                 ),
             ),
 
+            'descuentos' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/descuentos[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Descuentos',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+            'promociones' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/promociones[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\Promociones',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'gastos' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -228,6 +251,17 @@ return array(
                 ),
             ),
 
+            'codigodebarras' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/codigodebarras[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\CodigoDeBarrasProducto',
+                        'action'     => 'ver',
+                    ),
+                ),
+            ),
+
             'enreorden' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -239,6 +273,51 @@ return array(
                 ),
             ),
 
+
+            'precios-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/precios-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\PrecioProducto',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
+            'reordenes-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/reordenes-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\ReordenProducto',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
+            'existencias-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/existencias-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\ExistenciaProducto',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
+            'enreorden-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/producto/enreorden-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Producto\Controller\EnReordenProducto',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
             'mayoristas' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -246,6 +325,18 @@ return array(
                     'defaults' => array(
                         'controller' => 'Application\Pedido\Controller\PedidoMayorista',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+            'mayoristas-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/pedidos/mayoristas-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Pedido\Controller\PedidoMayorista',
+                        'action'     => 'indexsucursal',
                     ),
                 ),
             ),
@@ -399,12 +490,81 @@ return array(
                 ),
             ),
 
+            'transferencias-sucursal' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/transferencias-sucursal[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Transferencia\Controller\Transferencia',
+                        'action'     => 'indexsucursal',
+                    ),
+                ),
+            ),
+
             'puntodeventa' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route'    => '/puntodeventa[/:action][/:id]',
                     'defaults' => array(
                         'controller' => 'Application\PuntoDeVenta\Controller\PuntoDeVenta',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'reporte' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reporte[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Reporte\Controller\Reporte',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+            'reporte-administracion' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reporte-administracion[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Reporte\Controller\ReporteAdministracion',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            'reporte-administracion-comparacion' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reporte-administracion-comparacion[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Reporte\Controller\ReporteAdministracionComparacion',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+            'reporte-administracion-remision' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reporte-administracion-remision[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Reporte\Controller\ReporteAdministracionRemision',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+            'reporte-bodega' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/reporte-bodega[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Reporte\Controller\ReporteAdministracionBodega',
                         'action'     => 'index',
                     ),
                 ),
@@ -479,6 +639,9 @@ return array(
             'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController',
             'Application\Catalogo\Controller\Proveedores' => 'Application\Catalogo\Controller\ProveedoresController',
             'Application\Catalogo\Controller\Productos' => 'Application\Catalogo\Controller\ProductosController',
+            'Application\Catalogo\Controller\Promociones' => 'Application\Catalogo\Controller\PromocionesController',
+            'Application\Catalogo\Controller\Descuentos' => 'Application\Catalogo\Controller\DescuentosController',
+
             'Application\Catalogo\Controller\Medidas' => 'Application\Catalogo\Controller\MedidasController',
             'Application\Controller\Login' => 'Application\Controller\LoginController',
 
@@ -487,6 +650,7 @@ return array(
             'Application\Producto\Controller\ReordenProducto' => 'Application\Producto\Controller\ReordenProductoController',
 
             'Application\Producto\Controller\ExistenciaProducto' => 'Application\Producto\Controller\ExistenciaProductoController',
+            'Application\Producto\Controller\CodigoDeBarrasProducto' => 'Application\Producto\Controller\CodigoDeBarrasProductoController',
 
             'Application\Producto\Controller\EnReordenProducto' => 'Application\Producto\Controller\EnReordenProductoController',
 
@@ -517,6 +681,12 @@ return array(
             'Application\FlujoEfectivo\Controller\CuentaPorPagar' => 'Application\FlujoEfectivo\Controller\CuentaPorPagarController',
             'Application\Transferencia\Controller\Transferencia' => 'Application\Transferencia\Controller\TransferenciaController',
             'Application\PuntoDeVenta\Controller\PuntoDeVenta' => 'Application\PuntoDeVenta\Controller\PuntoDeVentaController',
+            'Application\Reporte\Controller\Reporte' => 'Application\Reporte\Controller\ReporteController',
+            'Application\Reporte\Controller\ReporteAdministracion' => 'Application\Reporte\Controller\ReporteAdministracionController',
+            'Application\Reporte\Controller\ReporteAdministracionComparacion' => 'Application\Reporte\Controller\ReporteAdministracionComparacionController',
+            'Application\Reporte\Controller\ReporteAdministracionRemision' => 'Application\Reporte\Controller\ReporteAdministracionRemisionController',
+            'Application\Reporte\Controller\ReporteAdministracionBodega' => 'Application\Reporte\Controller\ReporteAdministracionBodegaController',
+
 
 
         ),

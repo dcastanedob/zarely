@@ -72,7 +72,10 @@ class EmpleadoTableMap extends TableMap
         $this->addRelation('Rol', 'Rol', RelationMap::MANY_TO_ONE, array('idrol' => 'idrol', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Cortecaja', 'Cortecaja', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadoenvia', ), 'CASCADE', 'CASCADE', 'Cortecajas');
         $this->addRelation('Cuentabancariamovimiento', 'Cuentabancariamovimiento', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Cuentabancariamovimientos');
+        $this->addRelation('Pedidosucursal', 'Pedidosucursal', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Pedidosucursals');
         $this->addRelation('Sucursalempleado', 'Sucursalempleado', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Sucursalempleados');
+        $this->addRelation('Tarjetapuntos', 'Tarjetapuntos', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadoactivador', ), 'CASCADE', 'CASCADE', 'Tarjetapuntoss');
+        $this->addRelation('Tarjetapuntosdetalle', 'Tarjetapuntosdetalle', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE', 'Tarjetapuntosdetalles');
         $this->addRelation('TransferenciaRelatedByIdempleadocreador', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadocreador', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleadocreador');
         $this->addRelation('TransferenciaRelatedByIdempleadoreceptor', 'Transferencia', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadoreceptor', ), 'CASCADE', 'CASCADE', 'TransferenciasRelatedByIdempleadoreceptor');
         $this->addRelation('VentaRelatedByIdempleadocajero', 'Venta', RelationMap::ONE_TO_MANY, array('idempleado' => 'idempleadocajero', ), 'CASCADE', 'CASCADE', 'VentasRelatedByIdempleadocajero');

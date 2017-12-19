@@ -48,6 +48,8 @@ class DescuentoTableMap extends TableMap
   0 => 'porcentaje',
   1 => 'cantidad',
 ));
+        $this->addColumn('descuento_descripcion', 'DescuentoDescripcion', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('descuento_cantidad', 'DescuentoCantidad', 'DECIMAL', false, 10, null);
         // validators
     } // initialize()
 

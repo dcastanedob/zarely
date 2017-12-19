@@ -158,6 +158,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
     protected $collPedidomayoristadetallesPartial;
 
     /**
+     * @var        PropelObjectCollection|Pedidosucursaldetalle[] Collection to store aggregation of Pedidosucursaldetalle objects.
+     */
+    protected $collPedidosucursaldetalles;
+    protected $collPedidosucursaldetallesPartial;
+
+    /**
      * @var        PropelObjectCollection|Productocolor[] Collection to store aggregation of Productocolor objects.
      */
     protected $collProductocolors;
@@ -190,14 +196,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|Promociondetalle[] Collection to store aggregation of Promociondetalle objects.
      */
-    protected $collPromociondetallesRelatedByIdproductooperando;
-    protected $collPromociondetallesRelatedByIdproductooperandoPartial;
-
-    /**
-     * @var        PropelObjectCollection|Promociondetalle[] Collection to store aggregation of Promociondetalle objects.
-     */
-    protected $collPromociondetallesRelatedByIdproductoresultado;
-    protected $collPromociondetallesRelatedByIdproductoresultadoPartial;
+    protected $collPromociondetalles;
+    protected $collPromociondetallesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -241,6 +241,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
+    protected $pedidosucursaldetallesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
     protected $productocolorsScheduledForDeletion = null;
 
     /**
@@ -271,13 +277,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $promociondetallesRelatedByIdproductooperandoScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $promociondetallesRelatedByIdproductoresultadoScheduledForDeletion = null;
+    protected $promociondetallesScheduledForDeletion = null;
 
     /**
      * Get the [idproducto] column value.
@@ -915,6 +915,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
 
             $this->collPedidomayoristadetalles = null;
 
+            $this->collPedidosucursaldetalles = null;
+
             $this->collProductocolors = null;
 
             $this->collProductomaterials = null;
@@ -925,9 +927,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
 
             $this->collProductovariantes = null;
 
-            $this->collPromociondetallesRelatedByIdproductooperando = null;
-
-            $this->collPromociondetallesRelatedByIdproductoresultado = null;
+            $this->collPromociondetalles = null;
 
         } // if (deep)
     }
@@ -1137,6 +1137,23 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->pedidosucursaldetallesScheduledForDeletion !== null) {
+                if (!$this->pedidosucursaldetallesScheduledForDeletion->isEmpty()) {
+                    PedidosucursaldetalleQuery::create()
+                        ->filterByPrimaryKeys($this->pedidosucursaldetallesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pedidosucursaldetallesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collPedidosucursaldetalles !== null) {
+                foreach ($this->collPedidosucursaldetalles as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->productocolorsScheduledForDeletion !== null) {
                 if (!$this->productocolorsScheduledForDeletion->isEmpty()) {
                     ProductocolorQuery::create()
@@ -1222,34 +1239,17 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion !== null) {
-                if (!$this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion->isEmpty()) {
+            if ($this->promociondetallesScheduledForDeletion !== null) {
+                if (!$this->promociondetallesScheduledForDeletion->isEmpty()) {
                     PromociondetalleQuery::create()
-                        ->filterByPrimaryKeys($this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->promociondetallesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion = null;
+                    $this->promociondetallesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPromociondetallesRelatedByIdproductooperando !== null) {
-                foreach ($this->collPromociondetallesRelatedByIdproductooperando as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion !== null) {
-                if (!$this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion->isEmpty()) {
-                    PromociondetalleQuery::create()
-                        ->filterByPrimaryKeys($this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPromociondetallesRelatedByIdproductoresultado !== null) {
-                foreach ($this->collPromociondetallesRelatedByIdproductoresultado as $referrerFK) {
+            if ($this->collPromociondetalles !== null) {
+                foreach ($this->collPromociondetalles as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1536,6 +1536,14 @@ abstract class BaseProducto extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collPedidosucursaldetalles !== null) {
+                    foreach ($this->collPedidosucursaldetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collProductocolors !== null) {
                     foreach ($this->collProductocolors as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1576,16 +1584,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collPromociondetallesRelatedByIdproductooperando !== null) {
-                    foreach ($this->collPromociondetallesRelatedByIdproductooperando as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collPromociondetallesRelatedByIdproductoresultado !== null) {
-                    foreach ($this->collPromociondetallesRelatedByIdproductoresultado as $referrerFK) {
+                if ($this->collPromociondetalles !== null) {
+                    foreach ($this->collPromociondetalles as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1744,6 +1744,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
             if (null !== $this->collPedidomayoristadetalles) {
                 $result['Pedidomayoristadetalles'] = $this->collPedidomayoristadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPedidosucursaldetalles) {
+                $result['Pedidosucursaldetalles'] = $this->collPedidosucursaldetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collProductocolors) {
                 $result['Productocolors'] = $this->collProductocolors->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1759,11 +1762,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
             if (null !== $this->collProductovariantes) {
                 $result['Productovariantes'] = $this->collProductovariantes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPromociondetallesRelatedByIdproductooperando) {
-                $result['PromociondetallesRelatedByIdproductooperando'] = $this->collPromociondetallesRelatedByIdproductooperando->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPromociondetallesRelatedByIdproductoresultado) {
-                $result['PromociondetallesRelatedByIdproductoresultado'] = $this->collPromociondetallesRelatedByIdproductoresultado->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPromociondetalles) {
+                $result['Promociondetalles'] = $this->collPromociondetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2012,6 +2012,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getPedidosucursaldetalles() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPedidosucursaldetalle($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getProductocolors() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addProductocolor($relObj->copy($deepCopy));
@@ -2042,15 +2048,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPromociondetallesRelatedByIdproductooperando() as $relObj) {
+            foreach ($this->getPromociondetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPromociondetalleRelatedByIdproductooperando($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPromociondetallesRelatedByIdproductoresultado() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPromociondetalleRelatedByIdproductoresultado($relObj->copy($deepCopy));
+                    $copyObj->addPromociondetalle($relObj->copy($deepCopy));
                 }
             }
 
@@ -2332,6 +2332,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ('Pedidomayoristadetalle' == $relationName) {
             $this->initPedidomayoristadetalles();
         }
+        if ('Pedidosucursaldetalle' == $relationName) {
+            $this->initPedidosucursaldetalles();
+        }
         if ('Productocolor' == $relationName) {
             $this->initProductocolors();
         }
@@ -2347,11 +2350,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ('Productovariante' == $relationName) {
             $this->initProductovariantes();
         }
-        if ('PromociondetalleRelatedByIdproductooperando' == $relationName) {
-            $this->initPromociondetallesRelatedByIdproductooperando();
-        }
-        if ('PromociondetalleRelatedByIdproductoresultado' == $relationName) {
-            $this->initPromociondetallesRelatedByIdproductoresultado();
+        if ('Promociondetalle' == $relationName) {
+            $this->initPromociondetalles();
         }
     }
 
@@ -2626,6 +2626,31 @@ abstract class BaseProducto extends BaseObject implements Persistent
     {
         $query = DescuentodetalleQuery::create(null, $criteria);
         $query->joinWith('Marca', $join_behavior);
+
+        return $this->getDescuentodetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Producto is new, it will return
+     * an empty collection; or if this Producto has previously
+     * been saved, it will retrieve related Descuentodetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Producto.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Descuentodetalle[] List of Descuentodetalle objects
+     */
+    public function getDescuentodetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = DescuentodetalleQuery::create(null, $criteria);
+        $query->joinWith('Productovariante', $join_behavior);
 
         return $this->getDescuentodetalles($query, $con);
     }
@@ -3178,6 +3203,281 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $query->joinWith('Productovariante', $join_behavior);
 
         return $this->getPedidomayoristadetalles($query, $con);
+    }
+
+    /**
+     * Clears out the collPedidosucursaldetalles collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Producto The current object (for fluent API support)
+     * @see        addPedidosucursaldetalles()
+     */
+    public function clearPedidosucursaldetalles()
+    {
+        $this->collPedidosucursaldetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collPedidosucursaldetallesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collPedidosucursaldetalles collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialPedidosucursaldetalles($v = true)
+    {
+        $this->collPedidosucursaldetallesPartial = $v;
+    }
+
+    /**
+     * Initializes the collPedidosucursaldetalles collection.
+     *
+     * By default this just sets the collPedidosucursaldetalles collection to an empty array (like clearcollPedidosucursaldetalles());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPedidosucursaldetalles($overrideExisting = true)
+    {
+        if (null !== $this->collPedidosucursaldetalles && !$overrideExisting) {
+            return;
+        }
+        $this->collPedidosucursaldetalles = new PropelObjectCollection();
+        $this->collPedidosucursaldetalles->setModel('Pedidosucursaldetalle');
+    }
+
+    /**
+     * Gets an array of Pedidosucursaldetalle objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Producto is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Pedidosucursaldetalle[] List of Pedidosucursaldetalle objects
+     * @throws PropelException
+     */
+    public function getPedidosucursaldetalles($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidosucursaldetallesPartial && !$this->isNew();
+        if (null === $this->collPedidosucursaldetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPedidosucursaldetalles) {
+                // return empty collection
+                $this->initPedidosucursaldetalles();
+            } else {
+                $collPedidosucursaldetalles = PedidosucursaldetalleQuery::create(null, $criteria)
+                    ->filterByProducto($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collPedidosucursaldetallesPartial && count($collPedidosucursaldetalles)) {
+                      $this->initPedidosucursaldetalles(false);
+
+                      foreach ($collPedidosucursaldetalles as $obj) {
+                        if (false == $this->collPedidosucursaldetalles->contains($obj)) {
+                          $this->collPedidosucursaldetalles->append($obj);
+                        }
+                      }
+
+                      $this->collPedidosucursaldetallesPartial = true;
+                    }
+
+                    $collPedidosucursaldetalles->getInternalIterator()->rewind();
+
+                    return $collPedidosucursaldetalles;
+                }
+
+                if ($partial && $this->collPedidosucursaldetalles) {
+                    foreach ($this->collPedidosucursaldetalles as $obj) {
+                        if ($obj->isNew()) {
+                            $collPedidosucursaldetalles[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPedidosucursaldetalles = $collPedidosucursaldetalles;
+                $this->collPedidosucursaldetallesPartial = false;
+            }
+        }
+
+        return $this->collPedidosucursaldetalles;
+    }
+
+    /**
+     * Sets a collection of Pedidosucursaldetalle objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $pedidosucursaldetalles A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Producto The current object (for fluent API support)
+     */
+    public function setPedidosucursaldetalles(PropelCollection $pedidosucursaldetalles, PropelPDO $con = null)
+    {
+        $pedidosucursaldetallesToDelete = $this->getPedidosucursaldetalles(new Criteria(), $con)->diff($pedidosucursaldetalles);
+
+
+        $this->pedidosucursaldetallesScheduledForDeletion = $pedidosucursaldetallesToDelete;
+
+        foreach ($pedidosucursaldetallesToDelete as $pedidosucursaldetalleRemoved) {
+            $pedidosucursaldetalleRemoved->setProducto(null);
+        }
+
+        $this->collPedidosucursaldetalles = null;
+        foreach ($pedidosucursaldetalles as $pedidosucursaldetalle) {
+            $this->addPedidosucursaldetalle($pedidosucursaldetalle);
+        }
+
+        $this->collPedidosucursaldetalles = $pedidosucursaldetalles;
+        $this->collPedidosucursaldetallesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Pedidosucursaldetalle objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Pedidosucursaldetalle objects.
+     * @throws PropelException
+     */
+    public function countPedidosucursaldetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collPedidosucursaldetallesPartial && !$this->isNew();
+        if (null === $this->collPedidosucursaldetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPedidosucursaldetalles) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPedidosucursaldetalles());
+            }
+            $query = PedidosucursaldetalleQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProducto($this)
+                ->count($con);
+        }
+
+        return count($this->collPedidosucursaldetalles);
+    }
+
+    /**
+     * Method called to associate a Pedidosucursaldetalle object to this object
+     * through the Pedidosucursaldetalle foreign key attribute.
+     *
+     * @param    Pedidosucursaldetalle $l Pedidosucursaldetalle
+     * @return Producto The current object (for fluent API support)
+     */
+    public function addPedidosucursaldetalle(Pedidosucursaldetalle $l)
+    {
+        if ($this->collPedidosucursaldetalles === null) {
+            $this->initPedidosucursaldetalles();
+            $this->collPedidosucursaldetallesPartial = true;
+        }
+
+        if (!in_array($l, $this->collPedidosucursaldetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPedidosucursaldetalle($l);
+
+            if ($this->pedidosucursaldetallesScheduledForDeletion and $this->pedidosucursaldetallesScheduledForDeletion->contains($l)) {
+                $this->pedidosucursaldetallesScheduledForDeletion->remove($this->pedidosucursaldetallesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Pedidosucursaldetalle $pedidosucursaldetalle The pedidosucursaldetalle object to add.
+     */
+    protected function doAddPedidosucursaldetalle($pedidosucursaldetalle)
+    {
+        $this->collPedidosucursaldetalles[]= $pedidosucursaldetalle;
+        $pedidosucursaldetalle->setProducto($this);
+    }
+
+    /**
+     * @param	Pedidosucursaldetalle $pedidosucursaldetalle The pedidosucursaldetalle object to remove.
+     * @return Producto The current object (for fluent API support)
+     */
+    public function removePedidosucursaldetalle($pedidosucursaldetalle)
+    {
+        if ($this->getPedidosucursaldetalles()->contains($pedidosucursaldetalle)) {
+            $this->collPedidosucursaldetalles->remove($this->collPedidosucursaldetalles->search($pedidosucursaldetalle));
+            if (null === $this->pedidosucursaldetallesScheduledForDeletion) {
+                $this->pedidosucursaldetallesScheduledForDeletion = clone $this->collPedidosucursaldetalles;
+                $this->pedidosucursaldetallesScheduledForDeletion->clear();
+            }
+            $this->pedidosucursaldetallesScheduledForDeletion[]= $pedidosucursaldetalle;
+            $pedidosucursaldetalle->setProducto(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Producto is new, it will return
+     * an empty collection; or if this Producto has previously
+     * been saved, it will retrieve related Pedidosucursaldetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Producto.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pedidosucursaldetalle[] List of Pedidosucursaldetalle objects
+     */
+    public function getPedidosucursaldetallesJoinPedidosucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PedidosucursaldetalleQuery::create(null, $criteria);
+        $query->joinWith('Pedidosucursal', $join_behavior);
+
+        return $this->getPedidosucursaldetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Producto is new, it will return
+     * an empty collection; or if this Producto has previously
+     * been saved, it will retrieve related Pedidosucursaldetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Producto.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Pedidosucursaldetalle[] List of Pedidosucursaldetalle objects
+     */
+    public function getPedidosucursaldetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = PedidosucursaldetalleQuery::create(null, $criteria);
+        $query->joinWith('Productovariante', $join_behavior);
+
+        return $this->getPedidosucursaldetalles($query, $con);
     }
 
     /**
@@ -4456,36 +4756,36 @@ abstract class BaseProducto extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPromociondetallesRelatedByIdproductooperando collection
+     * Clears out the collPromociondetalles collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return Producto The current object (for fluent API support)
-     * @see        addPromociondetallesRelatedByIdproductooperando()
+     * @see        addPromociondetalles()
      */
-    public function clearPromociondetallesRelatedByIdproductooperando()
+    public function clearPromociondetalles()
     {
-        $this->collPromociondetallesRelatedByIdproductooperando = null; // important to set this to null since that means it is uninitialized
-        $this->collPromociondetallesRelatedByIdproductooperandoPartial = null;
+        $this->collPromociondetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collPromociondetallesPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPromociondetallesRelatedByIdproductooperando collection loaded partially
+     * reset is the collPromociondetalles collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPromociondetallesRelatedByIdproductooperando($v = true)
+    public function resetPartialPromociondetalles($v = true)
     {
-        $this->collPromociondetallesRelatedByIdproductooperandoPartial = $v;
+        $this->collPromociondetallesPartial = $v;
     }
 
     /**
-     * Initializes the collPromociondetallesRelatedByIdproductooperando collection.
+     * Initializes the collPromociondetalles collection.
      *
-     * By default this just sets the collPromociondetallesRelatedByIdproductooperando collection to an empty array (like clearcollPromociondetallesRelatedByIdproductooperando());
+     * By default this just sets the collPromociondetalles collection to an empty array (like clearcollPromociondetalles());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -4494,13 +4794,13 @@ abstract class BaseProducto extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPromociondetallesRelatedByIdproductooperando($overrideExisting = true)
+    public function initPromociondetalles($overrideExisting = true)
     {
-        if (null !== $this->collPromociondetallesRelatedByIdproductooperando && !$overrideExisting) {
+        if (null !== $this->collPromociondetalles && !$overrideExisting) {
             return;
         }
-        $this->collPromociondetallesRelatedByIdproductooperando = new PropelObjectCollection();
-        $this->collPromociondetallesRelatedByIdproductooperando->setModel('Promociondetalle');
+        $this->collPromociondetalles = new PropelObjectCollection();
+        $this->collPromociondetalles->setModel('Promociondetalle');
     }
 
     /**
@@ -4517,79 +4817,79 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      * @throws PropelException
      */
-    public function getPromociondetallesRelatedByIdproductooperando($criteria = null, PropelPDO $con = null)
+    public function getPromociondetalles($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPromociondetallesRelatedByIdproductooperandoPartial && !$this->isNew();
-        if (null === $this->collPromociondetallesRelatedByIdproductooperando || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPromociondetallesRelatedByIdproductooperando) {
+        $partial = $this->collPromociondetallesPartial && !$this->isNew();
+        if (null === $this->collPromociondetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPromociondetalles) {
                 // return empty collection
-                $this->initPromociondetallesRelatedByIdproductooperando();
+                $this->initPromociondetalles();
             } else {
-                $collPromociondetallesRelatedByIdproductooperando = PromociondetalleQuery::create(null, $criteria)
-                    ->filterByProductoRelatedByIdproductooperando($this)
+                $collPromociondetalles = PromociondetalleQuery::create(null, $criteria)
+                    ->filterByProducto($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPromociondetallesRelatedByIdproductooperandoPartial && count($collPromociondetallesRelatedByIdproductooperando)) {
-                      $this->initPromociondetallesRelatedByIdproductooperando(false);
+                    if (false !== $this->collPromociondetallesPartial && count($collPromociondetalles)) {
+                      $this->initPromociondetalles(false);
 
-                      foreach ($collPromociondetallesRelatedByIdproductooperando as $obj) {
-                        if (false == $this->collPromociondetallesRelatedByIdproductooperando->contains($obj)) {
-                          $this->collPromociondetallesRelatedByIdproductooperando->append($obj);
+                      foreach ($collPromociondetalles as $obj) {
+                        if (false == $this->collPromociondetalles->contains($obj)) {
+                          $this->collPromociondetalles->append($obj);
                         }
                       }
 
-                      $this->collPromociondetallesRelatedByIdproductooperandoPartial = true;
+                      $this->collPromociondetallesPartial = true;
                     }
 
-                    $collPromociondetallesRelatedByIdproductooperando->getInternalIterator()->rewind();
+                    $collPromociondetalles->getInternalIterator()->rewind();
 
-                    return $collPromociondetallesRelatedByIdproductooperando;
+                    return $collPromociondetalles;
                 }
 
-                if ($partial && $this->collPromociondetallesRelatedByIdproductooperando) {
-                    foreach ($this->collPromociondetallesRelatedByIdproductooperando as $obj) {
+                if ($partial && $this->collPromociondetalles) {
+                    foreach ($this->collPromociondetalles as $obj) {
                         if ($obj->isNew()) {
-                            $collPromociondetallesRelatedByIdproductooperando[] = $obj;
+                            $collPromociondetalles[] = $obj;
                         }
                     }
                 }
 
-                $this->collPromociondetallesRelatedByIdproductooperando = $collPromociondetallesRelatedByIdproductooperando;
-                $this->collPromociondetallesRelatedByIdproductooperandoPartial = false;
+                $this->collPromociondetalles = $collPromociondetalles;
+                $this->collPromociondetallesPartial = false;
             }
         }
 
-        return $this->collPromociondetallesRelatedByIdproductooperando;
+        return $this->collPromociondetalles;
     }
 
     /**
-     * Sets a collection of PromociondetalleRelatedByIdproductooperando objects related by a one-to-many relationship
+     * Sets a collection of Promociondetalle objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $promociondetallesRelatedByIdproductooperando A Propel collection.
+     * @param PropelCollection $promociondetalles A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return Producto The current object (for fluent API support)
      */
-    public function setPromociondetallesRelatedByIdproductooperando(PropelCollection $promociondetallesRelatedByIdproductooperando, PropelPDO $con = null)
+    public function setPromociondetalles(PropelCollection $promociondetalles, PropelPDO $con = null)
     {
-        $promociondetallesRelatedByIdproductooperandoToDelete = $this->getPromociondetallesRelatedByIdproductooperando(new Criteria(), $con)->diff($promociondetallesRelatedByIdproductooperando);
+        $promociondetallesToDelete = $this->getPromociondetalles(new Criteria(), $con)->diff($promociondetalles);
 
 
-        $this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion = $promociondetallesRelatedByIdproductooperandoToDelete;
+        $this->promociondetallesScheduledForDeletion = $promociondetallesToDelete;
 
-        foreach ($promociondetallesRelatedByIdproductooperandoToDelete as $promociondetalleRelatedByIdproductooperandoRemoved) {
-            $promociondetalleRelatedByIdproductooperandoRemoved->setProductoRelatedByIdproductooperando(null);
+        foreach ($promociondetallesToDelete as $promociondetalleRemoved) {
+            $promociondetalleRemoved->setProducto(null);
         }
 
-        $this->collPromociondetallesRelatedByIdproductooperando = null;
-        foreach ($promociondetallesRelatedByIdproductooperando as $promociondetalleRelatedByIdproductooperando) {
-            $this->addPromociondetalleRelatedByIdproductooperando($promociondetalleRelatedByIdproductooperando);
+        $this->collPromociondetalles = null;
+        foreach ($promociondetalles as $promociondetalle) {
+            $this->addPromociondetalle($promociondetalle);
         }
 
-        $this->collPromociondetallesRelatedByIdproductooperando = $promociondetallesRelatedByIdproductooperando;
-        $this->collPromociondetallesRelatedByIdproductooperandoPartial = false;
+        $this->collPromociondetalles = $promociondetalles;
+        $this->collPromociondetallesPartial = false;
 
         return $this;
     }
@@ -4603,16 +4903,16 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @return int             Count of related Promociondetalle objects.
      * @throws PropelException
      */
-    public function countPromociondetallesRelatedByIdproductooperando(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPromociondetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPromociondetallesRelatedByIdproductooperandoPartial && !$this->isNew();
-        if (null === $this->collPromociondetallesRelatedByIdproductooperando || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPromociondetallesRelatedByIdproductooperando) {
+        $partial = $this->collPromociondetallesPartial && !$this->isNew();
+        if (null === $this->collPromociondetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPromociondetalles) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPromociondetallesRelatedByIdproductooperando());
+                return count($this->getPromociondetalles());
             }
             $query = PromociondetalleQuery::create(null, $criteria);
             if ($distinct) {
@@ -4620,11 +4920,11 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterByProductoRelatedByIdproductooperando($this)
+                ->filterByProducto($this)
                 ->count($con);
         }
 
-        return count($this->collPromociondetallesRelatedByIdproductooperando);
+        return count($this->collPromociondetalles);
     }
 
     /**
@@ -4634,18 +4934,18 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @param    Promociondetalle $l Promociondetalle
      * @return Producto The current object (for fluent API support)
      */
-    public function addPromociondetalleRelatedByIdproductooperando(Promociondetalle $l)
+    public function addPromociondetalle(Promociondetalle $l)
     {
-        if ($this->collPromociondetallesRelatedByIdproductooperando === null) {
-            $this->initPromociondetallesRelatedByIdproductooperando();
-            $this->collPromociondetallesRelatedByIdproductooperandoPartial = true;
+        if ($this->collPromociondetalles === null) {
+            $this->initPromociondetalles();
+            $this->collPromociondetallesPartial = true;
         }
 
-        if (!in_array($l, $this->collPromociondetallesRelatedByIdproductooperando->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPromociondetalleRelatedByIdproductooperando($l);
+        if (!in_array($l, $this->collPromociondetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPromociondetalle($l);
 
-            if ($this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion and $this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion->contains($l)) {
-                $this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion->remove($this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion->search($l));
+            if ($this->promociondetallesScheduledForDeletion and $this->promociondetallesScheduledForDeletion->contains($l)) {
+                $this->promociondetallesScheduledForDeletion->remove($this->promociondetallesScheduledForDeletion->search($l));
             }
         }
 
@@ -4653,28 +4953,28 @@ abstract class BaseProducto extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PromociondetalleRelatedByIdproductooperando $promociondetalleRelatedByIdproductooperando The promociondetalleRelatedByIdproductooperando object to add.
+     * @param	Promociondetalle $promociondetalle The promociondetalle object to add.
      */
-    protected function doAddPromociondetalleRelatedByIdproductooperando($promociondetalleRelatedByIdproductooperando)
+    protected function doAddPromociondetalle($promociondetalle)
     {
-        $this->collPromociondetallesRelatedByIdproductooperando[]= $promociondetalleRelatedByIdproductooperando;
-        $promociondetalleRelatedByIdproductooperando->setProductoRelatedByIdproductooperando($this);
+        $this->collPromociondetalles[]= $promociondetalle;
+        $promociondetalle->setProducto($this);
     }
 
     /**
-     * @param	PromociondetalleRelatedByIdproductooperando $promociondetalleRelatedByIdproductooperando The promociondetalleRelatedByIdproductooperando object to remove.
+     * @param	Promociondetalle $promociondetalle The promociondetalle object to remove.
      * @return Producto The current object (for fluent API support)
      */
-    public function removePromociondetalleRelatedByIdproductooperando($promociondetalleRelatedByIdproductooperando)
+    public function removePromociondetalle($promociondetalle)
     {
-        if ($this->getPromociondetallesRelatedByIdproductooperando()->contains($promociondetalleRelatedByIdproductooperando)) {
-            $this->collPromociondetallesRelatedByIdproductooperando->remove($this->collPromociondetallesRelatedByIdproductooperando->search($promociondetalleRelatedByIdproductooperando));
-            if (null === $this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion) {
-                $this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion = clone $this->collPromociondetallesRelatedByIdproductooperando;
-                $this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion->clear();
+        if ($this->getPromociondetalles()->contains($promociondetalle)) {
+            $this->collPromociondetalles->remove($this->collPromociondetalles->search($promociondetalle));
+            if (null === $this->promociondetallesScheduledForDeletion) {
+                $this->promociondetallesScheduledForDeletion = clone $this->collPromociondetalles;
+                $this->promociondetallesScheduledForDeletion->clear();
             }
-            $this->promociondetallesRelatedByIdproductooperandoScheduledForDeletion[]= clone $promociondetalleRelatedByIdproductooperando;
-            $promociondetalleRelatedByIdproductooperando->setProductoRelatedByIdproductooperando(null);
+            $this->promociondetallesScheduledForDeletion[]= $promociondetalle;
+            $promociondetalle->setProducto(null);
         }
 
         return $this;
@@ -4686,7 +4986,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this Producto is new, it will return
      * an empty collection; or if this Producto has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdproductooperando from storage.
+     * been saved, it will retrieve related Promociondetalles from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -4697,12 +4997,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      */
-    public function getPromociondetallesRelatedByIdproductooperandoJoinMarcaRelatedByIdmarcaoperando($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPromociondetallesJoinMarca($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('MarcaRelatedByIdmarcaoperando', $join_behavior);
+        $query->joinWith('Marca', $join_behavior);
 
-        return $this->getPromociondetallesRelatedByIdproductooperando($query, $con);
+        return $this->getPromociondetalles($query, $con);
     }
 
 
@@ -4711,7 +5011,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this Producto is new, it will return
      * an empty collection; or if this Producto has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdproductooperando from storage.
+     * been saved, it will retrieve related Promociondetalles from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -4722,12 +5022,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      */
-    public function getPromociondetallesRelatedByIdproductooperandoJoinMarcaRelatedByIdmarcaresultado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPromociondetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('MarcaRelatedByIdmarcaresultado', $join_behavior);
+        $query->joinWith('Productovariante', $join_behavior);
 
-        return $this->getPromociondetallesRelatedByIdproductooperando($query, $con);
+        return $this->getPromociondetalles($query, $con);
     }
 
 
@@ -4736,7 +5036,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this Producto is new, it will return
      * an empty collection; or if this Producto has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdproductooperando from storage.
+     * been saved, it will retrieve related Promociondetalles from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -4747,312 +5047,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      */
-    public function getPromociondetallesRelatedByIdproductooperandoJoinPromocion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPromociondetallesJoinPromocion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PromociondetalleQuery::create(null, $criteria);
         $query->joinWith('Promocion', $join_behavior);
 
-        return $this->getPromociondetallesRelatedByIdproductooperando($query, $con);
-    }
-
-    /**
-     * Clears out the collPromociondetallesRelatedByIdproductoresultado collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Producto The current object (for fluent API support)
-     * @see        addPromociondetallesRelatedByIdproductoresultado()
-     */
-    public function clearPromociondetallesRelatedByIdproductoresultado()
-    {
-        $this->collPromociondetallesRelatedByIdproductoresultado = null; // important to set this to null since that means it is uninitialized
-        $this->collPromociondetallesRelatedByIdproductoresultadoPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPromociondetallesRelatedByIdproductoresultado collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPromociondetallesRelatedByIdproductoresultado($v = true)
-    {
-        $this->collPromociondetallesRelatedByIdproductoresultadoPartial = $v;
-    }
-
-    /**
-     * Initializes the collPromociondetallesRelatedByIdproductoresultado collection.
-     *
-     * By default this just sets the collPromociondetallesRelatedByIdproductoresultado collection to an empty array (like clearcollPromociondetallesRelatedByIdproductoresultado());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPromociondetallesRelatedByIdproductoresultado($overrideExisting = true)
-    {
-        if (null !== $this->collPromociondetallesRelatedByIdproductoresultado && !$overrideExisting) {
-            return;
-        }
-        $this->collPromociondetallesRelatedByIdproductoresultado = new PropelObjectCollection();
-        $this->collPromociondetallesRelatedByIdproductoresultado->setModel('Promociondetalle');
-    }
-
-    /**
-     * Gets an array of Promociondetalle objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Producto is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
-     * @throws PropelException
-     */
-    public function getPromociondetallesRelatedByIdproductoresultado($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPromociondetallesRelatedByIdproductoresultadoPartial && !$this->isNew();
-        if (null === $this->collPromociondetallesRelatedByIdproductoresultado || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPromociondetallesRelatedByIdproductoresultado) {
-                // return empty collection
-                $this->initPromociondetallesRelatedByIdproductoresultado();
-            } else {
-                $collPromociondetallesRelatedByIdproductoresultado = PromociondetalleQuery::create(null, $criteria)
-                    ->filterByProductoRelatedByIdproductoresultado($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPromociondetallesRelatedByIdproductoresultadoPartial && count($collPromociondetallesRelatedByIdproductoresultado)) {
-                      $this->initPromociondetallesRelatedByIdproductoresultado(false);
-
-                      foreach ($collPromociondetallesRelatedByIdproductoresultado as $obj) {
-                        if (false == $this->collPromociondetallesRelatedByIdproductoresultado->contains($obj)) {
-                          $this->collPromociondetallesRelatedByIdproductoresultado->append($obj);
-                        }
-                      }
-
-                      $this->collPromociondetallesRelatedByIdproductoresultadoPartial = true;
-                    }
-
-                    $collPromociondetallesRelatedByIdproductoresultado->getInternalIterator()->rewind();
-
-                    return $collPromociondetallesRelatedByIdproductoresultado;
-                }
-
-                if ($partial && $this->collPromociondetallesRelatedByIdproductoresultado) {
-                    foreach ($this->collPromociondetallesRelatedByIdproductoresultado as $obj) {
-                        if ($obj->isNew()) {
-                            $collPromociondetallesRelatedByIdproductoresultado[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPromociondetallesRelatedByIdproductoresultado = $collPromociondetallesRelatedByIdproductoresultado;
-                $this->collPromociondetallesRelatedByIdproductoresultadoPartial = false;
-            }
-        }
-
-        return $this->collPromociondetallesRelatedByIdproductoresultado;
-    }
-
-    /**
-     * Sets a collection of PromociondetalleRelatedByIdproductoresultado objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $promociondetallesRelatedByIdproductoresultado A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Producto The current object (for fluent API support)
-     */
-    public function setPromociondetallesRelatedByIdproductoresultado(PropelCollection $promociondetallesRelatedByIdproductoresultado, PropelPDO $con = null)
-    {
-        $promociondetallesRelatedByIdproductoresultadoToDelete = $this->getPromociondetallesRelatedByIdproductoresultado(new Criteria(), $con)->diff($promociondetallesRelatedByIdproductoresultado);
-
-
-        $this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion = $promociondetallesRelatedByIdproductoresultadoToDelete;
-
-        foreach ($promociondetallesRelatedByIdproductoresultadoToDelete as $promociondetalleRelatedByIdproductoresultadoRemoved) {
-            $promociondetalleRelatedByIdproductoresultadoRemoved->setProductoRelatedByIdproductoresultado(null);
-        }
-
-        $this->collPromociondetallesRelatedByIdproductoresultado = null;
-        foreach ($promociondetallesRelatedByIdproductoresultado as $promociondetalleRelatedByIdproductoresultado) {
-            $this->addPromociondetalleRelatedByIdproductoresultado($promociondetalleRelatedByIdproductoresultado);
-        }
-
-        $this->collPromociondetallesRelatedByIdproductoresultado = $promociondetallesRelatedByIdproductoresultado;
-        $this->collPromociondetallesRelatedByIdproductoresultadoPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Promociondetalle objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Promociondetalle objects.
-     * @throws PropelException
-     */
-    public function countPromociondetallesRelatedByIdproductoresultado(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPromociondetallesRelatedByIdproductoresultadoPartial && !$this->isNew();
-        if (null === $this->collPromociondetallesRelatedByIdproductoresultado || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPromociondetallesRelatedByIdproductoresultado) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPromociondetallesRelatedByIdproductoresultado());
-            }
-            $query = PromociondetalleQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProductoRelatedByIdproductoresultado($this)
-                ->count($con);
-        }
-
-        return count($this->collPromociondetallesRelatedByIdproductoresultado);
-    }
-
-    /**
-     * Method called to associate a Promociondetalle object to this object
-     * through the Promociondetalle foreign key attribute.
-     *
-     * @param    Promociondetalle $l Promociondetalle
-     * @return Producto The current object (for fluent API support)
-     */
-    public function addPromociondetalleRelatedByIdproductoresultado(Promociondetalle $l)
-    {
-        if ($this->collPromociondetallesRelatedByIdproductoresultado === null) {
-            $this->initPromociondetallesRelatedByIdproductoresultado();
-            $this->collPromociondetallesRelatedByIdproductoresultadoPartial = true;
-        }
-
-        if (!in_array($l, $this->collPromociondetallesRelatedByIdproductoresultado->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPromociondetalleRelatedByIdproductoresultado($l);
-
-            if ($this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion and $this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion->contains($l)) {
-                $this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion->remove($this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PromociondetalleRelatedByIdproductoresultado $promociondetalleRelatedByIdproductoresultado The promociondetalleRelatedByIdproductoresultado object to add.
-     */
-    protected function doAddPromociondetalleRelatedByIdproductoresultado($promociondetalleRelatedByIdproductoresultado)
-    {
-        $this->collPromociondetallesRelatedByIdproductoresultado[]= $promociondetalleRelatedByIdproductoresultado;
-        $promociondetalleRelatedByIdproductoresultado->setProductoRelatedByIdproductoresultado($this);
-    }
-
-    /**
-     * @param	PromociondetalleRelatedByIdproductoresultado $promociondetalleRelatedByIdproductoresultado The promociondetalleRelatedByIdproductoresultado object to remove.
-     * @return Producto The current object (for fluent API support)
-     */
-    public function removePromociondetalleRelatedByIdproductoresultado($promociondetalleRelatedByIdproductoresultado)
-    {
-        if ($this->getPromociondetallesRelatedByIdproductoresultado()->contains($promociondetalleRelatedByIdproductoresultado)) {
-            $this->collPromociondetallesRelatedByIdproductoresultado->remove($this->collPromociondetallesRelatedByIdproductoresultado->search($promociondetalleRelatedByIdproductoresultado));
-            if (null === $this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion) {
-                $this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion = clone $this->collPromociondetallesRelatedByIdproductoresultado;
-                $this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion->clear();
-            }
-            $this->promociondetallesRelatedByIdproductoresultadoScheduledForDeletion[]= clone $promociondetalleRelatedByIdproductoresultado;
-            $promociondetalleRelatedByIdproductoresultado->setProductoRelatedByIdproductoresultado(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Producto is new, it will return
-     * an empty collection; or if this Producto has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdproductoresultado from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Producto.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
-     */
-    public function getPromociondetallesRelatedByIdproductoresultadoJoinMarcaRelatedByIdmarcaoperando($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('MarcaRelatedByIdmarcaoperando', $join_behavior);
-
-        return $this->getPromociondetallesRelatedByIdproductoresultado($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Producto is new, it will return
-     * an empty collection; or if this Producto has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdproductoresultado from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Producto.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
-     */
-    public function getPromociondetallesRelatedByIdproductoresultadoJoinMarcaRelatedByIdmarcaresultado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('MarcaRelatedByIdmarcaresultado', $join_behavior);
-
-        return $this->getPromociondetallesRelatedByIdproductoresultado($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Producto is new, it will return
-     * an empty collection; or if this Producto has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdproductoresultado from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Producto.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
-     */
-    public function getPromociondetallesRelatedByIdproductoresultadoJoinPromocion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('Promocion', $join_behavior);
-
-        return $this->getPromociondetallesRelatedByIdproductoresultado($query, $con);
+        return $this->getPromociondetalles($query, $con);
     }
 
     /**
@@ -5112,6 +5112,11 @@ abstract class BaseProducto extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPedidosucursaldetalles) {
+                foreach ($this->collPedidosucursaldetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collProductocolors) {
                 foreach ($this->collProductocolors as $o) {
                     $o->clearAllReferences($deep);
@@ -5137,13 +5142,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPromociondetallesRelatedByIdproductooperando) {
-                foreach ($this->collPromociondetallesRelatedByIdproductooperando as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPromociondetallesRelatedByIdproductoresultado) {
-                foreach ($this->collPromociondetallesRelatedByIdproductoresultado as $o) {
+            if ($this->collPromociondetalles) {
+                foreach ($this->collPromociondetalles as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -5175,6 +5175,10 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->collPedidomayoristadetalles->clearIterator();
         }
         $this->collPedidomayoristadetalles = null;
+        if ($this->collPedidosucursaldetalles instanceof PropelCollection) {
+            $this->collPedidosucursaldetalles->clearIterator();
+        }
+        $this->collPedidosucursaldetalles = null;
         if ($this->collProductocolors instanceof PropelCollection) {
             $this->collProductocolors->clearIterator();
         }
@@ -5195,14 +5199,10 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->collProductovariantes->clearIterator();
         }
         $this->collProductovariantes = null;
-        if ($this->collPromociondetallesRelatedByIdproductooperando instanceof PropelCollection) {
-            $this->collPromociondetallesRelatedByIdproductooperando->clearIterator();
+        if ($this->collPromociondetalles instanceof PropelCollection) {
+            $this->collPromociondetalles->clearIterator();
         }
-        $this->collPromociondetallesRelatedByIdproductooperando = null;
-        if ($this->collPromociondetallesRelatedByIdproductoresultado instanceof PropelCollection) {
-            $this->collPromociondetallesRelatedByIdproductoresultado->clearIterator();
-        }
-        $this->collPromociondetallesRelatedByIdproductoresultado = null;
+        $this->collPromociondetalles = null;
         $this->aMarca = null;
         $this->aProveedor = null;
         $this->aTemporada = null;

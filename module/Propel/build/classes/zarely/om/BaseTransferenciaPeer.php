@@ -24,13 +24,13 @@ abstract class BaseTransferenciaPeer
     const TM_CLASS = 'TransferenciaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the idtransferencia field */
     const IDTRANSFERENCIA = 'transferencia.idtransferencia';
@@ -59,10 +59,14 @@ abstract class BaseTransferenciaPeer
     /** the column name for the transferencia_fecharecepcion field */
     const TRANSFERENCIA_FECHARECEPCION = 'transferencia.transferencia_fecharecepcion';
 
+    /** the column name for the transferencia_razon field */
+    const TRANSFERENCIA_RAZON = 'transferencia.transferencia_razon';
+
     /** The enumerated values for the transferencia_estatus field */
     const TRANSFERENCIA_ESTATUS_CREADA = 'creada';
     const TRANSFERENCIA_ESTATUS_ACEPTADA = 'aceptada';
     const TRANSFERENCIA_ESTATUS_RECHAZADA = 'rechazada';
+    const TRANSFERENCIA_ESTATUS_CANCELADA = 'cancelada';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -83,12 +87,12 @@ abstract class BaseTransferenciaPeer
      * e.g. TransferenciaPeer::$fieldNames[TransferenciaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idtransferencia', 'Idsucursalorigen', 'Idsucursaldestino', 'TransferenciaFecha', 'TransferenciaEstatus', 'Idempleadocreador', 'Idempleadoreceptor', 'TransferenciaNota', 'TransferenciaFecharecepcion', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idtransferencia', 'idsucursalorigen', 'idsucursaldestino', 'transferenciaFecha', 'transferenciaEstatus', 'idempleadocreador', 'idempleadoreceptor', 'transferenciaNota', 'transferenciaFecharecepcion', ),
-        BasePeer::TYPE_COLNAME => array (TransferenciaPeer::IDTRANSFERENCIA, TransferenciaPeer::IDSUCURSALORIGEN, TransferenciaPeer::IDSUCURSALDESTINO, TransferenciaPeer::TRANSFERENCIA_FECHA, TransferenciaPeer::TRANSFERENCIA_ESTATUS, TransferenciaPeer::IDEMPLEADOCREADOR, TransferenciaPeer::IDEMPLEADORECEPTOR, TransferenciaPeer::TRANSFERENCIA_NOTA, TransferenciaPeer::TRANSFERENCIA_FECHARECEPCION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDTRANSFERENCIA', 'IDSUCURSALORIGEN', 'IDSUCURSALDESTINO', 'TRANSFERENCIA_FECHA', 'TRANSFERENCIA_ESTATUS', 'IDEMPLEADOCREADOR', 'IDEMPLEADORECEPTOR', 'TRANSFERENCIA_NOTA', 'TRANSFERENCIA_FECHARECEPCION', ),
-        BasePeer::TYPE_FIELDNAME => array ('idtransferencia', 'idsucursalorigen', 'idsucursaldestino', 'transferencia_fecha', 'transferencia_estatus', 'idempleadocreador', 'idempleadoreceptor', 'transferencia_nota', 'transferencia_fecharecepcion', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idtransferencia', 'Idsucursalorigen', 'Idsucursaldestino', 'TransferenciaFecha', 'TransferenciaEstatus', 'Idempleadocreador', 'Idempleadoreceptor', 'TransferenciaNota', 'TransferenciaFecharecepcion', 'TransferenciaRazon', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idtransferencia', 'idsucursalorigen', 'idsucursaldestino', 'transferenciaFecha', 'transferenciaEstatus', 'idempleadocreador', 'idempleadoreceptor', 'transferenciaNota', 'transferenciaFecharecepcion', 'transferenciaRazon', ),
+        BasePeer::TYPE_COLNAME => array (TransferenciaPeer::IDTRANSFERENCIA, TransferenciaPeer::IDSUCURSALORIGEN, TransferenciaPeer::IDSUCURSALDESTINO, TransferenciaPeer::TRANSFERENCIA_FECHA, TransferenciaPeer::TRANSFERENCIA_ESTATUS, TransferenciaPeer::IDEMPLEADOCREADOR, TransferenciaPeer::IDEMPLEADORECEPTOR, TransferenciaPeer::TRANSFERENCIA_NOTA, TransferenciaPeer::TRANSFERENCIA_FECHARECEPCION, TransferenciaPeer::TRANSFERENCIA_RAZON, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDTRANSFERENCIA', 'IDSUCURSALORIGEN', 'IDSUCURSALDESTINO', 'TRANSFERENCIA_FECHA', 'TRANSFERENCIA_ESTATUS', 'IDEMPLEADOCREADOR', 'IDEMPLEADORECEPTOR', 'TRANSFERENCIA_NOTA', 'TRANSFERENCIA_FECHARECEPCION', 'TRANSFERENCIA_RAZON', ),
+        BasePeer::TYPE_FIELDNAME => array ('idtransferencia', 'idsucursalorigen', 'idsucursaldestino', 'transferencia_fecha', 'transferencia_estatus', 'idempleadocreador', 'idempleadoreceptor', 'transferencia_nota', 'transferencia_fecharecepcion', 'transferencia_razon', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -98,12 +102,12 @@ abstract class BaseTransferenciaPeer
      * e.g. TransferenciaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idtransferencia' => 0, 'Idsucursalorigen' => 1, 'Idsucursaldestino' => 2, 'TransferenciaFecha' => 3, 'TransferenciaEstatus' => 4, 'Idempleadocreador' => 5, 'Idempleadoreceptor' => 6, 'TransferenciaNota' => 7, 'TransferenciaFecharecepcion' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idtransferencia' => 0, 'idsucursalorigen' => 1, 'idsucursaldestino' => 2, 'transferenciaFecha' => 3, 'transferenciaEstatus' => 4, 'idempleadocreador' => 5, 'idempleadoreceptor' => 6, 'transferenciaNota' => 7, 'transferenciaFecharecepcion' => 8, ),
-        BasePeer::TYPE_COLNAME => array (TransferenciaPeer::IDTRANSFERENCIA => 0, TransferenciaPeer::IDSUCURSALORIGEN => 1, TransferenciaPeer::IDSUCURSALDESTINO => 2, TransferenciaPeer::TRANSFERENCIA_FECHA => 3, TransferenciaPeer::TRANSFERENCIA_ESTATUS => 4, TransferenciaPeer::IDEMPLEADOCREADOR => 5, TransferenciaPeer::IDEMPLEADORECEPTOR => 6, TransferenciaPeer::TRANSFERENCIA_NOTA => 7, TransferenciaPeer::TRANSFERENCIA_FECHARECEPCION => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDTRANSFERENCIA' => 0, 'IDSUCURSALORIGEN' => 1, 'IDSUCURSALDESTINO' => 2, 'TRANSFERENCIA_FECHA' => 3, 'TRANSFERENCIA_ESTATUS' => 4, 'IDEMPLEADOCREADOR' => 5, 'IDEMPLEADORECEPTOR' => 6, 'TRANSFERENCIA_NOTA' => 7, 'TRANSFERENCIA_FECHARECEPCION' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('idtransferencia' => 0, 'idsucursalorigen' => 1, 'idsucursaldestino' => 2, 'transferencia_fecha' => 3, 'transferencia_estatus' => 4, 'idempleadocreador' => 5, 'idempleadoreceptor' => 6, 'transferencia_nota' => 7, 'transferencia_fecharecepcion' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Idtransferencia' => 0, 'Idsucursalorigen' => 1, 'Idsucursaldestino' => 2, 'TransferenciaFecha' => 3, 'TransferenciaEstatus' => 4, 'Idempleadocreador' => 5, 'Idempleadoreceptor' => 6, 'TransferenciaNota' => 7, 'TransferenciaFecharecepcion' => 8, 'TransferenciaRazon' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idtransferencia' => 0, 'idsucursalorigen' => 1, 'idsucursaldestino' => 2, 'transferenciaFecha' => 3, 'transferenciaEstatus' => 4, 'idempleadocreador' => 5, 'idempleadoreceptor' => 6, 'transferenciaNota' => 7, 'transferenciaFecharecepcion' => 8, 'transferenciaRazon' => 9, ),
+        BasePeer::TYPE_COLNAME => array (TransferenciaPeer::IDTRANSFERENCIA => 0, TransferenciaPeer::IDSUCURSALORIGEN => 1, TransferenciaPeer::IDSUCURSALDESTINO => 2, TransferenciaPeer::TRANSFERENCIA_FECHA => 3, TransferenciaPeer::TRANSFERENCIA_ESTATUS => 4, TransferenciaPeer::IDEMPLEADOCREADOR => 5, TransferenciaPeer::IDEMPLEADORECEPTOR => 6, TransferenciaPeer::TRANSFERENCIA_NOTA => 7, TransferenciaPeer::TRANSFERENCIA_FECHARECEPCION => 8, TransferenciaPeer::TRANSFERENCIA_RAZON => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDTRANSFERENCIA' => 0, 'IDSUCURSALORIGEN' => 1, 'IDSUCURSALDESTINO' => 2, 'TRANSFERENCIA_FECHA' => 3, 'TRANSFERENCIA_ESTATUS' => 4, 'IDEMPLEADOCREADOR' => 5, 'IDEMPLEADORECEPTOR' => 6, 'TRANSFERENCIA_NOTA' => 7, 'TRANSFERENCIA_FECHARECEPCION' => 8, 'TRANSFERENCIA_RAZON' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('idtransferencia' => 0, 'idsucursalorigen' => 1, 'idsucursaldestino' => 2, 'transferencia_fecha' => 3, 'transferencia_estatus' => 4, 'idempleadocreador' => 5, 'idempleadoreceptor' => 6, 'transferencia_nota' => 7, 'transferencia_fecharecepcion' => 8, 'transferencia_razon' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /** The enumerated values for this table */
@@ -112,6 +116,7 @@ abstract class BaseTransferenciaPeer
             TransferenciaPeer::TRANSFERENCIA_ESTATUS_CREADA,
             TransferenciaPeer::TRANSFERENCIA_ESTATUS_ACEPTADA,
             TransferenciaPeer::TRANSFERENCIA_ESTATUS_RECHAZADA,
+            TransferenciaPeer::TRANSFERENCIA_ESTATUS_CANCELADA,
         ),
     );
 
@@ -240,6 +245,7 @@ abstract class BaseTransferenciaPeer
             $criteria->addSelectColumn(TransferenciaPeer::IDEMPLEADORECEPTOR);
             $criteria->addSelectColumn(TransferenciaPeer::TRANSFERENCIA_NOTA);
             $criteria->addSelectColumn(TransferenciaPeer::TRANSFERENCIA_FECHARECEPCION);
+            $criteria->addSelectColumn(TransferenciaPeer::TRANSFERENCIA_RAZON);
         } else {
             $criteria->addSelectColumn($alias . '.idtransferencia');
             $criteria->addSelectColumn($alias . '.idsucursalorigen');
@@ -250,6 +256,7 @@ abstract class BaseTransferenciaPeer
             $criteria->addSelectColumn($alias . '.idempleadoreceptor');
             $criteria->addSelectColumn($alias . '.transferencia_nota');
             $criteria->addSelectColumn($alias . '.transferencia_fecharecepcion');
+            $criteria->addSelectColumn($alias . '.transferencia_razon');
         }
     }
 

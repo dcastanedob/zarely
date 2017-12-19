@@ -96,7 +96,7 @@ class PuntoDeVentaForm extends Form
                 'value_options' => array(
                     'venta' => 'Venta',
                     'credito' => 'Crédito',
-                    'apartada' => 'Apartada',
+                    'apartado' => 'Apartado',
 
                 ),
             ),
@@ -187,6 +187,58 @@ class PuntoDeVentaForm extends Form
 
         $this->add(array(
             'name' => 'idproductovariante2[]',
+            'type' => 'Select',
+            'options' => array(
+              
+            'value_options' => $productosvariante_array,   
+            ),
+            'attributes' => array(
+                'required' => true,
+                'class' => '',
+                
+
+               
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'idproductovariante3[]',
+            'type' => 'Select',
+            'options' => array(
+              
+            'value_options' => $productosvariante_array,   
+            ),
+            'attributes' => array(
+                'required' => true,
+                'class' => '',
+                
+
+               
+            ),
+        ));
+
+
+
+        $this->add(array(
+            'name' => 'idproductovariante4[]',
+            'type' => 'Select',
+            'options' => array(
+              
+            'value_options' => $productosvariante_array,   
+            ),
+            'attributes' => array(
+                'required' => true,
+                'class' => '',
+                
+
+               
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'idproductovariante5[]',
             'type' => 'Select',
             'options' => array(
               

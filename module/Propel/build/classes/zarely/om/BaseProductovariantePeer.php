@@ -452,6 +452,9 @@ abstract class BaseProductovariantePeer
         // Invalidate objects in CompradetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CompradetallePeer::clearInstancePool();
+        // Invalidate objects in DescuentodetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        DescuentodetallePeer::clearInstancePool();
         // Invalidate objects in DevoluciondetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         DevoluciondetallePeer::clearInstancePool();
@@ -461,9 +464,15 @@ abstract class BaseProductovariantePeer
         // Invalidate objects in PedidomayoristadetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidomayoristadetallePeer::clearInstancePool();
+        // Invalidate objects in PedidosucursaldetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PedidosucursaldetallePeer::clearInstancePool();
         // Invalidate objects in ProductosucursalPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductosucursalPeer::clearInstancePool();
+        // Invalidate objects in PromociondetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PromociondetallePeer::clearInstancePool();
         // Invalidate objects in TransferenciadetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciadetallePeer::clearInstancePool();
@@ -1787,6 +1796,12 @@ abstract class BaseProductovariantePeer
             $criteria->add(CompradetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
             $affectedRows += CompradetallePeer::doDelete($criteria, $con);
 
+            // delete related Descuentodetalle objects
+            $criteria = new Criteria(DescuentodetallePeer::DATABASE_NAME);
+
+            $criteria->add(DescuentodetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
+            $affectedRows += DescuentodetallePeer::doDelete($criteria, $con);
+
             // delete related Devoluciondetalle objects
             $criteria = new Criteria(DevoluciondetallePeer::DATABASE_NAME);
 
@@ -1805,11 +1820,23 @@ abstract class BaseProductovariantePeer
             $criteria->add(PedidomayoristadetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
             $affectedRows += PedidomayoristadetallePeer::doDelete($criteria, $con);
 
+            // delete related Pedidosucursaldetalle objects
+            $criteria = new Criteria(PedidosucursaldetallePeer::DATABASE_NAME);
+
+            $criteria->add(PedidosucursaldetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
+            $affectedRows += PedidosucursaldetallePeer::doDelete($criteria, $con);
+
             // delete related Productosucursal objects
             $criteria = new Criteria(ProductosucursalPeer::DATABASE_NAME);
 
             $criteria->add(ProductosucursalPeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
             $affectedRows += ProductosucursalPeer::doDelete($criteria, $con);
+
+            // delete related Promociondetalle objects
+            $criteria = new Criteria(PromociondetallePeer::DATABASE_NAME);
+
+            $criteria->add(PromociondetallePeer::IDPRODUCTOVARIANTE, $obj->getIdproductovariante());
+            $affectedRows += PromociondetallePeer::doDelete($criteria, $con);
 
             // delete related Transferenciadetalle objects
             $criteria = new Criteria(TransferenciadetallePeer::DATABASE_NAME);

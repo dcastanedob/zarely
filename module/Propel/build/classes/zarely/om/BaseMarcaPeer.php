@@ -372,9 +372,6 @@ abstract class BaseMarcaPeer
         // Invalidate objects in PromociondetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PromociondetallePeer::clearInstancePool();
-        // Invalidate objects in PromociondetallePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PromociondetallePeer::clearInstancePool();
         // Invalidate objects in ProveedormarcaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProveedormarcaPeer::clearInstancePool();
@@ -733,13 +730,7 @@ abstract class BaseMarcaPeer
             // delete related Promociondetalle objects
             $criteria = new Criteria(PromociondetallePeer::DATABASE_NAME);
 
-            $criteria->add(PromociondetallePeer::IDMARCAOPERANDO, $obj->getIdmarca());
-            $affectedRows += PromociondetallePeer::doDelete($criteria, $con);
-
-            // delete related Promociondetalle objects
-            $criteria = new Criteria(PromociondetallePeer::DATABASE_NAME);
-
-            $criteria->add(PromociondetallePeer::IDMARCARESULTADO, $obj->getIdmarca());
+            $criteria->add(PromociondetallePeer::IDMARCA, $obj->getIdmarca());
             $affectedRows += PromociondetallePeer::doDelete($criteria, $con);
 
             // delete related Proveedormarca objects

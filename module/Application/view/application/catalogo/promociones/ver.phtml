@@ -1,0 +1,227 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title"><?php echo $entity->getPromocionNombre() ?></h1>
+	</div>
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+    		<div class="demo-form-wrapper">
+    			<form class="form form-horizontal" action="/catalogo/promociones/ver/<?php echo $entity->getIdpromocion() ?>" method="POST">
+    				<input type="hidden" name="idpromocion" value="<?php echo $entity->getIdpromocion()?>">
+
+
+    				<div class="panel panel-info">
+						<div class="panel-heading"><h4>INFORMACIÓN DE LA PROMOCIÓN</h4></div>
+
+						 <div class="panel-body">
+		          			<div class="col-xs-5">
+		      	       			
+		      	        		<div class="form-group">
+					           		<label  for="Nombre">Nombre </label>
+					                <?php echo $this->formText($form->get('promocion_nombre')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="Fecha de inicio">Fecha de inicio</label>
+					                <?php echo $this->formText($form->get('promocion_fechainicio')) ?>
+				        		</div>
+
+				        		
+
+				        		
+
+
+		      	        	</div>
+
+		      	        	<div class="col-xs-1"></div>
+
+		      	        	<div class="col-xs-5">
+
+		      	        		<div class="form-group">
+					           		<label  for="Estatus">Estatus </label>
+					                <?php echo $this->formSelect($form->get('promocion_estatus')) ?>
+				        		</div>
+
+				        		<div class="form-group">
+					           		<label  for="Fecha de fin"> Fecha de fin</label>
+					                <?php echo $this->formText($form->get('promocion_fechafin')) ?>
+				        		</div>
+
+				        		
+
+				        		
+		      	        	</div>
+
+		      	        	<div class="col-md-11">
+				       			<div class="form-group">
+					           		<label  for="Descripcion">Descripción </label>
+					                <?php echo $this->formTextarea($form->get('promocion_descripcion')) ?>
+				        		</div>
+				        	</div>
+						</div>
+					</div>
+					<br>
+
+					<div class="panel panel-info">
+						<div class="panel-heading"><h4>PRODUCTOS</h4></div>
+
+						 <div class="panel-body">
+		          			<div id="productosInformation">
+		        				<div class="col-md-9">
+				                    <div class="form-group">
+						           		<label for="productos">Productos con promoción</label>
+						                <?php echo $this->formSelect($form->get('idproducto[]')) ?>
+					        		</div>
+		        				</div>
+		        				<div class="col-md-1"></div>
+
+				        		<div class="col-md-2">		
+				        			<div class="form-group" >
+						           		<label  for="guardar"></label>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_producto">			Agregar
+	                                    </a>
+					        		</div>
+					        	</div>
+
+	                            <table class="table table-bordered" id="tabla_producto">
+		        				    <thead>
+		        				      <tr>
+		        				        <th>Nombre</th>
+		        				        <th>Opciones</th>
+		        				      </tr>
+		        				    </thead>
+		        				    <tbody>
+
+		        				    </tbody>
+		        				</table>
+	        				</div>
+
+		      	        	
+
+		      	        	
+						</div>
+					</div>
+
+					<br>
+
+					<div class="panel panel-info">
+						<div class="panel-heading"><h4>MARCAS</h4></div>
+
+						 <div class="panel-body">
+		          			<div id="productosInformation">
+	        				
+			        			<div class="col-md-9">
+				                    <div class="form-group">
+						           		<label for="marca">Marcas con promoción</label>
+						                <?php echo $this->formSelect($form->get('idmarca[]')) ?>
+					        		</div>
+		        				</div>
+		        				<div class="col-md-1"></div>
+
+				        		<div class="col-md-2">		
+				        			<div class="form-group">
+						           		<label  for="guardar"></label>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_marca">			Agregar
+	                                    </a>
+					        		</div>
+					        	</div>
+
+	                            <table class="table table-bordered" id="tabla_marca">
+		        				    <thead>
+		        				      <tr>
+		        				        <th>Nombre</th>
+		        				        <th>Opciones</th>
+		        				      </tr>
+		        				    </thead>
+		        				    <tbody>
+
+		        				    </tbody>
+		        				</table>
+	        				</div>
+
+		      	        	
+
+		      	        	
+						</div>
+					</div>
+
+
+					<br>
+
+					<div class="panel panel-info">
+						<div class="panel-heading"><h4>PRODUCTOS VARIANTE</h4></div>
+
+						 <div class="panel-body">
+		          			
+		      	        	<div id="productosInformation">
+		      	        		<div class="col-md-9">
+				                    <div class="form-group">
+						           		<label for="variantes">Producto variante con promoción</label>
+						                <?php echo $this->formSelect($form->get('idvariante[]')) ?>
+					        		</div>
+		        				</div>
+		        				<div class="col-md-1"></div>
+
+				        		<div class="col-md-2">		
+				        			<div class="form-group">
+						           		<label  for="guardar"></label>
+	                                    <a class="btn btn-primary btn-block btn-next" id="btn_add_variante">			Agregar
+	                                    </a>
+					        		</div>
+					        	</div>
+
+	                            <table class="table table-bordered" id="tabla_variante">
+		        				    <thead>
+		        				      <tr>
+		        				        <th>Nombre</th>
+		        				        <th>Opciones</th>
+		        				      </tr>
+		        				    </thead>
+		        				    <tbody>
+
+		        				    </tbody>
+		        				</table>
+		        				
+
+	        			</div>
+
+		      	        	
+						</div>
+					</div>
+
+    				
+
+ 			
+
+
+		        	<div class="form-group">
+		           		<label  for="guardar"></label>
+	                    <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="12">
+                         	Guardar
+                        </button>
+	        		</div>
+ 
+    			</form>
+    		</div>
+    	</div>
+	</div>
+
+
+	
+
+   
+
+</div>
+
+
+<script src="/js/catalogo/promociones.js"></script>
+<script>
+	var promociones = $('.body_container').promociones();
+	promociones.initForm();
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('form').on('submit', function(e) {
+	    $(this).find('button, input[type=button]').prop('disabled', true);
+	  });
+	});
+</script>

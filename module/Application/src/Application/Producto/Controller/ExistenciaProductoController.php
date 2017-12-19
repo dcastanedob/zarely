@@ -22,11 +22,12 @@ class ExistenciaProductoController extends AbstractActionController
     );
 
     public $column_map_producto_variante = array(
-         0 => 'Idproductovariante',
-        1 => 'ProductoModelo',
+        0 => 'Idproductovariante',
+        1 => 'a.ProductoModelo',
         2 => 'ProductovarianteTalla',
-        3 => 'ProductoMarca',
-        4 => 'ProductoColor',
+        3 => 'g.MarcaNombre',
+        4 => 'e.ColorNombre',
+        5 => 'f.MaterialNombre',
         
     );
 
@@ -199,13 +200,15 @@ class ExistenciaProductoController extends AbstractActionController
                
                 $c1= $c->getNewCriterion('productotallaje.idproductotallaje', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c2= $c->getNewCriterion('productotallaje.idproducto', '%'.$search_value.'%', \Criteria::LIKE);
+                $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
+                $c3= $c->getNewCriterion('marca.marca_nombre', '%'.$search_value.'%', \Criteria::LIKE);
+                $c4= $c->getNewCriterion('color.color_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('productotallaje.idtallaje', '%'.$search_value.'%', \Criteria::LIKE);
+
 
 
           
-                $c1->addOr($c2)->addOr($c3);
+                $c1->addOr($c2)->addOr($c3)->addOr($c4);
 
                 $query->addAnd($c1);
                 $query->groupByIdproductovariante();
@@ -294,6 +297,17 @@ class ExistenciaProductoController extends AbstractActionController
     }
 
     public function indexAction()
+    {   
+        
+        $view_model = new ViewModel();
+        $view_model->setTemplate('application/producto/existencias/index');
+        $view_model->setVariables(array(
+             'messages' => $this->flashMessenger(),
+        ));
+        return $view_model;
+    }
+
+    public function indexsucursalAction()
     {   
         
         $view_model = new ViewModel();

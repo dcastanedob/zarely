@@ -36,12 +36,13 @@ class DescuentodetalleTableMap extends TableMap
         $this->setPhpName('Descuentodetalle');
         $this->setClassname('Descuentodetalle');
         $this->setPackage('zarely');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('iddescuentodetalle', 'Iddescuentodetalle', 'INTEGER', true, null, null);
         $this->addForeignKey('iddescuento', 'Iddescuento', 'INTEGER', 'descuento', 'iddescuento', true, null, null);
         $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', false, null, null);
         $this->addForeignKey('idmarca', 'Idmarca', 'INTEGER', 'marca', 'idmarca', false, null, null);
+        $this->addForeignKey('idproductovariante', 'Idproductovariante', 'INTEGER', 'productovariante', 'idproductovariante', false, null, null);
         // validators
     } // initialize()
 
@@ -53,6 +54,7 @@ class DescuentodetalleTableMap extends TableMap
         $this->addRelation('Descuento', 'Descuento', RelationMap::MANY_TO_ONE, array('iddescuento' => 'iddescuento', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Marca', 'Marca', RelationMap::MANY_TO_ONE, array('idmarca' => 'idmarca', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Productovariante', 'Productovariante', RelationMap::MANY_TO_ONE, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
 } // DescuentodetalleTableMap

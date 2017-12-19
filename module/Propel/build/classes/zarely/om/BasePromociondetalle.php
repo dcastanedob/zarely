@@ -42,60 +42,37 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
     protected $idpromocion;
 
     /**
-     * The value for the idmarcaoperando field.
+     * The value for the idmarca field.
      * @var        int
      */
-    protected $idmarcaoperando;
+    protected $idmarca;
 
     /**
-     * The value for the idproductooperando field.
+     * The value for the idproducto field.
      * @var        int
      */
-    protected $idproductooperando;
+    protected $idproducto;
 
     /**
-     * The value for the promociondetalle_cantidadoperando field.
-     * @var        string
-     */
-    protected $promociondetalle_cantidadoperando;
-
-    /**
-     * The value for the idmarcaresultado field.
+     * The value for the idproductovariante field.
      * @var        int
      */
-    protected $idmarcaresultado;
-
-    /**
-     * The value for the idproductoresultado field.
-     * @var        int
-     */
-    protected $idproductoresultado;
-
-    /**
-     * The value for the promociondetalle_cantidadresultado field.
-     * @var        string
-     */
-    protected $promociondetalle_cantidadresultado;
+    protected $idproductovariante;
 
     /**
      * @var        Marca
      */
-    protected $aMarcaRelatedByIdmarcaoperando;
-
-    /**
-     * @var        Marca
-     */
-    protected $aMarcaRelatedByIdmarcaresultado;
+    protected $aMarca;
 
     /**
      * @var        Producto
      */
-    protected $aProductoRelatedByIdproductooperando;
+    protected $aProducto;
 
     /**
-     * @var        Producto
+     * @var        Productovariante
      */
-    protected $aProductoRelatedByIdproductoresultado;
+    protected $aProductovariante;
 
     /**
      * @var        Promocion
@@ -145,69 +122,36 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [idmarcaoperando] column value.
+     * Get the [idmarca] column value.
      *
      * @return int
      */
-    public function getIdmarcaoperando()
+    public function getIdmarca()
     {
 
-        return $this->idmarcaoperando;
+        return $this->idmarca;
     }
 
     /**
-     * Get the [idproductooperando] column value.
+     * Get the [idproducto] column value.
      *
      * @return int
      */
-    public function getIdproductooperando()
+    public function getIdproducto()
     {
 
-        return $this->idproductooperando;
+        return $this->idproducto;
     }
 
     /**
-     * Get the [promociondetalle_cantidadoperando] column value.
-     *
-     * @return string
-     */
-    public function getPromociondetalleCantidadoperando()
-    {
-
-        return $this->promociondetalle_cantidadoperando;
-    }
-
-    /**
-     * Get the [idmarcaresultado] column value.
+     * Get the [idproductovariante] column value.
      *
      * @return int
      */
-    public function getIdmarcaresultado()
+    public function getIdproductovariante()
     {
 
-        return $this->idmarcaresultado;
-    }
-
-    /**
-     * Get the [idproductoresultado] column value.
-     *
-     * @return int
-     */
-    public function getIdproductoresultado()
-    {
-
-        return $this->idproductoresultado;
-    }
-
-    /**
-     * Get the [promociondetalle_cantidadresultado] column value.
-     *
-     * @return string
-     */
-    public function getPromociondetalleCantidadresultado()
-    {
-
-        return $this->promociondetalle_cantidadresultado;
+        return $this->idproductovariante;
     }
 
     /**
@@ -257,146 +201,79 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
     } // setIdpromocion()
 
     /**
-     * Set the value of [idmarcaoperando] column.
+     * Set the value of [idmarca] column.
      *
      * @param  int $v new value
      * @return Promociondetalle The current object (for fluent API support)
      */
-    public function setIdmarcaoperando($v)
+    public function setIdmarca($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idmarcaoperando !== $v) {
-            $this->idmarcaoperando = $v;
-            $this->modifiedColumns[] = PromociondetallePeer::IDMARCAOPERANDO;
+        if ($this->idmarca !== $v) {
+            $this->idmarca = $v;
+            $this->modifiedColumns[] = PromociondetallePeer::IDMARCA;
         }
 
-        if ($this->aMarcaRelatedByIdmarcaoperando !== null && $this->aMarcaRelatedByIdmarcaoperando->getIdmarca() !== $v) {
-            $this->aMarcaRelatedByIdmarcaoperando = null;
+        if ($this->aMarca !== null && $this->aMarca->getIdmarca() !== $v) {
+            $this->aMarca = null;
         }
 
 
         return $this;
-    } // setIdmarcaoperando()
+    } // setIdmarca()
 
     /**
-     * Set the value of [idproductooperando] column.
+     * Set the value of [idproducto] column.
      *
      * @param  int $v new value
      * @return Promociondetalle The current object (for fluent API support)
      */
-    public function setIdproductooperando($v)
+    public function setIdproducto($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idproductooperando !== $v) {
-            $this->idproductooperando = $v;
-            $this->modifiedColumns[] = PromociondetallePeer::IDPRODUCTOOPERANDO;
+        if ($this->idproducto !== $v) {
+            $this->idproducto = $v;
+            $this->modifiedColumns[] = PromociondetallePeer::IDPRODUCTO;
         }
 
-        if ($this->aProductoRelatedByIdproductooperando !== null && $this->aProductoRelatedByIdproductooperando->getIdproducto() !== $v) {
-            $this->aProductoRelatedByIdproductooperando = null;
-        }
-
-
-        return $this;
-    } // setIdproductooperando()
-
-    /**
-     * Set the value of [promociondetalle_cantidadoperando] column.
-     *
-     * @param  string $v new value
-     * @return Promociondetalle The current object (for fluent API support)
-     */
-    public function setPromociondetalleCantidadoperando($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->promociondetalle_cantidadoperando !== $v) {
-            $this->promociondetalle_cantidadoperando = $v;
-            $this->modifiedColumns[] = PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO;
+        if ($this->aProducto !== null && $this->aProducto->getIdproducto() !== $v) {
+            $this->aProducto = null;
         }
 
 
         return $this;
-    } // setPromociondetalleCantidadoperando()
+    } // setIdproducto()
 
     /**
-     * Set the value of [idmarcaresultado] column.
+     * Set the value of [idproductovariante] column.
      *
      * @param  int $v new value
      * @return Promociondetalle The current object (for fluent API support)
      */
-    public function setIdmarcaresultado($v)
+    public function setIdproductovariante($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idmarcaresultado !== $v) {
-            $this->idmarcaresultado = $v;
-            $this->modifiedColumns[] = PromociondetallePeer::IDMARCARESULTADO;
+        if ($this->idproductovariante !== $v) {
+            $this->idproductovariante = $v;
+            $this->modifiedColumns[] = PromociondetallePeer::IDPRODUCTOVARIANTE;
         }
 
-        if ($this->aMarcaRelatedByIdmarcaresultado !== null && $this->aMarcaRelatedByIdmarcaresultado->getIdmarca() !== $v) {
-            $this->aMarcaRelatedByIdmarcaresultado = null;
-        }
-
-
-        return $this;
-    } // setIdmarcaresultado()
-
-    /**
-     * Set the value of [idproductoresultado] column.
-     *
-     * @param  int $v new value
-     * @return Promociondetalle The current object (for fluent API support)
-     */
-    public function setIdproductoresultado($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->idproductoresultado !== $v) {
-            $this->idproductoresultado = $v;
-            $this->modifiedColumns[] = PromociondetallePeer::IDPRODUCTORESULTADO;
-        }
-
-        if ($this->aProductoRelatedByIdproductoresultado !== null && $this->aProductoRelatedByIdproductoresultado->getIdproducto() !== $v) {
-            $this->aProductoRelatedByIdproductoresultado = null;
+        if ($this->aProductovariante !== null && $this->aProductovariante->getIdproductovariante() !== $v) {
+            $this->aProductovariante = null;
         }
 
 
         return $this;
-    } // setIdproductoresultado()
-
-    /**
-     * Set the value of [promociondetalle_cantidadresultado] column.
-     *
-     * @param  string $v new value
-     * @return Promociondetalle The current object (for fluent API support)
-     */
-    public function setPromociondetalleCantidadresultado($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->promociondetalle_cantidadresultado !== $v) {
-            $this->promociondetalle_cantidadresultado = $v;
-            $this->modifiedColumns[] = PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO;
-        }
-
-
-        return $this;
-    } // setPromociondetalleCantidadresultado()
+    } // setIdproductovariante()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -432,12 +309,9 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
 
             $this->idpromociondetalle = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idpromocion = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->idmarcaoperando = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->idproductooperando = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->promociondetalle_cantidadoperando = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->idmarcaresultado = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->idproductoresultado = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->promociondetalle_cantidadresultado = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->idmarca = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->idproducto = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->idproductovariante = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -447,7 +321,7 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 8; // 8 = PromociondetallePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PromociondetallePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Promociondetalle object", $e);
@@ -473,17 +347,14 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
         if ($this->aPromocion !== null && $this->idpromocion !== $this->aPromocion->getIdpromocion()) {
             $this->aPromocion = null;
         }
-        if ($this->aMarcaRelatedByIdmarcaoperando !== null && $this->idmarcaoperando !== $this->aMarcaRelatedByIdmarcaoperando->getIdmarca()) {
-            $this->aMarcaRelatedByIdmarcaoperando = null;
+        if ($this->aMarca !== null && $this->idmarca !== $this->aMarca->getIdmarca()) {
+            $this->aMarca = null;
         }
-        if ($this->aProductoRelatedByIdproductooperando !== null && $this->idproductooperando !== $this->aProductoRelatedByIdproductooperando->getIdproducto()) {
-            $this->aProductoRelatedByIdproductooperando = null;
+        if ($this->aProducto !== null && $this->idproducto !== $this->aProducto->getIdproducto()) {
+            $this->aProducto = null;
         }
-        if ($this->aMarcaRelatedByIdmarcaresultado !== null && $this->idmarcaresultado !== $this->aMarcaRelatedByIdmarcaresultado->getIdmarca()) {
-            $this->aMarcaRelatedByIdmarcaresultado = null;
-        }
-        if ($this->aProductoRelatedByIdproductoresultado !== null && $this->idproductoresultado !== $this->aProductoRelatedByIdproductoresultado->getIdproducto()) {
-            $this->aProductoRelatedByIdproductoresultado = null;
+        if ($this->aProductovariante !== null && $this->idproductovariante !== $this->aProductovariante->getIdproductovariante()) {
+            $this->aProductovariante = null;
         }
     } // ensureConsistency
 
@@ -524,10 +395,9 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aMarcaRelatedByIdmarcaoperando = null;
-            $this->aMarcaRelatedByIdmarcaresultado = null;
-            $this->aProductoRelatedByIdproductooperando = null;
-            $this->aProductoRelatedByIdproductoresultado = null;
+            $this->aMarca = null;
+            $this->aProducto = null;
+            $this->aProductovariante = null;
             $this->aPromocion = null;
         } // if (deep)
     }
@@ -647,32 +517,25 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aMarcaRelatedByIdmarcaoperando !== null) {
-                if ($this->aMarcaRelatedByIdmarcaoperando->isModified() || $this->aMarcaRelatedByIdmarcaoperando->isNew()) {
-                    $affectedRows += $this->aMarcaRelatedByIdmarcaoperando->save($con);
+            if ($this->aMarca !== null) {
+                if ($this->aMarca->isModified() || $this->aMarca->isNew()) {
+                    $affectedRows += $this->aMarca->save($con);
                 }
-                $this->setMarcaRelatedByIdmarcaoperando($this->aMarcaRelatedByIdmarcaoperando);
+                $this->setMarca($this->aMarca);
             }
 
-            if ($this->aMarcaRelatedByIdmarcaresultado !== null) {
-                if ($this->aMarcaRelatedByIdmarcaresultado->isModified() || $this->aMarcaRelatedByIdmarcaresultado->isNew()) {
-                    $affectedRows += $this->aMarcaRelatedByIdmarcaresultado->save($con);
+            if ($this->aProducto !== null) {
+                if ($this->aProducto->isModified() || $this->aProducto->isNew()) {
+                    $affectedRows += $this->aProducto->save($con);
                 }
-                $this->setMarcaRelatedByIdmarcaresultado($this->aMarcaRelatedByIdmarcaresultado);
+                $this->setProducto($this->aProducto);
             }
 
-            if ($this->aProductoRelatedByIdproductooperando !== null) {
-                if ($this->aProductoRelatedByIdproductooperando->isModified() || $this->aProductoRelatedByIdproductooperando->isNew()) {
-                    $affectedRows += $this->aProductoRelatedByIdproductooperando->save($con);
+            if ($this->aProductovariante !== null) {
+                if ($this->aProductovariante->isModified() || $this->aProductovariante->isNew()) {
+                    $affectedRows += $this->aProductovariante->save($con);
                 }
-                $this->setProductoRelatedByIdproductooperando($this->aProductoRelatedByIdproductooperando);
-            }
-
-            if ($this->aProductoRelatedByIdproductoresultado !== null) {
-                if ($this->aProductoRelatedByIdproductoresultado->isModified() || $this->aProductoRelatedByIdproductoresultado->isNew()) {
-                    $affectedRows += $this->aProductoRelatedByIdproductoresultado->save($con);
-                }
-                $this->setProductoRelatedByIdproductoresultado($this->aProductoRelatedByIdproductoresultado);
+                $this->setProductovariante($this->aProductovariante);
             }
 
             if ($this->aPromocion !== null) {
@@ -725,23 +588,14 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
         if ($this->isColumnModified(PromociondetallePeer::IDPROMOCION)) {
             $modifiedColumns[':p' . $index++]  = '`idpromocion`';
         }
-        if ($this->isColumnModified(PromociondetallePeer::IDMARCAOPERANDO)) {
-            $modifiedColumns[':p' . $index++]  = '`idmarcaoperando`';
+        if ($this->isColumnModified(PromociondetallePeer::IDMARCA)) {
+            $modifiedColumns[':p' . $index++]  = '`idmarca`';
         }
-        if ($this->isColumnModified(PromociondetallePeer::IDPRODUCTOOPERANDO)) {
-            $modifiedColumns[':p' . $index++]  = '`idproductooperando`';
+        if ($this->isColumnModified(PromociondetallePeer::IDPRODUCTO)) {
+            $modifiedColumns[':p' . $index++]  = '`idproducto`';
         }
-        if ($this->isColumnModified(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO)) {
-            $modifiedColumns[':p' . $index++]  = '`promociondetalle_cantidadoperando`';
-        }
-        if ($this->isColumnModified(PromociondetallePeer::IDMARCARESULTADO)) {
-            $modifiedColumns[':p' . $index++]  = '`idmarcaresultado`';
-        }
-        if ($this->isColumnModified(PromociondetallePeer::IDPRODUCTORESULTADO)) {
-            $modifiedColumns[':p' . $index++]  = '`idproductoresultado`';
-        }
-        if ($this->isColumnModified(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO)) {
-            $modifiedColumns[':p' . $index++]  = '`promociondetalle_cantidadresultado`';
+        if ($this->isColumnModified(PromociondetallePeer::IDPRODUCTOVARIANTE)) {
+            $modifiedColumns[':p' . $index++]  = '`idproductovariante`';
         }
 
         $sql = sprintf(
@@ -760,23 +614,14 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
                     case '`idpromocion`':
                         $stmt->bindValue($identifier, $this->idpromocion, PDO::PARAM_INT);
                         break;
-                    case '`idmarcaoperando`':
-                        $stmt->bindValue($identifier, $this->idmarcaoperando, PDO::PARAM_INT);
+                    case '`idmarca`':
+                        $stmt->bindValue($identifier, $this->idmarca, PDO::PARAM_INT);
                         break;
-                    case '`idproductooperando`':
-                        $stmt->bindValue($identifier, $this->idproductooperando, PDO::PARAM_INT);
+                    case '`idproducto`':
+                        $stmt->bindValue($identifier, $this->idproducto, PDO::PARAM_INT);
                         break;
-                    case '`promociondetalle_cantidadoperando`':
-                        $stmt->bindValue($identifier, $this->promociondetalle_cantidadoperando, PDO::PARAM_STR);
-                        break;
-                    case '`idmarcaresultado`':
-                        $stmt->bindValue($identifier, $this->idmarcaresultado, PDO::PARAM_INT);
-                        break;
-                    case '`idproductoresultado`':
-                        $stmt->bindValue($identifier, $this->idproductoresultado, PDO::PARAM_INT);
-                        break;
-                    case '`promociondetalle_cantidadresultado`':
-                        $stmt->bindValue($identifier, $this->promociondetalle_cantidadresultado, PDO::PARAM_STR);
+                    case '`idproductovariante`':
+                        $stmt->bindValue($identifier, $this->idproductovariante, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -877,27 +722,21 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aMarcaRelatedByIdmarcaoperando !== null) {
-                if (!$this->aMarcaRelatedByIdmarcaoperando->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aMarcaRelatedByIdmarcaoperando->getValidationFailures());
+            if ($this->aMarca !== null) {
+                if (!$this->aMarca->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aMarca->getValidationFailures());
                 }
             }
 
-            if ($this->aMarcaRelatedByIdmarcaresultado !== null) {
-                if (!$this->aMarcaRelatedByIdmarcaresultado->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aMarcaRelatedByIdmarcaresultado->getValidationFailures());
+            if ($this->aProducto !== null) {
+                if (!$this->aProducto->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProducto->getValidationFailures());
                 }
             }
 
-            if ($this->aProductoRelatedByIdproductooperando !== null) {
-                if (!$this->aProductoRelatedByIdproductooperando->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aProductoRelatedByIdproductooperando->getValidationFailures());
-                }
-            }
-
-            if ($this->aProductoRelatedByIdproductoresultado !== null) {
-                if (!$this->aProductoRelatedByIdproductoresultado->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aProductoRelatedByIdproductoresultado->getValidationFailures());
+            if ($this->aProductovariante !== null) {
+                if (!$this->aProductovariante->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aProductovariante->getValidationFailures());
                 }
             }
 
@@ -955,22 +794,13 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
                 return $this->getIdpromocion();
                 break;
             case 2:
-                return $this->getIdmarcaoperando();
+                return $this->getIdmarca();
                 break;
             case 3:
-                return $this->getIdproductooperando();
+                return $this->getIdproducto();
                 break;
             case 4:
-                return $this->getPromociondetalleCantidadoperando();
-                break;
-            case 5:
-                return $this->getIdmarcaresultado();
-                break;
-            case 6:
-                return $this->getIdproductoresultado();
-                break;
-            case 7:
-                return $this->getPromociondetalleCantidadresultado();
+                return $this->getIdproductovariante();
                 break;
             default:
                 return null;
@@ -1003,12 +833,9 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getIdpromociondetalle(),
             $keys[1] => $this->getIdpromocion(),
-            $keys[2] => $this->getIdmarcaoperando(),
-            $keys[3] => $this->getIdproductooperando(),
-            $keys[4] => $this->getPromociondetalleCantidadoperando(),
-            $keys[5] => $this->getIdmarcaresultado(),
-            $keys[6] => $this->getIdproductoresultado(),
-            $keys[7] => $this->getPromociondetalleCantidadresultado(),
+            $keys[2] => $this->getIdmarca(),
+            $keys[3] => $this->getIdproducto(),
+            $keys[4] => $this->getIdproductovariante(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1016,17 +843,14 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aMarcaRelatedByIdmarcaoperando) {
-                $result['MarcaRelatedByIdmarcaoperando'] = $this->aMarcaRelatedByIdmarcaoperando->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aMarca) {
+                $result['Marca'] = $this->aMarca->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aMarcaRelatedByIdmarcaresultado) {
-                $result['MarcaRelatedByIdmarcaresultado'] = $this->aMarcaRelatedByIdmarcaresultado->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aProducto) {
+                $result['Producto'] = $this->aProducto->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aProductoRelatedByIdproductooperando) {
-                $result['ProductoRelatedByIdproductooperando'] = $this->aProductoRelatedByIdproductooperando->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aProductoRelatedByIdproductoresultado) {
-                $result['ProductoRelatedByIdproductoresultado'] = $this->aProductoRelatedByIdproductoresultado->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aProductovariante) {
+                $result['Productovariante'] = $this->aProductovariante->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aPromocion) {
                 $result['Promocion'] = $this->aPromocion->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1072,22 +896,13 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
                 $this->setIdpromocion($value);
                 break;
             case 2:
-                $this->setIdmarcaoperando($value);
+                $this->setIdmarca($value);
                 break;
             case 3:
-                $this->setIdproductooperando($value);
+                $this->setIdproducto($value);
                 break;
             case 4:
-                $this->setPromociondetalleCantidadoperando($value);
-                break;
-            case 5:
-                $this->setIdmarcaresultado($value);
-                break;
-            case 6:
-                $this->setIdproductoresultado($value);
-                break;
-            case 7:
-                $this->setPromociondetalleCantidadresultado($value);
+                $this->setIdproductovariante($value);
                 break;
         } // switch()
     }
@@ -1115,12 +930,9 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setIdpromociondetalle($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdpromocion($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setIdmarcaoperando($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setIdproductooperando($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPromociondetalleCantidadoperando($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setIdmarcaresultado($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setIdproductoresultado($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setPromociondetalleCantidadresultado($arr[$keys[7]]);
+        if (array_key_exists($keys[2], $arr)) $this->setIdmarca($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setIdproducto($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setIdproductovariante($arr[$keys[4]]);
     }
 
     /**
@@ -1134,12 +946,9 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
 
         if ($this->isColumnModified(PromociondetallePeer::IDPROMOCIONDETALLE)) $criteria->add(PromociondetallePeer::IDPROMOCIONDETALLE, $this->idpromociondetalle);
         if ($this->isColumnModified(PromociondetallePeer::IDPROMOCION)) $criteria->add(PromociondetallePeer::IDPROMOCION, $this->idpromocion);
-        if ($this->isColumnModified(PromociondetallePeer::IDMARCAOPERANDO)) $criteria->add(PromociondetallePeer::IDMARCAOPERANDO, $this->idmarcaoperando);
-        if ($this->isColumnModified(PromociondetallePeer::IDPRODUCTOOPERANDO)) $criteria->add(PromociondetallePeer::IDPRODUCTOOPERANDO, $this->idproductooperando);
-        if ($this->isColumnModified(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO)) $criteria->add(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADOPERANDO, $this->promociondetalle_cantidadoperando);
-        if ($this->isColumnModified(PromociondetallePeer::IDMARCARESULTADO)) $criteria->add(PromociondetallePeer::IDMARCARESULTADO, $this->idmarcaresultado);
-        if ($this->isColumnModified(PromociondetallePeer::IDPRODUCTORESULTADO)) $criteria->add(PromociondetallePeer::IDPRODUCTORESULTADO, $this->idproductoresultado);
-        if ($this->isColumnModified(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO)) $criteria->add(PromociondetallePeer::PROMOCIONDETALLE_CANTIDADRESULTADO, $this->promociondetalle_cantidadresultado);
+        if ($this->isColumnModified(PromociondetallePeer::IDMARCA)) $criteria->add(PromociondetallePeer::IDMARCA, $this->idmarca);
+        if ($this->isColumnModified(PromociondetallePeer::IDPRODUCTO)) $criteria->add(PromociondetallePeer::IDPRODUCTO, $this->idproducto);
+        if ($this->isColumnModified(PromociondetallePeer::IDPRODUCTOVARIANTE)) $criteria->add(PromociondetallePeer::IDPRODUCTOVARIANTE, $this->idproductovariante);
 
         return $criteria;
     }
@@ -1204,12 +1013,9 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setIdpromocion($this->getIdpromocion());
-        $copyObj->setIdmarcaoperando($this->getIdmarcaoperando());
-        $copyObj->setIdproductooperando($this->getIdproductooperando());
-        $copyObj->setPromociondetalleCantidadoperando($this->getPromociondetalleCantidadoperando());
-        $copyObj->setIdmarcaresultado($this->getIdmarcaresultado());
-        $copyObj->setIdproductoresultado($this->getIdproductoresultado());
-        $copyObj->setPromociondetalleCantidadresultado($this->getPromociondetalleCantidadresultado());
+        $copyObj->setIdmarca($this->getIdmarca());
+        $copyObj->setIdproducto($this->getIdproducto());
+        $copyObj->setIdproductovariante($this->getIdproductovariante());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1275,20 +1081,20 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
      * @return Promociondetalle The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setMarcaRelatedByIdmarcaoperando(Marca $v = null)
+    public function setMarca(Marca $v = null)
     {
         if ($v === null) {
-            $this->setIdmarcaoperando(NULL);
+            $this->setIdmarca(NULL);
         } else {
-            $this->setIdmarcaoperando($v->getIdmarca());
+            $this->setIdmarca($v->getIdmarca());
         }
 
-        $this->aMarcaRelatedByIdmarcaoperando = $v;
+        $this->aMarca = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the Marca object, it will not be re-added.
         if ($v !== null) {
-            $v->addPromociondetalleRelatedByIdmarcaoperando($this);
+            $v->addPromociondetalle($this);
         }
 
 
@@ -1304,72 +1110,20 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
      * @return Marca The associated Marca object.
      * @throws PropelException
      */
-    public function getMarcaRelatedByIdmarcaoperando(PropelPDO $con = null, $doQuery = true)
+    public function getMarca(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aMarcaRelatedByIdmarcaoperando === null && ($this->idmarcaoperando !== null) && $doQuery) {
-            $this->aMarcaRelatedByIdmarcaoperando = MarcaQuery::create()->findPk($this->idmarcaoperando, $con);
+        if ($this->aMarca === null && ($this->idmarca !== null) && $doQuery) {
+            $this->aMarca = MarcaQuery::create()->findPk($this->idmarca, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aMarcaRelatedByIdmarcaoperando->addPromociondetallesRelatedByIdmarcaoperando($this);
+                $this->aMarca->addPromociondetalles($this);
              */
         }
 
-        return $this->aMarcaRelatedByIdmarcaoperando;
-    }
-
-    /**
-     * Declares an association between this object and a Marca object.
-     *
-     * @param                  Marca $v
-     * @return Promociondetalle The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setMarcaRelatedByIdmarcaresultado(Marca $v = null)
-    {
-        if ($v === null) {
-            $this->setIdmarcaresultado(NULL);
-        } else {
-            $this->setIdmarcaresultado($v->getIdmarca());
-        }
-
-        $this->aMarcaRelatedByIdmarcaresultado = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Marca object, it will not be re-added.
-        if ($v !== null) {
-            $v->addPromociondetalleRelatedByIdmarcaresultado($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Marca object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Marca The associated Marca object.
-     * @throws PropelException
-     */
-    public function getMarcaRelatedByIdmarcaresultado(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aMarcaRelatedByIdmarcaresultado === null && ($this->idmarcaresultado !== null) && $doQuery) {
-            $this->aMarcaRelatedByIdmarcaresultado = MarcaQuery::create()->findPk($this->idmarcaresultado, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aMarcaRelatedByIdmarcaresultado->addPromociondetallesRelatedByIdmarcaresultado($this);
-             */
-        }
-
-        return $this->aMarcaRelatedByIdmarcaresultado;
+        return $this->aMarca;
     }
 
     /**
@@ -1379,20 +1133,20 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
      * @return Promociondetalle The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setProductoRelatedByIdproductooperando(Producto $v = null)
+    public function setProducto(Producto $v = null)
     {
         if ($v === null) {
-            $this->setIdproductooperando(NULL);
+            $this->setIdproducto(NULL);
         } else {
-            $this->setIdproductooperando($v->getIdproducto());
+            $this->setIdproducto($v->getIdproducto());
         }
 
-        $this->aProductoRelatedByIdproductooperando = $v;
+        $this->aProducto = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the Producto object, it will not be re-added.
         if ($v !== null) {
-            $v->addPromociondetalleRelatedByIdproductooperando($this);
+            $v->addPromociondetalle($this);
         }
 
 
@@ -1408,43 +1162,43 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
      * @return Producto The associated Producto object.
      * @throws PropelException
      */
-    public function getProductoRelatedByIdproductooperando(PropelPDO $con = null, $doQuery = true)
+    public function getProducto(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aProductoRelatedByIdproductooperando === null && ($this->idproductooperando !== null) && $doQuery) {
-            $this->aProductoRelatedByIdproductooperando = ProductoQuery::create()->findPk($this->idproductooperando, $con);
+        if ($this->aProducto === null && ($this->idproducto !== null) && $doQuery) {
+            $this->aProducto = ProductoQuery::create()->findPk($this->idproducto, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aProductoRelatedByIdproductooperando->addPromociondetallesRelatedByIdproductooperando($this);
+                $this->aProducto->addPromociondetalles($this);
              */
         }
 
-        return $this->aProductoRelatedByIdproductooperando;
+        return $this->aProducto;
     }
 
     /**
-     * Declares an association between this object and a Producto object.
+     * Declares an association between this object and a Productovariante object.
      *
-     * @param                  Producto $v
+     * @param                  Productovariante $v
      * @return Promociondetalle The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setProductoRelatedByIdproductoresultado(Producto $v = null)
+    public function setProductovariante(Productovariante $v = null)
     {
         if ($v === null) {
-            $this->setIdproductoresultado(NULL);
+            $this->setIdproductovariante(NULL);
         } else {
-            $this->setIdproductoresultado($v->getIdproducto());
+            $this->setIdproductovariante($v->getIdproductovariante());
         }
 
-        $this->aProductoRelatedByIdproductoresultado = $v;
+        $this->aProductovariante = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Producto object, it will not be re-added.
+        // If this object has already been added to the Productovariante object, it will not be re-added.
         if ($v !== null) {
-            $v->addPromociondetalleRelatedByIdproductoresultado($this);
+            $v->addPromociondetalle($this);
         }
 
 
@@ -1453,27 +1207,27 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated Producto object
+     * Get the associated Productovariante object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return Producto The associated Producto object.
+     * @return Productovariante The associated Productovariante object.
      * @throws PropelException
      */
-    public function getProductoRelatedByIdproductoresultado(PropelPDO $con = null, $doQuery = true)
+    public function getProductovariante(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aProductoRelatedByIdproductoresultado === null && ($this->idproductoresultado !== null) && $doQuery) {
-            $this->aProductoRelatedByIdproductoresultado = ProductoQuery::create()->findPk($this->idproductoresultado, $con);
+        if ($this->aProductovariante === null && ($this->idproductovariante !== null) && $doQuery) {
+            $this->aProductovariante = ProductovarianteQuery::create()->findPk($this->idproductovariante, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aProductoRelatedByIdproductoresultado->addPromociondetallesRelatedByIdproductoresultado($this);
+                $this->aProductovariante->addPromociondetalles($this);
              */
         }
 
-        return $this->aProductoRelatedByIdproductoresultado;
+        return $this->aProductovariante;
     }
 
     /**
@@ -1535,12 +1289,9 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
     {
         $this->idpromociondetalle = null;
         $this->idpromocion = null;
-        $this->idmarcaoperando = null;
-        $this->idproductooperando = null;
-        $this->promociondetalle_cantidadoperando = null;
-        $this->idmarcaresultado = null;
-        $this->idproductoresultado = null;
-        $this->promociondetalle_cantidadresultado = null;
+        $this->idmarca = null;
+        $this->idproducto = null;
+        $this->idproductovariante = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1563,17 +1314,14 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->aMarcaRelatedByIdmarcaoperando instanceof Persistent) {
-              $this->aMarcaRelatedByIdmarcaoperando->clearAllReferences($deep);
+            if ($this->aMarca instanceof Persistent) {
+              $this->aMarca->clearAllReferences($deep);
             }
-            if ($this->aMarcaRelatedByIdmarcaresultado instanceof Persistent) {
-              $this->aMarcaRelatedByIdmarcaresultado->clearAllReferences($deep);
+            if ($this->aProducto instanceof Persistent) {
+              $this->aProducto->clearAllReferences($deep);
             }
-            if ($this->aProductoRelatedByIdproductooperando instanceof Persistent) {
-              $this->aProductoRelatedByIdproductooperando->clearAllReferences($deep);
-            }
-            if ($this->aProductoRelatedByIdproductoresultado instanceof Persistent) {
-              $this->aProductoRelatedByIdproductoresultado->clearAllReferences($deep);
+            if ($this->aProductovariante instanceof Persistent) {
+              $this->aProductovariante->clearAllReferences($deep);
             }
             if ($this->aPromocion instanceof Persistent) {
               $this->aPromocion->clearAllReferences($deep);
@@ -1582,10 +1330,9 @@ abstract class BasePromociondetalle extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        $this->aMarcaRelatedByIdmarcaoperando = null;
-        $this->aMarcaRelatedByIdmarcaresultado = null;
-        $this->aProductoRelatedByIdproductooperando = null;
-        $this->aProductoRelatedByIdproductoresultado = null;
+        $this->aMarca = null;
+        $this->aProducto = null;
+        $this->aProductovariante = null;
         $this->aPromocion = null;
     }
 

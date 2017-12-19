@@ -76,16 +76,14 @@ class PrecioProductoController extends AbstractActionController
                
                 $c1= $c->getNewCriterion('productotallaje.idproductotallaje', '%'.$search_value.'%', \Criteria::LIKE);
 
-                $c2= $c->getNewCriterion('productotallaje.idproducto', '%'.$search_value.'%', \Criteria::LIKE);
-
-                 $c3= $c->getNewCriterion('productotallaje.idtallaje', '%'.$search_value.'%', \Criteria::LIKE);
+                 $c2= $c->getNewCriterion('producto.producto_modelo', '%'.$search_value.'%', \Criteria::LIKE);
 
 
           
-                $c1->addOr($c2)->addOr($c3);
+                $c1->addOr($c2);
 
                 $query->addAnd($c1);
-                $query->groupByIdempleado();
+                $query->groupByIdproductotallaje();
                 
                 $records_filtered = $query->count();
                 
@@ -191,6 +189,97 @@ class PrecioProductoController extends AbstractActionController
     }
 
     public function indexAction()
+    {
+
+        $request = $this->getRequest();
+        if($request->isPost()){
+
+            $post_data = $request->getPost();
+
+            //Obtenemos todos los productos que pertecenen a ese tallaje
+            $producto_tallaje= \ProductotallajeQuery::create()->findOneByIdproductotallaje($post_data['id'])->toArray();
+
+            //Obtenemos las variantes a las cuales le pertenece ese tallaje
+            $producto_variante = \ProductovarianteQuery::create()->filterByIdproducto($producto_tallaje['Idproducto'])->find()->toArray();
+
+            //Otenemos los tallajes individuales de el producto que buscamos
+            $tallaje = \TallajeQuery::create()->findOneByIdtallaje($producto_tallaje['Idtallaje'])->toArray();
+
+            //Obtenemos el rango
+            $tallaje_rango = $tallaje['Tallajerango'];
+
+            //Obtenemos el limite inferior y el limite superior del rango
+            $valores = explode('-', $tallaje_rango);
+            $minimo = 0;
+            $maximo = 0;
+
+            //Verificamos que tenga menor y mayor
+            if(count($valores) > 1)
+            {
+                //asignamos el minimo y el maximo
+                $minimo = intval($valores['0']);
+                $maximo = intval($valores['1']);
+
+                //iteramos sobre cada variante y verificamos que esta en rango que buscamos
+                foreach ($producto_variante as $variante) {
+                    if($variante['ProductovarianteTalla']>= $minimo && $variante['ProductovarianteTalla'] <=$maximo)
+                    {
+                        //iteramos sobre cada sucursal
+                        foreach ($post_data['data'] as $sucursal) {
+
+                            //filtramos por el producto sucursal que tenga el id sucursal y producto variante
+                            $sucursal_producto = \ProductosucursalQuery::create()->filterByIdsucursal($sucursal['idsucursal'])->findOneByIdproductovariante($variante['Idproductovariante']);
+
+                            if($sucursal_producto != null && $sucursal['precio'] != null){
+                                $sucursal_producto->setProductosucursalPrecioventa($sucursal['precio'])->save();
+                            }
+
+                        }
+                    }
+                    
+                }
+            }
+            else
+            {
+                foreach ($producto_variante as $variante) {
+                    if($variante['ProductovarianteTalla']== $minimo)
+                    {
+                        //iteramos sobre cada sucursal
+                        foreach ($post_data['data'] as $sucursal) {
+
+                            //filtramos por el producto sucursal que tenga el id sucursal y producto variante
+                            $sucursal_producto = \ProductosucursalQuery::create()->filterByIdsucursal($sucursal['idsucursal'])->findOneByIdproductovariante($variante['Idproductovariante']);
+
+                            if($sucursal_producto != null && $sucursal['precio'] != null){
+                                $sucursal_producto->setProductosucursalPrecioventa($sucursal['precio'])->save();
+                            }
+
+                        }
+                    }
+                    
+                }
+            }
+
+            return $this->getResponse()->setContent(json_encode(array('response' => true)));
+
+            
+        }
+
+        $sucursales = \SucursalQuery::create()->find();
+
+
+        $view_model = new ViewModel();
+
+        $view_model->setTemplate('application/producto/precios/index');
+        $view_model->setVariables(array(
+            'messages' =>$this->flashMessenger(),
+            'sucursales' => $sucursales,
+        ));
+        return $view_model;
+    }
+
+
+    public function indexsucursalAction()
     {
 
         $request = $this->getRequest();

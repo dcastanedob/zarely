@@ -70,9 +70,21 @@
  * @method EmpleadoQuery rightJoinCuentabancariamovimiento($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cuentabancariamovimiento relation
  * @method EmpleadoQuery innerJoinCuentabancariamovimiento($relationAlias = null) Adds a INNER JOIN clause to the query using the Cuentabancariamovimiento relation
  *
+ * @method EmpleadoQuery leftJoinPedidosucursal($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedidosucursal relation
+ * @method EmpleadoQuery rightJoinPedidosucursal($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedidosucursal relation
+ * @method EmpleadoQuery innerJoinPedidosucursal($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedidosucursal relation
+ *
  * @method EmpleadoQuery leftJoinSucursalempleado($relationAlias = null) Adds a LEFT JOIN clause to the query using the Sucursalempleado relation
  * @method EmpleadoQuery rightJoinSucursalempleado($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Sucursalempleado relation
  * @method EmpleadoQuery innerJoinSucursalempleado($relationAlias = null) Adds a INNER JOIN clause to the query using the Sucursalempleado relation
+ *
+ * @method EmpleadoQuery leftJoinTarjetapuntos($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tarjetapuntos relation
+ * @method EmpleadoQuery rightJoinTarjetapuntos($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tarjetapuntos relation
+ * @method EmpleadoQuery innerJoinTarjetapuntos($relationAlias = null) Adds a INNER JOIN clause to the query using the Tarjetapuntos relation
+ *
+ * @method EmpleadoQuery leftJoinTarjetapuntosdetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tarjetapuntosdetalle relation
+ * @method EmpleadoQuery rightJoinTarjetapuntosdetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tarjetapuntosdetalle relation
+ * @method EmpleadoQuery innerJoinTarjetapuntosdetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Tarjetapuntosdetalle relation
  *
  * @method EmpleadoQuery leftJoinTransferenciaRelatedByIdempleadocreador($relationAlias = null) Adds a LEFT JOIN clause to the query using the TransferenciaRelatedByIdempleadocreador relation
  * @method EmpleadoQuery rightJoinTransferenciaRelatedByIdempleadocreador($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TransferenciaRelatedByIdempleadocreador relation
@@ -1283,6 +1295,80 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related Pedidosucursal object
+     *
+     * @param   Pedidosucursal|PropelObjectCollection $pedidosucursal  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPedidosucursal($pedidosucursal, $comparison = null)
+    {
+        if ($pedidosucursal instanceof Pedidosucursal) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $pedidosucursal->getIdempleado(), $comparison);
+        } elseif ($pedidosucursal instanceof PropelObjectCollection) {
+            return $this
+                ->usePedidosucursalQuery()
+                ->filterByPrimaryKeys($pedidosucursal->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByPedidosucursal() only accepts arguments of type Pedidosucursal or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Pedidosucursal relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinPedidosucursal($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Pedidosucursal');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Pedidosucursal');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Pedidosucursal relation Pedidosucursal object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PedidosucursalQuery A secondary query class using the current class as primary query
+     */
+    public function usePedidosucursalQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinPedidosucursal($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Pedidosucursal', 'PedidosucursalQuery');
+    }
+
+    /**
      * Filter the query by a related Sucursalempleado object
      *
      * @param   Sucursalempleado|PropelObjectCollection $sucursalempleado  the related object to use as filter
@@ -1354,6 +1440,154 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
         return $this
             ->joinSucursalempleado($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Sucursalempleado', 'SucursalempleadoQuery');
+    }
+
+    /**
+     * Filter the query by a related Tarjetapuntos object
+     *
+     * @param   Tarjetapuntos|PropelObjectCollection $tarjetapuntos  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByTarjetapuntos($tarjetapuntos, $comparison = null)
+    {
+        if ($tarjetapuntos instanceof Tarjetapuntos) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $tarjetapuntos->getIdempleadoactivador(), $comparison);
+        } elseif ($tarjetapuntos instanceof PropelObjectCollection) {
+            return $this
+                ->useTarjetapuntosQuery()
+                ->filterByPrimaryKeys($tarjetapuntos->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTarjetapuntos() only accepts arguments of type Tarjetapuntos or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Tarjetapuntos relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinTarjetapuntos($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Tarjetapuntos');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Tarjetapuntos');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Tarjetapuntos relation Tarjetapuntos object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   TarjetapuntosQuery A secondary query class using the current class as primary query
+     */
+    public function useTarjetapuntosQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinTarjetapuntos($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Tarjetapuntos', 'TarjetapuntosQuery');
+    }
+
+    /**
+     * Filter the query by a related Tarjetapuntosdetalle object
+     *
+     * @param   Tarjetapuntosdetalle|PropelObjectCollection $tarjetapuntosdetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 EmpleadoQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByTarjetapuntosdetalle($tarjetapuntosdetalle, $comparison = null)
+    {
+        if ($tarjetapuntosdetalle instanceof Tarjetapuntosdetalle) {
+            return $this
+                ->addUsingAlias(EmpleadoPeer::IDEMPLEADO, $tarjetapuntosdetalle->getIdempleado(), $comparison);
+        } elseif ($tarjetapuntosdetalle instanceof PropelObjectCollection) {
+            return $this
+                ->useTarjetapuntosdetalleQuery()
+                ->filterByPrimaryKeys($tarjetapuntosdetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTarjetapuntosdetalle() only accepts arguments of type Tarjetapuntosdetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Tarjetapuntosdetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EmpleadoQuery The current query, for fluid interface
+     */
+    public function joinTarjetapuntosdetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Tarjetapuntosdetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Tarjetapuntosdetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Tarjetapuntosdetalle relation Tarjetapuntosdetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   TarjetapuntosdetalleQuery A secondary query class using the current class as primary query
+     */
+    public function useTarjetapuntosdetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinTarjetapuntosdetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Tarjetapuntosdetalle', 'TarjetapuntosdetalleQuery');
     }
 
     /**

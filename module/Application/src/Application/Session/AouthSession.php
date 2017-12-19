@@ -33,7 +33,8 @@ class AouthSession extends AbstractActionController {
             $session_data->rol_nombre   = $session["rol_nombre"];
             if($session['idsucursal'] == null)
             {
-                $session_data->idsucursal = 1;
+                $id_sucursal = \SucursalempleadoQuery::create()->select('idsucursal')->filterByIdempleado($session_data->idempleado )->find()->toArray()[0];
+                $session_data->idsucursal = $id_sucursal;
             }
     }
     

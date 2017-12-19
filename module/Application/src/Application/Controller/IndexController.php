@@ -16,6 +16,8 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        
+
         $session = new \Application\Session\AouthSession();
         $session = $session->getData();
         $graphic = array(
@@ -51,11 +53,11 @@ class IndexController extends AbstractActionController
     private function getTotal()
     {
         //traer las compras
-        $compras = \CompraQuery::create()->find();
+        $compras = \VentaQuery::create()->find();
         $compras_array = array();
         $total = 0 ;
         foreach ($compras as $value){
-            $total += $value->getCompraTotal();
+            $total += $value->getVentaTotal();
         }
         return $total;
     }
@@ -72,6 +74,16 @@ class IndexController extends AbstractActionController
     	 $sucursales = \SucursalQuery::create()->find()->toArray(null,false,\BasePeer::TYPE_FIELDNAME);
 
     	return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $sucursales)));
+
+    }
+
+
+    public function getsucursalAction(){
+        $user = new \Application\Session\AouthSession();
+        $user = $user->getData();
+        $sucursales = \SucursalQuery::create()->findPk($user['idsucursal'])->toArray();
+
+        return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $sucursales)));
 
     }
 }

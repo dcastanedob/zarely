@@ -1,30 +1,40 @@
 <div class="body_container">
 	<div class="title-bar">
-	    <h1 class="title-bar-title"><?php echo $entity->getMarcaNombre() ?></h1>
+	    <h1 class="title-bar-title"></h1>
 	</div>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-offset-1 col-md-10">
     		<div class="demo-form-wrapper">
     			<form class="form form-horizontal" action="/catalogo/marcas/ver/<?php echo $entity->getIdmarca() ?>" method="POST">
-	       			<div class="form-group">
-		           		<label class="col-sm-3 control-label" for="form-control-18">Nombre</label>
-		            	<div class="col-sm-9">
-                                        <input type="hidden" name="idmarca" value="<?php echo $entity->getIdmarca()?>">
-		                	<?php echo $this->formText($form->get('marca_nombre')) ?>
-		            	</div>
-	        		</div>
-                                <div class="form-group">
-		           		<label class="col-sm-3 control-label" for="form-control-18">Tallaje</label>
-		            	<div class="col-sm-9">
-		                	<?php echo $this->formSelect($form->get('idtallaje[]')) ?>
-		            	</div>
-	        		</div>
+	       			<input type="hidden" name="idmarca" value="<?php echo $entity->getIdmarca()?>">
+
+
+	       			<div class="panel panel-info">
+						<div class="panel-heading"><h4>Editando marca: <?php echo $entity->getMarcaNombre() ?></h4></div>
+
+						 <div class="panel-body">
+			       			<div class="form-group">
+				           		<label class="col-sm-3 control-label" for="form-control-18">Nombre</label>
+				            	<div class="col-sm-9">
+				                	<?php echo $this->formText($form->get('marca_nombre')) ?>
+				            	</div>
+			        		</div>
+		                    <div class="form-group">
+				           		<label class="col-sm-3 control-label" for="form-control-18">Tallaje</label>
+				            	<div class="col-sm-9">
+				                	<?php echo $this->formSelect($form->get('idtallaje[]')) ?>
+				            	</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+
+                    
+
 		        	<div class="form-group">
-		       			<label class="col-sm-3 control-label" for="form-control-18"></label>
-		    			<div class="col-sm-9">
-		        			<button class="btn btn-primary btn-block btn-next" type="submit">Guardar</button>
-		    			</div>
-		        	</div>
+		           		<label  for="guardar"></label>
+		                <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="23">Guardar</button>
+		    		</div>
  
     			</form>
     		</div>

@@ -60,6 +60,12 @@ abstract class BasePromocion extends BaseObject implements Persistent
     protected $promocion_estatus;
 
     /**
+     * The value for the promocion_descripcion field.
+     * @var        string
+     */
+    protected $promocion_descripcion;
+
+    /**
      * @var        PropelObjectCollection|Promociondetalle[] Collection to store aggregation of Promociondetalle objects.
      */
     protected $collPromociondetalles;
@@ -205,6 +211,17 @@ abstract class BasePromocion extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [promocion_descripcion] column value.
+     *
+     * @return string
+     */
+    public function getPromocionDescripcion()
+    {
+
+        return $this->promocion_descripcion;
+    }
+
+    /**
      * Set the value of [idpromocion] column.
      *
      * @param  int $v new value
@@ -322,6 +339,27 @@ abstract class BasePromocion extends BaseObject implements Persistent
     } // setPromocionEstatus()
 
     /**
+     * Set the value of [promocion_descripcion] column.
+     *
+     * @param  string $v new value
+     * @return Promocion The current object (for fluent API support)
+     */
+    public function setPromocionDescripcion($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->promocion_descripcion !== $v) {
+            $this->promocion_descripcion = $v;
+            $this->modifiedColumns[] = PromocionPeer::PROMOCION_DESCRIPCION;
+        }
+
+
+        return $this;
+    } // setPromocionDescripcion()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -358,6 +396,7 @@ abstract class BasePromocion extends BaseObject implements Persistent
             $this->promocion_fechainicio = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->promocion_fechafin = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->promocion_estatus = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+            $this->promocion_descripcion = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -367,7 +406,7 @@ abstract class BasePromocion extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = PromocionPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = PromocionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Promocion object", $e);
@@ -613,6 +652,9 @@ abstract class BasePromocion extends BaseObject implements Persistent
         if ($this->isColumnModified(PromocionPeer::PROMOCION_ESTATUS)) {
             $modifiedColumns[':p' . $index++]  = '`promocion_estatus`';
         }
+        if ($this->isColumnModified(PromocionPeer::PROMOCION_DESCRIPCION)) {
+            $modifiedColumns[':p' . $index++]  = '`promocion_descripcion`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `promocion` (%s) VALUES (%s)',
@@ -638,6 +680,9 @@ abstract class BasePromocion extends BaseObject implements Persistent
                         break;
                     case '`promocion_estatus`':
                         $stmt->bindValue($identifier, (int) $this->promocion_estatus, PDO::PARAM_INT);
+                        break;
+                    case '`promocion_descripcion`':
+                        $stmt->bindValue($identifier, $this->promocion_descripcion, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -796,6 +841,9 @@ abstract class BasePromocion extends BaseObject implements Persistent
             case 4:
                 return $this->getPromocionEstatus();
                 break;
+            case 5:
+                return $this->getPromocionDescripcion();
+                break;
             default:
                 return null;
                 break;
@@ -830,6 +878,7 @@ abstract class BasePromocion extends BaseObject implements Persistent
             $keys[2] => $this->getPromocionFechainicio(),
             $keys[3] => $this->getPromocionFechafin(),
             $keys[4] => $this->getPromocionEstatus(),
+            $keys[5] => $this->getPromocionDescripcion(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -889,6 +938,9 @@ abstract class BasePromocion extends BaseObject implements Persistent
             case 4:
                 $this->setPromocionEstatus($value);
                 break;
+            case 5:
+                $this->setPromocionDescripcion($value);
+                break;
         } // switch()
     }
 
@@ -918,6 +970,7 @@ abstract class BasePromocion extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setPromocionFechainicio($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setPromocionFechafin($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setPromocionEstatus($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPromocionDescripcion($arr[$keys[5]]);
     }
 
     /**
@@ -934,6 +987,7 @@ abstract class BasePromocion extends BaseObject implements Persistent
         if ($this->isColumnModified(PromocionPeer::PROMOCION_FECHAINICIO)) $criteria->add(PromocionPeer::PROMOCION_FECHAINICIO, $this->promocion_fechainicio);
         if ($this->isColumnModified(PromocionPeer::PROMOCION_FECHAFIN)) $criteria->add(PromocionPeer::PROMOCION_FECHAFIN, $this->promocion_fechafin);
         if ($this->isColumnModified(PromocionPeer::PROMOCION_ESTATUS)) $criteria->add(PromocionPeer::PROMOCION_ESTATUS, $this->promocion_estatus);
+        if ($this->isColumnModified(PromocionPeer::PROMOCION_DESCRIPCION)) $criteria->add(PromocionPeer::PROMOCION_DESCRIPCION, $this->promocion_descripcion);
 
         return $criteria;
     }
@@ -1001,6 +1055,7 @@ abstract class BasePromocion extends BaseObject implements Persistent
         $copyObj->setPromocionFechainicio($this->getPromocionFechainicio());
         $copyObj->setPromocionFechafin($this->getPromocionFechafin());
         $copyObj->setPromocionEstatus($this->getPromocionEstatus());
+        $copyObj->setPromocionDescripcion($this->getPromocionDescripcion());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1323,10 +1378,10 @@ abstract class BasePromocion extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      */
-    public function getPromociondetallesJoinMarcaRelatedByIdmarcaoperando($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPromociondetallesJoinMarca($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('MarcaRelatedByIdmarcaoperando', $join_behavior);
+        $query->joinWith('Marca', $join_behavior);
 
         return $this->getPromociondetalles($query, $con);
     }
@@ -1348,10 +1403,10 @@ abstract class BasePromocion extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      */
-    public function getPromociondetallesJoinMarcaRelatedByIdmarcaresultado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPromociondetallesJoinProducto($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('MarcaRelatedByIdmarcaresultado', $join_behavior);
+        $query->joinWith('Producto', $join_behavior);
 
         return $this->getPromociondetalles($query, $con);
     }
@@ -1373,35 +1428,10 @@ abstract class BasePromocion extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      */
-    public function getPromociondetallesJoinProductoRelatedByIdproductooperando($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPromociondetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('ProductoRelatedByIdproductooperando', $join_behavior);
-
-        return $this->getPromociondetalles($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Promocion is new, it will return
-     * an empty collection; or if this Promocion has previously
-     * been saved, it will retrieve related Promociondetalles from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Promocion.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
-     */
-    public function getPromociondetallesJoinProductoRelatedByIdproductoresultado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('ProductoRelatedByIdproductoresultado', $join_behavior);
+        $query->joinWith('Productovariante', $join_behavior);
 
         return $this->getPromociondetalles($query, $con);
     }
@@ -1416,6 +1446,7 @@ abstract class BasePromocion extends BaseObject implements Persistent
         $this->promocion_fechainicio = null;
         $this->promocion_fechafin = null;
         $this->promocion_estatus = null;
+        $this->promocion_descripcion = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

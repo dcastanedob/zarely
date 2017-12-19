@@ -62,14 +62,8 @@ abstract class BaseMarca extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|Promociondetalle[] Collection to store aggregation of Promociondetalle objects.
      */
-    protected $collPromociondetallesRelatedByIdmarcaoperando;
-    protected $collPromociondetallesRelatedByIdmarcaoperandoPartial;
-
-    /**
-     * @var        PropelObjectCollection|Promociondetalle[] Collection to store aggregation of Promociondetalle objects.
-     */
-    protected $collPromociondetallesRelatedByIdmarcaresultado;
-    protected $collPromociondetallesRelatedByIdmarcaresultadoPartial;
+    protected $collPromociondetalles;
+    protected $collPromociondetallesPartial;
 
     /**
      * @var        PropelObjectCollection|Proveedormarca[] Collection to store aggregation of Proveedormarca objects.
@@ -119,13 +113,7 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion = null;
+    protected $promociondetallesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -308,9 +296,7 @@ abstract class BaseMarca extends BaseObject implements Persistent
 
             $this->collProductos = null;
 
-            $this->collPromociondetallesRelatedByIdmarcaoperando = null;
-
-            $this->collPromociondetallesRelatedByIdmarcaresultado = null;
+            $this->collPromociondetalles = null;
 
             $this->collProveedormarcas = null;
 
@@ -489,34 +475,17 @@ abstract class BaseMarca extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion !== null) {
-                if (!$this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion->isEmpty()) {
+            if ($this->promociondetallesScheduledForDeletion !== null) {
+                if (!$this->promociondetallesScheduledForDeletion->isEmpty()) {
                     PromociondetalleQuery::create()
-                        ->filterByPrimaryKeys($this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion->getPrimaryKeys(false))
+                        ->filterByPrimaryKeys($this->promociondetallesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion = null;
+                    $this->promociondetallesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collPromociondetallesRelatedByIdmarcaoperando !== null) {
-                foreach ($this->collPromociondetallesRelatedByIdmarcaoperando as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion !== null) {
-                if (!$this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion->isEmpty()) {
-                    PromociondetalleQuery::create()
-                        ->filterByPrimaryKeys($this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPromociondetallesRelatedByIdmarcaresultado !== null) {
-                foreach ($this->collPromociondetallesRelatedByIdmarcaresultado as $referrerFK) {
+            if ($this->collPromociondetalles !== null) {
+                foreach ($this->collPromociondetalles as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -712,16 +681,8 @@ abstract class BaseMarca extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collPromociondetallesRelatedByIdmarcaoperando !== null) {
-                    foreach ($this->collPromociondetallesRelatedByIdmarcaoperando as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collPromociondetallesRelatedByIdmarcaresultado !== null) {
-                    foreach ($this->collPromociondetallesRelatedByIdmarcaresultado as $referrerFK) {
+                if ($this->collPromociondetalles !== null) {
+                    foreach ($this->collPromociondetalles as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -824,11 +785,8 @@ abstract class BaseMarca extends BaseObject implements Persistent
             if (null !== $this->collProductos) {
                 $result['Productos'] = $this->collProductos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collPromociondetallesRelatedByIdmarcaoperando) {
-                $result['PromociondetallesRelatedByIdmarcaoperando'] = $this->collPromociondetallesRelatedByIdmarcaoperando->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPromociondetallesRelatedByIdmarcaresultado) {
-                $result['PromociondetallesRelatedByIdmarcaresultado'] = $this->collPromociondetallesRelatedByIdmarcaresultado->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collPromociondetalles) {
+                $result['Promociondetalles'] = $this->collPromociondetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collProveedormarcas) {
                 $result['Proveedormarcas'] = $this->collProveedormarcas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1002,15 +960,9 @@ abstract class BaseMarca extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getPromociondetallesRelatedByIdmarcaoperando() as $relObj) {
+            foreach ($this->getPromociondetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPromociondetalleRelatedByIdmarcaoperando($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPromociondetallesRelatedByIdmarcaresultado() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPromociondetalleRelatedByIdmarcaresultado($relObj->copy($deepCopy));
+                    $copyObj->addPromociondetalle($relObj->copy($deepCopy));
                 }
             }
 
@@ -1090,11 +1042,8 @@ abstract class BaseMarca extends BaseObject implements Persistent
         if ('Producto' == $relationName) {
             $this->initProductos();
         }
-        if ('PromociondetalleRelatedByIdmarcaoperando' == $relationName) {
-            $this->initPromociondetallesRelatedByIdmarcaoperando();
-        }
-        if ('PromociondetalleRelatedByIdmarcaresultado' == $relationName) {
-            $this->initPromociondetallesRelatedByIdmarcaresultado();
+        if ('Promociondetalle' == $relationName) {
+            $this->initPromociondetalles();
         }
         if ('Proveedormarca' == $relationName) {
             $this->initProveedormarcas();
@@ -1372,6 +1321,31 @@ abstract class BaseMarca extends BaseObject implements Persistent
     {
         $query = DescuentodetalleQuery::create(null, $criteria);
         $query->joinWith('Producto', $join_behavior);
+
+        return $this->getDescuentodetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Marca is new, it will return
+     * an empty collection; or if this Marca has previously
+     * been saved, it will retrieve related Descuentodetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Marca.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Descuentodetalle[] List of Descuentodetalle objects
+     */
+    public function getDescuentodetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = DescuentodetalleQuery::create(null, $criteria);
+        $query->joinWith('Productovariante', $join_behavior);
 
         return $this->getDescuentodetalles($query, $con);
     }
@@ -1927,36 +1901,36 @@ abstract class BaseMarca extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collPromociondetallesRelatedByIdmarcaoperando collection
+     * Clears out the collPromociondetalles collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return Marca The current object (for fluent API support)
-     * @see        addPromociondetallesRelatedByIdmarcaoperando()
+     * @see        addPromociondetalles()
      */
-    public function clearPromociondetallesRelatedByIdmarcaoperando()
+    public function clearPromociondetalles()
     {
-        $this->collPromociondetallesRelatedByIdmarcaoperando = null; // important to set this to null since that means it is uninitialized
-        $this->collPromociondetallesRelatedByIdmarcaoperandoPartial = null;
+        $this->collPromociondetalles = null; // important to set this to null since that means it is uninitialized
+        $this->collPromociondetallesPartial = null;
 
         return $this;
     }
 
     /**
-     * reset is the collPromociondetallesRelatedByIdmarcaoperando collection loaded partially
+     * reset is the collPromociondetalles collection loaded partially
      *
      * @return void
      */
-    public function resetPartialPromociondetallesRelatedByIdmarcaoperando($v = true)
+    public function resetPartialPromociondetalles($v = true)
     {
-        $this->collPromociondetallesRelatedByIdmarcaoperandoPartial = $v;
+        $this->collPromociondetallesPartial = $v;
     }
 
     /**
-     * Initializes the collPromociondetallesRelatedByIdmarcaoperando collection.
+     * Initializes the collPromociondetalles collection.
      *
-     * By default this just sets the collPromociondetallesRelatedByIdmarcaoperando collection to an empty array (like clearcollPromociondetallesRelatedByIdmarcaoperando());
+     * By default this just sets the collPromociondetalles collection to an empty array (like clearcollPromociondetalles());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1965,13 +1939,13 @@ abstract class BaseMarca extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initPromociondetallesRelatedByIdmarcaoperando($overrideExisting = true)
+    public function initPromociondetalles($overrideExisting = true)
     {
-        if (null !== $this->collPromociondetallesRelatedByIdmarcaoperando && !$overrideExisting) {
+        if (null !== $this->collPromociondetalles && !$overrideExisting) {
             return;
         }
-        $this->collPromociondetallesRelatedByIdmarcaoperando = new PropelObjectCollection();
-        $this->collPromociondetallesRelatedByIdmarcaoperando->setModel('Promociondetalle');
+        $this->collPromociondetalles = new PropelObjectCollection();
+        $this->collPromociondetalles->setModel('Promociondetalle');
     }
 
     /**
@@ -1988,79 +1962,79 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      * @throws PropelException
      */
-    public function getPromociondetallesRelatedByIdmarcaoperando($criteria = null, PropelPDO $con = null)
+    public function getPromociondetalles($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collPromociondetallesRelatedByIdmarcaoperandoPartial && !$this->isNew();
-        if (null === $this->collPromociondetallesRelatedByIdmarcaoperando || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPromociondetallesRelatedByIdmarcaoperando) {
+        $partial = $this->collPromociondetallesPartial && !$this->isNew();
+        if (null === $this->collPromociondetalles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPromociondetalles) {
                 // return empty collection
-                $this->initPromociondetallesRelatedByIdmarcaoperando();
+                $this->initPromociondetalles();
             } else {
-                $collPromociondetallesRelatedByIdmarcaoperando = PromociondetalleQuery::create(null, $criteria)
-                    ->filterByMarcaRelatedByIdmarcaoperando($this)
+                $collPromociondetalles = PromociondetalleQuery::create(null, $criteria)
+                    ->filterByMarca($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collPromociondetallesRelatedByIdmarcaoperandoPartial && count($collPromociondetallesRelatedByIdmarcaoperando)) {
-                      $this->initPromociondetallesRelatedByIdmarcaoperando(false);
+                    if (false !== $this->collPromociondetallesPartial && count($collPromociondetalles)) {
+                      $this->initPromociondetalles(false);
 
-                      foreach ($collPromociondetallesRelatedByIdmarcaoperando as $obj) {
-                        if (false == $this->collPromociondetallesRelatedByIdmarcaoperando->contains($obj)) {
-                          $this->collPromociondetallesRelatedByIdmarcaoperando->append($obj);
+                      foreach ($collPromociondetalles as $obj) {
+                        if (false == $this->collPromociondetalles->contains($obj)) {
+                          $this->collPromociondetalles->append($obj);
                         }
                       }
 
-                      $this->collPromociondetallesRelatedByIdmarcaoperandoPartial = true;
+                      $this->collPromociondetallesPartial = true;
                     }
 
-                    $collPromociondetallesRelatedByIdmarcaoperando->getInternalIterator()->rewind();
+                    $collPromociondetalles->getInternalIterator()->rewind();
 
-                    return $collPromociondetallesRelatedByIdmarcaoperando;
+                    return $collPromociondetalles;
                 }
 
-                if ($partial && $this->collPromociondetallesRelatedByIdmarcaoperando) {
-                    foreach ($this->collPromociondetallesRelatedByIdmarcaoperando as $obj) {
+                if ($partial && $this->collPromociondetalles) {
+                    foreach ($this->collPromociondetalles as $obj) {
                         if ($obj->isNew()) {
-                            $collPromociondetallesRelatedByIdmarcaoperando[] = $obj;
+                            $collPromociondetalles[] = $obj;
                         }
                     }
                 }
 
-                $this->collPromociondetallesRelatedByIdmarcaoperando = $collPromociondetallesRelatedByIdmarcaoperando;
-                $this->collPromociondetallesRelatedByIdmarcaoperandoPartial = false;
+                $this->collPromociondetalles = $collPromociondetalles;
+                $this->collPromociondetallesPartial = false;
             }
         }
 
-        return $this->collPromociondetallesRelatedByIdmarcaoperando;
+        return $this->collPromociondetalles;
     }
 
     /**
-     * Sets a collection of PromociondetalleRelatedByIdmarcaoperando objects related by a one-to-many relationship
+     * Sets a collection of Promociondetalle objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $promociondetallesRelatedByIdmarcaoperando A Propel collection.
+     * @param PropelCollection $promociondetalles A Propel collection.
      * @param PropelPDO $con Optional connection object
      * @return Marca The current object (for fluent API support)
      */
-    public function setPromociondetallesRelatedByIdmarcaoperando(PropelCollection $promociondetallesRelatedByIdmarcaoperando, PropelPDO $con = null)
+    public function setPromociondetalles(PropelCollection $promociondetalles, PropelPDO $con = null)
     {
-        $promociondetallesRelatedByIdmarcaoperandoToDelete = $this->getPromociondetallesRelatedByIdmarcaoperando(new Criteria(), $con)->diff($promociondetallesRelatedByIdmarcaoperando);
+        $promociondetallesToDelete = $this->getPromociondetalles(new Criteria(), $con)->diff($promociondetalles);
 
 
-        $this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion = $promociondetallesRelatedByIdmarcaoperandoToDelete;
+        $this->promociondetallesScheduledForDeletion = $promociondetallesToDelete;
 
-        foreach ($promociondetallesRelatedByIdmarcaoperandoToDelete as $promociondetalleRelatedByIdmarcaoperandoRemoved) {
-            $promociondetalleRelatedByIdmarcaoperandoRemoved->setMarcaRelatedByIdmarcaoperando(null);
+        foreach ($promociondetallesToDelete as $promociondetalleRemoved) {
+            $promociondetalleRemoved->setMarca(null);
         }
 
-        $this->collPromociondetallesRelatedByIdmarcaoperando = null;
-        foreach ($promociondetallesRelatedByIdmarcaoperando as $promociondetalleRelatedByIdmarcaoperando) {
-            $this->addPromociondetalleRelatedByIdmarcaoperando($promociondetalleRelatedByIdmarcaoperando);
+        $this->collPromociondetalles = null;
+        foreach ($promociondetalles as $promociondetalle) {
+            $this->addPromociondetalle($promociondetalle);
         }
 
-        $this->collPromociondetallesRelatedByIdmarcaoperando = $promociondetallesRelatedByIdmarcaoperando;
-        $this->collPromociondetallesRelatedByIdmarcaoperandoPartial = false;
+        $this->collPromociondetalles = $promociondetalles;
+        $this->collPromociondetallesPartial = false;
 
         return $this;
     }
@@ -2074,16 +2048,16 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * @return int             Count of related Promociondetalle objects.
      * @throws PropelException
      */
-    public function countPromociondetallesRelatedByIdmarcaoperando(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countPromociondetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collPromociondetallesRelatedByIdmarcaoperandoPartial && !$this->isNew();
-        if (null === $this->collPromociondetallesRelatedByIdmarcaoperando || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPromociondetallesRelatedByIdmarcaoperando) {
+        $partial = $this->collPromociondetallesPartial && !$this->isNew();
+        if (null === $this->collPromociondetalles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPromociondetalles) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getPromociondetallesRelatedByIdmarcaoperando());
+                return count($this->getPromociondetalles());
             }
             $query = PromociondetalleQuery::create(null, $criteria);
             if ($distinct) {
@@ -2091,11 +2065,11 @@ abstract class BaseMarca extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterByMarcaRelatedByIdmarcaoperando($this)
+                ->filterByMarca($this)
                 ->count($con);
         }
 
-        return count($this->collPromociondetallesRelatedByIdmarcaoperando);
+        return count($this->collPromociondetalles);
     }
 
     /**
@@ -2105,18 +2079,18 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * @param    Promociondetalle $l Promociondetalle
      * @return Marca The current object (for fluent API support)
      */
-    public function addPromociondetalleRelatedByIdmarcaoperando(Promociondetalle $l)
+    public function addPromociondetalle(Promociondetalle $l)
     {
-        if ($this->collPromociondetallesRelatedByIdmarcaoperando === null) {
-            $this->initPromociondetallesRelatedByIdmarcaoperando();
-            $this->collPromociondetallesRelatedByIdmarcaoperandoPartial = true;
+        if ($this->collPromociondetalles === null) {
+            $this->initPromociondetalles();
+            $this->collPromociondetallesPartial = true;
         }
 
-        if (!in_array($l, $this->collPromociondetallesRelatedByIdmarcaoperando->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPromociondetalleRelatedByIdmarcaoperando($l);
+        if (!in_array($l, $this->collPromociondetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPromociondetalle($l);
 
-            if ($this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion and $this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion->contains($l)) {
-                $this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion->remove($this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion->search($l));
+            if ($this->promociondetallesScheduledForDeletion and $this->promociondetallesScheduledForDeletion->contains($l)) {
+                $this->promociondetallesScheduledForDeletion->remove($this->promociondetallesScheduledForDeletion->search($l));
             }
         }
 
@@ -2124,28 +2098,28 @@ abstract class BaseMarca extends BaseObject implements Persistent
     }
 
     /**
-     * @param	PromociondetalleRelatedByIdmarcaoperando $promociondetalleRelatedByIdmarcaoperando The promociondetalleRelatedByIdmarcaoperando object to add.
+     * @param	Promociondetalle $promociondetalle The promociondetalle object to add.
      */
-    protected function doAddPromociondetalleRelatedByIdmarcaoperando($promociondetalleRelatedByIdmarcaoperando)
+    protected function doAddPromociondetalle($promociondetalle)
     {
-        $this->collPromociondetallesRelatedByIdmarcaoperando[]= $promociondetalleRelatedByIdmarcaoperando;
-        $promociondetalleRelatedByIdmarcaoperando->setMarcaRelatedByIdmarcaoperando($this);
+        $this->collPromociondetalles[]= $promociondetalle;
+        $promociondetalle->setMarca($this);
     }
 
     /**
-     * @param	PromociondetalleRelatedByIdmarcaoperando $promociondetalleRelatedByIdmarcaoperando The promociondetalleRelatedByIdmarcaoperando object to remove.
+     * @param	Promociondetalle $promociondetalle The promociondetalle object to remove.
      * @return Marca The current object (for fluent API support)
      */
-    public function removePromociondetalleRelatedByIdmarcaoperando($promociondetalleRelatedByIdmarcaoperando)
+    public function removePromociondetalle($promociondetalle)
     {
-        if ($this->getPromociondetallesRelatedByIdmarcaoperando()->contains($promociondetalleRelatedByIdmarcaoperando)) {
-            $this->collPromociondetallesRelatedByIdmarcaoperando->remove($this->collPromociondetallesRelatedByIdmarcaoperando->search($promociondetalleRelatedByIdmarcaoperando));
-            if (null === $this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion) {
-                $this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion = clone $this->collPromociondetallesRelatedByIdmarcaoperando;
-                $this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion->clear();
+        if ($this->getPromociondetalles()->contains($promociondetalle)) {
+            $this->collPromociondetalles->remove($this->collPromociondetalles->search($promociondetalle));
+            if (null === $this->promociondetallesScheduledForDeletion) {
+                $this->promociondetallesScheduledForDeletion = clone $this->collPromociondetalles;
+                $this->promociondetallesScheduledForDeletion->clear();
             }
-            $this->promociondetallesRelatedByIdmarcaoperandoScheduledForDeletion[]= clone $promociondetalleRelatedByIdmarcaoperando;
-            $promociondetalleRelatedByIdmarcaoperando->setMarcaRelatedByIdmarcaoperando(null);
+            $this->promociondetallesScheduledForDeletion[]= $promociondetalle;
+            $promociondetalle->setMarca(null);
         }
 
         return $this;
@@ -2157,7 +2131,7 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this Marca is new, it will return
      * an empty collection; or if this Marca has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdmarcaoperando from storage.
+     * been saved, it will retrieve related Promociondetalles from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -2168,12 +2142,12 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      */
-    public function getPromociondetallesRelatedByIdmarcaoperandoJoinProductoRelatedByIdproductooperando($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPromociondetallesJoinProducto($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('ProductoRelatedByIdproductooperando', $join_behavior);
+        $query->joinWith('Producto', $join_behavior);
 
-        return $this->getPromociondetallesRelatedByIdmarcaoperando($query, $con);
+        return $this->getPromociondetalles($query, $con);
     }
 
 
@@ -2182,7 +2156,7 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this Marca is new, it will return
      * an empty collection; or if this Marca has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdmarcaoperando from storage.
+     * been saved, it will retrieve related Promociondetalles from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -2193,12 +2167,12 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      */
-    public function getPromociondetallesRelatedByIdmarcaoperandoJoinProductoRelatedByIdproductoresultado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPromociondetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('ProductoRelatedByIdproductoresultado', $join_behavior);
+        $query->joinWith('Productovariante', $join_behavior);
 
-        return $this->getPromociondetallesRelatedByIdmarcaoperando($query, $con);
+        return $this->getPromociondetalles($query, $con);
     }
 
 
@@ -2207,7 +2181,7 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this Marca is new, it will return
      * an empty collection; or if this Marca has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdmarcaoperando from storage.
+     * been saved, it will retrieve related Promociondetalles from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -2218,312 +2192,12 @@ abstract class BaseMarca extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
      */
-    public function getPromociondetallesRelatedByIdmarcaoperandoJoinPromocion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getPromociondetallesJoinPromocion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = PromociondetalleQuery::create(null, $criteria);
         $query->joinWith('Promocion', $join_behavior);
 
-        return $this->getPromociondetallesRelatedByIdmarcaoperando($query, $con);
-    }
-
-    /**
-     * Clears out the collPromociondetallesRelatedByIdmarcaresultado collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Marca The current object (for fluent API support)
-     * @see        addPromociondetallesRelatedByIdmarcaresultado()
-     */
-    public function clearPromociondetallesRelatedByIdmarcaresultado()
-    {
-        $this->collPromociondetallesRelatedByIdmarcaresultado = null; // important to set this to null since that means it is uninitialized
-        $this->collPromociondetallesRelatedByIdmarcaresultadoPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPromociondetallesRelatedByIdmarcaresultado collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPromociondetallesRelatedByIdmarcaresultado($v = true)
-    {
-        $this->collPromociondetallesRelatedByIdmarcaresultadoPartial = $v;
-    }
-
-    /**
-     * Initializes the collPromociondetallesRelatedByIdmarcaresultado collection.
-     *
-     * By default this just sets the collPromociondetallesRelatedByIdmarcaresultado collection to an empty array (like clearcollPromociondetallesRelatedByIdmarcaresultado());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPromociondetallesRelatedByIdmarcaresultado($overrideExisting = true)
-    {
-        if (null !== $this->collPromociondetallesRelatedByIdmarcaresultado && !$overrideExisting) {
-            return;
-        }
-        $this->collPromociondetallesRelatedByIdmarcaresultado = new PropelObjectCollection();
-        $this->collPromociondetallesRelatedByIdmarcaresultado->setModel('Promociondetalle');
-    }
-
-    /**
-     * Gets an array of Promociondetalle objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Marca is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
-     * @throws PropelException
-     */
-    public function getPromociondetallesRelatedByIdmarcaresultado($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPromociondetallesRelatedByIdmarcaresultadoPartial && !$this->isNew();
-        if (null === $this->collPromociondetallesRelatedByIdmarcaresultado || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPromociondetallesRelatedByIdmarcaresultado) {
-                // return empty collection
-                $this->initPromociondetallesRelatedByIdmarcaresultado();
-            } else {
-                $collPromociondetallesRelatedByIdmarcaresultado = PromociondetalleQuery::create(null, $criteria)
-                    ->filterByMarcaRelatedByIdmarcaresultado($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPromociondetallesRelatedByIdmarcaresultadoPartial && count($collPromociondetallesRelatedByIdmarcaresultado)) {
-                      $this->initPromociondetallesRelatedByIdmarcaresultado(false);
-
-                      foreach ($collPromociondetallesRelatedByIdmarcaresultado as $obj) {
-                        if (false == $this->collPromociondetallesRelatedByIdmarcaresultado->contains($obj)) {
-                          $this->collPromociondetallesRelatedByIdmarcaresultado->append($obj);
-                        }
-                      }
-
-                      $this->collPromociondetallesRelatedByIdmarcaresultadoPartial = true;
-                    }
-
-                    $collPromociondetallesRelatedByIdmarcaresultado->getInternalIterator()->rewind();
-
-                    return $collPromociondetallesRelatedByIdmarcaresultado;
-                }
-
-                if ($partial && $this->collPromociondetallesRelatedByIdmarcaresultado) {
-                    foreach ($this->collPromociondetallesRelatedByIdmarcaresultado as $obj) {
-                        if ($obj->isNew()) {
-                            $collPromociondetallesRelatedByIdmarcaresultado[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPromociondetallesRelatedByIdmarcaresultado = $collPromociondetallesRelatedByIdmarcaresultado;
-                $this->collPromociondetallesRelatedByIdmarcaresultadoPartial = false;
-            }
-        }
-
-        return $this->collPromociondetallesRelatedByIdmarcaresultado;
-    }
-
-    /**
-     * Sets a collection of PromociondetalleRelatedByIdmarcaresultado objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $promociondetallesRelatedByIdmarcaresultado A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Marca The current object (for fluent API support)
-     */
-    public function setPromociondetallesRelatedByIdmarcaresultado(PropelCollection $promociondetallesRelatedByIdmarcaresultado, PropelPDO $con = null)
-    {
-        $promociondetallesRelatedByIdmarcaresultadoToDelete = $this->getPromociondetallesRelatedByIdmarcaresultado(new Criteria(), $con)->diff($promociondetallesRelatedByIdmarcaresultado);
-
-
-        $this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion = $promociondetallesRelatedByIdmarcaresultadoToDelete;
-
-        foreach ($promociondetallesRelatedByIdmarcaresultadoToDelete as $promociondetalleRelatedByIdmarcaresultadoRemoved) {
-            $promociondetalleRelatedByIdmarcaresultadoRemoved->setMarcaRelatedByIdmarcaresultado(null);
-        }
-
-        $this->collPromociondetallesRelatedByIdmarcaresultado = null;
-        foreach ($promociondetallesRelatedByIdmarcaresultado as $promociondetalleRelatedByIdmarcaresultado) {
-            $this->addPromociondetalleRelatedByIdmarcaresultado($promociondetalleRelatedByIdmarcaresultado);
-        }
-
-        $this->collPromociondetallesRelatedByIdmarcaresultado = $promociondetallesRelatedByIdmarcaresultado;
-        $this->collPromociondetallesRelatedByIdmarcaresultadoPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Promociondetalle objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Promociondetalle objects.
-     * @throws PropelException
-     */
-    public function countPromociondetallesRelatedByIdmarcaresultado(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPromociondetallesRelatedByIdmarcaresultadoPartial && !$this->isNew();
-        if (null === $this->collPromociondetallesRelatedByIdmarcaresultado || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPromociondetallesRelatedByIdmarcaresultado) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPromociondetallesRelatedByIdmarcaresultado());
-            }
-            $query = PromociondetalleQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByMarcaRelatedByIdmarcaresultado($this)
-                ->count($con);
-        }
-
-        return count($this->collPromociondetallesRelatedByIdmarcaresultado);
-    }
-
-    /**
-     * Method called to associate a Promociondetalle object to this object
-     * through the Promociondetalle foreign key attribute.
-     *
-     * @param    Promociondetalle $l Promociondetalle
-     * @return Marca The current object (for fluent API support)
-     */
-    public function addPromociondetalleRelatedByIdmarcaresultado(Promociondetalle $l)
-    {
-        if ($this->collPromociondetallesRelatedByIdmarcaresultado === null) {
-            $this->initPromociondetallesRelatedByIdmarcaresultado();
-            $this->collPromociondetallesRelatedByIdmarcaresultadoPartial = true;
-        }
-
-        if (!in_array($l, $this->collPromociondetallesRelatedByIdmarcaresultado->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPromociondetalleRelatedByIdmarcaresultado($l);
-
-            if ($this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion and $this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion->contains($l)) {
-                $this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion->remove($this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	PromociondetalleRelatedByIdmarcaresultado $promociondetalleRelatedByIdmarcaresultado The promociondetalleRelatedByIdmarcaresultado object to add.
-     */
-    protected function doAddPromociondetalleRelatedByIdmarcaresultado($promociondetalleRelatedByIdmarcaresultado)
-    {
-        $this->collPromociondetallesRelatedByIdmarcaresultado[]= $promociondetalleRelatedByIdmarcaresultado;
-        $promociondetalleRelatedByIdmarcaresultado->setMarcaRelatedByIdmarcaresultado($this);
-    }
-
-    /**
-     * @param	PromociondetalleRelatedByIdmarcaresultado $promociondetalleRelatedByIdmarcaresultado The promociondetalleRelatedByIdmarcaresultado object to remove.
-     * @return Marca The current object (for fluent API support)
-     */
-    public function removePromociondetalleRelatedByIdmarcaresultado($promociondetalleRelatedByIdmarcaresultado)
-    {
-        if ($this->getPromociondetallesRelatedByIdmarcaresultado()->contains($promociondetalleRelatedByIdmarcaresultado)) {
-            $this->collPromociondetallesRelatedByIdmarcaresultado->remove($this->collPromociondetallesRelatedByIdmarcaresultado->search($promociondetalleRelatedByIdmarcaresultado));
-            if (null === $this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion) {
-                $this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion = clone $this->collPromociondetallesRelatedByIdmarcaresultado;
-                $this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion->clear();
-            }
-            $this->promociondetallesRelatedByIdmarcaresultadoScheduledForDeletion[]= clone $promociondetalleRelatedByIdmarcaresultado;
-            $promociondetalleRelatedByIdmarcaresultado->setMarcaRelatedByIdmarcaresultado(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Marca is new, it will return
-     * an empty collection; or if this Marca has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdmarcaresultado from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Marca.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
-     */
-    public function getPromociondetallesRelatedByIdmarcaresultadoJoinProductoRelatedByIdproductooperando($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('ProductoRelatedByIdproductooperando', $join_behavior);
-
-        return $this->getPromociondetallesRelatedByIdmarcaresultado($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Marca is new, it will return
-     * an empty collection; or if this Marca has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdmarcaresultado from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Marca.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
-     */
-    public function getPromociondetallesRelatedByIdmarcaresultadoJoinProductoRelatedByIdproductoresultado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('ProductoRelatedByIdproductoresultado', $join_behavior);
-
-        return $this->getPromociondetallesRelatedByIdmarcaresultado($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Marca is new, it will return
-     * an empty collection; or if this Marca has previously
-     * been saved, it will retrieve related PromociondetallesRelatedByIdmarcaresultado from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Marca.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Promociondetalle[] List of Promociondetalle objects
-     */
-    public function getPromociondetallesRelatedByIdmarcaresultadoJoinPromocion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PromociondetalleQuery::create(null, $criteria);
-        $query->joinWith('Promocion', $join_behavior);
-
-        return $this->getPromociondetallesRelatedByIdmarcaresultado($query, $con);
+        return $this->getPromociondetalles($query, $con);
     }
 
     /**
@@ -2820,13 +2494,8 @@ abstract class BaseMarca extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collPromociondetallesRelatedByIdmarcaoperando) {
-                foreach ($this->collPromociondetallesRelatedByIdmarcaoperando as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPromociondetallesRelatedByIdmarcaresultado) {
-                foreach ($this->collPromociondetallesRelatedByIdmarcaresultado as $o) {
+            if ($this->collPromociondetalles) {
+                foreach ($this->collPromociondetalles as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -2851,14 +2520,10 @@ abstract class BaseMarca extends BaseObject implements Persistent
             $this->collProductos->clearIterator();
         }
         $this->collProductos = null;
-        if ($this->collPromociondetallesRelatedByIdmarcaoperando instanceof PropelCollection) {
-            $this->collPromociondetallesRelatedByIdmarcaoperando->clearIterator();
+        if ($this->collPromociondetalles instanceof PropelCollection) {
+            $this->collPromociondetalles->clearIterator();
         }
-        $this->collPromociondetallesRelatedByIdmarcaoperando = null;
-        if ($this->collPromociondetallesRelatedByIdmarcaresultado instanceof PropelCollection) {
-            $this->collPromociondetallesRelatedByIdmarcaresultado->clearIterator();
-        }
-        $this->collPromociondetallesRelatedByIdmarcaresultado = null;
+        $this->collPromociondetalles = null;
         if ($this->collProveedormarcas instanceof PropelCollection) {
             $this->collProveedormarcas->clearIterator();
         }

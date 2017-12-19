@@ -1,0 +1,60 @@
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title">Pedidos solicitados a proveedor </h1>
+	    <input type="text" id="btn_download" hidden="" disabled="">
+	</div>
+	<br>
+	<br>
+
+	<div class="row">
+		<div class="col-md-8"></div>
+		<div class="col-md-2 pull-right">
+			<button id="btn_excel" class="btn btn-success"><span class="icon icon-file-excel-o"></span> EXCEL</button>
+
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3">
+			<label class="col-sm-3 control-label" for="form-control-18">Desde</label>
+			<?php echo $this->formDate($form->get('fecha_desde')) ?>
+		</div>
+		<div class="col-md-3">
+			<label class="col-sm-3 control-label" for="form-control-18">Hasta</label>
+			<?php echo $this->formDate($form->get('fecha_hasta')) ?>
+		</div>
+		
+	</div>
+
+	
+
+	<div class="row">
+		<div class="card-body">
+		    <table id="" class="table table-striped table-nowrap dataTable" cellspacing="0" width="100%">
+		        <thead>
+		            <tr>
+		                <th>Proveedor</th>
+		                <th>Pedido</th>
+		                <th>Fecha</th>
+		            </tr>
+		        </thead>
+		        <tfoot>
+		            <tr>
+		                <th>Proveedor</th>
+		                <th>Pedido</th>
+		                <th>Fecha</th>
+		            </tr>
+		        </tfoot>
+		        <tbody>
+		            
+		        </tbody>
+		    </table>
+		</div>
+	</div>
+
+</div>
+<script src="/js/reporte/administracion/pedidosSolicitados.js"></script>
+<script>
+	var pedidosSolicitados = $('.body_container').pedidosSolicitados();
+	pedidosSolicitados.list();
+</script>

@@ -471,9 +471,18 @@ abstract class BaseEmpleadoPeer
         // Invalidate objects in CuentabancariamovimientoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CuentabancariamovimientoPeer::clearInstancePool();
+        // Invalidate objects in PedidosucursalPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        PedidosucursalPeer::clearInstancePool();
         // Invalidate objects in SucursalempleadoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         SucursalempleadoPeer::clearInstancePool();
+        // Invalidate objects in TarjetapuntosPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        TarjetapuntosPeer::clearInstancePool();
+        // Invalidate objects in TarjetapuntosdetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        TarjetapuntosdetallePeer::clearInstancePool();
         // Invalidate objects in TransferenciaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciaPeer::clearInstancePool();
@@ -1073,11 +1082,29 @@ abstract class BaseEmpleadoPeer
             $criteria->add(CuentabancariamovimientoPeer::IDEMPLEADO, $obj->getIdempleado());
             $affectedRows += CuentabancariamovimientoPeer::doDelete($criteria, $con);
 
+            // delete related Pedidosucursal objects
+            $criteria = new Criteria(PedidosucursalPeer::DATABASE_NAME);
+
+            $criteria->add(PedidosucursalPeer::IDEMPLEADO, $obj->getIdempleado());
+            $affectedRows += PedidosucursalPeer::doDelete($criteria, $con);
+
             // delete related Sucursalempleado objects
             $criteria = new Criteria(SucursalempleadoPeer::DATABASE_NAME);
 
             $criteria->add(SucursalempleadoPeer::IDEMPLEADO, $obj->getIdempleado());
             $affectedRows += SucursalempleadoPeer::doDelete($criteria, $con);
+
+            // delete related Tarjetapuntos objects
+            $criteria = new Criteria(TarjetapuntosPeer::DATABASE_NAME);
+
+            $criteria->add(TarjetapuntosPeer::IDEMPLEADOACTIVADOR, $obj->getIdempleado());
+            $affectedRows += TarjetapuntosPeer::doDelete($criteria, $con);
+
+            // delete related Tarjetapuntosdetalle objects
+            $criteria = new Criteria(TarjetapuntosdetallePeer::DATABASE_NAME);
+
+            $criteria->add(TarjetapuntosdetallePeer::IDEMPLEADO, $obj->getIdempleado());
+            $affectedRows += TarjetapuntosdetallePeer::doDelete($criteria, $con);
 
             // delete related Transferencia objects
             $criteria = new Criteria(TransferenciaPeer::DATABASE_NAME);
