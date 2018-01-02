@@ -36,10 +36,10 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     protected $idconfiguracion;
 
     /**
-     * The value for the configuracion_ field.
-     * @var        string
+     * The value for the configuracion_descuentosat field.
+     * @var        double
      */
-    protected $configuracion_;
+    protected $configuracion_descuentosat;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -73,14 +73,14 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [configuracion_] column value.
+     * Get the [configuracion_descuentosat] column value.
      *
-     * @return string
+     * @return double
      */
-    public function getConfiguracion()
+    public function getConfiguracionDescuentosat()
     {
 
-        return $this->configuracion_;
+        return $this->configuracion_descuentosat;
     }
 
     /**
@@ -105,25 +105,25 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     } // setIdconfiguracion()
 
     /**
-     * Set the value of [configuracion_] column.
+     * Set the value of [configuracion_descuentosat] column.
      *
-     * @param  string $v new value
+     * @param  double $v new value
      * @return Configuracion The current object (for fluent API support)
      */
-    public function setConfiguracion($v)
+    public function setConfiguracionDescuentosat($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
+        if ($v !== null && is_numeric($v)) {
+            $v = (double) $v;
         }
 
-        if ($this->configuracion_ !== $v) {
-            $this->configuracion_ = $v;
-            $this->modifiedColumns[] = ConfiguracionPeer::CONFIGURACION_;
+        if ($this->configuracion_descuentosat !== $v) {
+            $this->configuracion_descuentosat = $v;
+            $this->modifiedColumns[] = ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT;
         }
 
 
         return $this;
-    } // setConfiguracion()
+    } // setConfiguracionDescuentosat()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -158,7 +158,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         try {
 
             $this->idconfiguracion = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->configuracion_ = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->configuracion_descuentosat = ($row[$startcol + 1] !== null) ? (double) $row[$startcol + 1] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -383,8 +383,8 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         if ($this->isColumnModified(ConfiguracionPeer::IDCONFIGURACION)) {
             $modifiedColumns[':p' . $index++]  = '`idconfiguracion`';
         }
-        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_)) {
-            $modifiedColumns[':p' . $index++]  = '`configuracion_`';
+        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT)) {
+            $modifiedColumns[':p' . $index++]  = '`configuracion_descuentosat`';
         }
 
         $sql = sprintf(
@@ -400,8 +400,8 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
                     case '`idconfiguracion`':
                         $stmt->bindValue($identifier, $this->idconfiguracion, PDO::PARAM_INT);
                         break;
-                    case '`configuracion_`':
-                        $stmt->bindValue($identifier, $this->configuracion_, PDO::PARAM_STR);
+                    case '`configuracion_descuentosat`':
+                        $stmt->bindValue($identifier, $this->configuracion_descuentosat, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -541,7 +541,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
                 return $this->getIdconfiguracion();
                 break;
             case 1:
-                return $this->getConfiguracion();
+                return $this->getConfiguracionDescuentosat();
                 break;
             default:
                 return null;
@@ -572,7 +572,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         $keys = ConfiguracionPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getIdconfiguracion(),
-            $keys[1] => $this->getConfiguracion(),
+            $keys[1] => $this->getConfiguracionDescuentosat(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -616,7 +616,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
                 $this->setIdconfiguracion($value);
                 break;
             case 1:
-                $this->setConfiguracion($value);
+                $this->setConfiguracionDescuentosat($value);
                 break;
         } // switch()
     }
@@ -643,7 +643,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         $keys = ConfiguracionPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setIdconfiguracion($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setConfiguracion($arr[$keys[1]]);
+        if (array_key_exists($keys[1], $arr)) $this->setConfiguracionDescuentosat($arr[$keys[1]]);
     }
 
     /**
@@ -656,7 +656,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
         $criteria = new Criteria(ConfiguracionPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(ConfiguracionPeer::IDCONFIGURACION)) $criteria->add(ConfiguracionPeer::IDCONFIGURACION, $this->idconfiguracion);
-        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_)) $criteria->add(ConfiguracionPeer::CONFIGURACION_, $this->configuracion_);
+        if ($this->isColumnModified(ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT)) $criteria->add(ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT, $this->configuracion_descuentosat);
 
         return $criteria;
     }
@@ -720,7 +720,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setConfiguracion($this->getConfiguracion());
+        $copyObj->setConfiguracionDescuentosat($this->getConfiguracionDescuentosat());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdconfiguracion(NULL); // this is a auto-increment column, so set to default value
@@ -773,7 +773,7 @@ abstract class BaseConfiguracion extends BaseObject implements Persistent
     public function clear()
     {
         $this->idconfiguracion = null;
-        $this->configuracion_ = null;
+        $this->configuracion_descuentosat = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

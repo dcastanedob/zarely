@@ -39,7 +39,7 @@ class ConfiguracionTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idconfiguracion', 'Idconfiguracion', 'INTEGER', true, null, null);
-        $this->addColumn('configuracion_', 'Configuracion', 'VARCHAR', false, 45, null);
+        $this->addColumn('configuracion_descuentosat', 'ConfiguracionDescuentosat', 'FLOAT', true, null, null);
         // validators
     } // initialize()
 
