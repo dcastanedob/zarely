@@ -62,20 +62,20 @@ abstract class BaseCuentabancariamovimientoPeer
     /** the column name for the cuentabancariamovimiento_balance field */
     const CUENTABANCARIAMOVIMIENTO_BALANCE = 'cuentabancariamovimiento.cuentabancariamovimiento_balance';
 
+    /** the column name for the cuentabancariamovimiento_tipo field */
+    const CUENTABANCARIAMOVIMIENTO_TIPO = 'cuentabancariamovimiento.cuentabancariamovimiento_tipo';
+
     /** the column name for the cuentabancariamovimiento_referencia field */
     const CUENTABANCARIAMOVIMIENTO_REFERENCIA = 'cuentabancariamovimiento.cuentabancariamovimiento_referencia';
-
-    /** the column name for the cuentabancariamovimiento_medio field */
-    const CUENTABANCARIAMOVIMIENTO_MEDIO = 'cuentabancariamovimiento.cuentabancariamovimiento_medio';
 
     /** The enumerated values for the cuentabancariamovimiento_proceso field */
     const CUENTABANCARIAMOVIMIENTO_PROCESO_COMPRA = 'compra';
     const CUENTABANCARIAMOVIMIENTO_PROCESO_VENTA = 'venta';
 
-    /** The enumerated values for the cuentabancariamovimiento_medio field */
-    const CUENTABANCARIAMOVIMIENTO_MEDIO_CHEQUE = 'cheque';
-    const CUENTABANCARIAMOVIMIENTO_MEDIO_EFECTIVO = 'efectivo';
-    const CUENTABANCARIAMOVIMIENTO_MEDIO_TRANSFERENCIA = 'transferencia';
+    /** The enumerated values for the cuentabancariamovimiento_tipo field */
+    const CUENTABANCARIAMOVIMIENTO_TIPO_EFECTIVO = 'efectivo';
+    const CUENTABANCARIAMOVIMIENTO_TIPO_CHEQUE = 'cheque';
+    const CUENTABANCARIAMOVIMIENTO_TIPO_TRANSFERENCIA = 'transferencia';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -96,11 +96,11 @@ abstract class BaseCuentabancariamovimientoPeer
      * e.g. CuentabancariamovimientoPeer::$fieldNames[CuentabancariamovimientoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcuentabancariamovimiento', 'Idcuentabancaria', 'Idempleado', 'CuentabancariamovimientoProceso', 'Idproceso', 'CuentabancariamovimientoCantidad', 'CuentabancariamovimientoComprobante', 'CuentabancariamovimientoFechamovimiento', 'CuentabancariamovimientoFechacreacion', 'CuentabancariamovimientoBalance', 'CuentabancariamovimientoReferencia', 'CuentabancariamovimientoMedio', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancariamovimiento', 'idcuentabancaria', 'idempleado', 'cuentabancariamovimientoProceso', 'idproceso', 'cuentabancariamovimientoCantidad', 'cuentabancariamovimientoComprobante', 'cuentabancariamovimientoFechamovimiento', 'cuentabancariamovimientoFechacreacion', 'cuentabancariamovimientoBalance', 'cuentabancariamovimientoReferencia', 'cuentabancariamovimientoMedio', ),
-        BasePeer::TYPE_COLNAME => array (CuentabancariamovimientoPeer::IDCUENTABANCARIAMOVIMIENTO, CuentabancariamovimientoPeer::IDCUENTABANCARIA, CuentabancariamovimientoPeer::IDEMPLEADO, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_PROCESO, CuentabancariamovimientoPeer::IDPROCESO, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_CANTIDAD, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_COMPROBANTE, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHACREACION, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_BALANCE, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_REFERENCIA, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIAMOVIMIENTO', 'IDCUENTABANCARIA', 'IDEMPLEADO', 'CUENTABANCARIAMOVIMIENTO_PROCESO', 'IDPROCESO', 'CUENTABANCARIAMOVIMIENTO_CANTIDAD', 'CUENTABANCARIAMOVIMIENTO_COMPROBANTE', 'CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO', 'CUENTABANCARIAMOVIMIENTO_FECHACREACION', 'CUENTABANCARIAMOVIMIENTO_BALANCE', 'CUENTABANCARIAMOVIMIENTO_REFERENCIA', 'CUENTABANCARIAMOVIMIENTO_MEDIO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idcuentabancariamovimiento', 'idcuentabancaria', 'idempleado', 'cuentabancariamovimiento_proceso', 'idproceso', 'cuentabancariamovimiento_cantidad', 'cuentabancariamovimiento_comprobante', 'cuentabancariamovimiento_fechamovimiento', 'cuentabancariamovimiento_fechacreacion', 'cuentabancariamovimiento_balance', 'cuentabancariamovimiento_referencia', 'cuentabancariamovimiento_medio', ),
+        BasePeer::TYPE_PHPNAME => array ('Idcuentabancariamovimiento', 'Idcuentabancaria', 'Idempleado', 'CuentabancariamovimientoProceso', 'Idproceso', 'CuentabancariamovimientoCantidad', 'CuentabancariamovimientoComprobante', 'CuentabancariamovimientoFechamovimiento', 'CuentabancariamovimientoFechacreacion', 'CuentabancariamovimientoBalance', 'CuentabancariamovimientoTipo', 'CuentabancariamovimientoReferencia', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancariamovimiento', 'idcuentabancaria', 'idempleado', 'cuentabancariamovimientoProceso', 'idproceso', 'cuentabancariamovimientoCantidad', 'cuentabancariamovimientoComprobante', 'cuentabancariamovimientoFechamovimiento', 'cuentabancariamovimientoFechacreacion', 'cuentabancariamovimientoBalance', 'cuentabancariamovimientoTipo', 'cuentabancariamovimientoReferencia', ),
+        BasePeer::TYPE_COLNAME => array (CuentabancariamovimientoPeer::IDCUENTABANCARIAMOVIMIENTO, CuentabancariamovimientoPeer::IDCUENTABANCARIA, CuentabancariamovimientoPeer::IDEMPLEADO, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_PROCESO, CuentabancariamovimientoPeer::IDPROCESO, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_CANTIDAD, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_COMPROBANTE, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHACREACION, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_BALANCE, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_REFERENCIA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIAMOVIMIENTO', 'IDCUENTABANCARIA', 'IDEMPLEADO', 'CUENTABANCARIAMOVIMIENTO_PROCESO', 'IDPROCESO', 'CUENTABANCARIAMOVIMIENTO_CANTIDAD', 'CUENTABANCARIAMOVIMIENTO_COMPROBANTE', 'CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO', 'CUENTABANCARIAMOVIMIENTO_FECHACREACION', 'CUENTABANCARIAMOVIMIENTO_BALANCE', 'CUENTABANCARIAMOVIMIENTO_TIPO', 'CUENTABANCARIAMOVIMIENTO_REFERENCIA', ),
+        BasePeer::TYPE_FIELDNAME => array ('idcuentabancariamovimiento', 'idcuentabancaria', 'idempleado', 'cuentabancariamovimiento_proceso', 'idproceso', 'cuentabancariamovimiento_cantidad', 'cuentabancariamovimiento_comprobante', 'cuentabancariamovimiento_fechamovimiento', 'cuentabancariamovimiento_fechacreacion', 'cuentabancariamovimiento_balance', 'cuentabancariamovimiento_tipo', 'cuentabancariamovimiento_referencia', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
@@ -111,11 +111,11 @@ abstract class BaseCuentabancariamovimientoPeer
      * e.g. CuentabancariamovimientoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcuentabancariamovimiento' => 0, 'Idcuentabancaria' => 1, 'Idempleado' => 2, 'CuentabancariamovimientoProceso' => 3, 'Idproceso' => 4, 'CuentabancariamovimientoCantidad' => 5, 'CuentabancariamovimientoComprobante' => 6, 'CuentabancariamovimientoFechamovimiento' => 7, 'CuentabancariamovimientoFechacreacion' => 8, 'CuentabancariamovimientoBalance' => 9, 'CuentabancariamovimientoReferencia' => 10, 'CuentabancariamovimientoMedio' => 11, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancariamovimiento' => 0, 'idcuentabancaria' => 1, 'idempleado' => 2, 'cuentabancariamovimientoProceso' => 3, 'idproceso' => 4, 'cuentabancariamovimientoCantidad' => 5, 'cuentabancariamovimientoComprobante' => 6, 'cuentabancariamovimientoFechamovimiento' => 7, 'cuentabancariamovimientoFechacreacion' => 8, 'cuentabancariamovimientoBalance' => 9, 'cuentabancariamovimientoReferencia' => 10, 'cuentabancariamovimientoMedio' => 11, ),
-        BasePeer::TYPE_COLNAME => array (CuentabancariamovimientoPeer::IDCUENTABANCARIAMOVIMIENTO => 0, CuentabancariamovimientoPeer::IDCUENTABANCARIA => 1, CuentabancariamovimientoPeer::IDEMPLEADO => 2, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_PROCESO => 3, CuentabancariamovimientoPeer::IDPROCESO => 4, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_CANTIDAD => 5, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_COMPROBANTE => 6, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO => 7, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHACREACION => 8, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_BALANCE => 9, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_REFERENCIA => 10, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO => 11, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIAMOVIMIENTO' => 0, 'IDCUENTABANCARIA' => 1, 'IDEMPLEADO' => 2, 'CUENTABANCARIAMOVIMIENTO_PROCESO' => 3, 'IDPROCESO' => 4, 'CUENTABANCARIAMOVIMIENTO_CANTIDAD' => 5, 'CUENTABANCARIAMOVIMIENTO_COMPROBANTE' => 6, 'CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO' => 7, 'CUENTABANCARIAMOVIMIENTO_FECHACREACION' => 8, 'CUENTABANCARIAMOVIMIENTO_BALANCE' => 9, 'CUENTABANCARIAMOVIMIENTO_REFERENCIA' => 10, 'CUENTABANCARIAMOVIMIENTO_MEDIO' => 11, ),
-        BasePeer::TYPE_FIELDNAME => array ('idcuentabancariamovimiento' => 0, 'idcuentabancaria' => 1, 'idempleado' => 2, 'cuentabancariamovimiento_proceso' => 3, 'idproceso' => 4, 'cuentabancariamovimiento_cantidad' => 5, 'cuentabancariamovimiento_comprobante' => 6, 'cuentabancariamovimiento_fechamovimiento' => 7, 'cuentabancariamovimiento_fechacreacion' => 8, 'cuentabancariamovimiento_balance' => 9, 'cuentabancariamovimiento_referencia' => 10, 'cuentabancariamovimiento_medio' => 11, ),
+        BasePeer::TYPE_PHPNAME => array ('Idcuentabancariamovimiento' => 0, 'Idcuentabancaria' => 1, 'Idempleado' => 2, 'CuentabancariamovimientoProceso' => 3, 'Idproceso' => 4, 'CuentabancariamovimientoCantidad' => 5, 'CuentabancariamovimientoComprobante' => 6, 'CuentabancariamovimientoFechamovimiento' => 7, 'CuentabancariamovimientoFechacreacion' => 8, 'CuentabancariamovimientoBalance' => 9, 'CuentabancariamovimientoTipo' => 10, 'CuentabancariamovimientoReferencia' => 11, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancariamovimiento' => 0, 'idcuentabancaria' => 1, 'idempleado' => 2, 'cuentabancariamovimientoProceso' => 3, 'idproceso' => 4, 'cuentabancariamovimientoCantidad' => 5, 'cuentabancariamovimientoComprobante' => 6, 'cuentabancariamovimientoFechamovimiento' => 7, 'cuentabancariamovimientoFechacreacion' => 8, 'cuentabancariamovimientoBalance' => 9, 'cuentabancariamovimientoTipo' => 10, 'cuentabancariamovimientoReferencia' => 11, ),
+        BasePeer::TYPE_COLNAME => array (CuentabancariamovimientoPeer::IDCUENTABANCARIAMOVIMIENTO => 0, CuentabancariamovimientoPeer::IDCUENTABANCARIA => 1, CuentabancariamovimientoPeer::IDEMPLEADO => 2, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_PROCESO => 3, CuentabancariamovimientoPeer::IDPROCESO => 4, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_CANTIDAD => 5, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_COMPROBANTE => 6, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO => 7, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHACREACION => 8, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_BALANCE => 9, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO => 10, CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_REFERENCIA => 11, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIAMOVIMIENTO' => 0, 'IDCUENTABANCARIA' => 1, 'IDEMPLEADO' => 2, 'CUENTABANCARIAMOVIMIENTO_PROCESO' => 3, 'IDPROCESO' => 4, 'CUENTABANCARIAMOVIMIENTO_CANTIDAD' => 5, 'CUENTABANCARIAMOVIMIENTO_COMPROBANTE' => 6, 'CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO' => 7, 'CUENTABANCARIAMOVIMIENTO_FECHACREACION' => 8, 'CUENTABANCARIAMOVIMIENTO_BALANCE' => 9, 'CUENTABANCARIAMOVIMIENTO_TIPO' => 10, 'CUENTABANCARIAMOVIMIENTO_REFERENCIA' => 11, ),
+        BasePeer::TYPE_FIELDNAME => array ('idcuentabancariamovimiento' => 0, 'idcuentabancaria' => 1, 'idempleado' => 2, 'cuentabancariamovimiento_proceso' => 3, 'idproceso' => 4, 'cuentabancariamovimiento_cantidad' => 5, 'cuentabancariamovimiento_comprobante' => 6, 'cuentabancariamovimiento_fechamovimiento' => 7, 'cuentabancariamovimiento_fechacreacion' => 8, 'cuentabancariamovimiento_balance' => 9, 'cuentabancariamovimiento_tipo' => 10, 'cuentabancariamovimiento_referencia' => 11, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
@@ -125,10 +125,10 @@ abstract class BaseCuentabancariamovimientoPeer
             CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_PROCESO_COMPRA,
             CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_PROCESO_VENTA,
         ),
-        CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO => array(
-            CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO_CHEQUE,
-            CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO_EFECTIVO,
-            CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO_TRANSFERENCIA,
+        CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO => array(
+            CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO_EFECTIVO,
+            CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO_CHEQUE,
+            CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO_TRANSFERENCIA,
         ),
     );
 
@@ -258,8 +258,8 @@ abstract class BaseCuentabancariamovimientoPeer
             $criteria->addSelectColumn(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO);
             $criteria->addSelectColumn(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHACREACION);
             $criteria->addSelectColumn(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_BALANCE);
+            $criteria->addSelectColumn(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO);
             $criteria->addSelectColumn(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_REFERENCIA);
-            $criteria->addSelectColumn(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO);
         } else {
             $criteria->addSelectColumn($alias . '.idcuentabancariamovimiento');
             $criteria->addSelectColumn($alias . '.idcuentabancaria');
@@ -271,8 +271,8 @@ abstract class BaseCuentabancariamovimientoPeer
             $criteria->addSelectColumn($alias . '.cuentabancariamovimiento_fechamovimiento');
             $criteria->addSelectColumn($alias . '.cuentabancariamovimiento_fechacreacion');
             $criteria->addSelectColumn($alias . '.cuentabancariamovimiento_balance');
+            $criteria->addSelectColumn($alias . '.cuentabancariamovimiento_tipo');
             $criteria->addSelectColumn($alias . '.cuentabancariamovimiento_referencia');
-            $criteria->addSelectColumn($alias . '.cuentabancariamovimiento_medio');
         }
     }
 

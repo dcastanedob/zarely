@@ -15,7 +15,6 @@
  * @method TransferenciaQuery orderByIdempleadoreceptor($order = Criteria::ASC) Order by the idempleadoreceptor column
  * @method TransferenciaQuery orderByTransferenciaNota($order = Criteria::ASC) Order by the transferencia_nota column
  * @method TransferenciaQuery orderByTransferenciaFecharecepcion($order = Criteria::ASC) Order by the transferencia_fecharecepcion column
- * @method TransferenciaQuery orderByTransferenciaRazon($order = Criteria::ASC) Order by the transferencia_razon column
  *
  * @method TransferenciaQuery groupByIdtransferencia() Group by the idtransferencia column
  * @method TransferenciaQuery groupByIdsucursalorigen() Group by the idsucursalorigen column
@@ -26,7 +25,6 @@
  * @method TransferenciaQuery groupByIdempleadoreceptor() Group by the idempleadoreceptor column
  * @method TransferenciaQuery groupByTransferenciaNota() Group by the transferencia_nota column
  * @method TransferenciaQuery groupByTransferenciaFecharecepcion() Group by the transferencia_fecharecepcion column
- * @method TransferenciaQuery groupByTransferenciaRazon() Group by the transferencia_razon column
  *
  * @method TransferenciaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method TransferenciaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -63,7 +61,6 @@
  * @method Transferencia findOneByIdempleadoreceptor(int $idempleadoreceptor) Return the first Transferencia filtered by the idempleadoreceptor column
  * @method Transferencia findOneByTransferenciaNota(string $transferencia_nota) Return the first Transferencia filtered by the transferencia_nota column
  * @method Transferencia findOneByTransferenciaFecharecepcion(string $transferencia_fecharecepcion) Return the first Transferencia filtered by the transferencia_fecharecepcion column
- * @method Transferencia findOneByTransferenciaRazon(string $transferencia_razon) Return the first Transferencia filtered by the transferencia_razon column
  *
  * @method array findByIdtransferencia(int $idtransferencia) Return Transferencia objects filtered by the idtransferencia column
  * @method array findByIdsucursalorigen(int $idsucursalorigen) Return Transferencia objects filtered by the idsucursalorigen column
@@ -74,7 +71,6 @@
  * @method array findByIdempleadoreceptor(int $idempleadoreceptor) Return Transferencia objects filtered by the idempleadoreceptor column
  * @method array findByTransferenciaNota(string $transferencia_nota) Return Transferencia objects filtered by the transferencia_nota column
  * @method array findByTransferenciaFecharecepcion(string $transferencia_fecharecepcion) Return Transferencia objects filtered by the transferencia_fecharecepcion column
- * @method array findByTransferenciaRazon(string $transferencia_razon) Return Transferencia objects filtered by the transferencia_razon column
  *
  * @package    propel.generator.zarely.om
  */
@@ -182,7 +178,7 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idtransferencia`, `idsucursalorigen`, `idsucursaldestino`, `transferencia_fecha`, `transferencia_estatus`, `idempleadocreador`, `idempleadoreceptor`, `transferencia_nota`, `transferencia_fecharecepcion`, `transferencia_razon` FROM `transferencia` WHERE `idtransferencia` = :p0';
+        $sql = 'SELECT `idtransferencia`, `idsucursalorigen`, `idsucursaldestino`, `transferencia_fecha`, `transferencia_estatus`, `idempleadocreador`, `idempleadoreceptor`, `transferencia_nota`, `transferencia_fecharecepcion` FROM `transferencia` WHERE `idtransferencia` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -634,35 +630,6 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the transferencia_razon column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByTransferenciaRazon('fooValue');   // WHERE transferencia_razon = 'fooValue'
-     * $query->filterByTransferenciaRazon('%fooValue%'); // WHERE transferencia_razon LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $transferenciaRazon The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return TransferenciaQuery The current query, for fluid interface
-     */
-    public function filterByTransferenciaRazon($transferenciaRazon = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($transferenciaRazon)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $transferenciaRazon)) {
-                $transferenciaRazon = str_replace('*', '%', $transferenciaRazon);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(TransferenciaPeer::TRANSFERENCIA_RAZON, $transferenciaRazon, $comparison);
-    }
-
-    /**
      * Filter the query by a related Empleado object
      *
      * @param   Empleado|PropelObjectCollection $empleado The related object(s) to use as filter
@@ -772,7 +739,7 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      *
      * @return TransferenciaQuery The current query, for fluid interface
      */
-    public function joinEmpleadoRelatedByIdempleadoreceptor($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinEmpleadoRelatedByIdempleadoreceptor($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('EmpleadoRelatedByIdempleadoreceptor');
@@ -807,7 +774,7 @@ abstract class BaseTransferenciaQuery extends ModelCriteria
      *
      * @return   EmpleadoQuery A secondary query class using the current class as primary query
      */
-    public function useEmpleadoRelatedByIdempleadoreceptorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useEmpleadoRelatedByIdempleadoreceptorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinEmpleadoRelatedByIdempleadoreceptor($relationAlias, $joinType)

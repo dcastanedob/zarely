@@ -60,10 +60,6 @@
  * @method ProductovarianteQuery rightJoinPedidomayoristadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedidomayoristadetalle relation
  * @method ProductovarianteQuery innerJoinPedidomayoristadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedidomayoristadetalle relation
  *
- * @method ProductovarianteQuery leftJoinPedidosucursaldetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedidosucursaldetalle relation
- * @method ProductovarianteQuery rightJoinPedidosucursaldetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedidosucursaldetalle relation
- * @method ProductovarianteQuery innerJoinPedidosucursaldetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedidosucursaldetalle relation
- *
  * @method ProductovarianteQuery leftJoinProductosucursal($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productosucursal relation
  * @method ProductovarianteQuery rightJoinProductosucursal($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productosucursal relation
  * @method ProductovarianteQuery innerJoinProductosucursal($relationAlias = null) Adds a INNER JOIN clause to the query using the Productosucursal relation
@@ -1182,80 +1178,6 @@ abstract class BaseProductovarianteQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Pedidosucursaldetalle object
-     *
-     * @param   Pedidosucursaldetalle|PropelObjectCollection $pedidosucursaldetalle  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 ProductovarianteQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPedidosucursaldetalle($pedidosucursaldetalle, $comparison = null)
-    {
-        if ($pedidosucursaldetalle instanceof Pedidosucursaldetalle) {
-            return $this
-                ->addUsingAlias(ProductovariantePeer::IDPRODUCTOVARIANTE, $pedidosucursaldetalle->getIdproductovariante(), $comparison);
-        } elseif ($pedidosucursaldetalle instanceof PropelObjectCollection) {
-            return $this
-                ->usePedidosucursaldetalleQuery()
-                ->filterByPrimaryKeys($pedidosucursaldetalle->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPedidosucursaldetalle() only accepts arguments of type Pedidosucursaldetalle or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Pedidosucursaldetalle relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ProductovarianteQuery The current query, for fluid interface
-     */
-    public function joinPedidosucursaldetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Pedidosucursaldetalle');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Pedidosucursaldetalle');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Pedidosucursaldetalle relation Pedidosucursaldetalle object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   PedidosucursaldetalleQuery A secondary query class using the current class as primary query
-     */
-    public function usePedidosucursaldetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinPedidosucursaldetalle($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Pedidosucursaldetalle', 'PedidosucursaldetalleQuery');
-    }
-
-    /**
      * Filter the query by a related Productosucursal object
      *
      * @param   Productosucursal|PropelObjectCollection $productosucursal  the related object to use as filter
@@ -1509,7 +1431,7 @@ abstract class BaseProductovarianteQuery extends ModelCriteria
      *
      * @return ProductovarianteQuery The current query, for fluid interface
      */
-    public function joinVentadetalle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinVentadetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Ventadetalle');
@@ -1544,7 +1466,7 @@ abstract class BaseProductovarianteQuery extends ModelCriteria
      *
      * @return   VentadetalleQuery A secondary query class using the current class as primary query
      */
-    public function useVentadetalleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useVentadetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinVentadetalle($relationAlias, $joinType)

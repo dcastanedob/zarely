@@ -58,7 +58,6 @@ abstract class BasePedidomayoristadetallePeer
     const PEDIDOMAYORISTADETALLE_ESTATUS_SOLICITADO = 'solicitado';
     const PEDIDOMAYORISTADETALLE_ESTATUS_TRANSITO = 'transito';
     const PEDIDOMAYORISTADETALLE_ESTATUS_COMPLETADO = 'completado';
-    const PEDIDOMAYORISTADETALLE_ESTATUS_CANCELADO = 'cancelado';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -109,7 +108,6 @@ abstract class BasePedidomayoristadetallePeer
             PedidomayoristadetallePeer::PEDIDOMAYORISTADETALLE_ESTATUS_SOLICITADO,
             PedidomayoristadetallePeer::PEDIDOMAYORISTADETALLE_ESTATUS_TRANSITO,
             PedidomayoristadetallePeer::PEDIDOMAYORISTADETALLE_ESTATUS_COMPLETADO,
-            PedidomayoristadetallePeer::PEDIDOMAYORISTADETALLE_ESTATUS_CANCELADO,
         ),
     );
 

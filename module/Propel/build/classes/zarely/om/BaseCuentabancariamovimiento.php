@@ -90,16 +90,16 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
     protected $cuentabancariamovimiento_balance;
 
     /**
+     * The value for the cuentabancariamovimiento_tipo field.
+     * @var        string
+     */
+    protected $cuentabancariamovimiento_tipo;
+
+    /**
      * The value for the cuentabancariamovimiento_referencia field.
      * @var        string
      */
     protected $cuentabancariamovimiento_referencia;
-
-    /**
-     * The value for the cuentabancariamovimiento_medio field.
-     * @var        string
-     */
-    protected $cuentabancariamovimiento_medio;
 
     /**
      * @var        Cuentabancaria
@@ -300,6 +300,17 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
     }
 
     /**
+     * Get the [cuentabancariamovimiento_tipo] column value.
+     *
+     * @return string
+     */
+    public function getCuentabancariamovimientoTipo()
+    {
+
+        return $this->cuentabancariamovimiento_tipo;
+    }
+
+    /**
      * Get the [cuentabancariamovimiento_referencia] column value.
      *
      * @return string
@@ -308,17 +319,6 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
     {
 
         return $this->cuentabancariamovimiento_referencia;
-    }
-
-    /**
-     * Get the [cuentabancariamovimiento_medio] column value.
-     *
-     * @return string
-     */
-    public function getCuentabancariamovimientoMedio()
-    {
-
-        return $this->cuentabancariamovimiento_medio;
     }
 
     /**
@@ -544,6 +544,27 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
     } // setCuentabancariamovimientoBalance()
 
     /**
+     * Set the value of [cuentabancariamovimiento_tipo] column.
+     *
+     * @param  string $v new value
+     * @return Cuentabancariamovimiento The current object (for fluent API support)
+     */
+    public function setCuentabancariamovimientoTipo($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cuentabancariamovimiento_tipo !== $v) {
+            $this->cuentabancariamovimiento_tipo = $v;
+            $this->modifiedColumns[] = CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO;
+        }
+
+
+        return $this;
+    } // setCuentabancariamovimientoTipo()
+
+    /**
      * Set the value of [cuentabancariamovimiento_referencia] column.
      *
      * @param  string $v new value
@@ -563,27 +584,6 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
 
         return $this;
     } // setCuentabancariamovimientoReferencia()
-
-    /**
-     * Set the value of [cuentabancariamovimiento_medio] column.
-     *
-     * @param  string $v new value
-     * @return Cuentabancariamovimiento The current object (for fluent API support)
-     */
-    public function setCuentabancariamovimientoMedio($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->cuentabancariamovimiento_medio !== $v) {
-            $this->cuentabancariamovimiento_medio = $v;
-            $this->modifiedColumns[] = CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO;
-        }
-
-
-        return $this;
-    } // setCuentabancariamovimientoMedio()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -627,8 +627,8 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
             $this->cuentabancariamovimiento_fechamovimiento = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->cuentabancariamovimiento_fechacreacion = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->cuentabancariamovimiento_balance = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->cuentabancariamovimiento_referencia = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->cuentabancariamovimiento_medio = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->cuentabancariamovimiento_tipo = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->cuentabancariamovimiento_referencia = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -907,11 +907,11 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
         if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_BALANCE)) {
             $modifiedColumns[':p' . $index++]  = '`cuentabancariamovimiento_balance`';
         }
+        if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO)) {
+            $modifiedColumns[':p' . $index++]  = '`cuentabancariamovimiento_tipo`';
+        }
         if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_REFERENCIA)) {
             $modifiedColumns[':p' . $index++]  = '`cuentabancariamovimiento_referencia`';
-        }
-        if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO)) {
-            $modifiedColumns[':p' . $index++]  = '`cuentabancariamovimiento_medio`';
         }
 
         $sql = sprintf(
@@ -954,11 +954,11 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
                     case '`cuentabancariamovimiento_balance`':
                         $stmt->bindValue($identifier, $this->cuentabancariamovimiento_balance, PDO::PARAM_STR);
                         break;
+                    case '`cuentabancariamovimiento_tipo`':
+                        $stmt->bindValue($identifier, $this->cuentabancariamovimiento_tipo, PDO::PARAM_STR);
+                        break;
                     case '`cuentabancariamovimiento_referencia`':
                         $stmt->bindValue($identifier, $this->cuentabancariamovimiento_referencia, PDO::PARAM_STR);
-                        break;
-                    case '`cuentabancariamovimiento_medio`':
-                        $stmt->bindValue($identifier, $this->cuentabancariamovimiento_medio, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1143,10 +1143,10 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
                 return $this->getCuentabancariamovimientoBalance();
                 break;
             case 10:
-                return $this->getCuentabancariamovimientoReferencia();
+                return $this->getCuentabancariamovimientoTipo();
                 break;
             case 11:
-                return $this->getCuentabancariamovimientoMedio();
+                return $this->getCuentabancariamovimientoReferencia();
                 break;
             default:
                 return null;
@@ -1187,8 +1187,8 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
             $keys[7] => $this->getCuentabancariamovimientoFechamovimiento(),
             $keys[8] => $this->getCuentabancariamovimientoFechacreacion(),
             $keys[9] => $this->getCuentabancariamovimientoBalance(),
-            $keys[10] => $this->getCuentabancariamovimientoReferencia(),
-            $keys[11] => $this->getCuentabancariamovimientoMedio(),
+            $keys[10] => $this->getCuentabancariamovimientoTipo(),
+            $keys[11] => $this->getCuentabancariamovimientoReferencia(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1267,10 +1267,10 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
                 $this->setCuentabancariamovimientoBalance($value);
                 break;
             case 10:
-                $this->setCuentabancariamovimientoReferencia($value);
+                $this->setCuentabancariamovimientoTipo($value);
                 break;
             case 11:
-                $this->setCuentabancariamovimientoMedio($value);
+                $this->setCuentabancariamovimientoReferencia($value);
                 break;
         } // switch()
     }
@@ -1306,8 +1306,8 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
         if (array_key_exists($keys[7], $arr)) $this->setCuentabancariamovimientoFechamovimiento($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setCuentabancariamovimientoFechacreacion($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setCuentabancariamovimientoBalance($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCuentabancariamovimientoReferencia($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setCuentabancariamovimientoMedio($arr[$keys[11]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCuentabancariamovimientoTipo($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCuentabancariamovimientoReferencia($arr[$keys[11]]);
     }
 
     /**
@@ -1329,8 +1329,8 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
         if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO)) $criteria->add(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHAMOVIMIENTO, $this->cuentabancariamovimiento_fechamovimiento);
         if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHACREACION)) $criteria->add(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_FECHACREACION, $this->cuentabancariamovimiento_fechacreacion);
         if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_BALANCE)) $criteria->add(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_BALANCE, $this->cuentabancariamovimiento_balance);
+        if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO)) $criteria->add(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO, $this->cuentabancariamovimiento_tipo);
         if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_REFERENCIA)) $criteria->add(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_REFERENCIA, $this->cuentabancariamovimiento_referencia);
-        if ($this->isColumnModified(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO)) $criteria->add(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO, $this->cuentabancariamovimiento_medio);
 
         return $criteria;
     }
@@ -1403,8 +1403,8 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
         $copyObj->setCuentabancariamovimientoFechamovimiento($this->getCuentabancariamovimientoFechamovimiento());
         $copyObj->setCuentabancariamovimientoFechacreacion($this->getCuentabancariamovimientoFechacreacion());
         $copyObj->setCuentabancariamovimientoBalance($this->getCuentabancariamovimientoBalance());
+        $copyObj->setCuentabancariamovimientoTipo($this->getCuentabancariamovimientoTipo());
         $copyObj->setCuentabancariamovimientoReferencia($this->getCuentabancariamovimientoReferencia());
-        $copyObj->setCuentabancariamovimientoMedio($this->getCuentabancariamovimientoMedio());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1582,8 +1582,8 @@ abstract class BaseCuentabancariamovimiento extends BaseObject implements Persis
         $this->cuentabancariamovimiento_fechamovimiento = null;
         $this->cuentabancariamovimiento_fechacreacion = null;
         $this->cuentabancariamovimiento_balance = null;
+        $this->cuentabancariamovimiento_tipo = null;
         $this->cuentabancariamovimiento_referencia = null;
-        $this->cuentabancariamovimiento_medio = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

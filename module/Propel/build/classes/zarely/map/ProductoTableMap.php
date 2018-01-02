@@ -56,10 +56,8 @@ class ProductoTableMap extends TableMap
         $this->addColumn('producto_preciomayoreo', 'ProductoPreciomayoreo', 'DECIMAL', true, 15, null);
         $this->addColumn('producto_minimo', 'ProductoMinimo', 'INTEGER', true, null, null);
         $this->addColumn('producto_reorden', 'ProductoReorden', 'INTEGER', true, null, null);
-        $this->addColumn('producto_maximo', 'ProductoMaximo', 'INTEGER', false, null, null);
         $this->addForeignKey('idtipocalzado', 'Idtipocalzado', 'INTEGER', 'tipocalzado', 'idtipocalzado', true, null, null);
         $this->addColumn('producto_descripcion', 'ProductoDescripcion', 'VARCHAR', false, 500, null);
-        $this->addColumn('producto_costo', 'ProductoCosto', 'DECIMAL', true, 10, null);
         // validators
     } // initialize()
 
@@ -75,9 +73,8 @@ class ProductoTableMap extends TableMap
         $this->addRelation('Descuentodetalle', 'Descuentodetalle', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Descuentodetalles');
         $this->addRelation('Pedido', 'Pedido', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Pedidos');
         $this->addRelation('Pedidomayoristadetalle', 'Pedidomayoristadetalle', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Pedidomayoristadetalles');
-        $this->addRelation('Pedidosucursaldetalle', 'Pedidosucursaldetalle', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Pedidosucursaldetalles');
         $this->addRelation('Productocolor', 'Productocolor', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), null, null, 'Productocolors');
-        $this->addRelation('Productomaterial', 'Productomaterial', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productomaterials');
+        $this->addRelation('Productomaterial', 'Productomaterial', RelationMap::ONE_TO_MANY, array('idproducto' => 'idmaterial', ), 'CASCADE', 'CASCADE', 'Productomaterials');
         $this->addRelation('Productomedida', 'Productomedida', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productomedidas');
         $this->addRelation('Productotallaje', 'Productotallaje', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productotallajes');
         $this->addRelation('Productovariante', 'Productovariante', RelationMap::ONE_TO_MANY, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE', 'Productovariantes');

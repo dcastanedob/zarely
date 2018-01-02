@@ -8,11 +8,9 @@
  *
  * @method TipocalzadoQuery orderByIdtipocalzado($order = Criteria::ASC) Order by the idtipocalzado column
  * @method TipocalzadoQuery orderByTipocalzadoNombre($order = Criteria::ASC) Order by the tipocalzado_nombre column
- * @method TipocalzadoQuery orderByTipocalzadoDescripcion($order = Criteria::ASC) Order by the tipocalzado_descripcion column
  *
  * @method TipocalzadoQuery groupByIdtipocalzado() Group by the idtipocalzado column
  * @method TipocalzadoQuery groupByTipocalzadoNombre() Group by the tipocalzado_nombre column
- * @method TipocalzadoQuery groupByTipocalzadoDescripcion() Group by the tipocalzado_descripcion column
  *
  * @method TipocalzadoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method TipocalzadoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -26,11 +24,9 @@
  * @method Tipocalzado findOneOrCreate(PropelPDO $con = null) Return the first Tipocalzado matching the query, or a new Tipocalzado object populated from the query conditions when no match is found
  *
  * @method Tipocalzado findOneByTipocalzadoNombre(string $tipocalzado_nombre) Return the first Tipocalzado filtered by the tipocalzado_nombre column
- * @method Tipocalzado findOneByTipocalzadoDescripcion(string $tipocalzado_descripcion) Return the first Tipocalzado filtered by the tipocalzado_descripcion column
  *
  * @method array findByIdtipocalzado(int $idtipocalzado) Return Tipocalzado objects filtered by the idtipocalzado column
  * @method array findByTipocalzadoNombre(string $tipocalzado_nombre) Return Tipocalzado objects filtered by the tipocalzado_nombre column
- * @method array findByTipocalzadoDescripcion(string $tipocalzado_descripcion) Return Tipocalzado objects filtered by the tipocalzado_descripcion column
  *
  * @package    propel.generator.zarely.om
  */
@@ -138,7 +134,7 @@ abstract class BaseTipocalzadoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idtipocalzado`, `tipocalzado_nombre`, `tipocalzado_descripcion` FROM `tipocalzado` WHERE `idtipocalzado` = :p0';
+        $sql = 'SELECT `idtipocalzado`, `tipocalzado_nombre` FROM `tipocalzado` WHERE `idtipocalzado` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -296,35 +292,6 @@ abstract class BaseTipocalzadoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TipocalzadoPeer::TIPOCALZADO_NOMBRE, $tipocalzadoNombre, $comparison);
-    }
-
-    /**
-     * Filter the query on the tipocalzado_descripcion column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByTipocalzadoDescripcion('fooValue');   // WHERE tipocalzado_descripcion = 'fooValue'
-     * $query->filterByTipocalzadoDescripcion('%fooValue%'); // WHERE tipocalzado_descripcion LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $tipocalzadoDescripcion The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return TipocalzadoQuery The current query, for fluid interface
-     */
-    public function filterByTipocalzadoDescripcion($tipocalzadoDescripcion = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($tipocalzadoDescripcion)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $tipocalzadoDescripcion)) {
-                $tipocalzadoDescripcion = str_replace('*', '%', $tipocalzadoDescripcion);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(TipocalzadoPeer::TIPOCALZADO_DESCRIPCION, $tipocalzadoDescripcion, $comparison);
     }
 
     /**

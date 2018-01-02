@@ -36,11 +36,12 @@ class ProductomaterialTableMap extends TableMap
         $this->setPhpName('Productomaterial');
         $this->setClassname('Productomaterial');
         $this->setPackage('zarely');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('idproductomaterial', 'Idproductomaterial', 'INTEGER', true, null, null);
-        $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', true, null, null);
+        $this->addColumn('idproducto', 'Idproducto', 'INTEGER', true, null, null);
         $this->addForeignKey('idmaterial', 'Idmaterial', 'INTEGER', 'material', 'idmaterial', true, null, null);
+        $this->addForeignKey('idmaterial', 'Idmaterial', 'INTEGER', 'producto', 'idproducto', true, null, null);
         // validators
     } // initialize()
 
@@ -50,7 +51,7 @@ class ProductomaterialTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Material', 'Material', RelationMap::MANY_TO_ONE, array('idmaterial' => 'idmaterial', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idmaterial' => 'idproducto', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Productovariante', 'Productovariante', RelationMap::ONE_TO_MANY, array('idproductomaterial' => 'idproductomaterial', ), 'CASCADE', 'CASCADE', 'Productovariantes');
     } // buildRelations()
 

@@ -41,8 +41,8 @@ abstract class BaseProductocolorPeer
     /** the column name for the idcolor field */
     const IDCOLOR = 'productocolor.idcolor';
 
-    /** the column name for the productocolor_foto field */
-    const PRODUCTOCOLOR_FOTO = 'productocolor.productocolor_foto';
+    /** the column name for the productocolor_fotografia field */
+    const PRODUCTOCOLOR_FOTOGRAFIA = 'productocolor.productocolor_fotografia';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -63,11 +63,11 @@ abstract class BaseProductocolorPeer
      * e.g. ProductocolorPeer::$fieldNames[ProductocolorPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductocolor', 'Idproducto', 'Idcolor', 'ProductocolorFoto', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductocolor', 'idproducto', 'idcolor', 'productocolorFoto', ),
-        BasePeer::TYPE_COLNAME => array (ProductocolorPeer::IDPRODUCTOCOLOR, ProductocolorPeer::IDPRODUCTO, ProductocolorPeer::IDCOLOR, ProductocolorPeer::PRODUCTOCOLOR_FOTO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCOLOR', 'IDPRODUCTO', 'IDCOLOR', 'PRODUCTOCOLOR_FOTO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductocolor', 'idproducto', 'idcolor', 'productocolor_foto', ),
+        BasePeer::TYPE_PHPNAME => array ('Idproductocolor', 'Idproducto', 'Idcolor', 'ProductocolorFotografia', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductocolor', 'idproducto', 'idcolor', 'productocolorFotografia', ),
+        BasePeer::TYPE_COLNAME => array (ProductocolorPeer::IDPRODUCTOCOLOR, ProductocolorPeer::IDPRODUCTO, ProductocolorPeer::IDCOLOR, ProductocolorPeer::PRODUCTOCOLOR_FOTOGRAFIA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCOLOR', 'IDPRODUCTO', 'IDCOLOR', 'PRODUCTOCOLOR_FOTOGRAFIA', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductocolor', 'idproducto', 'idcolor', 'productocolor_fotografia', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -78,11 +78,11 @@ abstract class BaseProductocolorPeer
      * e.g. ProductocolorPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductocolor' => 0, 'Idproducto' => 1, 'Idcolor' => 2, 'ProductocolorFoto' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductocolor' => 0, 'idproducto' => 1, 'idcolor' => 2, 'productocolorFoto' => 3, ),
-        BasePeer::TYPE_COLNAME => array (ProductocolorPeer::IDPRODUCTOCOLOR => 0, ProductocolorPeer::IDPRODUCTO => 1, ProductocolorPeer::IDCOLOR => 2, ProductocolorPeer::PRODUCTOCOLOR_FOTO => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCOLOR' => 0, 'IDPRODUCTO' => 1, 'IDCOLOR' => 2, 'PRODUCTOCOLOR_FOTO' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductocolor' => 0, 'idproducto' => 1, 'idcolor' => 2, 'productocolor_foto' => 3, ),
+        BasePeer::TYPE_PHPNAME => array ('Idproductocolor' => 0, 'Idproducto' => 1, 'Idcolor' => 2, 'ProductocolorFotografia' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductocolor' => 0, 'idproducto' => 1, 'idcolor' => 2, 'productocolorFotografia' => 3, ),
+        BasePeer::TYPE_COLNAME => array (ProductocolorPeer::IDPRODUCTOCOLOR => 0, ProductocolorPeer::IDPRODUCTO => 1, ProductocolorPeer::IDCOLOR => 2, ProductocolorPeer::PRODUCTOCOLOR_FOTOGRAFIA => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOCOLOR' => 0, 'IDPRODUCTO' => 1, 'IDCOLOR' => 2, 'PRODUCTOCOLOR_FOTOGRAFIA' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproductocolor' => 0, 'idproducto' => 1, 'idcolor' => 2, 'productocolor_fotografia' => 3, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -160,12 +160,12 @@ abstract class BaseProductocolorPeer
             $criteria->addSelectColumn(ProductocolorPeer::IDPRODUCTOCOLOR);
             $criteria->addSelectColumn(ProductocolorPeer::IDPRODUCTO);
             $criteria->addSelectColumn(ProductocolorPeer::IDCOLOR);
-            $criteria->addSelectColumn(ProductocolorPeer::PRODUCTOCOLOR_FOTO);
+            $criteria->addSelectColumn(ProductocolorPeer::PRODUCTOCOLOR_FOTOGRAFIA);
         } else {
             $criteria->addSelectColumn($alias . '.idproductocolor');
             $criteria->addSelectColumn($alias . '.idproducto');
             $criteria->addSelectColumn($alias . '.idcolor');
-            $criteria->addSelectColumn($alias . '.productocolor_foto');
+            $criteria->addSelectColumn($alias . '.productocolor_fotografia');
         }
     }
 

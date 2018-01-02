@@ -508,24 +508,37 @@ abstract class BaseCompradetalleQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByCompradetalleCosto('fooValue');   // WHERE compradetalle_costo = 'fooValue'
-     * $query->filterByCompradetalleCosto('%fooValue%'); // WHERE compradetalle_costo LIKE '%fooValue%'
+     * $query->filterByCompradetalleCosto(1234); // WHERE compradetalle_costo = 1234
+     * $query->filterByCompradetalleCosto(array(12, 34)); // WHERE compradetalle_costo IN (12, 34)
+     * $query->filterByCompradetalleCosto(array('min' => 12)); // WHERE compradetalle_costo >= 12
+     * $query->filterByCompradetalleCosto(array('max' => 12)); // WHERE compradetalle_costo <= 12
      * </code>
      *
-     * @param     string $compradetalleCosto The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     mixed $compradetalleCosto The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return CompradetalleQuery The current query, for fluid interface
      */
     public function filterByCompradetalleCosto($compradetalleCosto = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($compradetalleCosto)) {
+        if (is_array($compradetalleCosto)) {
+            $useMinMax = false;
+            if (isset($compradetalleCosto['min'])) {
+                $this->addUsingAlias(CompradetallePeer::COMPRADETALLE_COSTO, $compradetalleCosto['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($compradetalleCosto['max'])) {
+                $this->addUsingAlias(CompradetallePeer::COMPRADETALLE_COSTO, $compradetalleCosto['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $compradetalleCosto)) {
-                $compradetalleCosto = str_replace('*', '%', $compradetalleCosto);
-                $comparison = Criteria::LIKE;
             }
         }
 

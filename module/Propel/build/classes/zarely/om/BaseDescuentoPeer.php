@@ -450,6 +450,9 @@ abstract class BaseDescuentoPeer
         // Invalidate objects in DescuentodetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         DescuentodetallePeer::clearInstancePool();
+        // Invalidate objects in VentadetallePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        VentadetallePeer::clearInstancePool();
     }
 
     /**
@@ -789,6 +792,12 @@ abstract class BaseDescuentoPeer
 
             $criteria->add(DescuentodetallePeer::IDDESCUENTO, $obj->getIddescuento());
             $affectedRows += DescuentodetallePeer::doDelete($criteria, $con);
+
+            // delete related Ventadetalle objects
+            $criteria = new Criteria(VentadetallePeer::DATABASE_NAME);
+
+            $criteria->add(VentadetallePeer::IDDESCUENTO, $obj->getIddescuento());
+            $affectedRows += VentadetallePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;
