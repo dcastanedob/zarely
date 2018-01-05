@@ -101,7 +101,7 @@ CREATE TABLE `color` (
   `idcolor` int(11) NOT NULL AUTO_INCREMENT,
   `color_nombre` text NOT NULL,
   PRIMARY KEY (`idcolor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,6 +110,7 @@ CREATE TABLE `color` (
 
 LOCK TABLES `color` WRITE;
 /*!40000 ALTER TABLE `color` DISABLE KEYS */;
+INSERT INTO `color` VALUES (1,'Rojo'),(2,'Azul');
 /*!40000 ALTER TABLE `color` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,7 +217,7 @@ CREATE TABLE `configuracion` (
   `idconfiguracion` int(11) NOT NULL AUTO_INCREMENT,
   `configuracion_descuentosat` float NOT NULL,
   PRIMARY KEY (`idconfiguracion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,6 +226,7 @@ CREATE TABLE `configuracion` (
 
 LOCK TABLES `configuracion` WRITE;
 /*!40000 ALTER TABLE `configuracion` DISABLE KEYS */;
+INSERT INTO `configuracion` VALUES (1,22);
 /*!40000 ALTER TABLE `configuracion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -482,7 +484,7 @@ CREATE TABLE `empleado` (
   PRIMARY KEY (`idempleado`),
   KEY `idrol` (`idrol`),
   CONSTRAINT `idrol_empleado` FOREIGN KEY (`idrol`) REFERENCES `rol` (`idrol`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -491,7 +493,7 @@ CREATE TABLE `empleado` (
 
 LOCK TABLES `empleado` WRITE;
 /*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
-INSERT INTO `empleado` VALUES (1,'JesÃºs Armando','Alonso ','Orozco','adsf','adsf','123423412','234234','arm_chiva@hotmail.com',1,'administrador','e10adc3949ba59abbe56e057f20f883e',1,'2018-01-02 13:12:44','2018-01-02','Isla salinas','0','2422','Jardines de la cruz','45054','Guadalajara','Jalisco',1);
+INSERT INTO `empleado` VALUES (1,'JesÃºs Armando','Alonso ','Orozco','adsf','adsf','123423412','234234','arm_chiva@hotmail.com',1,'administrador','e10adc3949ba59abbe56e057f20f883e',1,'2018-01-02 13:12:44','2018-01-02','Isla salinas','0','2422','Jardines de la cruz','45054','Guadalajara','Jalisco',1),(2,'JesÃºs Armando','Alonso ','Orozco','adsf','adsf','123423412','234234','arm_chiva@hotmail.com',1,'secretaria a','e10adc3949ba59abbe56e057f20f883e',1,'2018-01-02 13:12:44','2018-01-02','Isla salinas','0','2422','Jardines de la cruz','45054','Guadalajara','Jalisco',2),(3,'JesÃºs Armando','Alonso ','Orozco','adsf','adsf','123423412','234234','arm_chiva@hotmail.com',1,'secretaria b','e10adc3949ba59abbe56e057f20f883e',1,'2018-01-02 13:12:44','2018-01-02','Isla salinas','0','2422','Jardines de la cruz','45054','Guadalajara','Jalisco',3),(4,'JesÃºs Armando','Alonso ','Orozco','adsf','adsf','123423412','234234','arm_chiva@hotmail.com',1,'caja','e10adc3949ba59abbe56e057f20f883e',1,'2018-01-02 13:12:44','2018-01-02','Isla salinas','0','2422','Jardines de la cruz','45054','Guadalajara','Jalisco',4),(5,'JesÃºs Armando','Alonso ','Orozco','adsf','adsf','123423412','234234','arm_chiva@hotmail.com',1,'vendedora','e10adc3949ba59abbe56e057f20f883e',1,'2018-01-02 13:12:44','2018-01-02','Isla salinas','0','2422','Jardines de la cruz','45054','Guadalajara','Jalisco',5),(6,'JesÃºs Armando','Alonso ','Orozco','adsf','adsf','123423412','234234','arm_chiva@hotmail.com',1,'cajero super','e10adc3949ba59abbe56e057f20f883e',1,'2018-01-02 13:12:44','2018-01-02','Isla salinas','0','2422','Jardines de la cruz','45054','Guadalajara','Jalisco',6),(7,'JesÃºs Armando','Alonso ','Orozco','adsf','adsf','123423412','234234','arm_chiva@hotmail.com',1,'sat','e10adc3949ba59abbe56e057f20f883e',1,'2018-01-02 13:12:44','2018-01-02','Isla salinas','0','2422','Jardines de la cruz','45054','Guadalajara','Jalisco',7);
 /*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -530,7 +532,7 @@ CREATE TABLE `marca` (
   `idmarca` int(11) NOT NULL AUTO_INCREMENT,
   `marca_nombre` varchar(255) NOT NULL,
   PRIMARY KEY (`idmarca`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -539,6 +541,7 @@ CREATE TABLE `marca` (
 
 LOCK TABLES `marca` WRITE;
 /*!40000 ALTER TABLE `marca` DISABLE KEYS */;
+INSERT INTO `marca` VALUES (1,'Converse');
 /*!40000 ALTER TABLE `marca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -558,7 +561,7 @@ CREATE TABLE `marcatallaje` (
   KEY `idtallaje` (`idtallaje`),
   CONSTRAINT `idmarca_marcatallaje` FOREIGN KEY (`idmarca`) REFERENCES `marca` (`idmarca`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idtallaje_marcatallaje` FOREIGN KEY (`idtallaje`) REFERENCES `tallaje` (`idtallaje`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -567,6 +570,7 @@ CREATE TABLE `marcatallaje` (
 
 LOCK TABLES `marcatallaje` WRITE;
 /*!40000 ALTER TABLE `marcatallaje` DISABLE KEYS */;
+INSERT INTO `marcatallaje` VALUES (1,1,1);
 /*!40000 ALTER TABLE `marcatallaje` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -581,7 +585,7 @@ CREATE TABLE `material` (
   `idmaterial` int(11) NOT NULL AUTO_INCREMENT,
   `material_nombre` varchar(255) NOT NULL,
   PRIMARY KEY (`idmaterial`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -590,6 +594,7 @@ CREATE TABLE `material` (
 
 LOCK TABLES `material` WRITE;
 /*!40000 ALTER TABLE `material` DISABLE KEYS */;
+INSERT INTO `material` VALUES (1,'Piel');
 /*!40000 ALTER TABLE `material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -751,7 +756,7 @@ CREATE TABLE `producto` (
   CONSTRAINT `idproveedor_producto` FOREIGN KEY (`idproveedor`) REFERENCES `proveedor` (`idproveedor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idtemporada_producto` FOREIGN KEY (`idtemporada`) REFERENCES `temporada` (`idtemporada`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idtipocalzado_producto` FOREIGN KEY (`idtipocalzado`) REFERENCES `tipocalzado` (`idtipocalzado`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -760,6 +765,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
+INSERT INTO `producto` VALUES (2,'M234',1,1,0,1,'jovenes',800.00000,750.00000,750,10,1,NULL),(8,'M1234',1,1,0,1,'dama',790.00000,750.00000,745,10,1,NULL),(9,'M1234',1,1,0,1,'dama',790.00000,750.00000,745,10,1,NULL),(10,'R001',1,1,0,1,'dama',790.00000,750.00000,740,10,1,NULL);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -780,7 +786,7 @@ CREATE TABLE `productocolor` (
   KEY `idcolor` (`idcolor`),
   CONSTRAINT `idcolor_productocolor` FOREIGN KEY (`idcolor`) REFERENCES `color` (`idcolor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idproducto_productocolor` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -789,6 +795,7 @@ CREATE TABLE `productocolor` (
 
 LOCK TABLES `productocolor` WRITE;
 /*!40000 ALTER TABLE `productocolor` DISABLE KEYS */;
+INSERT INTO `productocolor` VALUES (2,2,1,'/img/productocolor/2.jpg'),(3,2,2,'/img/productocolor/3.jpg'),(4,8,1,'/img/productocolor/4.jpg'),(5,8,2,'/img/productocolor/5.jpg'),(6,10,1,'/img/productocolor/6.jpg'),(7,10,2,'/img/productocolor/7.jpg');
 /*!40000 ALTER TABLE `productocolor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -807,7 +814,7 @@ CREATE TABLE `productomaterial` (
   KEY `idproducto` (`idproducto`),
   KEY `idmaterial` (`idmaterial`),
   CONSTRAINT `idmaterial_productomaterial` FOREIGN KEY (`idmaterial`) REFERENCES `material` (`idmaterial`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idproducto_productomaterial` FOREIGN KEY (`idmaterial`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idproducto_productomaterial` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -817,6 +824,7 @@ CREATE TABLE `productomaterial` (
 
 LOCK TABLES `productomaterial` WRITE;
 /*!40000 ALTER TABLE `productomaterial` DISABLE KEYS */;
+INSERT INTO `productomaterial` VALUES (0,10,1),(1,8,1);
 /*!40000 ALTER TABLE `productomaterial` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -871,7 +879,7 @@ CREATE TABLE `productosucursal` (
   KEY `idsucursal` (`idsucursal`),
   CONSTRAINT `idproductovariante_productosucursal` FOREIGN KEY (`idproductovariante`) REFERENCES `productovariante` (`idproductovariante`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idsucursal_productosucursal` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -880,6 +888,7 @@ CREATE TABLE `productosucursal` (
 
 LOCK TABLES `productosucursal` WRITE;
 /*!40000 ALTER TABLE `productosucursal` DISABLE KEYS */;
+INSERT INTO `productosucursal` VALUES (1,21,1,3,740,10,790.00000,750.00000,1,10.00000),(2,22,1,0,740,10,790.00000,750.00000,1,10.00000),(3,23,1,0,740,10,790.00000,750.00000,1,10.00000),(4,24,1,0,740,10,790.00000,750.00000,1,10.00000),(5,25,1,0,740,10,790.00000,750.00000,1,10.00000),(6,26,1,0,740,10,790.00000,750.00000,1,10.00000),(7,27,1,0,740,10,790.00000,750.00000,1,10.00000),(8,28,1,0,740,10,790.00000,750.00000,1,10.00000),(9,29,1,0,740,10,790.00000,750.00000,1,10.00000),(10,30,1,10,740,10,790.00000,750.00000,1,10.00000),(11,21,2,3,740,10,790.00000,750.00000,1,10.00000);
 /*!40000 ALTER TABLE `productosucursal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -899,7 +908,7 @@ CREATE TABLE `productotallaje` (
   KEY `idtallaje` (`idtallaje`),
   CONSTRAINT `idproducto_productotallaje` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idtallaje_productotallaje` FOREIGN KEY (`idtallaje`) REFERENCES `tallaje` (`idtallaje`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -908,6 +917,7 @@ CREATE TABLE `productotallaje` (
 
 LOCK TABLES `productotallaje` WRITE;
 /*!40000 ALTER TABLE `productotallaje` DISABLE KEYS */;
+INSERT INTO `productotallaje` VALUES (1,10,1);
 /*!40000 ALTER TABLE `productotallaje` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -934,7 +944,7 @@ CREATE TABLE `productovariante` (
   CONSTRAINT `idproducto_productovariante` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idproductocolor_productovariante` FOREIGN KEY (`idproductocolor`) REFERENCES `productocolor` (`idproductocolor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idproductomaterial_productomaterial` FOREIGN KEY (`idproductomaterial`) REFERENCES `productomaterial` (`idproductomaterial`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -943,6 +953,7 @@ CREATE TABLE `productovariante` (
 
 LOCK TABLES `productovariante` WRITE;
 /*!40000 ALTER TABLE `productovariante` DISABLE KEYS */;
+INSERT INTO `productovariante` VALUES (21,10,6,0,'zarely21','7','numero',1),(22,10,7,0,'zarely22','7','numero',1),(23,10,6,0,'zarely23','7.5','numero',1),(24,10,7,0,'zarely24','7.5','numero',1),(25,10,6,0,'zarely25','8','numero',1),(26,10,7,0,'zarely26','8','numero',1),(27,10,6,0,'zarely27','8.5','numero',1),(28,10,7,0,'zarely28','8.5','numero',1),(29,10,6,0,'zarely29','9','numero',1),(30,10,7,0,'zarely30','9','numero',1);
 /*!40000 ALTER TABLE `productovariante` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1022,7 +1033,7 @@ CREATE TABLE `proveedor` (
   `proveedor_fechainicio` date DEFAULT NULL,
   `proveedor_email` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idproveedor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1031,6 +1042,7 @@ CREATE TABLE `proveedor` (
 
 LOCK TABLES `proveedor` WRITE;
 /*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
+INSERT INTO `proveedor` VALUES (1,'Zarely NuÃ±o','33432343','3423434','2018-01-02','zarely@hotmail.com');
 /*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1050,7 +1062,7 @@ CREATE TABLE `proveedormarca` (
   KEY `idmarca` (`idmarca`),
   CONSTRAINT `idmarca_proveedormarca` FOREIGN KEY (`idmarca`) REFERENCES `marca` (`idmarca`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idproveedor_proveedormarca` FOREIGN KEY (`idproveedor`) REFERENCES `proveedor` (`idproveedor`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1059,6 +1071,7 @@ CREATE TABLE `proveedormarca` (
 
 LOCK TABLES `proveedormarca` WRITE;
 /*!40000 ALTER TABLE `proveedormarca` DISABLE KEYS */;
+INSERT INTO `proveedormarca` VALUES (1,1,1);
 /*!40000 ALTER TABLE `proveedormarca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1074,7 +1087,7 @@ CREATE TABLE `rol` (
   `rol_nombre` varchar(45) NOT NULL,
   `rol_descripcion` text NOT NULL,
   PRIMARY KEY (`idrol`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1083,7 +1096,7 @@ CREATE TABLE `rol` (
 
 LOCK TABLES `rol` WRITE;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'Administrador','administrador de zarely');
+INSERT INTO `rol` VALUES (1,'Administrador','administrador de zarely'),(2,'Secretaria a',''),(3,'Secretaria b',''),(4,'Caja',''),(5,'Vendedora',''),(6,'Cajero super',''),(7,'Sat','');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1106,7 +1119,7 @@ CREATE TABLE `sucursal` (
   `sucursal_ciudad` varchar(45) DEFAULT NULL,
   `sucursal_estado` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idsucursal`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1115,6 +1128,7 @@ CREATE TABLE `sucursal` (
 
 LOCK TABLES `sucursal` WRITE;
 /*!40000 ALTER TABLE `sucursal` DISABLE KEYS */;
+INSERT INTO `sucursal` VALUES (1,'Zarely Centro','jalksdfjalkd','adsf','23','34','34','34','43','34'),(2,'Zarely Sur','jalksdfjalkd','adsf','23','34','34','34','43','34');
 /*!40000 ALTER TABLE `sucursal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1135,7 +1149,7 @@ CREATE TABLE `sucursalempleado` (
   KEY `idempleado` (`idempleado`),
   CONSTRAINT `idempleado_sucursalempleado` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idsucursal_sucursalempleado` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1144,6 +1158,7 @@ CREATE TABLE `sucursalempleado` (
 
 LOCK TABLES `sucursalempleado` WRITE;
 /*!40000 ALTER TABLE `sucursalempleado` DISABLE KEYS */;
+INSERT INTO `sucursalempleado` VALUES (1,1,5,0),(2,1,4,0);
 /*!40000 ALTER TABLE `sucursalempleado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1216,7 +1231,7 @@ CREATE TABLE `tallaje` (
   `talla_350` tinyint(1) DEFAULT NULL,
   `tallajerango` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idtallaje`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1225,6 +1240,7 @@ CREATE TABLE `tallaje` (
 
 LOCK TABLES `tallaje` WRITE;
 /*!40000 ALTER TABLE `tallaje` DISABLE KEYS */;
+INSERT INTO `tallaje` VALUES (1,'Adulto',1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'7 - 9.5');
 /*!40000 ALTER TABLE `tallaje` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1239,7 +1255,7 @@ CREATE TABLE `temporada` (
   `idtemporada` int(11) NOT NULL AUTO_INCREMENT,
   `temporada_nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`idtemporada`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1248,6 +1264,7 @@ CREATE TABLE `temporada` (
 
 LOCK TABLES `temporada` WRITE;
 /*!40000 ALTER TABLE `temporada` DISABLE KEYS */;
+INSERT INTO `temporada` VALUES (1,'Invierno');
 /*!40000 ALTER TABLE `temporada` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1262,7 +1279,7 @@ CREATE TABLE `tipocalzado` (
   `idtipocalzado` int(11) NOT NULL AUTO_INCREMENT,
   `tipocalzado_nombre` varchar(45) NOT NULL,
   PRIMARY KEY (`idtipocalzado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1271,6 +1288,7 @@ CREATE TABLE `tipocalzado` (
 
 LOCK TABLES `tipocalzado` WRITE;
 /*!40000 ALTER TABLE `tipocalzado` DISABLE KEYS */;
+INSERT INTO `tipocalzado` VALUES (1,'Run');
 /*!40000 ALTER TABLE `tipocalzado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1471,4 +1489,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-02 13:15:34
+-- Dump completed on 2018-01-05 16:43:39

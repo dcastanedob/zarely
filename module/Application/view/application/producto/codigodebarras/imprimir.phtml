@@ -1,0 +1,13 @@
+
+<link rel="stylesheet" href="/css/elephant.min.css">
+
+<div class="body_container">
+	<div class="title-bar">
+	    <h1 class="title-bar-title">Generar etiquetas</h1>
+	    <?php foreach ($data as $sucursalInfo):?>
+	            <?php for( var $i; $i < $sucursalInfo['quantity']; $i++)?>
+	            	<?php var_dump($sucursalInfo);exit(); ?>
+            	<?php endforeach;?>
+	    <?php endforeach;?>
+	</div>
+</div>

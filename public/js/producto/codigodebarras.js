@@ -126,60 +126,51 @@
                           }; 
 
                           $tr.find('input[name=existencia]').filter(function(){
-                            result.data.push({idsucursal:$(this).siblings('[name=idsucursal]').val(), precio:$(this).val()});
+                            result.data.push({idsucursal:$(this).siblings('[name=idsucursal]').val(), quantity:$(this).val()});
                           });                         
 
 
-                          console.log(result);
-                         
+                          var str = "";
+                          for (var key in result.data) {
+                              
+                              for(var key2 in result.data[key]){
+                                console.log(key2);
+                                if (str != "") {
+                                  str += "&";
+                              }
+                              str += 'data['+key+']['+key2+']' + "=" + encodeURIComponent(result.data[key][key2]);  
+                              }
+                              
+                          }
 
-                            $.ajax({
-                              url:'/producto/existencias/guardarprecio',
+
+                           window.location.href = "/producto/codigodebarras/imprimir?id="+id+"&"+str;
+
+                           /* $.ajax({
+                              url:'/producto/codigodebarras/imprimir',
                               type: 'POST',
                               dataType: 'json',
                               data:result,
                               success: function(data){
                                 if(data.response){
-                                  swal("Éxito","Existencia actualizada!!!  ","success");
+                                  var printContents = data.base64;
+                                  var originalContents = document.body.innerHTML;
+
+                                  document.body.innerHTML = printContents;
+
+                                  window.print();
+
+                                  document.body.innerHTML = originalContents;
                                 }
                                 
                               },
 
-                          })
+                          })*/
+
 
                         });
-                        $(row).find('.delete_modal').on('click',function(){
-                            var id = $(row).attr('id');
-                            var tmpl = [
-                            '<div id="modalBounceInLeft" tabindex="-1" role="dialog" class="modal in">',
-                                  '<div class="modal-dialog">',
-                                   ' <div class="modal-content animated bounceInLeft">',
-                                    '  <div class="modal-header">',
-                                       ' <button type="button" class="close" data-dismiss="modal">',
-                                          '<span aria-hidden="true">×</span>',
-                                          '<span class="sr-only">Close</span>',
-                                        '</button>',
-                                      '</div>',
-                                      '<form action="/catalogo/precios/eliminar/'+id+'" method="POST">',
-                                     ' <div class="modal-body">',
-                                        '<div class="text-center">',
-                                         ' <span class="text-primary icon icon-times-circle icon-5x"></span>',
-                                          '<h3 class="text-primary">Advertencia</h3>',
-                                          '<p>¿Estás seguro que deseas eliminar el registro seleccionado?</p>',
-                                         ' <div class="m-t-lg">',
-                                          '  <button class="btn btn-primary" type="submit">Eliminar</button>',
-                                           ' <button class="btn btn-default" data-dismiss="modal" type="button">Cancelar</button>',
-                                          '</div>',
-                                        '</div>',
-                                      '</div>',
-                                      '<div class="modal-footer"></div>',
-                                    '</div>',
-                                  '</div>',
-                                '</div>',
-                            ].join('');
 
-                            $(tmpl).modal();
-                        });
+                        
                     }
                 }
             );

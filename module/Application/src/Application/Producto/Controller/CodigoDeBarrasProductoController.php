@@ -136,15 +136,8 @@ class CodigoDeBarrasProductoController extends AbstractActionController
                 
                 
                 $tmp['options'] = '
-                
-          
-                    <label class="custom-control custom-control-primary custom-checkbox">
-                      <input class="custom-control-input" name="generar_'.$value['idproductovariante'].'"  type="checkbox">
-                      <span class="custom-control-indicator"></span>
 
-                    </label>
-                    <a href="/producto/codigodebarras/imagen/'.$value['idproductovariante'].'">Ver
-                  
+                        <button class="btn btn-success">Generar</button>
                   ';
 
                 foreach ($sucursales as $key => $sucursal) {
@@ -199,10 +192,9 @@ class CodigoDeBarrasProductoController extends AbstractActionController
         return $view_model;
     }
 
-    public function imagenAction()
+
+    private function getBarCode($id)
     {
-        //obtenemos el proudcto variante
-        $id = $this->params()->fromRoute('id');
         $pv = \ProductovarianteQuery::create()->findPk($id);
         
         $producto = $pv->getProducto();
@@ -212,18 +204,41 @@ class CodigoDeBarrasProductoController extends AbstractActionController
         $material = $material->getMaterial();
         $tallaje = $pv->getProductovarianteTalla();
 
-        $information =$producto->getProductoModelo() .'-' . $material->getMaterialNombre() .'-'  . $color->getColorNombre(). '-' . $tallaje;
+        $information =$pv->getProductovarianteCodigobarras() . ' <font style="background: #000000;color: white;margin-left: 80px;padding-left: 22px;padding-right: 22px;" size="6">' . $tallaje . '</font><br> '. $producto->getProductoModelo() .'<br>' . $material->getMaterialNombre() .'-'  . $color->getColorNombre() ;
 
 
         //generamos el codigo de barras
-        $generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
+        $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
 
-        $barcode = $generator->getBarcode($pv->getProductovarianteCodigobarras(), $generator::TYPE_CODE_128) . $information
+        file_put_contents($_SERVER['DOCUMENT_ROOT'].'/barcode.png', $generator->getBarcode($pv->getProductovarianteCodigobarras(), $generator::TYPE_CODE_128));
+
+
+        $barcode = '<font style="background: black;color: white;" size="5">ZAPATERÍA ZARELY</font>'. '<br><img src="/barcode.png"><br>' . $information
         ; 
-        echo($barcode);exit();
+        return $barcode;
     }
 
-    
+
+    public function imprimirAction()
+    {
+
+       $request = $this->getRequest();
+
+        $data = $_GET;
+
+        $barcode = $this->getBarcode($data['id']);
+
+        $view_model = new ViewModel();
+        $view_model->setTerminal(true);
+        $view_model->setTemplate('application/producto/codigodebarras/imprimir');
+        $view_model->setVariables(array(
+            'messages' =>$this->flashMessenger(),
+            'barcode' => $barcode,
+            'data' => $data['data']
+        ));
+
+        return $view_model;
+    }
     
 
 }
