@@ -39,15 +39,14 @@ class MedidaTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('idmedida', 'Idmedida', 'INTEGER', true, null, null);
-        $this->addColumn('medida_nombre', 'MedidaNombre', 'VARCHAR', false, 45, null);
+        $this->addColumn('medida_nombre', 'MedidaNombre', 'BOOLEAN', false, 1, null);
         $this->addColumn('medida_xs', 'MedidaXs', 'BOOLEAN', false, 1, null);
         $this->addColumn('medida_s', 'MedidaS', 'BOOLEAN', false, 1, null);
         $this->addColumn('medida_m', 'MedidaM', 'BOOLEAN', false, 1, null);
         $this->addColumn('medida_l', 'MedidaL', 'BOOLEAN', false, 1, null);
         $this->addColumn('medida_xl', 'MedidaXl', 'BOOLEAN', false, 1, null);
         $this->addColumn('medida_xxl', 'MedidaXxl', 'BOOLEAN', false, 1, null);
-        $this->addColumn('medida_unitalla', 'MedidaUnitalla', 'BOOLEAN', false, 1, null);
-        $this->addColumn('medidasrango', 'Medidasrango', 'VARCHAR', false, 45, null);
+        $this->addColumn('medida_unitalla', 'MedidaUnitalla', 'VARCHAR', false, 45, null);
         // validators
     } // initialize()
 

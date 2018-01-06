@@ -406,9 +406,6 @@ abstract class BaseSucursalPeer
         // Invalidate objects in PedidoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidoPeer::clearInstancePool();
-        // Invalidate objects in PedidosucursalPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PedidosucursalPeer::clearInstancePool();
         // Invalidate objects in ProductosucursalPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductosucursalPeer::clearInstancePool();
@@ -421,9 +418,6 @@ abstract class BaseSucursalPeer
         // Invalidate objects in TransferenciaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransferenciaPeer::clearInstancePool();
-        // Invalidate objects in ValePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ValePeer::clearInstancePool();
         // Invalidate objects in VentaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         VentaPeer::clearInstancePool();
@@ -773,12 +767,6 @@ abstract class BaseSucursalPeer
             $criteria->add(PedidoPeer::IDSUCURSAL, $obj->getIdsucursal());
             $affectedRows += PedidoPeer::doDelete($criteria, $con);
 
-            // delete related Pedidosucursal objects
-            $criteria = new Criteria(PedidosucursalPeer::DATABASE_NAME);
-
-            $criteria->add(PedidosucursalPeer::IDSUCURSAL, $obj->getIdsucursal());
-            $affectedRows += PedidosucursalPeer::doDelete($criteria, $con);
-
             // delete related Productosucursal objects
             $criteria = new Criteria(ProductosucursalPeer::DATABASE_NAME);
 
@@ -802,12 +790,6 @@ abstract class BaseSucursalPeer
 
             $criteria->add(TransferenciaPeer::IDSUCURSALORIGEN, $obj->getIdsucursal());
             $affectedRows += TransferenciaPeer::doDelete($criteria, $con);
-
-            // delete related Vale objects
-            $criteria = new Criteria(ValePeer::DATABASE_NAME);
-
-            $criteria->add(ValePeer::IDSUCURSAL, $obj->getIdsucursal());
-            $affectedRows += ValePeer::doDelete($criteria, $con);
 
             // delete related Venta objects
             $criteria = new Criteria(VentaPeer::DATABASE_NAME);

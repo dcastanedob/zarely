@@ -47,7 +47,6 @@ class VentapagoTableMap extends TableMap
   0 => 'efectivo',
   1 => 'vales',
   2 => 'tarjeta',
-  3 => 'puntos',
 ));
         $this->addColumn('ventapago_cantidad', 'VentapagoCantidad', 'DECIMAL', false, 15, null);
         $this->addColumn('ventapago_referencia', 'VentapagoReferencia', 'VARCHAR', false, 50, null);

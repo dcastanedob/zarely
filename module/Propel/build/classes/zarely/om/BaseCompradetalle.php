@@ -320,7 +320,7 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
      */
     public function setCompradetalleCosto($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -614,10 +614,6 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = CompradetallePeer::IDCOMPRADETALLE;
-        if (null !== $this->idcompradetalle) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CompradetallePeer::IDCOMPRADETALLE . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(CompradetallePeer::IDCOMPRADETALLE)) {
@@ -680,13 +676,6 @@ abstract class BaseCompradetalle extends BaseObject implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', $e);
-        }
-        $this->setIdcompradetalle($pk);
 
         $this->setNew(false);
     }

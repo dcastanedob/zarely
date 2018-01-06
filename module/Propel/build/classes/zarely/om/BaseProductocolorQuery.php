@@ -9,12 +9,12 @@
  * @method ProductocolorQuery orderByIdproductocolor($order = Criteria::ASC) Order by the idproductocolor column
  * @method ProductocolorQuery orderByIdproducto($order = Criteria::ASC) Order by the idproducto column
  * @method ProductocolorQuery orderByIdcolor($order = Criteria::ASC) Order by the idcolor column
- * @method ProductocolorQuery orderByProductocolorFoto($order = Criteria::ASC) Order by the productocolor_foto column
+ * @method ProductocolorQuery orderByProductocolorFotografia($order = Criteria::ASC) Order by the productocolor_fotografia column
  *
  * @method ProductocolorQuery groupByIdproductocolor() Group by the idproductocolor column
  * @method ProductocolorQuery groupByIdproducto() Group by the idproducto column
  * @method ProductocolorQuery groupByIdcolor() Group by the idcolor column
- * @method ProductocolorQuery groupByProductocolorFoto() Group by the productocolor_foto column
+ * @method ProductocolorQuery groupByProductocolorFotografia() Group by the productocolor_fotografia column
  *
  * @method ProductocolorQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProductocolorQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -37,12 +37,12 @@
  *
  * @method Productocolor findOneByIdproducto(int $idproducto) Return the first Productocolor filtered by the idproducto column
  * @method Productocolor findOneByIdcolor(int $idcolor) Return the first Productocolor filtered by the idcolor column
- * @method Productocolor findOneByProductocolorFoto(string $productocolor_foto) Return the first Productocolor filtered by the productocolor_foto column
+ * @method Productocolor findOneByProductocolorFotografia(string $productocolor_fotografia) Return the first Productocolor filtered by the productocolor_fotografia column
  *
  * @method array findByIdproductocolor(int $idproductocolor) Return Productocolor objects filtered by the idproductocolor column
  * @method array findByIdproducto(int $idproducto) Return Productocolor objects filtered by the idproducto column
  * @method array findByIdcolor(int $idcolor) Return Productocolor objects filtered by the idcolor column
- * @method array findByProductocolorFoto(string $productocolor_foto) Return Productocolor objects filtered by the productocolor_foto column
+ * @method array findByProductocolorFotografia(string $productocolor_fotografia) Return Productocolor objects filtered by the productocolor_fotografia column
  *
  * @package    propel.generator.zarely.om
  */
@@ -150,7 +150,7 @@ abstract class BaseProductocolorQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproductocolor`, `idproducto`, `idcolor`, `productocolor_foto` FROM `productocolor` WHERE `idproductocolor` = :p0';
+        $sql = 'SELECT `idproductocolor`, `idproducto`, `idcolor`, `productocolor_fotografia` FROM `productocolor` WHERE `idproductocolor` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -370,32 +370,32 @@ abstract class BaseProductocolorQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the productocolor_foto column
+     * Filter the query on the productocolor_fotografia column
      *
      * Example usage:
      * <code>
-     * $query->filterByProductocolorFoto('fooValue');   // WHERE productocolor_foto = 'fooValue'
-     * $query->filterByProductocolorFoto('%fooValue%'); // WHERE productocolor_foto LIKE '%fooValue%'
+     * $query->filterByProductocolorFotografia('fooValue');   // WHERE productocolor_fotografia = 'fooValue'
+     * $query->filterByProductocolorFotografia('%fooValue%'); // WHERE productocolor_fotografia LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $productocolorFoto The value to use as filter.
+     * @param     string $productocolorFotografia The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ProductocolorQuery The current query, for fluid interface
      */
-    public function filterByProductocolorFoto($productocolorFoto = null, $comparison = null)
+    public function filterByProductocolorFotografia($productocolorFotografia = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($productocolorFoto)) {
+            if (is_array($productocolorFotografia)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $productocolorFoto)) {
-                $productocolorFoto = str_replace('*', '%', $productocolorFoto);
+            } elseif (preg_match('/[\%\*]/', $productocolorFotografia)) {
+                $productocolorFotografia = str_replace('*', '%', $productocolorFotografia);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ProductocolorPeer::PRODUCTOCOLOR_FOTO, $productocolorFoto, $comparison);
+        return $this->addUsingAlias(ProductocolorPeer::PRODUCTOCOLOR_FOTOGRAFIA, $productocolorFotografia, $comparison);
     }
 
     /**

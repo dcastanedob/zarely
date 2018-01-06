@@ -35,8 +35,8 @@ abstract class BaseConfiguracionPeer
     /** the column name for the idconfiguracion field */
     const IDCONFIGURACION = 'configuracion.idconfiguracion';
 
-    /** the column name for the configuracion_ field */
-    const CONFIGURACION_ = 'configuracion.configuracion_';
+    /** the column name for the configuracion_descuentosat field */
+    const CONFIGURACION_DESCUENTOSAT = 'configuracion.configuracion_descuentosat';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -57,11 +57,11 @@ abstract class BaseConfiguracionPeer
      * e.g. ConfiguracionPeer::$fieldNames[ConfiguracionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idconfiguracion', 'Configuracion', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idconfiguracion', 'configuracion', ),
-        BasePeer::TYPE_COLNAME => array (ConfiguracionPeer::IDCONFIGURACION, ConfiguracionPeer::CONFIGURACION_, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCONFIGURACION', 'CONFIGURACION_', ),
-        BasePeer::TYPE_FIELDNAME => array ('idconfiguracion', 'configuracion_', ),
+        BasePeer::TYPE_PHPNAME => array ('Idconfiguracion', 'ConfiguracionDescuentosat', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idconfiguracion', 'configuracionDescuentosat', ),
+        BasePeer::TYPE_COLNAME => array (ConfiguracionPeer::IDCONFIGURACION, ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCONFIGURACION', 'CONFIGURACION_DESCUENTOSAT', ),
+        BasePeer::TYPE_FIELDNAME => array ('idconfiguracion', 'configuracion_descuentosat', ),
         BasePeer::TYPE_NUM => array (0, 1, )
     );
 
@@ -72,11 +72,11 @@ abstract class BaseConfiguracionPeer
      * e.g. ConfiguracionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idconfiguracion' => 0, 'Configuracion' => 1, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idconfiguracion' => 0, 'configuracion' => 1, ),
-        BasePeer::TYPE_COLNAME => array (ConfiguracionPeer::IDCONFIGURACION => 0, ConfiguracionPeer::CONFIGURACION_ => 1, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCONFIGURACION' => 0, 'CONFIGURACION_' => 1, ),
-        BasePeer::TYPE_FIELDNAME => array ('idconfiguracion' => 0, 'configuracion_' => 1, ),
+        BasePeer::TYPE_PHPNAME => array ('Idconfiguracion' => 0, 'ConfiguracionDescuentosat' => 1, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idconfiguracion' => 0, 'configuracionDescuentosat' => 1, ),
+        BasePeer::TYPE_COLNAME => array (ConfiguracionPeer::IDCONFIGURACION => 0, ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT => 1, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCONFIGURACION' => 0, 'CONFIGURACION_DESCUENTOSAT' => 1, ),
+        BasePeer::TYPE_FIELDNAME => array ('idconfiguracion' => 0, 'configuracion_descuentosat' => 1, ),
         BasePeer::TYPE_NUM => array (0, 1, )
     );
 
@@ -152,10 +152,10 @@ abstract class BaseConfiguracionPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(ConfiguracionPeer::IDCONFIGURACION);
-            $criteria->addSelectColumn(ConfiguracionPeer::CONFIGURACION_);
+            $criteria->addSelectColumn(ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT);
         } else {
             $criteria->addSelectColumn($alias . '.idconfiguracion');
-            $criteria->addSelectColumn($alias . '.configuracion_');
+            $criteria->addSelectColumn($alias . '.configuracion_descuentosat');
         }
     }
 

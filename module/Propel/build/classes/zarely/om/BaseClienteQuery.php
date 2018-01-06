@@ -105,7 +105,7 @@
  * @method Cliente findOneByClienteTipo(string $cliente_tipo) Return the first Cliente filtered by the cliente_tipo column
  * @method Cliente findOneByClienteFecharegistro(string $cliente_fecharegistro) Return the first Cliente filtered by the cliente_fecharegistro column
  * @method Cliente findOneByClienteEstatus(boolean $cliente_estatus) Return the first Cliente filtered by the cliente_estatus column
- * @method Cliente findOneByClienteCredito(int $cliente_credito) Return the first Cliente filtered by the cliente_credito column
+ * @method Cliente findOneByClienteCredito(boolean $cliente_credito) Return the first Cliente filtered by the cliente_credito column
  * @method Cliente findOneByClienteLimitecredito(string $cliente_limitecredito) Return the first Cliente filtered by the cliente_limitecredito column
  * @method Cliente findOneByClienteCreditorestante(string $cliente_creditorestante) Return the first Cliente filtered by the cliente_creditorestante column
  *
@@ -132,7 +132,7 @@
  * @method array findByClienteTipo(string $cliente_tipo) Return Cliente objects filtered by the cliente_tipo column
  * @method array findByClienteFecharegistro(string $cliente_fecharegistro) Return Cliente objects filtered by the cliente_fecharegistro column
  * @method array findByClienteEstatus(boolean $cliente_estatus) Return Cliente objects filtered by the cliente_estatus column
- * @method array findByClienteCredito(int $cliente_credito) Return Cliente objects filtered by the cliente_credito column
+ * @method array findByClienteCredito(boolean $cliente_credito) Return Cliente objects filtered by the cliente_credito column
  * @method array findByClienteLimitecredito(string $cliente_limitecredito) Return Cliente objects filtered by the cliente_limitecredito column
  * @method array findByClienteCreditorestante(string $cliente_creditorestante) Return Cliente objects filtered by the cliente_creditorestante column
  *
@@ -1028,38 +1028,23 @@ abstract class BaseClienteQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByClienteCredito(1234); // WHERE cliente_credito = 1234
-     * $query->filterByClienteCredito(array(12, 34)); // WHERE cliente_credito IN (12, 34)
-     * $query->filterByClienteCredito(array('min' => 12)); // WHERE cliente_credito >= 12
-     * $query->filterByClienteCredito(array('max' => 12)); // WHERE cliente_credito <= 12
+     * $query->filterByClienteCredito(true); // WHERE cliente_credito = true
+     * $query->filterByClienteCredito('yes'); // WHERE cliente_credito = true
      * </code>
      *
-     * @param     mixed $clienteCredito The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     boolean|string $clienteCredito The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ClienteQuery The current query, for fluid interface
      */
     public function filterByClienteCredito($clienteCredito = null, $comparison = null)
     {
-        if (is_array($clienteCredito)) {
-            $useMinMax = false;
-            if (isset($clienteCredito['min'])) {
-                $this->addUsingAlias(ClientePeer::CLIENTE_CREDITO, $clienteCredito['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($clienteCredito['max'])) {
-                $this->addUsingAlias(ClientePeer::CLIENTE_CREDITO, $clienteCredito['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
+        if (is_string($clienteCredito)) {
+            $clienteCredito = in_array(strtolower($clienteCredito), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(ClientePeer::CLIENTE_CREDITO, $clienteCredito, $comparison);

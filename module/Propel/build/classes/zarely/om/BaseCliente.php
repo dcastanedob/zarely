@@ -169,7 +169,7 @@ abstract class BaseCliente extends BaseObject implements Persistent
 
     /**
      * The value for the cliente_credito field.
-     * @var        int
+     * @var        boolean
      */
     protected $cliente_credito;
 
@@ -538,7 +538,7 @@ abstract class BaseCliente extends BaseObject implements Persistent
     /**
      * Get the [cliente_credito] column value.
      *
-     * @return int
+     * @return boolean
      */
     public function getClienteCredito()
     {
@@ -1062,15 +1062,23 @@ abstract class BaseCliente extends BaseObject implements Persistent
     } // setClienteEstatus()
 
     /**
-     * Set the value of [cliente_credito] column.
+     * Sets the value of the [cliente_credito] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      *
-     * @param  int $v new value
+     * @param boolean|integer|string $v The new value
      * @return Cliente The current object (for fluent API support)
      */
     public function setClienteCredito($v)
     {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
         }
 
         if ($this->cliente_credito !== $v) {
@@ -1179,7 +1187,7 @@ abstract class BaseCliente extends BaseObject implements Persistent
             $this->cliente_tipo = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
             $this->cliente_fecharegistro = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
             $this->cliente_estatus = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
-            $this->cliente_credito = ($row[$startcol + 23] !== null) ? (int) $row[$startcol + 23] : null;
+            $this->cliente_credito = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
             $this->cliente_limitecredito = ($row[$startcol + 24] !== null) ? (string) $row[$startcol + 24] : null;
             $this->cliente_creditorestante = ($row[$startcol + 25] !== null) ? (string) $row[$startcol + 25] : null;
             $this->resetModified();
@@ -1638,7 +1646,7 @@ abstract class BaseCliente extends BaseObject implements Persistent
                         $stmt->bindValue($identifier, (int) $this->cliente_estatus, PDO::PARAM_INT);
                         break;
                     case '`cliente_credito`':
-                        $stmt->bindValue($identifier, $this->cliente_credito, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->cliente_credito, PDO::PARAM_INT);
                         break;
                     case '`cliente_limitecredito`':
                         $stmt->bindValue($identifier, $this->cliente_limitecredito, PDO::PARAM_STR);

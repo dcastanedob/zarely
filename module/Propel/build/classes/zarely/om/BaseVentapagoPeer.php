@@ -63,7 +63,6 @@ abstract class BaseVentapagoPeer
     const VENTAPAGO_METODODEPAGO_EFECTIVO = 'efectivo';
     const VENTAPAGO_METODODEPAGO_VALES = 'vales';
     const VENTAPAGO_METODODEPAGO_TARJETA = 'tarjeta';
-    const VENTAPAGO_METODODEPAGO_PUNTOS = 'puntos';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -113,7 +112,6 @@ abstract class BaseVentapagoPeer
             VentapagoPeer::VENTAPAGO_METODODEPAGO_EFECTIVO,
             VentapagoPeer::VENTAPAGO_METODODEPAGO_VALES,
             VentapagoPeer::VENTAPAGO_METODODEPAGO_TARJETA,
-            VentapagoPeer::VENTAPAGO_METODODEPAGO_PUNTOS,
         ),
     );
 

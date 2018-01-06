@@ -7,10 +7,10 @@
  *
  *
  * @method ConfiguracionQuery orderByIdconfiguracion($order = Criteria::ASC) Order by the idconfiguracion column
- * @method ConfiguracionQuery orderByConfiguracion($order = Criteria::ASC) Order by the configuracion_ column
+ * @method ConfiguracionQuery orderByConfiguracionDescuentosat($order = Criteria::ASC) Order by the configuracion_descuentosat column
  *
  * @method ConfiguracionQuery groupByIdconfiguracion() Group by the idconfiguracion column
- * @method ConfiguracionQuery groupByConfiguracion() Group by the configuracion_ column
+ * @method ConfiguracionQuery groupByConfiguracionDescuentosat() Group by the configuracion_descuentosat column
  *
  * @method ConfiguracionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ConfiguracionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -19,10 +19,10 @@
  * @method Configuracion findOne(PropelPDO $con = null) Return the first Configuracion matching the query
  * @method Configuracion findOneOrCreate(PropelPDO $con = null) Return the first Configuracion matching the query, or a new Configuracion object populated from the query conditions when no match is found
  *
- * @method Configuracion findOneByConfiguracion(string $configuracion_) Return the first Configuracion filtered by the configuracion_ column
+ * @method Configuracion findOneByConfiguracionDescuentosat(double $configuracion_descuentosat) Return the first Configuracion filtered by the configuracion_descuentosat column
  *
  * @method array findByIdconfiguracion(int $idconfiguracion) Return Configuracion objects filtered by the idconfiguracion column
- * @method array findByConfiguracion(string $configuracion_) Return Configuracion objects filtered by the configuracion_ column
+ * @method array findByConfiguracionDescuentosat(double $configuracion_descuentosat) Return Configuracion objects filtered by the configuracion_descuentosat column
  *
  * @package    propel.generator.zarely.om
  */
@@ -130,7 +130,7 @@ abstract class BaseConfiguracionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idconfiguracion`, `configuracion_` FROM `configuracion` WHERE `idconfiguracion` = :p0';
+        $sql = 'SELECT `idconfiguracion`, `configuracion_descuentosat` FROM `configuracion` WHERE `idconfiguracion` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -262,32 +262,45 @@ abstract class BaseConfiguracionQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the configuracion_ column
+     * Filter the query on the configuracion_descuentosat column
      *
      * Example usage:
      * <code>
-     * $query->filterByConfiguracion('fooValue');   // WHERE configuracion_ = 'fooValue'
-     * $query->filterByConfiguracion('%fooValue%'); // WHERE configuracion_ LIKE '%fooValue%'
+     * $query->filterByConfiguracionDescuentosat(1234); // WHERE configuracion_descuentosat = 1234
+     * $query->filterByConfiguracionDescuentosat(array(12, 34)); // WHERE configuracion_descuentosat IN (12, 34)
+     * $query->filterByConfiguracionDescuentosat(array('min' => 12)); // WHERE configuracion_descuentosat >= 12
+     * $query->filterByConfiguracionDescuentosat(array('max' => 12)); // WHERE configuracion_descuentosat <= 12
      * </code>
      *
-     * @param     string $configuracion The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     mixed $configuracionDescuentosat The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ConfiguracionQuery The current query, for fluid interface
      */
-    public function filterByConfiguracion($configuracion = null, $comparison = null)
+    public function filterByConfiguracionDescuentosat($configuracionDescuentosat = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($configuracion)) {
+        if (is_array($configuracionDescuentosat)) {
+            $useMinMax = false;
+            if (isset($configuracionDescuentosat['min'])) {
+                $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT, $configuracionDescuentosat['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($configuracionDescuentosat['max'])) {
+                $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT, $configuracionDescuentosat['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $configuracion)) {
-                $configuracion = str_replace('*', '%', $configuracion);
-                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_, $configuracion, $comparison);
+        return $this->addUsingAlias(ConfiguracionPeer::CONFIGURACION_DESCUENTOSAT, $configuracionDescuentosat, $comparison);
     }
 
     /**

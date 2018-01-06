@@ -36,7 +36,7 @@ class CompradetalleTableMap extends TableMap
         $this->setPhpName('Compradetalle');
         $this->setClassname('Compradetalle');
         $this->setPackage('zarely');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('idcompradetalle', 'Idcompradetalle', 'INTEGER', true, null, null);
         $this->addForeignKey('idcompra', 'Idcompra', 'INTEGER', 'compra', 'idcompra', true, null, null);
@@ -44,7 +44,7 @@ class CompradetalleTableMap extends TableMap
         $this->addColumn('compradetalle_cantidad', 'CompradetalleCantidad', 'DECIMAL', true, 10, null);
         $this->addColumn('compradetalle_preciounitario', 'CompradetallePreciounitario', 'DECIMAL', true, 10, null);
         $this->addColumn('compradetalle_subtotal', 'CompradetalleSubtotal', 'DECIMAL', true, 10, null);
-        $this->addColumn('compradetalle_costo', 'CompradetalleCosto', 'VARCHAR', true, 45, null);
+        $this->addColumn('compradetalle_costo', 'CompradetalleCosto', 'DECIMAL', true, 10, null);
         // validators
     } // initialize()
 

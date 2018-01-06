@@ -53,6 +53,7 @@ class PromocionTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Promociondetalle', 'Promociondetalle', RelationMap::ONE_TO_MANY, array('idpromocion' => 'idpromocion', ), 'CASCADE', 'CASCADE', 'Promociondetalles');
+        $this->addRelation('Ventadetalle', 'Ventadetalle', RelationMap::ONE_TO_MANY, array('idpromocion' => 'idpromocion', ), 'CASCADE', 'CASCADE', 'Ventadetalles');
     } // buildRelations()
 
 } // PromocionTableMap

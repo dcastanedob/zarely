@@ -16,8 +16,8 @@
  * @method CuentabancariamovimientoQuery orderByCuentabancariamovimientoFechamovimiento($order = Criteria::ASC) Order by the cuentabancariamovimiento_fechamovimiento column
  * @method CuentabancariamovimientoQuery orderByCuentabancariamovimientoFechacreacion($order = Criteria::ASC) Order by the cuentabancariamovimiento_fechacreacion column
  * @method CuentabancariamovimientoQuery orderByCuentabancariamovimientoBalance($order = Criteria::ASC) Order by the cuentabancariamovimiento_balance column
+ * @method CuentabancariamovimientoQuery orderByCuentabancariamovimientoTipo($order = Criteria::ASC) Order by the cuentabancariamovimiento_tipo column
  * @method CuentabancariamovimientoQuery orderByCuentabancariamovimientoReferencia($order = Criteria::ASC) Order by the cuentabancariamovimiento_referencia column
- * @method CuentabancariamovimientoQuery orderByCuentabancariamovimientoMedio($order = Criteria::ASC) Order by the cuentabancariamovimiento_medio column
  *
  * @method CuentabancariamovimientoQuery groupByIdcuentabancariamovimiento() Group by the idcuentabancariamovimiento column
  * @method CuentabancariamovimientoQuery groupByIdcuentabancaria() Group by the idcuentabancaria column
@@ -29,8 +29,8 @@
  * @method CuentabancariamovimientoQuery groupByCuentabancariamovimientoFechamovimiento() Group by the cuentabancariamovimiento_fechamovimiento column
  * @method CuentabancariamovimientoQuery groupByCuentabancariamovimientoFechacreacion() Group by the cuentabancariamovimiento_fechacreacion column
  * @method CuentabancariamovimientoQuery groupByCuentabancariamovimientoBalance() Group by the cuentabancariamovimiento_balance column
+ * @method CuentabancariamovimientoQuery groupByCuentabancariamovimientoTipo() Group by the cuentabancariamovimiento_tipo column
  * @method CuentabancariamovimientoQuery groupByCuentabancariamovimientoReferencia() Group by the cuentabancariamovimiento_referencia column
- * @method CuentabancariamovimientoQuery groupByCuentabancariamovimientoMedio() Group by the cuentabancariamovimiento_medio column
  *
  * @method CuentabancariamovimientoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method CuentabancariamovimientoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -56,8 +56,8 @@
  * @method Cuentabancariamovimiento findOneByCuentabancariamovimientoFechamovimiento(string $cuentabancariamovimiento_fechamovimiento) Return the first Cuentabancariamovimiento filtered by the cuentabancariamovimiento_fechamovimiento column
  * @method Cuentabancariamovimiento findOneByCuentabancariamovimientoFechacreacion(string $cuentabancariamovimiento_fechacreacion) Return the first Cuentabancariamovimiento filtered by the cuentabancariamovimiento_fechacreacion column
  * @method Cuentabancariamovimiento findOneByCuentabancariamovimientoBalance(string $cuentabancariamovimiento_balance) Return the first Cuentabancariamovimiento filtered by the cuentabancariamovimiento_balance column
+ * @method Cuentabancariamovimiento findOneByCuentabancariamovimientoTipo(string $cuentabancariamovimiento_tipo) Return the first Cuentabancariamovimiento filtered by the cuentabancariamovimiento_tipo column
  * @method Cuentabancariamovimiento findOneByCuentabancariamovimientoReferencia(string $cuentabancariamovimiento_referencia) Return the first Cuentabancariamovimiento filtered by the cuentabancariamovimiento_referencia column
- * @method Cuentabancariamovimiento findOneByCuentabancariamovimientoMedio(string $cuentabancariamovimiento_medio) Return the first Cuentabancariamovimiento filtered by the cuentabancariamovimiento_medio column
  *
  * @method array findByIdcuentabancariamovimiento(int $idcuentabancariamovimiento) Return Cuentabancariamovimiento objects filtered by the idcuentabancariamovimiento column
  * @method array findByIdcuentabancaria(int $idcuentabancaria) Return Cuentabancariamovimiento objects filtered by the idcuentabancaria column
@@ -69,8 +69,8 @@
  * @method array findByCuentabancariamovimientoFechamovimiento(string $cuentabancariamovimiento_fechamovimiento) Return Cuentabancariamovimiento objects filtered by the cuentabancariamovimiento_fechamovimiento column
  * @method array findByCuentabancariamovimientoFechacreacion(string $cuentabancariamovimiento_fechacreacion) Return Cuentabancariamovimiento objects filtered by the cuentabancariamovimiento_fechacreacion column
  * @method array findByCuentabancariamovimientoBalance(string $cuentabancariamovimiento_balance) Return Cuentabancariamovimiento objects filtered by the cuentabancariamovimiento_balance column
+ * @method array findByCuentabancariamovimientoTipo(string $cuentabancariamovimiento_tipo) Return Cuentabancariamovimiento objects filtered by the cuentabancariamovimiento_tipo column
  * @method array findByCuentabancariamovimientoReferencia(string $cuentabancariamovimiento_referencia) Return Cuentabancariamovimiento objects filtered by the cuentabancariamovimiento_referencia column
- * @method array findByCuentabancariamovimientoMedio(string $cuentabancariamovimiento_medio) Return Cuentabancariamovimiento objects filtered by the cuentabancariamovimiento_medio column
  *
  * @package    propel.generator.zarely.om
  */
@@ -178,7 +178,7 @@ abstract class BaseCuentabancariamovimientoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idcuentabancariamovimiento`, `idcuentabancaria`, `idempleado`, `cuentabancariamovimiento_proceso`, `idproceso`, `cuentabancariamovimiento_cantidad`, `cuentabancariamovimiento_comprobante`, `cuentabancariamovimiento_fechamovimiento`, `cuentabancariamovimiento_fechacreacion`, `cuentabancariamovimiento_balance`, `cuentabancariamovimiento_referencia`, `cuentabancariamovimiento_medio` FROM `cuentabancariamovimiento` WHERE `idcuentabancariamovimiento` = :p0';
+        $sql = 'SELECT `idcuentabancariamovimiento`, `idcuentabancaria`, `idempleado`, `cuentabancariamovimiento_proceso`, `idproceso`, `cuentabancariamovimiento_cantidad`, `cuentabancariamovimiento_comprobante`, `cuentabancariamovimiento_fechamovimiento`, `cuentabancariamovimiento_fechacreacion`, `cuentabancariamovimiento_balance`, `cuentabancariamovimiento_tipo`, `cuentabancariamovimiento_referencia` FROM `cuentabancariamovimiento` WHERE `idcuentabancariamovimiento` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -668,6 +668,35 @@ abstract class BaseCuentabancariamovimientoQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the cuentabancariamovimiento_tipo column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCuentabancariamovimientoTipo('fooValue');   // WHERE cuentabancariamovimiento_tipo = 'fooValue'
+     * $query->filterByCuentabancariamovimientoTipo('%fooValue%'); // WHERE cuentabancariamovimiento_tipo LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $cuentabancariamovimientoTipo The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CuentabancariamovimientoQuery The current query, for fluid interface
+     */
+    public function filterByCuentabancariamovimientoTipo($cuentabancariamovimientoTipo = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($cuentabancariamovimientoTipo)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $cuentabancariamovimientoTipo)) {
+                $cuentabancariamovimientoTipo = str_replace('*', '%', $cuentabancariamovimientoTipo);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_TIPO, $cuentabancariamovimientoTipo, $comparison);
+    }
+
+    /**
      * Filter the query on the cuentabancariamovimiento_referencia column
      *
      * Example usage:
@@ -694,35 +723,6 @@ abstract class BaseCuentabancariamovimientoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_REFERENCIA, $cuentabancariamovimientoReferencia, $comparison);
-    }
-
-    /**
-     * Filter the query on the cuentabancariamovimiento_medio column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCuentabancariamovimientoMedio('fooValue');   // WHERE cuentabancariamovimiento_medio = 'fooValue'
-     * $query->filterByCuentabancariamovimientoMedio('%fooValue%'); // WHERE cuentabancariamovimiento_medio LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $cuentabancariamovimientoMedio The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return CuentabancariamovimientoQuery The current query, for fluid interface
-     */
-    public function filterByCuentabancariamovimientoMedio($cuentabancariamovimientoMedio = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($cuentabancariamovimientoMedio)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $cuentabancariamovimientoMedio)) {
-                $cuentabancariamovimientoMedio = str_replace('*', '%', $cuentabancariamovimientoMedio);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(CuentabancariamovimientoPeer::CUENTABANCARIAMOVIMIENTO_MEDIO, $cuentabancariamovimientoMedio, $comparison);
     }
 
     /**

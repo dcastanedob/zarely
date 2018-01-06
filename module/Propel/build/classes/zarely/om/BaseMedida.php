@@ -37,7 +37,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
 
     /**
      * The value for the medida_nombre field.
-     * @var        string
+     * @var        boolean
      */
     protected $medida_nombre;
 
@@ -79,15 +79,9 @@ abstract class BaseMedida extends BaseObject implements Persistent
 
     /**
      * The value for the medida_unitalla field.
-     * @var        boolean
-     */
-    protected $medida_unitalla;
-
-    /**
-     * The value for the medidasrango field.
      * @var        string
      */
-    protected $medidasrango;
+    protected $medida_unitalla;
 
     /**
      * @var        PropelObjectCollection|Productomedida[] Collection to store aggregation of Productomedida objects.
@@ -135,7 +129,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
     /**
      * Get the [medida_nombre] column value.
      *
-     * @return string
+     * @return boolean
      */
     public function getMedidaNombre()
     {
@@ -212,23 +206,12 @@ abstract class BaseMedida extends BaseObject implements Persistent
     /**
      * Get the [medida_unitalla] column value.
      *
-     * @return boolean
+     * @return string
      */
     public function getMedidaUnitalla()
     {
 
         return $this->medida_unitalla;
-    }
-
-    /**
-     * Get the [medidasrango] column value.
-     *
-     * @return string
-     */
-    public function getMedidasrango()
-    {
-
-        return $this->medidasrango;
     }
 
     /**
@@ -253,15 +236,23 @@ abstract class BaseMedida extends BaseObject implements Persistent
     } // setIdmedida()
 
     /**
-     * Set the value of [medida_nombre] column.
+     * Sets the value of the [medida_nombre] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      *
-     * @param  string $v new value
+     * @param boolean|integer|string $v The new value
      * @return Medida The current object (for fluent API support)
      */
     public function setMedidaNombre($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
         }
 
         if ($this->medida_nombre !== $v) {
@@ -448,23 +439,15 @@ abstract class BaseMedida extends BaseObject implements Persistent
     } // setMedidaXxl()
 
     /**
-     * Sets the value of the [medida_unitalla] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * Set the value of [medida_unitalla] column.
      *
-     * @param boolean|integer|string $v The new value
+     * @param  string $v new value
      * @return Medida The current object (for fluent API support)
      */
     public function setMedidaUnitalla($v)
     {
         if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
+            $v = (string) $v;
         }
 
         if ($this->medida_unitalla !== $v) {
@@ -475,27 +458,6 @@ abstract class BaseMedida extends BaseObject implements Persistent
 
         return $this;
     } // setMedidaUnitalla()
-
-    /**
-     * Set the value of [medidasrango] column.
-     *
-     * @param  string $v new value
-     * @return Medida The current object (for fluent API support)
-     */
-    public function setMedidasrango($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->medidasrango !== $v) {
-            $this->medidasrango = $v;
-            $this->modifiedColumns[] = MedidaPeer::MEDIDASRANGO;
-        }
-
-
-        return $this;
-    } // setMedidasrango()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -530,15 +492,14 @@ abstract class BaseMedida extends BaseObject implements Persistent
         try {
 
             $this->idmedida = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->medida_nombre = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->medida_nombre = ($row[$startcol + 1] !== null) ? (boolean) $row[$startcol + 1] : null;
             $this->medida_xs = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
             $this->medida_s = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
             $this->medida_m = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
             $this->medida_l = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
             $this->medida_xl = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
             $this->medida_xxl = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-            $this->medida_unitalla = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
-            $this->medidasrango = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->medida_unitalla = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -548,7 +509,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 10; // 10 = MedidaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = MedidaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Medida object", $e);
@@ -806,9 +767,6 @@ abstract class BaseMedida extends BaseObject implements Persistent
         if ($this->isColumnModified(MedidaPeer::MEDIDA_UNITALLA)) {
             $modifiedColumns[':p' . $index++]  = '`medida_unitalla`';
         }
-        if ($this->isColumnModified(MedidaPeer::MEDIDASRANGO)) {
-            $modifiedColumns[':p' . $index++]  = '`medidasrango`';
-        }
 
         $sql = sprintf(
             'INSERT INTO `medida` (%s) VALUES (%s)',
@@ -824,7 +782,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
                         $stmt->bindValue($identifier, $this->idmedida, PDO::PARAM_INT);
                         break;
                     case '`medida_nombre`':
-                        $stmt->bindValue($identifier, $this->medida_nombre, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, (int) $this->medida_nombre, PDO::PARAM_INT);
                         break;
                     case '`medida_xs`':
                         $stmt->bindValue($identifier, (int) $this->medida_xs, PDO::PARAM_INT);
@@ -845,10 +803,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
                         $stmt->bindValue($identifier, (int) $this->medida_xxl, PDO::PARAM_INT);
                         break;
                     case '`medida_unitalla`':
-                        $stmt->bindValue($identifier, (int) $this->medida_unitalla, PDO::PARAM_INT);
-                        break;
-                    case '`medidasrango`':
-                        $stmt->bindValue($identifier, $this->medidasrango, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->medida_unitalla, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1019,9 +974,6 @@ abstract class BaseMedida extends BaseObject implements Persistent
             case 8:
                 return $this->getMedidaUnitalla();
                 break;
-            case 9:
-                return $this->getMedidasrango();
-                break;
             default:
                 return null;
                 break;
@@ -1060,7 +1012,6 @@ abstract class BaseMedida extends BaseObject implements Persistent
             $keys[6] => $this->getMedidaXl(),
             $keys[7] => $this->getMedidaXxl(),
             $keys[8] => $this->getMedidaUnitalla(),
-            $keys[9] => $this->getMedidasrango(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1132,9 +1083,6 @@ abstract class BaseMedida extends BaseObject implements Persistent
             case 8:
                 $this->setMedidaUnitalla($value);
                 break;
-            case 9:
-                $this->setMedidasrango($value);
-                break;
         } // switch()
     }
 
@@ -1168,7 +1116,6 @@ abstract class BaseMedida extends BaseObject implements Persistent
         if (array_key_exists($keys[6], $arr)) $this->setMedidaXl($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setMedidaXxl($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setMedidaUnitalla($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setMedidasrango($arr[$keys[9]]);
     }
 
     /**
@@ -1189,7 +1136,6 @@ abstract class BaseMedida extends BaseObject implements Persistent
         if ($this->isColumnModified(MedidaPeer::MEDIDA_XL)) $criteria->add(MedidaPeer::MEDIDA_XL, $this->medida_xl);
         if ($this->isColumnModified(MedidaPeer::MEDIDA_XXL)) $criteria->add(MedidaPeer::MEDIDA_XXL, $this->medida_xxl);
         if ($this->isColumnModified(MedidaPeer::MEDIDA_UNITALLA)) $criteria->add(MedidaPeer::MEDIDA_UNITALLA, $this->medida_unitalla);
-        if ($this->isColumnModified(MedidaPeer::MEDIDASRANGO)) $criteria->add(MedidaPeer::MEDIDASRANGO, $this->medidasrango);
 
         return $criteria;
     }
@@ -1261,7 +1207,6 @@ abstract class BaseMedida extends BaseObject implements Persistent
         $copyObj->setMedidaXl($this->getMedidaXl());
         $copyObj->setMedidaXxl($this->getMedidaXxl());
         $copyObj->setMedidaUnitalla($this->getMedidaUnitalla());
-        $copyObj->setMedidasrango($this->getMedidasrango());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1606,7 +1551,6 @@ abstract class BaseMedida extends BaseObject implements Persistent
         $this->medida_xl = null;
         $this->medida_xxl = null;
         $this->medida_unitalla = null;
-        $this->medidasrango = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

@@ -48,10 +48,10 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
     protected $idcolor;
 
     /**
-     * The value for the productocolor_foto field.
+     * The value for the productocolor_fotografia field.
      * @var        string
      */
-    protected $productocolor_foto;
+    protected $productocolor_fotografia;
 
     /**
      * @var        Color
@@ -129,14 +129,14 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [productocolor_foto] column value.
+     * Get the [productocolor_fotografia] column value.
      *
      * @return string
      */
-    public function getProductocolorFoto()
+    public function getProductocolorFotografia()
     {
 
-        return $this->productocolor_foto;
+        return $this->productocolor_fotografia;
     }
 
     /**
@@ -211,25 +211,25 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
     } // setIdcolor()
 
     /**
-     * Set the value of [productocolor_foto] column.
+     * Set the value of [productocolor_fotografia] column.
      *
      * @param  string $v new value
      * @return Productocolor The current object (for fluent API support)
      */
-    public function setProductocolorFoto($v)
+    public function setProductocolorFotografia($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->productocolor_foto !== $v) {
-            $this->productocolor_foto = $v;
-            $this->modifiedColumns[] = ProductocolorPeer::PRODUCTOCOLOR_FOTO;
+        if ($this->productocolor_fotografia !== $v) {
+            $this->productocolor_fotografia = $v;
+            $this->modifiedColumns[] = ProductocolorPeer::PRODUCTOCOLOR_FOTOGRAFIA;
         }
 
 
         return $this;
-    } // setProductocolorFoto()
+    } // setProductocolorFotografia()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -266,7 +266,7 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
             $this->idproductocolor = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idproducto = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->idcolor = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->productocolor_foto = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->productocolor_fotografia = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -543,8 +543,8 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductocolorPeer::IDCOLOR)) {
             $modifiedColumns[':p' . $index++]  = '`idcolor`';
         }
-        if ($this->isColumnModified(ProductocolorPeer::PRODUCTOCOLOR_FOTO)) {
-            $modifiedColumns[':p' . $index++]  = '`productocolor_foto`';
+        if ($this->isColumnModified(ProductocolorPeer::PRODUCTOCOLOR_FOTOGRAFIA)) {
+            $modifiedColumns[':p' . $index++]  = '`productocolor_fotografia`';
         }
 
         $sql = sprintf(
@@ -566,8 +566,8 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
                     case '`idcolor`':
                         $stmt->bindValue($identifier, $this->idcolor, PDO::PARAM_INT);
                         break;
-                    case '`productocolor_foto`':
-                        $stmt->bindValue($identifier, $this->productocolor_foto, PDO::PARAM_STR);
+                    case '`productocolor_fotografia`':
+                        $stmt->bindValue($identifier, $this->productocolor_fotografia, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -739,7 +739,7 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
                 return $this->getIdcolor();
                 break;
             case 3:
-                return $this->getProductocolorFoto();
+                return $this->getProductocolorFotografia();
                 break;
             default:
                 return null;
@@ -773,7 +773,7 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
             $keys[0] => $this->getIdproductocolor(),
             $keys[1] => $this->getIdproducto(),
             $keys[2] => $this->getIdcolor(),
-            $keys[3] => $this->getProductocolorFoto(),
+            $keys[3] => $this->getProductocolorFotografia(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -834,7 +834,7 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
                 $this->setIdcolor($value);
                 break;
             case 3:
-                $this->setProductocolorFoto($value);
+                $this->setProductocolorFotografia($value);
                 break;
         } // switch()
     }
@@ -863,7 +863,7 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setIdproductocolor($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdproducto($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setIdcolor($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setProductocolorFoto($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setProductocolorFotografia($arr[$keys[3]]);
     }
 
     /**
@@ -878,7 +878,7 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductocolorPeer::IDPRODUCTOCOLOR)) $criteria->add(ProductocolorPeer::IDPRODUCTOCOLOR, $this->idproductocolor);
         if ($this->isColumnModified(ProductocolorPeer::IDPRODUCTO)) $criteria->add(ProductocolorPeer::IDPRODUCTO, $this->idproducto);
         if ($this->isColumnModified(ProductocolorPeer::IDCOLOR)) $criteria->add(ProductocolorPeer::IDCOLOR, $this->idcolor);
-        if ($this->isColumnModified(ProductocolorPeer::PRODUCTOCOLOR_FOTO)) $criteria->add(ProductocolorPeer::PRODUCTOCOLOR_FOTO, $this->productocolor_foto);
+        if ($this->isColumnModified(ProductocolorPeer::PRODUCTOCOLOR_FOTOGRAFIA)) $criteria->add(ProductocolorPeer::PRODUCTOCOLOR_FOTOGRAFIA, $this->productocolor_fotografia);
 
         return $criteria;
     }
@@ -944,7 +944,7 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
     {
         $copyObj->setIdproducto($this->getIdproducto());
         $copyObj->setIdcolor($this->getIdcolor());
-        $copyObj->setProductocolorFoto($this->getProductocolorFoto());
+        $copyObj->setProductocolorFotografia($this->getProductocolorFotografia());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1412,7 +1412,7 @@ abstract class BaseProductocolor extends BaseObject implements Persistent
         $this->idproductocolor = null;
         $this->idproducto = null;
         $this->idcolor = null;
-        $this->productocolor_foto = null;
+        $this->productocolor_fotografia = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

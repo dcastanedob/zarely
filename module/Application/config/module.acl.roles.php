@@ -23,13 +23,18 @@ return array(
         'auth',
         'login/select',
         'login',
-        'mayoristas-sucursal',
         'puntodeventa',
-        'reporte',
-        'transferencias-sucursal',
-        'mayoristas',
-        'transferencias',
         'json',
+
+        ///inventarios
+        'precios-sucursal',
+        'reordenes-sucursal',
+        'existencias-sucursal',
+        'enreorden-sucursal',
+        'enreorden',
+        'precios',
+        'existencias',
+        'reordenes'
 
         
     ),
@@ -55,9 +60,21 @@ return array(
         //Json
         'json',
 
+        'codigodebarras',
+
+        //transferencias
+        'transferencias',
+        'transferencias-sucursal',
+
         //flujo efectivo
         'porpagar',
         'porcobrar',   
+
+        //compras
+        'comprasgenerales',
+
+         //devoluciones
+        'devolucionesgenerales',
 
         //inventarios
         'precios',
@@ -77,8 +94,19 @@ return array(
 
         //flujo efectivo
         'porpagar',
-        'porcobrar', 
+        'porcobrar',
 
+        //compras
+        'comprasgenerales',
+
+         //devoluciones
+        'devolucionesgenerales', 
+
+        'codigodebarras',
+
+        //transferencias
+        'transferencias',
+        'transferencias-sucursal',
 
         //pedidos
         'mayoristas',
@@ -179,7 +207,8 @@ return array(
         //reportes 
         'reporte-administracion-comparacion',
         'reporte-administracion-remision',
-        'reporte-bodega'
+        'reporte-bodega',
+        'configuraciones'
 
     ),
 
@@ -280,6 +309,15 @@ return array(
         'mayoristas',
         'transferencias',
         'json',
+        ///inventarios
+        'precios-sucursal',
+        'reordenes-sucursal',
+        'existencias-sucursal',
+        'enreorden-sucursal',
+        'enreorden',
+        'precios',
+        'existencias',
+        'reordenes'
 
     ),
 );

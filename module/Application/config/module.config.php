@@ -571,6 +571,18 @@ return array(
             ),
 
 
+            'configuraciones' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/configuraciones[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Configuraciones\Controller\Configuraciones',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -686,6 +698,7 @@ return array(
             'Application\Reporte\Controller\ReporteAdministracionComparacion' => 'Application\Reporte\Controller\ReporteAdministracionComparacionController',
             'Application\Reporte\Controller\ReporteAdministracionRemision' => 'Application\Reporte\Controller\ReporteAdministracionRemisionController',
             'Application\Reporte\Controller\ReporteAdministracionBodega' => 'Application\Reporte\Controller\ReporteAdministracionBodegaController',
+            'Application\Configuraciones\Controller\Configuraciones' => 'Application\Configuraciones\Controller\ConfiguracionesController',
 
 
 

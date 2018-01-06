@@ -59,6 +59,7 @@ class DescuentoTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Descuentodetalle', 'Descuentodetalle', RelationMap::ONE_TO_MANY, array('iddescuento' => 'iddescuento', ), 'CASCADE', 'CASCADE', 'Descuentodetalles');
+        $this->addRelation('Ventadetalle', 'Ventadetalle', RelationMap::ONE_TO_MANY, array('iddescuento' => 'iddescuento', ), 'CASCADE', 'CASCADE', 'Ventadetalles');
     } // buildRelations()
 
 } // DescuentoTableMap

@@ -413,7 +413,7 @@ class ProductosController extends AbstractActionController
                     move_uploaded_file($post_files['uploadedfile'.$value]['tmp_name'], $_SERVER['DOCUMENT_ROOT'].'/img/productocolor/'.$productocolor->getIdproductocolor().'.'.$file_type);
 
 
-                    $productocolor->setProductocolorFoto('/img/productocolor/'.$productocolor->getIdproductocolor().'.'.$file_type)->save();
+                    $productocolor->setProductocolorFotografia('/img/productocolor/'.$productocolor->getIdproductocolor().'.'.$file_type)->save();
                 }
 
                 array_push($productoColorId, $productocolor->getIdproductocolor());
