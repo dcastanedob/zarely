@@ -213,7 +213,7 @@ class CodigoDeBarrasProductoController extends AbstractActionController
         file_put_contents($_SERVER['DOCUMENT_ROOT'].'/barcode.png', $generator->getBarcode($pv->getProductovarianteCodigobarras(), $generator::TYPE_CODE_128));
 
 
-        $barcode = '<font style="background: black;color: white;" size="5">ZAPATERÍA ZARELY</font>'. '<br><img src="/barcode.png"><br>' . $information
+        $barcode = '<font style="background: black;color: white;" size="4">ZAPATERÍA ZARELY</font>'. '<br><img src="/barcode.png"><br>' . $information
         ; 
         return $barcode;
     }

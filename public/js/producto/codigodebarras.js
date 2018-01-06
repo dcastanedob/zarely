@@ -146,26 +146,6 @@
 
                            window.location.href = "/producto/codigodebarras/imprimir?id="+id+"&"+str;
 
-                           /* $.ajax({
-                              url:'/producto/codigodebarras/imprimir',
-                              type: 'POST',
-                              dataType: 'json',
-                              data:result,
-                              success: function(data){
-                                if(data.response){
-                                  var printContents = data.base64;
-                                  var originalContents = document.body.innerHTML;
-
-                                  document.body.innerHTML = printContents;
-
-                                  window.print();
-
-                                  document.body.innerHTML = originalContents;
-                                }
-                                
-                              },
-
-                          })*/
 
 
                         });
