@@ -84,12 +84,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
     protected $transferencia_fecharecepcion;
 
     /**
-     * The value for the transferencia_razon field.
-     * @var        string
-     */
-    protected $transferencia_razon;
-
-    /**
      * @var        Empleado
      */
     protected $aEmpleadoRelatedByIdempleadocreador;
@@ -296,17 +290,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
 
         return $dt->format($format);
 
-    }
-
-    /**
-     * Get the [transferencia_razon] column value.
-     *
-     * @return string
-     */
-    public function getTransferenciaRazon()
-    {
-
-        return $this->transferencia_razon;
     }
 
     /**
@@ -519,27 +502,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
     } // setTransferenciaFecharecepcion()
 
     /**
-     * Set the value of [transferencia_razon] column.
-     *
-     * @param  string $v new value
-     * @return Transferencia The current object (for fluent API support)
-     */
-    public function setTransferenciaRazon($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->transferencia_razon !== $v) {
-            $this->transferencia_razon = $v;
-            $this->modifiedColumns[] = TransferenciaPeer::TRANSFERENCIA_RAZON;
-        }
-
-
-        return $this;
-    } // setTransferenciaRazon()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -580,7 +542,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
             $this->idempleadoreceptor = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
             $this->transferencia_nota = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->transferencia_fecharecepcion = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->transferencia_razon = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -590,7 +551,7 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 10; // 10 = TransferenciaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = TransferenciaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Transferencia object", $e);
@@ -897,9 +858,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_FECHARECEPCION)) {
             $modifiedColumns[':p' . $index++]  = '`transferencia_fecharecepcion`';
         }
-        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_RAZON)) {
-            $modifiedColumns[':p' . $index++]  = '`transferencia_razon`';
-        }
 
         $sql = sprintf(
             'INSERT INTO `transferencia` (%s) VALUES (%s)',
@@ -937,9 +895,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
                         break;
                     case '`transferencia_fecharecepcion`':
                         $stmt->bindValue($identifier, $this->transferencia_fecharecepcion, PDO::PARAM_STR);
-                        break;
-                    case '`transferencia_razon`':
-                        $stmt->bindValue($identifier, $this->transferencia_razon, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1140,9 +1095,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
             case 8:
                 return $this->getTransferenciaFecharecepcion();
                 break;
-            case 9:
-                return $this->getTransferenciaRazon();
-                break;
             default:
                 return null;
                 break;
@@ -1181,7 +1133,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
             $keys[6] => $this->getIdempleadoreceptor(),
             $keys[7] => $this->getTransferenciaNota(),
             $keys[8] => $this->getTransferenciaFecharecepcion(),
-            $keys[9] => $this->getTransferenciaRazon(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1265,9 +1216,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
             case 8:
                 $this->setTransferenciaFecharecepcion($value);
                 break;
-            case 9:
-                $this->setTransferenciaRazon($value);
-                break;
         } // switch()
     }
 
@@ -1301,7 +1249,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         if (array_key_exists($keys[6], $arr)) $this->setIdempleadoreceptor($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setTransferenciaNota($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setTransferenciaFecharecepcion($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setTransferenciaRazon($arr[$keys[9]]);
     }
 
     /**
@@ -1322,7 +1269,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         if ($this->isColumnModified(TransferenciaPeer::IDEMPLEADORECEPTOR)) $criteria->add(TransferenciaPeer::IDEMPLEADORECEPTOR, $this->idempleadoreceptor);
         if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_NOTA)) $criteria->add(TransferenciaPeer::TRANSFERENCIA_NOTA, $this->transferencia_nota);
         if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_FECHARECEPCION)) $criteria->add(TransferenciaPeer::TRANSFERENCIA_FECHARECEPCION, $this->transferencia_fecharecepcion);
-        if ($this->isColumnModified(TransferenciaPeer::TRANSFERENCIA_RAZON)) $criteria->add(TransferenciaPeer::TRANSFERENCIA_RAZON, $this->transferencia_razon);
 
         return $criteria;
     }
@@ -1394,7 +1340,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         $copyObj->setIdempleadoreceptor($this->getIdempleadoreceptor());
         $copyObj->setTransferenciaNota($this->getTransferenciaNota());
         $copyObj->setTransferenciaFecharecepcion($this->getTransferenciaFecharecepcion());
-        $copyObj->setTransferenciaRazon($this->getTransferenciaRazon());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1947,7 +1892,6 @@ abstract class BaseTransferencia extends BaseObject implements Persistent
         $this->idempleadoreceptor = null;
         $this->transferencia_nota = null;
         $this->transferencia_fecharecepcion = null;
-        $this->transferencia_razon = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

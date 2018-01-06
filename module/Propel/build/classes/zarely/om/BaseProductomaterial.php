@@ -160,10 +160,6 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             $this->modifiedColumns[] = ProductomaterialPeer::IDPRODUCTO;
         }
 
-        if ($this->aProducto !== null && $this->aProducto->getIdproducto() !== $v) {
-            $this->aProducto = null;
-        }
-
 
         return $this;
     } // setIdproducto()
@@ -187,6 +183,10 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
 
         if ($this->aMaterial !== null && $this->aMaterial->getIdmaterial() !== $v) {
             $this->aMaterial = null;
+        }
+
+        if ($this->aProducto !== null && $this->aProducto->getIdproducto() !== $v) {
+            $this->aProducto = null;
         }
 
 
@@ -260,11 +260,11 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aProducto !== null && $this->idproducto !== $this->aProducto->getIdproducto()) {
-            $this->aProducto = null;
-        }
         if ($this->aMaterial !== null && $this->idmaterial !== $this->aMaterial->getIdmaterial()) {
             $this->aMaterial = null;
+        }
+        if ($this->aProducto !== null && $this->idmaterial !== $this->aProducto->getIdproducto()) {
+            $this->aProducto = null;
         }
     } // ensureConsistency
 
@@ -489,10 +489,6 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = ProductomaterialPeer::IDPRODUCTOMATERIAL;
-        if (null !== $this->idproductomaterial) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ProductomaterialPeer::IDPRODUCTOMATERIAL . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ProductomaterialPeer::IDPRODUCTOMATERIAL)) {
@@ -531,13 +527,6 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', $e);
-        }
-        $this->setIdproductomaterial($pk);
 
         $this->setNew(false);
     }
@@ -1016,9 +1005,9 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     public function setProducto(Producto $v = null)
     {
         if ($v === null) {
-            $this->setIdproducto(NULL);
+            $this->setIdmaterial(NULL);
         } else {
-            $this->setIdproducto($v->getIdproducto());
+            $this->setIdmaterial($v->getIdproducto());
         }
 
         $this->aProducto = $v;
@@ -1044,8 +1033,8 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function getProducto(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aProducto === null && ($this->idproducto !== null) && $doQuery) {
-            $this->aProducto = ProductoQuery::create()->findPk($this->idproducto, $con);
+        if ($this->aProducto === null && ($this->idmaterial !== null) && $doQuery) {
+            $this->aProducto = ProductoQuery::create()->findPk($this->idmaterial, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be

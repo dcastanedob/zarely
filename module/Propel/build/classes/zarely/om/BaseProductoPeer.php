@@ -24,13 +24,13 @@ abstract class BaseProductoPeer
     const TM_CLASS = 'ProductoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 15;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 15;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /** the column name for the idproducto field */
     const IDPRODUCTO = 'producto.idproducto';
@@ -65,17 +65,11 @@ abstract class BaseProductoPeer
     /** the column name for the producto_reorden field */
     const PRODUCTO_REORDEN = 'producto.producto_reorden';
 
-    /** the column name for the producto_maximo field */
-    const PRODUCTO_MAXIMO = 'producto.producto_maximo';
-
     /** the column name for the idtipocalzado field */
     const IDTIPOCALZADO = 'producto.idtipocalzado';
 
     /** the column name for the producto_descripcion field */
     const PRODUCTO_DESCRIPCION = 'producto.producto_descripcion';
-
-    /** the column name for the producto_costo field */
-    const PRODUCTO_COSTO = 'producto.producto_costo';
 
     /** The enumerated values for the producto_dirigidoa field */
     const PRODUCTO_DIRIGIDOA_DAMA = 'dama';
@@ -103,12 +97,12 @@ abstract class BaseProductoPeer
      * e.g. ProductoPeer::$fieldNames[ProductoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproducto', 'ProductoModelo', 'Idmarca', 'Idtemporada', 'ProductoComisionable', 'Idproveedor', 'ProductoDirigidoa', 'ProductoPrecioventa', 'ProductoPreciomayoreo', 'ProductoMinimo', 'ProductoReorden', 'ProductoMaximo', 'Idtipocalzado', 'ProductoDescripcion', 'ProductoCosto', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto', 'productoModelo', 'idmarca', 'idtemporada', 'productoComisionable', 'idproveedor', 'productoDirigidoa', 'productoPrecioventa', 'productoPreciomayoreo', 'productoMinimo', 'productoReorden', 'productoMaximo', 'idtipocalzado', 'productoDescripcion', 'productoCosto', ),
-        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO, ProductoPeer::PRODUCTO_MODELO, ProductoPeer::IDMARCA, ProductoPeer::IDTEMPORADA, ProductoPeer::PRODUCTO_COMISIONABLE, ProductoPeer::IDPROVEEDOR, ProductoPeer::PRODUCTO_DIRIGIDOA, ProductoPeer::PRODUCTO_PRECIOVENTA, ProductoPeer::PRODUCTO_PRECIOMAYOREO, ProductoPeer::PRODUCTO_MINIMO, ProductoPeer::PRODUCTO_REORDEN, ProductoPeer::PRODUCTO_MAXIMO, ProductoPeer::IDTIPOCALZADO, ProductoPeer::PRODUCTO_DESCRIPCION, ProductoPeer::PRODUCTO_COSTO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO', 'PRODUCTO_MODELO', 'IDMARCA', 'IDTEMPORADA', 'PRODUCTO_COMISIONABLE', 'IDPROVEEDOR', 'PRODUCTO_DIRIGIDOA', 'PRODUCTO_PRECIOVENTA', 'PRODUCTO_PRECIOMAYOREO', 'PRODUCTO_MINIMO', 'PRODUCTO_REORDEN', 'PRODUCTO_MAXIMO', 'IDTIPOCALZADO', 'PRODUCTO_DESCRIPCION', 'PRODUCTO_COSTO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproducto', 'producto_modelo', 'idmarca', 'idtemporada', 'producto_comisionable', 'idproveedor', 'producto_dirigidoa', 'producto_precioventa', 'producto_preciomayoreo', 'producto_minimo', 'producto_reorden', 'producto_maximo', 'idtipocalzado', 'producto_descripcion', 'producto_costo', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Idproducto', 'ProductoModelo', 'Idmarca', 'Idtemporada', 'ProductoComisionable', 'Idproveedor', 'ProductoDirigidoa', 'ProductoPrecioventa', 'ProductoPreciomayoreo', 'ProductoMinimo', 'ProductoReorden', 'Idtipocalzado', 'ProductoDescripcion', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto', 'productoModelo', 'idmarca', 'idtemporada', 'productoComisionable', 'idproveedor', 'productoDirigidoa', 'productoPrecioventa', 'productoPreciomayoreo', 'productoMinimo', 'productoReorden', 'idtipocalzado', 'productoDescripcion', ),
+        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO, ProductoPeer::PRODUCTO_MODELO, ProductoPeer::IDMARCA, ProductoPeer::IDTEMPORADA, ProductoPeer::PRODUCTO_COMISIONABLE, ProductoPeer::IDPROVEEDOR, ProductoPeer::PRODUCTO_DIRIGIDOA, ProductoPeer::PRODUCTO_PRECIOVENTA, ProductoPeer::PRODUCTO_PRECIOMAYOREO, ProductoPeer::PRODUCTO_MINIMO, ProductoPeer::PRODUCTO_REORDEN, ProductoPeer::IDTIPOCALZADO, ProductoPeer::PRODUCTO_DESCRIPCION, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO', 'PRODUCTO_MODELO', 'IDMARCA', 'IDTEMPORADA', 'PRODUCTO_COMISIONABLE', 'IDPROVEEDOR', 'PRODUCTO_DIRIGIDOA', 'PRODUCTO_PRECIOVENTA', 'PRODUCTO_PRECIOMAYOREO', 'PRODUCTO_MINIMO', 'PRODUCTO_REORDEN', 'IDTIPOCALZADO', 'PRODUCTO_DESCRIPCION', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproducto', 'producto_modelo', 'idmarca', 'idtemporada', 'producto_comisionable', 'idproveedor', 'producto_dirigidoa', 'producto_precioventa', 'producto_preciomayoreo', 'producto_minimo', 'producto_reorden', 'idtipocalzado', 'producto_descripcion', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -118,12 +112,12 @@ abstract class BaseProductoPeer
      * e.g. ProductoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproducto' => 0, 'ProductoModelo' => 1, 'Idmarca' => 2, 'Idtemporada' => 3, 'ProductoComisionable' => 4, 'Idproveedor' => 5, 'ProductoDirigidoa' => 6, 'ProductoPrecioventa' => 7, 'ProductoPreciomayoreo' => 8, 'ProductoMinimo' => 9, 'ProductoReorden' => 10, 'ProductoMaximo' => 11, 'Idtipocalzado' => 12, 'ProductoDescripcion' => 13, 'ProductoCosto' => 14, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto' => 0, 'productoModelo' => 1, 'idmarca' => 2, 'idtemporada' => 3, 'productoComisionable' => 4, 'idproveedor' => 5, 'productoDirigidoa' => 6, 'productoPrecioventa' => 7, 'productoPreciomayoreo' => 8, 'productoMinimo' => 9, 'productoReorden' => 10, 'productoMaximo' => 11, 'idtipocalzado' => 12, 'productoDescripcion' => 13, 'productoCosto' => 14, ),
-        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO => 0, ProductoPeer::PRODUCTO_MODELO => 1, ProductoPeer::IDMARCA => 2, ProductoPeer::IDTEMPORADA => 3, ProductoPeer::PRODUCTO_COMISIONABLE => 4, ProductoPeer::IDPROVEEDOR => 5, ProductoPeer::PRODUCTO_DIRIGIDOA => 6, ProductoPeer::PRODUCTO_PRECIOVENTA => 7, ProductoPeer::PRODUCTO_PRECIOMAYOREO => 8, ProductoPeer::PRODUCTO_MINIMO => 9, ProductoPeer::PRODUCTO_REORDEN => 10, ProductoPeer::PRODUCTO_MAXIMO => 11, ProductoPeer::IDTIPOCALZADO => 12, ProductoPeer::PRODUCTO_DESCRIPCION => 13, ProductoPeer::PRODUCTO_COSTO => 14, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO' => 0, 'PRODUCTO_MODELO' => 1, 'IDMARCA' => 2, 'IDTEMPORADA' => 3, 'PRODUCTO_COMISIONABLE' => 4, 'IDPROVEEDOR' => 5, 'PRODUCTO_DIRIGIDOA' => 6, 'PRODUCTO_PRECIOVENTA' => 7, 'PRODUCTO_PRECIOMAYOREO' => 8, 'PRODUCTO_MINIMO' => 9, 'PRODUCTO_REORDEN' => 10, 'PRODUCTO_MAXIMO' => 11, 'IDTIPOCALZADO' => 12, 'PRODUCTO_DESCRIPCION' => 13, 'PRODUCTO_COSTO' => 14, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproducto' => 0, 'producto_modelo' => 1, 'idmarca' => 2, 'idtemporada' => 3, 'producto_comisionable' => 4, 'idproveedor' => 5, 'producto_dirigidoa' => 6, 'producto_precioventa' => 7, 'producto_preciomayoreo' => 8, 'producto_minimo' => 9, 'producto_reorden' => 10, 'producto_maximo' => 11, 'idtipocalzado' => 12, 'producto_descripcion' => 13, 'producto_costo' => 14, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Idproducto' => 0, 'ProductoModelo' => 1, 'Idmarca' => 2, 'Idtemporada' => 3, 'ProductoComisionable' => 4, 'Idproveedor' => 5, 'ProductoDirigidoa' => 6, 'ProductoPrecioventa' => 7, 'ProductoPreciomayoreo' => 8, 'ProductoMinimo' => 9, 'ProductoReorden' => 10, 'Idtipocalzado' => 11, 'ProductoDescripcion' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproducto' => 0, 'productoModelo' => 1, 'idmarca' => 2, 'idtemporada' => 3, 'productoComisionable' => 4, 'idproveedor' => 5, 'productoDirigidoa' => 6, 'productoPrecioventa' => 7, 'productoPreciomayoreo' => 8, 'productoMinimo' => 9, 'productoReorden' => 10, 'idtipocalzado' => 11, 'productoDescripcion' => 12, ),
+        BasePeer::TYPE_COLNAME => array (ProductoPeer::IDPRODUCTO => 0, ProductoPeer::PRODUCTO_MODELO => 1, ProductoPeer::IDMARCA => 2, ProductoPeer::IDTEMPORADA => 3, ProductoPeer::PRODUCTO_COMISIONABLE => 4, ProductoPeer::IDPROVEEDOR => 5, ProductoPeer::PRODUCTO_DIRIGIDOA => 6, ProductoPeer::PRODUCTO_PRECIOVENTA => 7, ProductoPeer::PRODUCTO_PRECIOMAYOREO => 8, ProductoPeer::PRODUCTO_MINIMO => 9, ProductoPeer::PRODUCTO_REORDEN => 10, ProductoPeer::IDTIPOCALZADO => 11, ProductoPeer::PRODUCTO_DESCRIPCION => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTO' => 0, 'PRODUCTO_MODELO' => 1, 'IDMARCA' => 2, 'IDTEMPORADA' => 3, 'PRODUCTO_COMISIONABLE' => 4, 'IDPROVEEDOR' => 5, 'PRODUCTO_DIRIGIDOA' => 6, 'PRODUCTO_PRECIOVENTA' => 7, 'PRODUCTO_PRECIOMAYOREO' => 8, 'PRODUCTO_MINIMO' => 9, 'PRODUCTO_REORDEN' => 10, 'IDTIPOCALZADO' => 11, 'PRODUCTO_DESCRIPCION' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproducto' => 0, 'producto_modelo' => 1, 'idmarca' => 2, 'idtemporada' => 3, 'producto_comisionable' => 4, 'idproveedor' => 5, 'producto_dirigidoa' => 6, 'producto_precioventa' => 7, 'producto_preciomayoreo' => 8, 'producto_minimo' => 9, 'producto_reorden' => 10, 'idtipocalzado' => 11, 'producto_descripcion' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /** The enumerated values for this table */
@@ -264,10 +258,8 @@ abstract class BaseProductoPeer
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_PRECIOMAYOREO);
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_MINIMO);
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_REORDEN);
-            $criteria->addSelectColumn(ProductoPeer::PRODUCTO_MAXIMO);
             $criteria->addSelectColumn(ProductoPeer::IDTIPOCALZADO);
             $criteria->addSelectColumn(ProductoPeer::PRODUCTO_DESCRIPCION);
-            $criteria->addSelectColumn(ProductoPeer::PRODUCTO_COSTO);
         } else {
             $criteria->addSelectColumn($alias . '.idproducto');
             $criteria->addSelectColumn($alias . '.producto_modelo');
@@ -280,10 +272,8 @@ abstract class BaseProductoPeer
             $criteria->addSelectColumn($alias . '.producto_preciomayoreo');
             $criteria->addSelectColumn($alias . '.producto_minimo');
             $criteria->addSelectColumn($alias . '.producto_reorden');
-            $criteria->addSelectColumn($alias . '.producto_maximo');
             $criteria->addSelectColumn($alias . '.idtipocalzado');
             $criteria->addSelectColumn($alias . '.producto_descripcion');
-            $criteria->addSelectColumn($alias . '.producto_costo');
         }
     }
 
@@ -497,9 +487,6 @@ abstract class BaseProductoPeer
         // Invalidate objects in PedidomayoristadetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidomayoristadetallePeer::clearInstancePool();
-        // Invalidate objects in PedidosucursaldetallePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PedidosucursaldetallePeer::clearInstancePool();
         // Invalidate objects in ProductomaterialPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ProductomaterialPeer::clearInstancePool();
@@ -2242,16 +2229,10 @@ abstract class BaseProductoPeer
             $criteria->add(PedidomayoristadetallePeer::IDPRODUCTO, $obj->getIdproducto());
             $affectedRows += PedidomayoristadetallePeer::doDelete($criteria, $con);
 
-            // delete related Pedidosucursaldetalle objects
-            $criteria = new Criteria(PedidosucursaldetallePeer::DATABASE_NAME);
-
-            $criteria->add(PedidosucursaldetallePeer::IDPRODUCTO, $obj->getIdproducto());
-            $affectedRows += PedidosucursaldetallePeer::doDelete($criteria, $con);
-
             // delete related Productomaterial objects
             $criteria = new Criteria(ProductomaterialPeer::DATABASE_NAME);
 
-            $criteria->add(ProductomaterialPeer::IDPRODUCTO, $obj->getIdproducto());
+            $criteria->add(ProductomaterialPeer::IDMATERIAL, $obj->getIdproducto());
             $affectedRows += ProductomaterialPeer::doDelete($criteria, $con);
 
             // delete related Productomedida objects

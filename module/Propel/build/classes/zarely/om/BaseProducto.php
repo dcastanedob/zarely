@@ -96,12 +96,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
     protected $producto_reorden;
 
     /**
-     * The value for the producto_maximo field.
-     * @var        int
-     */
-    protected $producto_maximo;
-
-    /**
      * The value for the idtipocalzado field.
      * @var        int
      */
@@ -112,12 +106,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @var        string
      */
     protected $producto_descripcion;
-
-    /**
-     * The value for the producto_costo field.
-     * @var        string
-     */
-    protected $producto_costo;
 
     /**
      * @var        Marca
@@ -156,12 +144,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
      */
     protected $collPedidomayoristadetalles;
     protected $collPedidomayoristadetallesPartial;
-
-    /**
-     * @var        PropelObjectCollection|Pedidosucursaldetalle[] Collection to store aggregation of Pedidosucursaldetalle objects.
-     */
-    protected $collPedidosucursaldetalles;
-    protected $collPedidosucursaldetallesPartial;
 
     /**
      * @var        PropelObjectCollection|Productocolor[] Collection to store aggregation of Productocolor objects.
@@ -236,12 +218,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $pedidomayoristadetallesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $pedidosucursaldetallesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -401,17 +377,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [producto_maximo] column value.
-     *
-     * @return int
-     */
-    public function getProductoMaximo()
-    {
-
-        return $this->producto_maximo;
-    }
-
-    /**
      * Get the [idtipocalzado] column value.
      *
      * @return int
@@ -431,17 +396,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
     {
 
         return $this->producto_descripcion;
-    }
-
-    /**
-     * Get the [producto_costo] column value.
-     *
-     * @return string
-     */
-    public function getProductoCosto()
-    {
-
-        return $this->producto_costo;
     }
 
     /**
@@ -688,27 +642,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
     } // setProductoReorden()
 
     /**
-     * Set the value of [producto_maximo] column.
-     *
-     * @param  int $v new value
-     * @return Producto The current object (for fluent API support)
-     */
-    public function setProductoMaximo($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->producto_maximo !== $v) {
-            $this->producto_maximo = $v;
-            $this->modifiedColumns[] = ProductoPeer::PRODUCTO_MAXIMO;
-        }
-
-
-        return $this;
-    } // setProductoMaximo()
-
-    /**
      * Set the value of [idtipocalzado] column.
      *
      * @param  int $v new value
@@ -755,27 +688,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
     } // setProductoDescripcion()
 
     /**
-     * Set the value of [producto_costo] column.
-     *
-     * @param  string $v new value
-     * @return Producto The current object (for fluent API support)
-     */
-    public function setProductoCosto($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (string) $v;
-        }
-
-        if ($this->producto_costo !== $v) {
-            $this->producto_costo = $v;
-            $this->modifiedColumns[] = ProductoPeer::PRODUCTO_COSTO;
-        }
-
-
-        return $this;
-    } // setProductoCosto()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -818,10 +730,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->producto_preciomayoreo = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->producto_minimo = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
             $this->producto_reorden = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->producto_maximo = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-            $this->idtipocalzado = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
-            $this->producto_descripcion = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->producto_costo = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->idtipocalzado = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+            $this->producto_descripcion = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -831,7 +741,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 15; // 15 = ProductoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = ProductoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Producto object", $e);
@@ -914,8 +824,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->collPedidos = null;
 
             $this->collPedidomayoristadetalles = null;
-
-            $this->collPedidosucursaldetalles = null;
 
             $this->collProductocolors = null;
 
@@ -1137,23 +1045,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->pedidosucursaldetallesScheduledForDeletion !== null) {
-                if (!$this->pedidosucursaldetallesScheduledForDeletion->isEmpty()) {
-                    PedidosucursaldetalleQuery::create()
-                        ->filterByPrimaryKeys($this->pedidosucursaldetallesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->pedidosucursaldetallesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPedidosucursaldetalles !== null) {
-                foreach ($this->collPedidosucursaldetalles as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             if ($this->productocolorsScheduledForDeletion !== null) {
                 if (!$this->productocolorsScheduledForDeletion->isEmpty()) {
                     ProductocolorQuery::create()
@@ -1315,17 +1206,11 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_REORDEN)) {
             $modifiedColumns[':p' . $index++]  = '`producto_reorden`';
         }
-        if ($this->isColumnModified(ProductoPeer::PRODUCTO_MAXIMO)) {
-            $modifiedColumns[':p' . $index++]  = '`producto_maximo`';
-        }
         if ($this->isColumnModified(ProductoPeer::IDTIPOCALZADO)) {
             $modifiedColumns[':p' . $index++]  = '`idtipocalzado`';
         }
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_DESCRIPCION)) {
             $modifiedColumns[':p' . $index++]  = '`producto_descripcion`';
-        }
-        if ($this->isColumnModified(ProductoPeer::PRODUCTO_COSTO)) {
-            $modifiedColumns[':p' . $index++]  = '`producto_costo`';
         }
 
         $sql = sprintf(
@@ -1371,17 +1256,11 @@ abstract class BaseProducto extends BaseObject implements Persistent
                     case '`producto_reorden`':
                         $stmt->bindValue($identifier, $this->producto_reorden, PDO::PARAM_INT);
                         break;
-                    case '`producto_maximo`':
-                        $stmt->bindValue($identifier, $this->producto_maximo, PDO::PARAM_INT);
-                        break;
                     case '`idtipocalzado`':
                         $stmt->bindValue($identifier, $this->idtipocalzado, PDO::PARAM_INT);
                         break;
                     case '`producto_descripcion`':
                         $stmt->bindValue($identifier, $this->producto_descripcion, PDO::PARAM_STR);
-                        break;
-                    case '`producto_costo`':
-                        $stmt->bindValue($identifier, $this->producto_costo, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1536,14 +1415,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collPedidosucursaldetalles !== null) {
-                    foreach ($this->collPedidosucursaldetalles as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collProductocolors !== null) {
                     foreach ($this->collProductocolors as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1661,16 +1532,10 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 return $this->getProductoReorden();
                 break;
             case 11:
-                return $this->getProductoMaximo();
-                break;
-            case 12:
                 return $this->getIdtipocalzado();
                 break;
-            case 13:
+            case 12:
                 return $this->getProductoDescripcion();
-                break;
-            case 14:
-                return $this->getProductoCosto();
                 break;
             default:
                 return null;
@@ -1712,10 +1577,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $keys[8] => $this->getProductoPreciomayoreo(),
             $keys[9] => $this->getProductoMinimo(),
             $keys[10] => $this->getProductoReorden(),
-            $keys[11] => $this->getProductoMaximo(),
-            $keys[12] => $this->getIdtipocalzado(),
-            $keys[13] => $this->getProductoDescripcion(),
-            $keys[14] => $this->getProductoCosto(),
+            $keys[11] => $this->getIdtipocalzado(),
+            $keys[12] => $this->getProductoDescripcion(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1743,9 +1606,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
             if (null !== $this->collPedidomayoristadetalles) {
                 $result['Pedidomayoristadetalles'] = $this->collPedidomayoristadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPedidosucursaldetalles) {
-                $result['Pedidosucursaldetalles'] = $this->collPedidosucursaldetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collProductocolors) {
                 $result['Productocolors'] = $this->collProductocolors->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1833,16 +1693,10 @@ abstract class BaseProducto extends BaseObject implements Persistent
                 $this->setProductoReorden($value);
                 break;
             case 11:
-                $this->setProductoMaximo($value);
-                break;
-            case 12:
                 $this->setIdtipocalzado($value);
                 break;
-            case 13:
+            case 12:
                 $this->setProductoDescripcion($value);
-                break;
-            case 14:
-                $this->setProductoCosto($value);
                 break;
         } // switch()
     }
@@ -1879,10 +1733,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if (array_key_exists($keys[8], $arr)) $this->setProductoPreciomayoreo($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setProductoMinimo($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setProductoReorden($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setProductoMaximo($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setIdtipocalzado($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setProductoDescripcion($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setProductoCosto($arr[$keys[14]]);
+        if (array_key_exists($keys[11], $arr)) $this->setIdtipocalzado($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setProductoDescripcion($arr[$keys[12]]);
     }
 
     /**
@@ -1905,10 +1757,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_PRECIOMAYOREO)) $criteria->add(ProductoPeer::PRODUCTO_PRECIOMAYOREO, $this->producto_preciomayoreo);
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_MINIMO)) $criteria->add(ProductoPeer::PRODUCTO_MINIMO, $this->producto_minimo);
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_REORDEN)) $criteria->add(ProductoPeer::PRODUCTO_REORDEN, $this->producto_reorden);
-        if ($this->isColumnModified(ProductoPeer::PRODUCTO_MAXIMO)) $criteria->add(ProductoPeer::PRODUCTO_MAXIMO, $this->producto_maximo);
         if ($this->isColumnModified(ProductoPeer::IDTIPOCALZADO)) $criteria->add(ProductoPeer::IDTIPOCALZADO, $this->idtipocalzado);
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_DESCRIPCION)) $criteria->add(ProductoPeer::PRODUCTO_DESCRIPCION, $this->producto_descripcion);
-        if ($this->isColumnModified(ProductoPeer::PRODUCTO_COSTO)) $criteria->add(ProductoPeer::PRODUCTO_COSTO, $this->producto_costo);
 
         return $criteria;
     }
@@ -1982,10 +1832,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $copyObj->setProductoPreciomayoreo($this->getProductoPreciomayoreo());
         $copyObj->setProductoMinimo($this->getProductoMinimo());
         $copyObj->setProductoReorden($this->getProductoReorden());
-        $copyObj->setProductoMaximo($this->getProductoMaximo());
         $copyObj->setIdtipocalzado($this->getIdtipocalzado());
         $copyObj->setProductoDescripcion($this->getProductoDescripcion());
-        $copyObj->setProductoCosto($this->getProductoCosto());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2009,12 +1857,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
             foreach ($this->getPedidomayoristadetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPedidomayoristadetalle($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPedidosucursaldetalles() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPedidosucursaldetalle($relObj->copy($deepCopy));
                 }
             }
 
@@ -2331,9 +2173,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
         }
         if ('Pedidomayoristadetalle' == $relationName) {
             $this->initPedidomayoristadetalles();
-        }
-        if ('Pedidosucursaldetalle' == $relationName) {
-            $this->initPedidosucursaldetalles();
         }
         if ('Productocolor' == $relationName) {
             $this->initProductocolors();
@@ -3203,281 +3042,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $query->joinWith('Productovariante', $join_behavior);
 
         return $this->getPedidomayoristadetalles($query, $con);
-    }
-
-    /**
-     * Clears out the collPedidosucursaldetalles collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Producto The current object (for fluent API support)
-     * @see        addPedidosucursaldetalles()
-     */
-    public function clearPedidosucursaldetalles()
-    {
-        $this->collPedidosucursaldetalles = null; // important to set this to null since that means it is uninitialized
-        $this->collPedidosucursaldetallesPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collPedidosucursaldetalles collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialPedidosucursaldetalles($v = true)
-    {
-        $this->collPedidosucursaldetallesPartial = $v;
-    }
-
-    /**
-     * Initializes the collPedidosucursaldetalles collection.
-     *
-     * By default this just sets the collPedidosucursaldetalles collection to an empty array (like clearcollPedidosucursaldetalles());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPedidosucursaldetalles($overrideExisting = true)
-    {
-        if (null !== $this->collPedidosucursaldetalles && !$overrideExisting) {
-            return;
-        }
-        $this->collPedidosucursaldetalles = new PropelObjectCollection();
-        $this->collPedidosucursaldetalles->setModel('Pedidosucursaldetalle');
-    }
-
-    /**
-     * Gets an array of Pedidosucursaldetalle objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Producto is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Pedidosucursaldetalle[] List of Pedidosucursaldetalle objects
-     * @throws PropelException
-     */
-    public function getPedidosucursaldetalles($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collPedidosucursaldetallesPartial && !$this->isNew();
-        if (null === $this->collPedidosucursaldetalles || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPedidosucursaldetalles) {
-                // return empty collection
-                $this->initPedidosucursaldetalles();
-            } else {
-                $collPedidosucursaldetalles = PedidosucursaldetalleQuery::create(null, $criteria)
-                    ->filterByProducto($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collPedidosucursaldetallesPartial && count($collPedidosucursaldetalles)) {
-                      $this->initPedidosucursaldetalles(false);
-
-                      foreach ($collPedidosucursaldetalles as $obj) {
-                        if (false == $this->collPedidosucursaldetalles->contains($obj)) {
-                          $this->collPedidosucursaldetalles->append($obj);
-                        }
-                      }
-
-                      $this->collPedidosucursaldetallesPartial = true;
-                    }
-
-                    $collPedidosucursaldetalles->getInternalIterator()->rewind();
-
-                    return $collPedidosucursaldetalles;
-                }
-
-                if ($partial && $this->collPedidosucursaldetalles) {
-                    foreach ($this->collPedidosucursaldetalles as $obj) {
-                        if ($obj->isNew()) {
-                            $collPedidosucursaldetalles[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPedidosucursaldetalles = $collPedidosucursaldetalles;
-                $this->collPedidosucursaldetallesPartial = false;
-            }
-        }
-
-        return $this->collPedidosucursaldetalles;
-    }
-
-    /**
-     * Sets a collection of Pedidosucursaldetalle objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $pedidosucursaldetalles A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Producto The current object (for fluent API support)
-     */
-    public function setPedidosucursaldetalles(PropelCollection $pedidosucursaldetalles, PropelPDO $con = null)
-    {
-        $pedidosucursaldetallesToDelete = $this->getPedidosucursaldetalles(new Criteria(), $con)->diff($pedidosucursaldetalles);
-
-
-        $this->pedidosucursaldetallesScheduledForDeletion = $pedidosucursaldetallesToDelete;
-
-        foreach ($pedidosucursaldetallesToDelete as $pedidosucursaldetalleRemoved) {
-            $pedidosucursaldetalleRemoved->setProducto(null);
-        }
-
-        $this->collPedidosucursaldetalles = null;
-        foreach ($pedidosucursaldetalles as $pedidosucursaldetalle) {
-            $this->addPedidosucursaldetalle($pedidosucursaldetalle);
-        }
-
-        $this->collPedidosucursaldetalles = $pedidosucursaldetalles;
-        $this->collPedidosucursaldetallesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Pedidosucursaldetalle objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Pedidosucursaldetalle objects.
-     * @throws PropelException
-     */
-    public function countPedidosucursaldetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collPedidosucursaldetallesPartial && !$this->isNew();
-        if (null === $this->collPedidosucursaldetalles || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPedidosucursaldetalles) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPedidosucursaldetalles());
-            }
-            $query = PedidosucursaldetalleQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProducto($this)
-                ->count($con);
-        }
-
-        return count($this->collPedidosucursaldetalles);
-    }
-
-    /**
-     * Method called to associate a Pedidosucursaldetalle object to this object
-     * through the Pedidosucursaldetalle foreign key attribute.
-     *
-     * @param    Pedidosucursaldetalle $l Pedidosucursaldetalle
-     * @return Producto The current object (for fluent API support)
-     */
-    public function addPedidosucursaldetalle(Pedidosucursaldetalle $l)
-    {
-        if ($this->collPedidosucursaldetalles === null) {
-            $this->initPedidosucursaldetalles();
-            $this->collPedidosucursaldetallesPartial = true;
-        }
-
-        if (!in_array($l, $this->collPedidosucursaldetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddPedidosucursaldetalle($l);
-
-            if ($this->pedidosucursaldetallesScheduledForDeletion and $this->pedidosucursaldetallesScheduledForDeletion->contains($l)) {
-                $this->pedidosucursaldetallesScheduledForDeletion->remove($this->pedidosucursaldetallesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Pedidosucursaldetalle $pedidosucursaldetalle The pedidosucursaldetalle object to add.
-     */
-    protected function doAddPedidosucursaldetalle($pedidosucursaldetalle)
-    {
-        $this->collPedidosucursaldetalles[]= $pedidosucursaldetalle;
-        $pedidosucursaldetalle->setProducto($this);
-    }
-
-    /**
-     * @param	Pedidosucursaldetalle $pedidosucursaldetalle The pedidosucursaldetalle object to remove.
-     * @return Producto The current object (for fluent API support)
-     */
-    public function removePedidosucursaldetalle($pedidosucursaldetalle)
-    {
-        if ($this->getPedidosucursaldetalles()->contains($pedidosucursaldetalle)) {
-            $this->collPedidosucursaldetalles->remove($this->collPedidosucursaldetalles->search($pedidosucursaldetalle));
-            if (null === $this->pedidosucursaldetallesScheduledForDeletion) {
-                $this->pedidosucursaldetallesScheduledForDeletion = clone $this->collPedidosucursaldetalles;
-                $this->pedidosucursaldetallesScheduledForDeletion->clear();
-            }
-            $this->pedidosucursaldetallesScheduledForDeletion[]= $pedidosucursaldetalle;
-            $pedidosucursaldetalle->setProducto(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Producto is new, it will return
-     * an empty collection; or if this Producto has previously
-     * been saved, it will retrieve related Pedidosucursaldetalles from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Producto.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Pedidosucursaldetalle[] List of Pedidosucursaldetalle objects
-     */
-    public function getPedidosucursaldetallesJoinPedidosucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PedidosucursaldetalleQuery::create(null, $criteria);
-        $query->joinWith('Pedidosucursal', $join_behavior);
-
-        return $this->getPedidosucursaldetalles($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Producto is new, it will return
-     * an empty collection; or if this Producto has previously
-     * been saved, it will retrieve related Pedidosucursaldetalles from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Producto.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Pedidosucursaldetalle[] List of Pedidosucursaldetalle objects
-     */
-    public function getPedidosucursaldetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = PedidosucursaldetalleQuery::create(null, $criteria);
-        $query->joinWith('Productovariante', $join_behavior);
-
-        return $this->getPedidosucursaldetalles($query, $con);
     }
 
     /**
@@ -5071,10 +4635,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $this->producto_preciomayoreo = null;
         $this->producto_minimo = null;
         $this->producto_reorden = null;
-        $this->producto_maximo = null;
         $this->idtipocalzado = null;
         $this->producto_descripcion = null;
-        $this->producto_costo = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -5109,11 +4671,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
             if ($this->collPedidomayoristadetalles) {
                 foreach ($this->collPedidomayoristadetalles as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPedidosucursaldetalles) {
-                foreach ($this->collPedidosucursaldetalles as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -5175,10 +4732,6 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->collPedidomayoristadetalles->clearIterator();
         }
         $this->collPedidomayoristadetalles = null;
-        if ($this->collPedidosucursaldetalles instanceof PropelCollection) {
-            $this->collPedidosucursaldetalles->clearIterator();
-        }
-        $this->collPedidosucursaldetalles = null;
         if ($this->collProductocolors instanceof PropelCollection) {
             $this->collProductocolors->clearIterator();
         }

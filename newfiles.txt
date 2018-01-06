@@ -1,0 +1,39 @@
+<canvas><font style="background: black;color: white;" size="5">ZAPATERÍA ZARELY</font><div style="font-size:0;position:relative;width:246px;height:30px;">
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:0px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:6px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:12px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:22px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:8px;height:30px;position:absolute;left:28px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:38px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:44px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:50px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:54px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:66px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:72px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:8px;height:30px;position:absolute;left:78px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:88px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:92px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:100px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:110px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:118px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:122px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:132px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:138px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:8px;height:30px;position:absolute;left:144px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:154px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:162px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:6px;height:30px;position:absolute;left:166px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:176px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:6px;height:30px;position:absolute;left:182px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:190px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:198px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:202px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:212px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:220px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:6px;height:30px;position:absolute;left:230px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:2px;height:30px;position:absolute;left:238px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:4px;height:30px;position:absolute;left:242px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:0px;height:30px;position:absolute;left:246px;top:0px;">&nbsp;</div>
+<div style="background-color:black;width:0px;height:30px;position:absolute;left:246px;top:0px;">&nbsp;</div>
+</div>
+zarely30 <font style="background: black;color: white;margin-left: 80px;padding-left: 22px;padding-right: 22px;" size="6">9</font><br> R001<br>Piel-Azul</canvas>

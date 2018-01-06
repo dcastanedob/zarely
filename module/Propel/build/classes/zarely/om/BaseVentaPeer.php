@@ -75,16 +75,14 @@ abstract class BaseVentaPeer
     const VENTA_FACTURACION = 'venta.venta_facturacion';
 
     /** The enumerated values for the venta_tipo field */
-    const VENTA_TIPO_VENTA = 'venta';
+    const VENTA_TIPO_COMPRA = 'compra';
     const VENTA_TIPO_CREDITO = 'credito';
     const VENTA_TIPO_APARTADO = 'apartado';
 
     /** The enumerated values for the venta_estatus field */
     const VENTA_ESTATUS_CANCELADA = 'cancelada';
     const VENTA_ESTATUS_COMPLETADA = 'completada';
-    const VENTA_ESTATUS_PROCESANDO = 'procesando';
-    const VENTA_ESTATUS_DEVOLUCION = 'devolucion';
-    const VENTA_ESTATUS_DEFECTO = 'defecto';
+    const VENTA_ESTATUS_ = '';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -131,16 +129,14 @@ abstract class BaseVentaPeer
     /** The enumerated values for this table */
     protected static $enumValueSets = array(
         VentaPeer::VENTA_TIPO => array(
-            VentaPeer::VENTA_TIPO_VENTA,
+            VentaPeer::VENTA_TIPO_COMPRA,
             VentaPeer::VENTA_TIPO_CREDITO,
             VentaPeer::VENTA_TIPO_APARTADO,
         ),
         VentaPeer::VENTA_ESTATUS => array(
             VentaPeer::VENTA_ESTATUS_CANCELADA,
             VentaPeer::VENTA_ESTATUS_COMPLETADA,
-            VentaPeer::VENTA_ESTATUS_PROCESANDO,
-            VentaPeer::VENTA_ESTATUS_DEVOLUCION,
-            VentaPeer::VENTA_ESTATUS_DEFECTO,
+            VentaPeer::VENTA_ESTATUS_,
         ),
     );
 
@@ -493,9 +489,6 @@ abstract class BaseVentaPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in TarjetapuntosdetallePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        TarjetapuntosdetallePeer::clearInstancePool();
         // Invalidate objects in VentadetallePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         VentadetallePeer::clearInstancePool();
@@ -2158,12 +2151,6 @@ abstract class BaseVentaPeer
         $objects = VentaPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
-
-            // delete related Tarjetapuntosdetalle objects
-            $criteria = new Criteria(TarjetapuntosdetallePeer::DATABASE_NAME);
-
-            $criteria->add(TarjetapuntosdetallePeer::IDVENTA, $obj->getIdventa());
-            $affectedRows += TarjetapuntosdetallePeer::doDelete($criteria, $con);
 
             // delete related Ventadetalle objects
             $criteria = new Criteria(VentadetallePeer::DATABASE_NAME);

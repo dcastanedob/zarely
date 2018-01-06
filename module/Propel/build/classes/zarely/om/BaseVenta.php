@@ -134,12 +134,6 @@ abstract class BaseVenta extends BaseObject implements Persistent
     protected $aSucursal;
 
     /**
-     * @var        PropelObjectCollection|Tarjetapuntosdetalle[] Collection to store aggregation of Tarjetapuntosdetalle objects.
-     */
-    protected $collTarjetapuntosdetalles;
-    protected $collTarjetapuntosdetallesPartial;
-
-    /**
      * @var        PropelObjectCollection|Ventadetalle[] Collection to store aggregation of Ventadetalle objects.
      */
     protected $collVentadetalles;
@@ -170,12 +164,6 @@ abstract class BaseVenta extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInClearAllReferencesDeep = false;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $tarjetapuntosdetallesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -833,8 +821,6 @@ abstract class BaseVenta extends BaseObject implements Persistent
             $this->aEmpleadoRelatedByIdempleadocajero = null;
             $this->aEmpleadoRelatedByIdempleadovendedor = null;
             $this->aSucursal = null;
-            $this->collTarjetapuntosdetalles = null;
-
             $this->collVentadetalles = null;
 
             $this->collVentapagos = null;
@@ -994,23 +980,6 @@ abstract class BaseVenta extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->tarjetapuntosdetallesScheduledForDeletion !== null) {
-                if (!$this->tarjetapuntosdetallesScheduledForDeletion->isEmpty()) {
-                    TarjetapuntosdetalleQuery::create()
-                        ->filterByPrimaryKeys($this->tarjetapuntosdetallesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->tarjetapuntosdetallesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collTarjetapuntosdetalles !== null) {
-                foreach ($this->collTarjetapuntosdetalles as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             if ($this->ventadetallesScheduledForDeletion !== null) {
@@ -1297,14 +1266,6 @@ abstract class BaseVenta extends BaseObject implements Persistent
             }
 
 
-                if ($this->collTarjetapuntosdetalles !== null) {
-                    foreach ($this->collTarjetapuntosdetalles as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collVentadetalles !== null) {
                     foreach ($this->collVentadetalles as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1459,9 +1420,6 @@ abstract class BaseVenta extends BaseObject implements Persistent
             }
             if (null !== $this->aSucursal) {
                 $result['Sucursal'] = $this->aSucursal->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collTarjetapuntosdetalles) {
-                $result['Tarjetapuntosdetalles'] = $this->collTarjetapuntosdetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collVentadetalles) {
                 $result['Ventadetalles'] = $this->collVentadetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1691,12 +1649,6 @@ abstract class BaseVenta extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
-
-            foreach ($this->getTarjetapuntosdetalles() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addTarjetapuntosdetalle($relObj->copy($deepCopy));
-                }
-            }
 
             foreach ($this->getVentadetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
@@ -1979,290 +1931,12 @@ abstract class BaseVenta extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('Tarjetapuntosdetalle' == $relationName) {
-            $this->initTarjetapuntosdetalles();
-        }
         if ('Ventadetalle' == $relationName) {
             $this->initVentadetalles();
         }
         if ('Ventapago' == $relationName) {
             $this->initVentapagos();
         }
-    }
-
-    /**
-     * Clears out the collTarjetapuntosdetalles collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Venta The current object (for fluent API support)
-     * @see        addTarjetapuntosdetalles()
-     */
-    public function clearTarjetapuntosdetalles()
-    {
-        $this->collTarjetapuntosdetalles = null; // important to set this to null since that means it is uninitialized
-        $this->collTarjetapuntosdetallesPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collTarjetapuntosdetalles collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialTarjetapuntosdetalles($v = true)
-    {
-        $this->collTarjetapuntosdetallesPartial = $v;
-    }
-
-    /**
-     * Initializes the collTarjetapuntosdetalles collection.
-     *
-     * By default this just sets the collTarjetapuntosdetalles collection to an empty array (like clearcollTarjetapuntosdetalles());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initTarjetapuntosdetalles($overrideExisting = true)
-    {
-        if (null !== $this->collTarjetapuntosdetalles && !$overrideExisting) {
-            return;
-        }
-        $this->collTarjetapuntosdetalles = new PropelObjectCollection();
-        $this->collTarjetapuntosdetalles->setModel('Tarjetapuntosdetalle');
-    }
-
-    /**
-     * Gets an array of Tarjetapuntosdetalle objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Venta is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Tarjetapuntosdetalle[] List of Tarjetapuntosdetalle objects
-     * @throws PropelException
-     */
-    public function getTarjetapuntosdetalles($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collTarjetapuntosdetallesPartial && !$this->isNew();
-        if (null === $this->collTarjetapuntosdetalles || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collTarjetapuntosdetalles) {
-                // return empty collection
-                $this->initTarjetapuntosdetalles();
-            } else {
-                $collTarjetapuntosdetalles = TarjetapuntosdetalleQuery::create(null, $criteria)
-                    ->filterByVenta($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collTarjetapuntosdetallesPartial && count($collTarjetapuntosdetalles)) {
-                      $this->initTarjetapuntosdetalles(false);
-
-                      foreach ($collTarjetapuntosdetalles as $obj) {
-                        if (false == $this->collTarjetapuntosdetalles->contains($obj)) {
-                          $this->collTarjetapuntosdetalles->append($obj);
-                        }
-                      }
-
-                      $this->collTarjetapuntosdetallesPartial = true;
-                    }
-
-                    $collTarjetapuntosdetalles->getInternalIterator()->rewind();
-
-                    return $collTarjetapuntosdetalles;
-                }
-
-                if ($partial && $this->collTarjetapuntosdetalles) {
-                    foreach ($this->collTarjetapuntosdetalles as $obj) {
-                        if ($obj->isNew()) {
-                            $collTarjetapuntosdetalles[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collTarjetapuntosdetalles = $collTarjetapuntosdetalles;
-                $this->collTarjetapuntosdetallesPartial = false;
-            }
-        }
-
-        return $this->collTarjetapuntosdetalles;
-    }
-
-    /**
-     * Sets a collection of Tarjetapuntosdetalle objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $tarjetapuntosdetalles A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Venta The current object (for fluent API support)
-     */
-    public function setTarjetapuntosdetalles(PropelCollection $tarjetapuntosdetalles, PropelPDO $con = null)
-    {
-        $tarjetapuntosdetallesToDelete = $this->getTarjetapuntosdetalles(new Criteria(), $con)->diff($tarjetapuntosdetalles);
-
-
-        $this->tarjetapuntosdetallesScheduledForDeletion = $tarjetapuntosdetallesToDelete;
-
-        foreach ($tarjetapuntosdetallesToDelete as $tarjetapuntosdetalleRemoved) {
-            $tarjetapuntosdetalleRemoved->setVenta(null);
-        }
-
-        $this->collTarjetapuntosdetalles = null;
-        foreach ($tarjetapuntosdetalles as $tarjetapuntosdetalle) {
-            $this->addTarjetapuntosdetalle($tarjetapuntosdetalle);
-        }
-
-        $this->collTarjetapuntosdetalles = $tarjetapuntosdetalles;
-        $this->collTarjetapuntosdetallesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Tarjetapuntosdetalle objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Tarjetapuntosdetalle objects.
-     * @throws PropelException
-     */
-    public function countTarjetapuntosdetalles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collTarjetapuntosdetallesPartial && !$this->isNew();
-        if (null === $this->collTarjetapuntosdetalles || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collTarjetapuntosdetalles) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getTarjetapuntosdetalles());
-            }
-            $query = TarjetapuntosdetalleQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByVenta($this)
-                ->count($con);
-        }
-
-        return count($this->collTarjetapuntosdetalles);
-    }
-
-    /**
-     * Method called to associate a Tarjetapuntosdetalle object to this object
-     * through the Tarjetapuntosdetalle foreign key attribute.
-     *
-     * @param    Tarjetapuntosdetalle $l Tarjetapuntosdetalle
-     * @return Venta The current object (for fluent API support)
-     */
-    public function addTarjetapuntosdetalle(Tarjetapuntosdetalle $l)
-    {
-        if ($this->collTarjetapuntosdetalles === null) {
-            $this->initTarjetapuntosdetalles();
-            $this->collTarjetapuntosdetallesPartial = true;
-        }
-
-        if (!in_array($l, $this->collTarjetapuntosdetalles->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddTarjetapuntosdetalle($l);
-
-            if ($this->tarjetapuntosdetallesScheduledForDeletion and $this->tarjetapuntosdetallesScheduledForDeletion->contains($l)) {
-                $this->tarjetapuntosdetallesScheduledForDeletion->remove($this->tarjetapuntosdetallesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Tarjetapuntosdetalle $tarjetapuntosdetalle The tarjetapuntosdetalle object to add.
-     */
-    protected function doAddTarjetapuntosdetalle($tarjetapuntosdetalle)
-    {
-        $this->collTarjetapuntosdetalles[]= $tarjetapuntosdetalle;
-        $tarjetapuntosdetalle->setVenta($this);
-    }
-
-    /**
-     * @param	Tarjetapuntosdetalle $tarjetapuntosdetalle The tarjetapuntosdetalle object to remove.
-     * @return Venta The current object (for fluent API support)
-     */
-    public function removeTarjetapuntosdetalle($tarjetapuntosdetalle)
-    {
-        if ($this->getTarjetapuntosdetalles()->contains($tarjetapuntosdetalle)) {
-            $this->collTarjetapuntosdetalles->remove($this->collTarjetapuntosdetalles->search($tarjetapuntosdetalle));
-            if (null === $this->tarjetapuntosdetallesScheduledForDeletion) {
-                $this->tarjetapuntosdetallesScheduledForDeletion = clone $this->collTarjetapuntosdetalles;
-                $this->tarjetapuntosdetallesScheduledForDeletion->clear();
-            }
-            $this->tarjetapuntosdetallesScheduledForDeletion[]= clone $tarjetapuntosdetalle;
-            $tarjetapuntosdetalle->setVenta(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Venta is new, it will return
-     * an empty collection; or if this Venta has previously
-     * been saved, it will retrieve related Tarjetapuntosdetalles from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Venta.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Tarjetapuntosdetalle[] List of Tarjetapuntosdetalle objects
-     */
-    public function getTarjetapuntosdetallesJoinEmpleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = TarjetapuntosdetalleQuery::create(null, $criteria);
-        $query->joinWith('Empleado', $join_behavior);
-
-        return $this->getTarjetapuntosdetalles($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Venta is new, it will return
-     * an empty collection; or if this Venta has previously
-     * been saved, it will retrieve related Tarjetapuntosdetalles from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Venta.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Tarjetapuntosdetalle[] List of Tarjetapuntosdetalle objects
-     */
-    public function getTarjetapuntosdetallesJoinTarjetapuntos($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = TarjetapuntosdetalleQuery::create(null, $criteria);
-        $query->joinWith('Tarjetapuntos', $join_behavior);
-
-        return $this->getTarjetapuntosdetalles($query, $con);
     }
 
     /**
@@ -2507,10 +2181,85 @@ abstract class BaseVenta extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Ventadetalle[] List of Ventadetalle objects
      */
+    public function getVentadetallesJoinDescuento($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentadetalleQuery::create(null, $criteria);
+        $query->joinWith('Descuento', $join_behavior);
+
+        return $this->getVentadetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Venta is new, it will return
+     * an empty collection; or if this Venta has previously
+     * been saved, it will retrieve related Ventadetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Venta.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Ventadetalle[] List of Ventadetalle objects
+     */
     public function getVentadetallesJoinProductovariante($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = VentadetalleQuery::create(null, $criteria);
         $query->joinWith('Productovariante', $join_behavior);
+
+        return $this->getVentadetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Venta is new, it will return
+     * an empty collection; or if this Venta has previously
+     * been saved, it will retrieve related Ventadetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Venta.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Ventadetalle[] List of Ventadetalle objects
+     */
+    public function getVentadetallesJoinPromocion($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentadetalleQuery::create(null, $criteria);
+        $query->joinWith('Promocion', $join_behavior);
+
+        return $this->getVentadetalles($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Venta is new, it will return
+     * an empty collection; or if this Venta has previously
+     * been saved, it will retrieve related Ventadetalles from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Venta.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Ventadetalle[] List of Ventadetalle objects
+     */
+    public function getVentadetallesJoinVentadetalleRelatedByIdventadetallapadre($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = VentadetalleQuery::create(null, $criteria);
+        $query->joinWith('VentadetalleRelatedByIdventadetallapadre', $join_behavior);
 
         return $this->getVentadetalles($query, $con);
     }
@@ -2806,11 +2555,6 @@ abstract class BaseVenta extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collTarjetapuntosdetalles) {
-                foreach ($this->collTarjetapuntosdetalles as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collVentadetalles) {
                 foreach ($this->collVentadetalles as $o) {
                     $o->clearAllReferences($deep);
@@ -2837,10 +2581,6 @@ abstract class BaseVenta extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collTarjetapuntosdetalles instanceof PropelCollection) {
-            $this->collTarjetapuntosdetalles->clearIterator();
-        }
-        $this->collTarjetapuntosdetalles = null;
         if ($this->collVentadetalles instanceof PropelCollection) {
             $this->collVentadetalles->clearIterator();
         }

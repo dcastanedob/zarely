@@ -1167,10 +1167,6 @@ abstract class BaseCompradetallePeer
             $criteria = $values->buildCriteria(); // build Criteria from Compradetalle object
         }
 
-        if ($criteria->containsKey(CompradetallePeer::IDCOMPRADETALLE) && $criteria->keyContainsValue(CompradetallePeer::IDCOMPRADETALLE) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.CompradetallePeer::IDCOMPRADETALLE.')');
-        }
-
 
         // Set the correct dbName
         $criteria->setDbName(CompradetallePeer::DATABASE_NAME);

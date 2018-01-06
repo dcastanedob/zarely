@@ -40,7 +40,9 @@ class VentadetalleTableMap extends TableMap
         // columns
         $this->addPrimaryKey('idventadetalle', 'Idventadetalle', 'INTEGER', true, null, null);
         $this->addForeignKey('idventa', 'Idventa', 'INTEGER', 'venta', 'idventa', true, null, null);
-        $this->addForeignKey('idproductovariante', 'Idproductovariante', 'INTEGER', 'productovariante', 'idproductovariante', true, null, null);
+        $this->addForeignKey('iddescuento', 'Iddescuento', 'INTEGER', 'descuento', 'iddescuento', false, null, null);
+        $this->addForeignKey('idpromocion', 'Idpromocion', 'INTEGER', 'promocion', 'idpromocion', false, null, null);
+        $this->addForeignKey('idproductovariante', 'Idproductovariante', 'INTEGER', 'productovariante', 'idproductovariante', false, null, null);
         $this->addColumn('ventadetalle_cantidad', 'VentadetalleCantidad', 'INTEGER', true, null, null);
         $this->addColumn('ventadetalle_subtotal', 'VentadetalleSubtotal', 'DECIMAL', true, 15, null);
         $this->addColumn('ventadetalle_preciounitario', 'VentadetallePreciounitario', 'DECIMAL', true, 15, null);
@@ -51,6 +53,7 @@ class VentadetalleTableMap extends TableMap
   2 => 'cambio',
 ));
         $this->addColumn('ventadetalle_descuento', 'VentadetalleDescuento', 'FLOAT', false, null, null);
+        $this->addForeignKey('idventadetallapadre', 'Idventadetallapadre', 'INTEGER', 'ventadetalle', 'idventadetalle', false, null, null);
         // validators
     } // initialize()
 
@@ -59,8 +62,12 @@ class VentadetalleTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Descuento', 'Descuento', RelationMap::MANY_TO_ONE, array('iddescuento' => 'iddescuento', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Productovariante', 'Productovariante', RelationMap::MANY_TO_ONE, array('idproductovariante' => 'idproductovariante', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Promocion', 'Promocion', RelationMap::MANY_TO_ONE, array('idpromocion' => 'idpromocion', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Venta', 'Venta', RelationMap::MANY_TO_ONE, array('idventa' => 'idventa', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('VentadetalleRelatedByIdventadetallapadre', 'Ventadetalle', RelationMap::MANY_TO_ONE, array('idventadetallapadre' => 'idventadetalle', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('VentadetalleRelatedByIdventadetalle', 'Ventadetalle', RelationMap::ONE_TO_MANY, array('idventadetalle' => 'idventadetallapadre', ), 'CASCADE', 'CASCADE', 'VentadetallesRelatedByIdventadetalle');
     } // buildRelations()
 
 } // VentadetalleTableMap

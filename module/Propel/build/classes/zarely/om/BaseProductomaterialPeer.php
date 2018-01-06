@@ -552,7 +552,7 @@ abstract class BaseProductomaterialPeer
             $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -656,7 +656,7 @@ abstract class BaseProductomaterialPeer
         $startcol = ProductomaterialPeer::NUM_HYDRATE_COLUMNS;
         ProductoPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -739,7 +739,7 @@ abstract class BaseProductomaterialPeer
 
         $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, MaterialPeer::IDMATERIAL, $join_behavior);
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -783,7 +783,7 @@ abstract class BaseProductomaterialPeer
 
         $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, MaterialPeer::IDMATERIAL, $join_behavior);
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -882,7 +882,7 @@ abstract class BaseProductomaterialPeer
             $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -975,7 +975,7 @@ abstract class BaseProductomaterialPeer
         ProductoPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + ProductoPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(ProductomaterialPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+        $criteria->addJoin(ProductomaterialPeer::IDMATERIAL, ProductoPeer::IDPRODUCTO, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1148,10 +1148,6 @@ abstract class BaseProductomaterialPeer
             $criteria = clone $values; // rename for clarity
         } else {
             $criteria = $values->buildCriteria(); // build Criteria from Productomaterial object
-        }
-
-        if ($criteria->containsKey(ProductomaterialPeer::IDPRODUCTOMATERIAL) && $criteria->keyContainsValue(ProductomaterialPeer::IDPRODUCTOMATERIAL) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProductomaterialPeer::IDPRODUCTOMATERIAL.')');
         }
 
 

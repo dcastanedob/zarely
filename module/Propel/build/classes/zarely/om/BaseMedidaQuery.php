@@ -15,7 +15,6 @@
  * @method MedidaQuery orderByMedidaXl($order = Criteria::ASC) Order by the medida_xl column
  * @method MedidaQuery orderByMedidaXxl($order = Criteria::ASC) Order by the medida_xxl column
  * @method MedidaQuery orderByMedidaUnitalla($order = Criteria::ASC) Order by the medida_unitalla column
- * @method MedidaQuery orderByMedidasrango($order = Criteria::ASC) Order by the medidasrango column
  *
  * @method MedidaQuery groupByIdmedida() Group by the idmedida column
  * @method MedidaQuery groupByMedidaNombre() Group by the medida_nombre column
@@ -26,7 +25,6 @@
  * @method MedidaQuery groupByMedidaXl() Group by the medida_xl column
  * @method MedidaQuery groupByMedidaXxl() Group by the medida_xxl column
  * @method MedidaQuery groupByMedidaUnitalla() Group by the medida_unitalla column
- * @method MedidaQuery groupByMedidasrango() Group by the medidasrango column
  *
  * @method MedidaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method MedidaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -39,26 +37,24 @@
  * @method Medida findOne(PropelPDO $con = null) Return the first Medida matching the query
  * @method Medida findOneOrCreate(PropelPDO $con = null) Return the first Medida matching the query, or a new Medida object populated from the query conditions when no match is found
  *
- * @method Medida findOneByMedidaNombre(string $medida_nombre) Return the first Medida filtered by the medida_nombre column
+ * @method Medida findOneByMedidaNombre(boolean $medida_nombre) Return the first Medida filtered by the medida_nombre column
  * @method Medida findOneByMedidaXs(boolean $medida_xs) Return the first Medida filtered by the medida_xs column
  * @method Medida findOneByMedidaS(boolean $medida_s) Return the first Medida filtered by the medida_s column
  * @method Medida findOneByMedidaM(boolean $medida_m) Return the first Medida filtered by the medida_m column
  * @method Medida findOneByMedidaL(boolean $medida_l) Return the first Medida filtered by the medida_l column
  * @method Medida findOneByMedidaXl(boolean $medida_xl) Return the first Medida filtered by the medida_xl column
  * @method Medida findOneByMedidaXxl(boolean $medida_xxl) Return the first Medida filtered by the medida_xxl column
- * @method Medida findOneByMedidaUnitalla(boolean $medida_unitalla) Return the first Medida filtered by the medida_unitalla column
- * @method Medida findOneByMedidasrango(string $medidasrango) Return the first Medida filtered by the medidasrango column
+ * @method Medida findOneByMedidaUnitalla(string $medida_unitalla) Return the first Medida filtered by the medida_unitalla column
  *
  * @method array findByIdmedida(int $idmedida) Return Medida objects filtered by the idmedida column
- * @method array findByMedidaNombre(string $medida_nombre) Return Medida objects filtered by the medida_nombre column
+ * @method array findByMedidaNombre(boolean $medida_nombre) Return Medida objects filtered by the medida_nombre column
  * @method array findByMedidaXs(boolean $medida_xs) Return Medida objects filtered by the medida_xs column
  * @method array findByMedidaS(boolean $medida_s) Return Medida objects filtered by the medida_s column
  * @method array findByMedidaM(boolean $medida_m) Return Medida objects filtered by the medida_m column
  * @method array findByMedidaL(boolean $medida_l) Return Medida objects filtered by the medida_l column
  * @method array findByMedidaXl(boolean $medida_xl) Return Medida objects filtered by the medida_xl column
  * @method array findByMedidaXxl(boolean $medida_xxl) Return Medida objects filtered by the medida_xxl column
- * @method array findByMedidaUnitalla(boolean $medida_unitalla) Return Medida objects filtered by the medida_unitalla column
- * @method array findByMedidasrango(string $medidasrango) Return Medida objects filtered by the medidasrango column
+ * @method array findByMedidaUnitalla(string $medida_unitalla) Return Medida objects filtered by the medida_unitalla column
  *
  * @package    propel.generator.zarely.om
  */
@@ -166,7 +162,7 @@ abstract class BaseMedidaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idmedida`, `medida_nombre`, `medida_xs`, `medida_s`, `medida_m`, `medida_l`, `medida_xl`, `medida_xxl`, `medida_unitalla`, `medidasrango` FROM `medida` WHERE `idmedida` = :p0';
+        $sql = 'SELECT `idmedida`, `medida_nombre`, `medida_xs`, `medida_s`, `medida_m`, `medida_l`, `medida_xl`, `medida_xxl`, `medida_unitalla` FROM `medida` WHERE `idmedida` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -302,25 +298,23 @@ abstract class BaseMedidaQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByMedidaNombre('fooValue');   // WHERE medida_nombre = 'fooValue'
-     * $query->filterByMedidaNombre('%fooValue%'); // WHERE medida_nombre LIKE '%fooValue%'
+     * $query->filterByMedidaNombre(true); // WHERE medida_nombre = true
+     * $query->filterByMedidaNombre('yes'); // WHERE medida_nombre = true
      * </code>
      *
-     * @param     string $medidaNombre The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     boolean|string $medidaNombre The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return MedidaQuery The current query, for fluid interface
      */
     public function filterByMedidaNombre($medidaNombre = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($medidaNombre)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $medidaNombre)) {
-                $medidaNombre = str_replace('*', '%', $medidaNombre);
-                $comparison = Criteria::LIKE;
-            }
+        if (is_string($medidaNombre)) {
+            $medidaNombre = in_array(strtolower($medidaNombre), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(MedidaPeer::MEDIDA_NOMBRE, $medidaNombre, $comparison);
@@ -493,55 +487,28 @@ abstract class BaseMedidaQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByMedidaUnitalla(true); // WHERE medida_unitalla = true
-     * $query->filterByMedidaUnitalla('yes'); // WHERE medida_unitalla = true
+     * $query->filterByMedidaUnitalla('fooValue');   // WHERE medida_unitalla = 'fooValue'
+     * $query->filterByMedidaUnitalla('%fooValue%'); // WHERE medida_unitalla LIKE '%fooValue%'
      * </code>
      *
-     * @param     boolean|string $medidaUnitalla The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $medidaUnitalla The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return MedidaQuery The current query, for fluid interface
      */
     public function filterByMedidaUnitalla($medidaUnitalla = null, $comparison = null)
     {
-        if (is_string($medidaUnitalla)) {
-            $medidaUnitalla = in_array(strtolower($medidaUnitalla), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(MedidaPeer::MEDIDA_UNITALLA, $medidaUnitalla, $comparison);
-    }
-
-    /**
-     * Filter the query on the medidasrango column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByMedidasrango('fooValue');   // WHERE medidasrango = 'fooValue'
-     * $query->filterByMedidasrango('%fooValue%'); // WHERE medidasrango LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $medidasrango The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return MedidaQuery The current query, for fluid interface
-     */
-    public function filterByMedidasrango($medidasrango = null, $comparison = null)
-    {
         if (null === $comparison) {
-            if (is_array($medidasrango)) {
+            if (is_array($medidaUnitalla)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $medidasrango)) {
-                $medidasrango = str_replace('*', '%', $medidasrango);
+            } elseif (preg_match('/[\%\*]/', $medidaUnitalla)) {
+                $medidaUnitalla = str_replace('*', '%', $medidaUnitalla);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(MedidaPeer::MEDIDASRANGO, $medidasrango, $comparison);
+        return $this->addUsingAlias(MedidaPeer::MEDIDA_UNITALLA, $medidaUnitalla, $comparison);
     }
 
     /**

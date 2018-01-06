@@ -28,6 +28,10 @@
  * @method PromocionQuery rightJoinPromociondetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Promociondetalle relation
  * @method PromocionQuery innerJoinPromociondetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Promociondetalle relation
  *
+ * @method PromocionQuery leftJoinVentadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Ventadetalle relation
+ * @method PromocionQuery rightJoinVentadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Ventadetalle relation
+ * @method PromocionQuery innerJoinVentadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Ventadetalle relation
+ *
  * @method Promocion findOne(PropelPDO $con = null) Return the first Promocion matching the query
  * @method Promocion findOneOrCreate(PropelPDO $con = null) Return the first Promocion matching the query, or a new Promocion object populated from the query conditions when no match is found
  *
@@ -524,6 +528,80 @@ abstract class BasePromocionQuery extends ModelCriteria
         return $this
             ->joinPromociondetalle($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Promociondetalle', 'PromociondetalleQuery');
+    }
+
+    /**
+     * Filter the query by a related Ventadetalle object
+     *
+     * @param   Ventadetalle|PropelObjectCollection $ventadetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 PromocionQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByVentadetalle($ventadetalle, $comparison = null)
+    {
+        if ($ventadetalle instanceof Ventadetalle) {
+            return $this
+                ->addUsingAlias(PromocionPeer::IDPROMOCION, $ventadetalle->getIdpromocion(), $comparison);
+        } elseif ($ventadetalle instanceof PropelObjectCollection) {
+            return $this
+                ->useVentadetalleQuery()
+                ->filterByPrimaryKeys($ventadetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByVentadetalle() only accepts arguments of type Ventadetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Ventadetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return PromocionQuery The current query, for fluid interface
+     */
+    public function joinVentadetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Ventadetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Ventadetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Ventadetalle relation Ventadetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   VentadetalleQuery A secondary query class using the current class as primary query
+     */
+    public function useVentadetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinVentadetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Ventadetalle', 'VentadetalleQuery');
     }
 
     /**

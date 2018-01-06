@@ -8,53 +8,81 @@
  *
  * @method VentadetalleQuery orderByIdventadetalle($order = Criteria::ASC) Order by the idventadetalle column
  * @method VentadetalleQuery orderByIdventa($order = Criteria::ASC) Order by the idventa column
+ * @method VentadetalleQuery orderByIddescuento($order = Criteria::ASC) Order by the iddescuento column
+ * @method VentadetalleQuery orderByIdpromocion($order = Criteria::ASC) Order by the idpromocion column
  * @method VentadetalleQuery orderByIdproductovariante($order = Criteria::ASC) Order by the idproductovariante column
  * @method VentadetalleQuery orderByVentadetalleCantidad($order = Criteria::ASC) Order by the ventadetalle_cantidad column
  * @method VentadetalleQuery orderByVentadetalleSubtotal($order = Criteria::ASC) Order by the ventadetalle_subtotal column
  * @method VentadetalleQuery orderByVentadetallePreciounitario($order = Criteria::ASC) Order by the ventadetalle_preciounitario column
  * @method VentadetalleQuery orderByVentadetalleEstatus($order = Criteria::ASC) Order by the ventadetalle_estatus column
  * @method VentadetalleQuery orderByVentadetalleDescuento($order = Criteria::ASC) Order by the ventadetalle_descuento column
+ * @method VentadetalleQuery orderByIdventadetallapadre($order = Criteria::ASC) Order by the idventadetallapadre column
  *
  * @method VentadetalleQuery groupByIdventadetalle() Group by the idventadetalle column
  * @method VentadetalleQuery groupByIdventa() Group by the idventa column
+ * @method VentadetalleQuery groupByIddescuento() Group by the iddescuento column
+ * @method VentadetalleQuery groupByIdpromocion() Group by the idpromocion column
  * @method VentadetalleQuery groupByIdproductovariante() Group by the idproductovariante column
  * @method VentadetalleQuery groupByVentadetalleCantidad() Group by the ventadetalle_cantidad column
  * @method VentadetalleQuery groupByVentadetalleSubtotal() Group by the ventadetalle_subtotal column
  * @method VentadetalleQuery groupByVentadetallePreciounitario() Group by the ventadetalle_preciounitario column
  * @method VentadetalleQuery groupByVentadetalleEstatus() Group by the ventadetalle_estatus column
  * @method VentadetalleQuery groupByVentadetalleDescuento() Group by the ventadetalle_descuento column
+ * @method VentadetalleQuery groupByIdventadetallapadre() Group by the idventadetallapadre column
  *
  * @method VentadetalleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method VentadetalleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method VentadetalleQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method VentadetalleQuery leftJoinDescuento($relationAlias = null) Adds a LEFT JOIN clause to the query using the Descuento relation
+ * @method VentadetalleQuery rightJoinDescuento($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Descuento relation
+ * @method VentadetalleQuery innerJoinDescuento($relationAlias = null) Adds a INNER JOIN clause to the query using the Descuento relation
+ *
  * @method VentadetalleQuery leftJoinProductovariante($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productovariante relation
  * @method VentadetalleQuery rightJoinProductovariante($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productovariante relation
  * @method VentadetalleQuery innerJoinProductovariante($relationAlias = null) Adds a INNER JOIN clause to the query using the Productovariante relation
+ *
+ * @method VentadetalleQuery leftJoinPromocion($relationAlias = null) Adds a LEFT JOIN clause to the query using the Promocion relation
+ * @method VentadetalleQuery rightJoinPromocion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Promocion relation
+ * @method VentadetalleQuery innerJoinPromocion($relationAlias = null) Adds a INNER JOIN clause to the query using the Promocion relation
  *
  * @method VentadetalleQuery leftJoinVenta($relationAlias = null) Adds a LEFT JOIN clause to the query using the Venta relation
  * @method VentadetalleQuery rightJoinVenta($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Venta relation
  * @method VentadetalleQuery innerJoinVenta($relationAlias = null) Adds a INNER JOIN clause to the query using the Venta relation
  *
+ * @method VentadetalleQuery leftJoinVentadetalleRelatedByIdventadetallapadre($relationAlias = null) Adds a LEFT JOIN clause to the query using the VentadetalleRelatedByIdventadetallapadre relation
+ * @method VentadetalleQuery rightJoinVentadetalleRelatedByIdventadetallapadre($relationAlias = null) Adds a RIGHT JOIN clause to the query using the VentadetalleRelatedByIdventadetallapadre relation
+ * @method VentadetalleQuery innerJoinVentadetalleRelatedByIdventadetallapadre($relationAlias = null) Adds a INNER JOIN clause to the query using the VentadetalleRelatedByIdventadetallapadre relation
+ *
+ * @method VentadetalleQuery leftJoinVentadetalleRelatedByIdventadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the VentadetalleRelatedByIdventadetalle relation
+ * @method VentadetalleQuery rightJoinVentadetalleRelatedByIdventadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the VentadetalleRelatedByIdventadetalle relation
+ * @method VentadetalleQuery innerJoinVentadetalleRelatedByIdventadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the VentadetalleRelatedByIdventadetalle relation
+ *
  * @method Ventadetalle findOne(PropelPDO $con = null) Return the first Ventadetalle matching the query
  * @method Ventadetalle findOneOrCreate(PropelPDO $con = null) Return the first Ventadetalle matching the query, or a new Ventadetalle object populated from the query conditions when no match is found
  *
  * @method Ventadetalle findOneByIdventa(int $idventa) Return the first Ventadetalle filtered by the idventa column
+ * @method Ventadetalle findOneByIddescuento(int $iddescuento) Return the first Ventadetalle filtered by the iddescuento column
+ * @method Ventadetalle findOneByIdpromocion(int $idpromocion) Return the first Ventadetalle filtered by the idpromocion column
  * @method Ventadetalle findOneByIdproductovariante(int $idproductovariante) Return the first Ventadetalle filtered by the idproductovariante column
  * @method Ventadetalle findOneByVentadetalleCantidad(int $ventadetalle_cantidad) Return the first Ventadetalle filtered by the ventadetalle_cantidad column
  * @method Ventadetalle findOneByVentadetalleSubtotal(string $ventadetalle_subtotal) Return the first Ventadetalle filtered by the ventadetalle_subtotal column
  * @method Ventadetalle findOneByVentadetallePreciounitario(string $ventadetalle_preciounitario) Return the first Ventadetalle filtered by the ventadetalle_preciounitario column
  * @method Ventadetalle findOneByVentadetalleEstatus(string $ventadetalle_estatus) Return the first Ventadetalle filtered by the ventadetalle_estatus column
  * @method Ventadetalle findOneByVentadetalleDescuento(double $ventadetalle_descuento) Return the first Ventadetalle filtered by the ventadetalle_descuento column
+ * @method Ventadetalle findOneByIdventadetallapadre(int $idventadetallapadre) Return the first Ventadetalle filtered by the idventadetallapadre column
  *
  * @method array findByIdventadetalle(int $idventadetalle) Return Ventadetalle objects filtered by the idventadetalle column
  * @method array findByIdventa(int $idventa) Return Ventadetalle objects filtered by the idventa column
+ * @method array findByIddescuento(int $iddescuento) Return Ventadetalle objects filtered by the iddescuento column
+ * @method array findByIdpromocion(int $idpromocion) Return Ventadetalle objects filtered by the idpromocion column
  * @method array findByIdproductovariante(int $idproductovariante) Return Ventadetalle objects filtered by the idproductovariante column
  * @method array findByVentadetalleCantidad(int $ventadetalle_cantidad) Return Ventadetalle objects filtered by the ventadetalle_cantidad column
  * @method array findByVentadetalleSubtotal(string $ventadetalle_subtotal) Return Ventadetalle objects filtered by the ventadetalle_subtotal column
  * @method array findByVentadetallePreciounitario(string $ventadetalle_preciounitario) Return Ventadetalle objects filtered by the ventadetalle_preciounitario column
  * @method array findByVentadetalleEstatus(string $ventadetalle_estatus) Return Ventadetalle objects filtered by the ventadetalle_estatus column
  * @method array findByVentadetalleDescuento(double $ventadetalle_descuento) Return Ventadetalle objects filtered by the ventadetalle_descuento column
+ * @method array findByIdventadetallapadre(int $idventadetallapadre) Return Ventadetalle objects filtered by the idventadetallapadre column
  *
  * @package    propel.generator.zarely.om
  */
@@ -162,7 +190,7 @@ abstract class BaseVentadetalleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idventadetalle`, `idventa`, `idproductovariante`, `ventadetalle_cantidad`, `ventadetalle_subtotal`, `ventadetalle_preciounitario`, `ventadetalle_estatus`, `ventadetalle_descuento` FROM `ventadetalle` WHERE `idventadetalle` = :p0';
+        $sql = 'SELECT `idventadetalle`, `idventa`, `iddescuento`, `idpromocion`, `idproductovariante`, `ventadetalle_cantidad`, `ventadetalle_subtotal`, `ventadetalle_preciounitario`, `ventadetalle_estatus`, `ventadetalle_descuento`, `idventadetallapadre` FROM `ventadetalle` WHERE `idventadetalle` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -335,6 +363,94 @@ abstract class BaseVentadetalleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(VentadetallePeer::IDVENTA, $idventa, $comparison);
+    }
+
+    /**
+     * Filter the query on the iddescuento column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIddescuento(1234); // WHERE iddescuento = 1234
+     * $query->filterByIddescuento(array(12, 34)); // WHERE iddescuento IN (12, 34)
+     * $query->filterByIddescuento(array('min' => 12)); // WHERE iddescuento >= 12
+     * $query->filterByIddescuento(array('max' => 12)); // WHERE iddescuento <= 12
+     * </code>
+     *
+     * @see       filterByDescuento()
+     *
+     * @param     mixed $iddescuento The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VentadetalleQuery The current query, for fluid interface
+     */
+    public function filterByIddescuento($iddescuento = null, $comparison = null)
+    {
+        if (is_array($iddescuento)) {
+            $useMinMax = false;
+            if (isset($iddescuento['min'])) {
+                $this->addUsingAlias(VentadetallePeer::IDDESCUENTO, $iddescuento['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($iddescuento['max'])) {
+                $this->addUsingAlias(VentadetallePeer::IDDESCUENTO, $iddescuento['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VentadetallePeer::IDDESCUENTO, $iddescuento, $comparison);
+    }
+
+    /**
+     * Filter the query on the idpromocion column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdpromocion(1234); // WHERE idpromocion = 1234
+     * $query->filterByIdpromocion(array(12, 34)); // WHERE idpromocion IN (12, 34)
+     * $query->filterByIdpromocion(array('min' => 12)); // WHERE idpromocion >= 12
+     * $query->filterByIdpromocion(array('max' => 12)); // WHERE idpromocion <= 12
+     * </code>
+     *
+     * @see       filterByPromocion()
+     *
+     * @param     mixed $idpromocion The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VentadetalleQuery The current query, for fluid interface
+     */
+    public function filterByIdpromocion($idpromocion = null, $comparison = null)
+    {
+        if (is_array($idpromocion)) {
+            $useMinMax = false;
+            if (isset($idpromocion['min'])) {
+                $this->addUsingAlias(VentadetallePeer::IDPROMOCION, $idpromocion['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idpromocion['max'])) {
+                $this->addUsingAlias(VentadetallePeer::IDPROMOCION, $idpromocion['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VentadetallePeer::IDPROMOCION, $idpromocion, $comparison);
     }
 
     /**
@@ -579,6 +695,126 @@ abstract class BaseVentadetalleQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the idventadetallapadre column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIdventadetallapadre(1234); // WHERE idventadetallapadre = 1234
+     * $query->filterByIdventadetallapadre(array(12, 34)); // WHERE idventadetallapadre IN (12, 34)
+     * $query->filterByIdventadetallapadre(array('min' => 12)); // WHERE idventadetallapadre >= 12
+     * $query->filterByIdventadetallapadre(array('max' => 12)); // WHERE idventadetallapadre <= 12
+     * </code>
+     *
+     * @see       filterByVentadetalleRelatedByIdventadetallapadre()
+     *
+     * @param     mixed $idventadetallapadre The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return VentadetalleQuery The current query, for fluid interface
+     */
+    public function filterByIdventadetallapadre($idventadetallapadre = null, $comparison = null)
+    {
+        if (is_array($idventadetallapadre)) {
+            $useMinMax = false;
+            if (isset($idventadetallapadre['min'])) {
+                $this->addUsingAlias(VentadetallePeer::IDVENTADETALLAPADRE, $idventadetallapadre['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($idventadetallapadre['max'])) {
+                $this->addUsingAlias(VentadetallePeer::IDVENTADETALLAPADRE, $idventadetallapadre['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(VentadetallePeer::IDVENTADETALLAPADRE, $idventadetallapadre, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Descuento object
+     *
+     * @param   Descuento|PropelObjectCollection $descuento The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 VentadetalleQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByDescuento($descuento, $comparison = null)
+    {
+        if ($descuento instanceof Descuento) {
+            return $this
+                ->addUsingAlias(VentadetallePeer::IDDESCUENTO, $descuento->getIddescuento(), $comparison);
+        } elseif ($descuento instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(VentadetallePeer::IDDESCUENTO, $descuento->toKeyValue('PrimaryKey', 'Iddescuento'), $comparison);
+        } else {
+            throw new PropelException('filterByDescuento() only accepts arguments of type Descuento or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Descuento relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return VentadetalleQuery The current query, for fluid interface
+     */
+    public function joinDescuento($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Descuento');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Descuento');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Descuento relation Descuento object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   DescuentoQuery A secondary query class using the current class as primary query
+     */
+    public function useDescuentoQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinDescuento($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Descuento', 'DescuentoQuery');
+    }
+
+    /**
      * Filter the query by a related Productovariante object
      *
      * @param   Productovariante|PropelObjectCollection $productovariante The related object(s) to use as filter
@@ -612,7 +848,7 @@ abstract class BaseVentadetalleQuery extends ModelCriteria
      *
      * @return VentadetalleQuery The current query, for fluid interface
      */
-    public function joinProductovariante($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinProductovariante($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Productovariante');
@@ -647,11 +883,87 @@ abstract class BaseVentadetalleQuery extends ModelCriteria
      *
      * @return   ProductovarianteQuery A secondary query class using the current class as primary query
      */
-    public function useProductovarianteQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useProductovarianteQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinProductovariante($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Productovariante', 'ProductovarianteQuery');
+    }
+
+    /**
+     * Filter the query by a related Promocion object
+     *
+     * @param   Promocion|PropelObjectCollection $promocion The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 VentadetalleQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByPromocion($promocion, $comparison = null)
+    {
+        if ($promocion instanceof Promocion) {
+            return $this
+                ->addUsingAlias(VentadetallePeer::IDPROMOCION, $promocion->getIdpromocion(), $comparison);
+        } elseif ($promocion instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(VentadetallePeer::IDPROMOCION, $promocion->toKeyValue('PrimaryKey', 'Idpromocion'), $comparison);
+        } else {
+            throw new PropelException('filterByPromocion() only accepts arguments of type Promocion or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Promocion relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return VentadetalleQuery The current query, for fluid interface
+     */
+    public function joinPromocion($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Promocion');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Promocion');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Promocion relation Promocion object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   PromocionQuery A secondary query class using the current class as primary query
+     */
+    public function usePromocionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinPromocion($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Promocion', 'PromocionQuery');
     }
 
     /**
@@ -728,6 +1040,156 @@ abstract class BaseVentadetalleQuery extends ModelCriteria
         return $this
             ->joinVenta($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Venta', 'VentaQuery');
+    }
+
+    /**
+     * Filter the query by a related Ventadetalle object
+     *
+     * @param   Ventadetalle|PropelObjectCollection $ventadetalle The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 VentadetalleQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByVentadetalleRelatedByIdventadetallapadre($ventadetalle, $comparison = null)
+    {
+        if ($ventadetalle instanceof Ventadetalle) {
+            return $this
+                ->addUsingAlias(VentadetallePeer::IDVENTADETALLAPADRE, $ventadetalle->getIdventadetalle(), $comparison);
+        } elseif ($ventadetalle instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(VentadetallePeer::IDVENTADETALLAPADRE, $ventadetalle->toKeyValue('PrimaryKey', 'Idventadetalle'), $comparison);
+        } else {
+            throw new PropelException('filterByVentadetalleRelatedByIdventadetallapadre() only accepts arguments of type Ventadetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the VentadetalleRelatedByIdventadetallapadre relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return VentadetalleQuery The current query, for fluid interface
+     */
+    public function joinVentadetalleRelatedByIdventadetallapadre($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('VentadetalleRelatedByIdventadetallapadre');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'VentadetalleRelatedByIdventadetallapadre');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the VentadetalleRelatedByIdventadetallapadre relation Ventadetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   VentadetalleQuery A secondary query class using the current class as primary query
+     */
+    public function useVentadetalleRelatedByIdventadetallapadreQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinVentadetalleRelatedByIdventadetallapadre($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'VentadetalleRelatedByIdventadetallapadre', 'VentadetalleQuery');
+    }
+
+    /**
+     * Filter the query by a related Ventadetalle object
+     *
+     * @param   Ventadetalle|PropelObjectCollection $ventadetalle  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 VentadetalleQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByVentadetalleRelatedByIdventadetalle($ventadetalle, $comparison = null)
+    {
+        if ($ventadetalle instanceof Ventadetalle) {
+            return $this
+                ->addUsingAlias(VentadetallePeer::IDVENTADETALLE, $ventadetalle->getIdventadetallapadre(), $comparison);
+        } elseif ($ventadetalle instanceof PropelObjectCollection) {
+            return $this
+                ->useVentadetalleRelatedByIdventadetalleQuery()
+                ->filterByPrimaryKeys($ventadetalle->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByVentadetalleRelatedByIdventadetalle() only accepts arguments of type Ventadetalle or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the VentadetalleRelatedByIdventadetalle relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return VentadetalleQuery The current query, for fluid interface
+     */
+    public function joinVentadetalleRelatedByIdventadetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('VentadetalleRelatedByIdventadetalle');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'VentadetalleRelatedByIdventadetalle');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the VentadetalleRelatedByIdventadetalle relation Ventadetalle object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   VentadetalleQuery A secondary query class using the current class as primary query
+     */
+    public function useVentadetalleRelatedByIdventadetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinVentadetalleRelatedByIdventadetalle($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'VentadetalleRelatedByIdventadetalle', 'VentadetalleQuery');
     }
 
     /**

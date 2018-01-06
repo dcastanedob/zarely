@@ -49,7 +49,6 @@ class PedidomayoristadetalleTableMap extends TableMap
   1 => 'solicitado',
   2 => 'transito',
   3 => 'completado',
-  4 => 'cancelado',
 ));
         $this->addColumn('pedidomayoristadetalle_fecha', 'PedidomayoristadetalleFecha', 'DATE', true, null, null);
         // validators

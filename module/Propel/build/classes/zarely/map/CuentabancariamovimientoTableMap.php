@@ -52,13 +52,13 @@ class CuentabancariamovimientoTableMap extends TableMap
         $this->addColumn('cuentabancariamovimiento_fechamovimiento', 'CuentabancariamovimientoFechamovimiento', 'TIMESTAMP', true, null, null);
         $this->addColumn('cuentabancariamovimiento_fechacreacion', 'CuentabancariamovimientoFechacreacion', 'TIMESTAMP', true, null, null);
         $this->addColumn('cuentabancariamovimiento_balance', 'CuentabancariamovimientoBalance', 'DECIMAL', true, 10, null);
-        $this->addColumn('cuentabancariamovimiento_referencia', 'CuentabancariamovimientoReferencia', 'VARCHAR', false, 45, null);
-        $this->addColumn('cuentabancariamovimiento_medio', 'CuentabancariamovimientoMedio', 'CHAR', false, null, null);
-        $this->getColumn('cuentabancariamovimiento_medio', false)->setValueSet(array (
-  0 => 'cheque',
-  1 => 'efectivo',
+        $this->addColumn('cuentabancariamovimiento_tipo', 'CuentabancariamovimientoTipo', 'CHAR', true, null, null);
+        $this->getColumn('cuentabancariamovimiento_tipo', false)->setValueSet(array (
+  0 => 'efectivo',
+  1 => 'cheque',
   2 => 'transferencia',
 ));
+        $this->addColumn('cuentabancariamovimiento_referencia', 'CuentabancariamovimientoReferencia', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 

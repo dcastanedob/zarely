@@ -17,10 +17,8 @@
  * @method ProductoQuery orderByProductoPreciomayoreo($order = Criteria::ASC) Order by the producto_preciomayoreo column
  * @method ProductoQuery orderByProductoMinimo($order = Criteria::ASC) Order by the producto_minimo column
  * @method ProductoQuery orderByProductoReorden($order = Criteria::ASC) Order by the producto_reorden column
- * @method ProductoQuery orderByProductoMaximo($order = Criteria::ASC) Order by the producto_maximo column
  * @method ProductoQuery orderByIdtipocalzado($order = Criteria::ASC) Order by the idtipocalzado column
  * @method ProductoQuery orderByProductoDescripcion($order = Criteria::ASC) Order by the producto_descripcion column
- * @method ProductoQuery orderByProductoCosto($order = Criteria::ASC) Order by the producto_costo column
  *
  * @method ProductoQuery groupByIdproducto() Group by the idproducto column
  * @method ProductoQuery groupByProductoModelo() Group by the producto_modelo column
@@ -33,10 +31,8 @@
  * @method ProductoQuery groupByProductoPreciomayoreo() Group by the producto_preciomayoreo column
  * @method ProductoQuery groupByProductoMinimo() Group by the producto_minimo column
  * @method ProductoQuery groupByProductoReorden() Group by the producto_reorden column
- * @method ProductoQuery groupByProductoMaximo() Group by the producto_maximo column
  * @method ProductoQuery groupByIdtipocalzado() Group by the idtipocalzado column
  * @method ProductoQuery groupByProductoDescripcion() Group by the producto_descripcion column
- * @method ProductoQuery groupByProductoCosto() Group by the producto_costo column
  *
  * @method ProductoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProductoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -69,10 +65,6 @@
  * @method ProductoQuery leftJoinPedidomayoristadetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedidomayoristadetalle relation
  * @method ProductoQuery rightJoinPedidomayoristadetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedidomayoristadetalle relation
  * @method ProductoQuery innerJoinPedidomayoristadetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedidomayoristadetalle relation
- *
- * @method ProductoQuery leftJoinPedidosucursaldetalle($relationAlias = null) Adds a LEFT JOIN clause to the query using the Pedidosucursaldetalle relation
- * @method ProductoQuery rightJoinPedidosucursaldetalle($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Pedidosucursaldetalle relation
- * @method ProductoQuery innerJoinPedidosucursaldetalle($relationAlias = null) Adds a INNER JOIN clause to the query using the Pedidosucursaldetalle relation
  *
  * @method ProductoQuery leftJoinProductocolor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Productocolor relation
  * @method ProductoQuery rightJoinProductocolor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Productocolor relation
@@ -111,10 +103,8 @@
  * @method Producto findOneByProductoPreciomayoreo(string $producto_preciomayoreo) Return the first Producto filtered by the producto_preciomayoreo column
  * @method Producto findOneByProductoMinimo(int $producto_minimo) Return the first Producto filtered by the producto_minimo column
  * @method Producto findOneByProductoReorden(int $producto_reorden) Return the first Producto filtered by the producto_reorden column
- * @method Producto findOneByProductoMaximo(int $producto_maximo) Return the first Producto filtered by the producto_maximo column
  * @method Producto findOneByIdtipocalzado(int $idtipocalzado) Return the first Producto filtered by the idtipocalzado column
  * @method Producto findOneByProductoDescripcion(string $producto_descripcion) Return the first Producto filtered by the producto_descripcion column
- * @method Producto findOneByProductoCosto(string $producto_costo) Return the first Producto filtered by the producto_costo column
  *
  * @method array findByIdproducto(int $idproducto) Return Producto objects filtered by the idproducto column
  * @method array findByProductoModelo(string $producto_modelo) Return Producto objects filtered by the producto_modelo column
@@ -127,10 +117,8 @@
  * @method array findByProductoPreciomayoreo(string $producto_preciomayoreo) Return Producto objects filtered by the producto_preciomayoreo column
  * @method array findByProductoMinimo(int $producto_minimo) Return Producto objects filtered by the producto_minimo column
  * @method array findByProductoReorden(int $producto_reorden) Return Producto objects filtered by the producto_reorden column
- * @method array findByProductoMaximo(int $producto_maximo) Return Producto objects filtered by the producto_maximo column
  * @method array findByIdtipocalzado(int $idtipocalzado) Return Producto objects filtered by the idtipocalzado column
  * @method array findByProductoDescripcion(string $producto_descripcion) Return Producto objects filtered by the producto_descripcion column
- * @method array findByProductoCosto(string $producto_costo) Return Producto objects filtered by the producto_costo column
  *
  * @package    propel.generator.zarely.om
  */
@@ -238,7 +226,7 @@ abstract class BaseProductoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproducto`, `producto_modelo`, `idmarca`, `idtemporada`, `producto_comisionable`, `idproveedor`, `producto_dirigidoa`, `producto_precioventa`, `producto_preciomayoreo`, `producto_minimo`, `producto_reorden`, `producto_maximo`, `idtipocalzado`, `producto_descripcion`, `producto_costo` FROM `producto` WHERE `idproducto` = :p0';
+        $sql = 'SELECT `idproducto`, `producto_modelo`, `idmarca`, `idtemporada`, `producto_comisionable`, `idproveedor`, `producto_dirigidoa`, `producto_precioventa`, `producto_preciomayoreo`, `producto_minimo`, `producto_reorden`, `idtipocalzado`, `producto_descripcion` FROM `producto` WHERE `idproducto` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -770,48 +758,6 @@ abstract class BaseProductoQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the producto_maximo column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByProductoMaximo(1234); // WHERE producto_maximo = 1234
-     * $query->filterByProductoMaximo(array(12, 34)); // WHERE producto_maximo IN (12, 34)
-     * $query->filterByProductoMaximo(array('min' => 12)); // WHERE producto_maximo >= 12
-     * $query->filterByProductoMaximo(array('max' => 12)); // WHERE producto_maximo <= 12
-     * </code>
-     *
-     * @param     mixed $productoMaximo The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ProductoQuery The current query, for fluid interface
-     */
-    public function filterByProductoMaximo($productoMaximo = null, $comparison = null)
-    {
-        if (is_array($productoMaximo)) {
-            $useMinMax = false;
-            if (isset($productoMaximo['min'])) {
-                $this->addUsingAlias(ProductoPeer::PRODUCTO_MAXIMO, $productoMaximo['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($productoMaximo['max'])) {
-                $this->addUsingAlias(ProductoPeer::PRODUCTO_MAXIMO, $productoMaximo['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ProductoPeer::PRODUCTO_MAXIMO, $productoMaximo, $comparison);
-    }
-
-    /**
      * Filter the query on the idtipocalzado column
      *
      * Example usage:
@@ -882,48 +828,6 @@ abstract class BaseProductoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductoPeer::PRODUCTO_DESCRIPCION, $productoDescripcion, $comparison);
-    }
-
-    /**
-     * Filter the query on the producto_costo column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByProductoCosto(1234); // WHERE producto_costo = 1234
-     * $query->filterByProductoCosto(array(12, 34)); // WHERE producto_costo IN (12, 34)
-     * $query->filterByProductoCosto(array('min' => 12)); // WHERE producto_costo >= 12
-     * $query->filterByProductoCosto(array('max' => 12)); // WHERE producto_costo <= 12
-     * </code>
-     *
-     * @param     mixed $productoCosto The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ProductoQuery The current query, for fluid interface
-     */
-    public function filterByProductoCosto($productoCosto = null, $comparison = null)
-    {
-        if (is_array($productoCosto)) {
-            $useMinMax = false;
-            if (isset($productoCosto['min'])) {
-                $this->addUsingAlias(ProductoPeer::PRODUCTO_COSTO, $productoCosto['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($productoCosto['max'])) {
-                $this->addUsingAlias(ProductoPeer::PRODUCTO_COSTO, $productoCosto['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ProductoPeer::PRODUCTO_COSTO, $productoCosto, $comparison);
     }
 
     /**
@@ -1453,80 +1357,6 @@ abstract class BaseProductoQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Pedidosucursaldetalle object
-     *
-     * @param   Pedidosucursaldetalle|PropelObjectCollection $pedidosucursaldetalle  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 ProductoQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByPedidosucursaldetalle($pedidosucursaldetalle, $comparison = null)
-    {
-        if ($pedidosucursaldetalle instanceof Pedidosucursaldetalle) {
-            return $this
-                ->addUsingAlias(ProductoPeer::IDPRODUCTO, $pedidosucursaldetalle->getIdproducto(), $comparison);
-        } elseif ($pedidosucursaldetalle instanceof PropelObjectCollection) {
-            return $this
-                ->usePedidosucursaldetalleQuery()
-                ->filterByPrimaryKeys($pedidosucursaldetalle->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPedidosucursaldetalle() only accepts arguments of type Pedidosucursaldetalle or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Pedidosucursaldetalle relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ProductoQuery The current query, for fluid interface
-     */
-    public function joinPedidosucursaldetalle($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Pedidosucursaldetalle');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Pedidosucursaldetalle');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Pedidosucursaldetalle relation Pedidosucursaldetalle object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   PedidosucursaldetalleQuery A secondary query class using the current class as primary query
-     */
-    public function usePedidosucursaldetalleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinPedidosucursaldetalle($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Pedidosucursaldetalle', 'PedidosucursaldetalleQuery');
-    }
-
-    /**
      * Filter the query by a related Productocolor object
      *
      * @param   Productocolor|PropelObjectCollection $productocolor  the related object to use as filter
@@ -1613,7 +1443,7 @@ abstract class BaseProductoQuery extends ModelCriteria
     {
         if ($productomaterial instanceof Productomaterial) {
             return $this
-                ->addUsingAlias(ProductoPeer::IDPRODUCTO, $productomaterial->getIdproducto(), $comparison);
+                ->addUsingAlias(ProductoPeer::IDPRODUCTO, $productomaterial->getIdmaterial(), $comparison);
         } elseif ($productomaterial instanceof PropelObjectCollection) {
             return $this
                 ->useProductomaterialQuery()

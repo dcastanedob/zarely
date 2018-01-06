@@ -288,8 +288,6 @@ abstract class BaseProductomaterialQuery extends ModelCriteria
      * $query->filterByIdproducto(array('max' => 12)); // WHERE idproducto <= 12
      * </code>
      *
-     * @see       filterByProducto()
-     *
      * @param     mixed $idproducto The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -333,6 +331,8 @@ abstract class BaseProductomaterialQuery extends ModelCriteria
      * </code>
      *
      * @see       filterByMaterial()
+     *
+     * @see       filterByProducto()
      *
      * @param     mixed $idmaterial The value to use as filter.
      *              Use scalar values for equality.
@@ -454,14 +454,14 @@ abstract class BaseProductomaterialQuery extends ModelCriteria
     {
         if ($producto instanceof Producto) {
             return $this
-                ->addUsingAlias(ProductomaterialPeer::IDPRODUCTO, $producto->getIdproducto(), $comparison);
+                ->addUsingAlias(ProductomaterialPeer::IDMATERIAL, $producto->getIdproducto(), $comparison);
         } elseif ($producto instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(ProductomaterialPeer::IDPRODUCTO, $producto->toKeyValue('PrimaryKey', 'Idproducto'), $comparison);
+                ->addUsingAlias(ProductomaterialPeer::IDMATERIAL, $producto->toKeyValue('PrimaryKey', 'Idproducto'), $comparison);
         } else {
             throw new PropelException('filterByProducto() only accepts arguments of type Producto or PropelCollection');
         }
