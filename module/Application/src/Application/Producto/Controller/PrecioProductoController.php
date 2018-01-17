@@ -231,7 +231,7 @@ class PrecioProductoController extends AbstractActionController
                             $sucursal_producto = \ProductosucursalQuery::create()->filterByIdsucursal($sucursal['idsucursal'])->findOneByIdproductovariante($variante['Idproductovariante']);
 
                             if($sucursal_producto != null && $sucursal['precio'] != null){
-                                $sucursal_producto->setProductosucursalPrecioventa($sucursal['precio'])->save();
+                                $sucursal_producto->setProductosucursalPrecioventanuevo($sucursal['precio'])->setProductosucursalPrecioaplicado(false)->save();
                             }
 
                         }
@@ -251,7 +251,7 @@ class PrecioProductoController extends AbstractActionController
                             $sucursal_producto = \ProductosucursalQuery::create()->filterByIdsucursal($sucursal['idsucursal'])->findOneByIdproductovariante($variante['Idproductovariante']);
 
                             if($sucursal_producto != null && $sucursal['precio'] != null){
-                                $sucursal_producto->setProductosucursalPrecioventa($sucursal['precio'])->save();
+                                $sucursal_producto->setProductosucursalPrecioventanuevo($sucursal['precio'])->setProductosucursalPrecioaplicado(false)->save();
                             }
 
                         }
@@ -322,7 +322,7 @@ class PrecioProductoController extends AbstractActionController
                             $sucursal_producto = \ProductosucursalQuery::create()->filterByIdsucursal($sucursal['idsucursal'])->findOneByIdproductovariante($variante['Idproductovariante']);
 
                             if($sucursal_producto != null && $sucursal['precio'] != null){
-                                $sucursal_producto->setProductosucursalPrecioventa($sucursal['precio'])->save();
+                                $sucursal_producto->setProductosucursalPrecioventanuevo($sucursal['precio'])->setProductosucursalPrecioaplicado(false)->save();
                             }
 
                         }
@@ -342,7 +342,7 @@ class PrecioProductoController extends AbstractActionController
                             $sucursal_producto = \ProductosucursalQuery::create()->filterByIdsucursal($sucursal['idsucursal'])->findOneByIdproductovariante($variante['Idproductovariante']);
 
                             if($sucursal_producto != null && $sucursal['precio'] != null){
-                                $sucursal_producto->setProductosucursalPrecioventa($sucursal['precio'])->save();
+                                $sucursal_producto->setProductosucursalPrecioventanuevo($sucursal['precio'])->setProductosucursalPrecioaplicado(false)->save();
                             }
 
                         }

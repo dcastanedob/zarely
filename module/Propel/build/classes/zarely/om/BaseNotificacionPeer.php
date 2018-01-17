@@ -2,83 +2,62 @@
 
 
 /**
- * Base static class for performing query and update operations on the 'productosucursal' table.
+ * Base static class for performing query and update operations on the 'notificacion' table.
  *
  *
  *
  * @package propel.generator.zarely.om
  */
-abstract class BaseProductosucursalPeer
+abstract class BaseNotificacionPeer
 {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'zarely';
 
     /** the table name for this class */
-    const TABLE_NAME = 'productosucursal';
+    const TABLE_NAME = 'notificacion';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Productosucursal';
+    const OM_CLASS = 'Notificacion';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'ProductosucursalTableMap';
+    const TM_CLASS = 'NotificacionTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 13;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 13;
+    const NUM_HYDRATE_COLUMNS = 6;
 
-    /** the column name for the idproductosucursal field */
-    const IDPRODUCTOSUCURSAL = 'productosucursal.idproductosucursal';
+    /** the column name for the idnotificacion field */
+    const IDNOTIFICACION = 'notificacion.idnotificacion';
 
-    /** the column name for the idproductovariante field */
-    const IDPRODUCTOVARIANTE = 'productosucursal.idproductovariante';
+    /** the column name for the idproducto field */
+    const IDPRODUCTO = 'notificacion.idproducto';
 
     /** the column name for the idsucursal field */
-    const IDSUCURSAL = 'productosucursal.idsucursal';
+    const IDSUCURSAL = 'notificacion.idsucursal';
 
-    /** the column name for the productosucursal_existencia field */
-    const PRODUCTOSUCURSAL_EXISTENCIA = 'productosucursal.productosucursal_existencia';
+    /** the column name for the notificacion_aplicada field */
+    const NOTIFICACION_APLICADA = 'notificacion.notificacion_aplicada';
 
-    /** the column name for the productosucursal_minimo field */
-    const PRODUCTOSUCURSAL_MINIMO = 'productosucursal.productosucursal_minimo';
+    /** the column name for the idempleado field */
+    const IDEMPLEADO = 'notificacion.idempleado';
 
-    /** the column name for the productosucursal_reorden field */
-    const PRODUCTOSUCURSAL_REORDEN = 'productosucursal.productosucursal_reorden';
-
-    /** the column name for the productosucursal_precioventa field */
-    const PRODUCTOSUCURSAL_PRECIOVENTA = 'productosucursal.productosucursal_precioventa';
-
-    /** the column name for the productosucursal_preciomayoreo field */
-    const PRODUCTOSUCURSAL_PRECIOMAYOREO = 'productosucursal.productosucursal_preciomayoreo';
-
-    /** the column name for the productosucursal_estatus field */
-    const PRODUCTOSUCURSAL_ESTATUS = 'productosucursal.productosucursal_estatus';
-
-    /** the column name for the productosucursal_costo field */
-    const PRODUCTOSUCURSAL_COSTO = 'productosucursal.productosucursal_costo';
-
-    /** the column name for the productosucursal_precioventamayoreonuevo field */
-    const PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO = 'productosucursal.productosucursal_precioventamayoreonuevo';
-
-    /** the column name for the productosucursal_precioventanuevo field */
-    const PRODUCTOSUCURSAL_PRECIOVENTANUEVO = 'productosucursal.productosucursal_precioventanuevo';
-
-    /** the column name for the productosucursal_precioaplicado field */
-    const PRODUCTOSUCURSAL_PRECIOAPLICADO = 'productosucursal.productosucursal_precioaplicado';
+    /** the column name for the notificacion_aplicadaen field */
+    const NOTIFICACION_APLICADAEN = 'notificacion.notificacion_aplicadaen';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of Productosucursal objects.
+     * An identity map to hold any loaded instances of Notificacion objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array Productosucursal[]
+     * @var        array Notificacion[]
      */
     public static $instances = array();
 
@@ -87,30 +66,30 @@ abstract class BaseProductosucursalPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. ProductosucursalPeer::$fieldNames[ProductosucursalPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. NotificacionPeer::$fieldNames[NotificacionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductosucursal', 'Idproductovariante', 'Idsucursal', 'ProductosucursalExistencia', 'ProductosucursalMinimo', 'ProductosucursalReorden', 'ProductosucursalPrecioventa', 'ProductosucursalPreciomayoreo', 'ProductosucursalEstatus', 'ProductosucursalCosto', 'ProductosucursalPrecioventamayoreonuevo', 'ProductosucursalPrecioventanuevo', 'ProductosucursalPrecioaplicado', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductosucursal', 'idproductovariante', 'idsucursal', 'productosucursalExistencia', 'productosucursalMinimo', 'productosucursalReorden', 'productosucursalPrecioventa', 'productosucursalPreciomayoreo', 'productosucursalEstatus', 'productosucursalCosto', 'productosucursalPrecioventamayoreonuevo', 'productosucursalPrecioventanuevo', 'productosucursalPrecioaplicado', ),
-        BasePeer::TYPE_COLNAME => array (ProductosucursalPeer::IDPRODUCTOSUCURSAL, ProductosucursalPeer::IDPRODUCTOVARIANTE, ProductosucursalPeer::IDSUCURSAL, ProductosucursalPeer::PRODUCTOSUCURSAL_EXISTENCIA, ProductosucursalPeer::PRODUCTOSUCURSAL_MINIMO, ProductosucursalPeer::PRODUCTOSUCURSAL_REORDEN, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTA, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO, ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS, ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOAPLICADO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOSUCURSAL', 'IDPRODUCTOVARIANTE', 'IDSUCURSAL', 'PRODUCTOSUCURSAL_EXISTENCIA', 'PRODUCTOSUCURSAL_MINIMO', 'PRODUCTOSUCURSAL_REORDEN', 'PRODUCTOSUCURSAL_PRECIOVENTA', 'PRODUCTOSUCURSAL_PRECIOMAYOREO', 'PRODUCTOSUCURSAL_ESTATUS', 'PRODUCTOSUCURSAL_COSTO', 'PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO', 'PRODUCTOSUCURSAL_PRECIOVENTANUEVO', 'PRODUCTOSUCURSAL_PRECIOAPLICADO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductosucursal', 'idproductovariante', 'idsucursal', 'productosucursal_existencia', 'productosucursal_minimo', 'productosucursal_reorden', 'productosucursal_precioventa', 'productosucursal_preciomayoreo', 'productosucursal_estatus', 'productosucursal_costo', 'productosucursal_precioventamayoreonuevo', 'productosucursal_precioventanuevo', 'productosucursal_precioaplicado', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Idnotificacion', 'Idproducto', 'Idsucursal', 'NotificacionAplicada', 'Idempleado', 'NotificacionAplicadaen', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idnotificacion', 'idproducto', 'idsucursal', 'notificacionAplicada', 'idempleado', 'notificacionAplicadaen', ),
+        BasePeer::TYPE_COLNAME => array (NotificacionPeer::IDNOTIFICACION, NotificacionPeer::IDPRODUCTO, NotificacionPeer::IDSUCURSAL, NotificacionPeer::NOTIFICACION_APLICADA, NotificacionPeer::IDEMPLEADO, NotificacionPeer::NOTIFICACION_APLICADAEN, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDNOTIFICACION', 'IDPRODUCTO', 'IDSUCURSAL', 'NOTIFICACION_APLICADA', 'IDEMPLEADO', 'NOTIFICACION_APLICADAEN', ),
+        BasePeer::TYPE_FIELDNAME => array ('idnotificacion', 'idproducto', 'idsucursal', 'notificacion_aplicada', 'idempleado', 'notificacion_aplicadaen', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. ProductosucursalPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. NotificacionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproductosucursal' => 0, 'Idproductovariante' => 1, 'Idsucursal' => 2, 'ProductosucursalExistencia' => 3, 'ProductosucursalMinimo' => 4, 'ProductosucursalReorden' => 5, 'ProductosucursalPrecioventa' => 6, 'ProductosucursalPreciomayoreo' => 7, 'ProductosucursalEstatus' => 8, 'ProductosucursalCosto' => 9, 'ProductosucursalPrecioventamayoreonuevo' => 10, 'ProductosucursalPrecioventanuevo' => 11, 'ProductosucursalPrecioaplicado' => 12, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproductosucursal' => 0, 'idproductovariante' => 1, 'idsucursal' => 2, 'productosucursalExistencia' => 3, 'productosucursalMinimo' => 4, 'productosucursalReorden' => 5, 'productosucursalPrecioventa' => 6, 'productosucursalPreciomayoreo' => 7, 'productosucursalEstatus' => 8, 'productosucursalCosto' => 9, 'productosucursalPrecioventamayoreonuevo' => 10, 'productosucursalPrecioventanuevo' => 11, 'productosucursalPrecioaplicado' => 12, ),
-        BasePeer::TYPE_COLNAME => array (ProductosucursalPeer::IDPRODUCTOSUCURSAL => 0, ProductosucursalPeer::IDPRODUCTOVARIANTE => 1, ProductosucursalPeer::IDSUCURSAL => 2, ProductosucursalPeer::PRODUCTOSUCURSAL_EXISTENCIA => 3, ProductosucursalPeer::PRODUCTOSUCURSAL_MINIMO => 4, ProductosucursalPeer::PRODUCTOSUCURSAL_REORDEN => 5, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTA => 6, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO => 7, ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS => 8, ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO => 9, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO => 10, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO => 11, ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOAPLICADO => 12, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPRODUCTOSUCURSAL' => 0, 'IDPRODUCTOVARIANTE' => 1, 'IDSUCURSAL' => 2, 'PRODUCTOSUCURSAL_EXISTENCIA' => 3, 'PRODUCTOSUCURSAL_MINIMO' => 4, 'PRODUCTOSUCURSAL_REORDEN' => 5, 'PRODUCTOSUCURSAL_PRECIOVENTA' => 6, 'PRODUCTOSUCURSAL_PRECIOMAYOREO' => 7, 'PRODUCTOSUCURSAL_ESTATUS' => 8, 'PRODUCTOSUCURSAL_COSTO' => 9, 'PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO' => 10, 'PRODUCTOSUCURSAL_PRECIOVENTANUEVO' => 11, 'PRODUCTOSUCURSAL_PRECIOAPLICADO' => 12, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproductosucursal' => 0, 'idproductovariante' => 1, 'idsucursal' => 2, 'productosucursal_existencia' => 3, 'productosucursal_minimo' => 4, 'productosucursal_reorden' => 5, 'productosucursal_precioventa' => 6, 'productosucursal_preciomayoreo' => 7, 'productosucursal_estatus' => 8, 'productosucursal_costo' => 9, 'productosucursal_precioventamayoreonuevo' => 10, 'productosucursal_precioventanuevo' => 11, 'productosucursal_precioaplicado' => 12, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        BasePeer::TYPE_PHPNAME => array ('Idnotificacion' => 0, 'Idproducto' => 1, 'Idsucursal' => 2, 'NotificacionAplicada' => 3, 'Idempleado' => 4, 'NotificacionAplicadaen' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idnotificacion' => 0, 'idproducto' => 1, 'idsucursal' => 2, 'notificacionAplicada' => 3, 'idempleado' => 4, 'notificacionAplicadaen' => 5, ),
+        BasePeer::TYPE_COLNAME => array (NotificacionPeer::IDNOTIFICACION => 0, NotificacionPeer::IDPRODUCTO => 1, NotificacionPeer::IDSUCURSAL => 2, NotificacionPeer::NOTIFICACION_APLICADA => 3, NotificacionPeer::IDEMPLEADO => 4, NotificacionPeer::NOTIFICACION_APLICADAEN => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDNOTIFICACION' => 0, 'IDPRODUCTO' => 1, 'IDSUCURSAL' => 2, 'NOTIFICACION_APLICADA' => 3, 'IDEMPLEADO' => 4, 'NOTIFICACION_APLICADAEN' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('idnotificacion' => 0, 'idproducto' => 1, 'idsucursal' => 2, 'notificacion_aplicada' => 3, 'idempleado' => 4, 'notificacion_aplicadaen' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -125,10 +104,10 @@ abstract class BaseProductosucursalPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = ProductosucursalPeer::getFieldNames($toType);
-        $key = isset(ProductosucursalPeer::$fieldKeys[$fromType][$name]) ? ProductosucursalPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = NotificacionPeer::getFieldNames($toType);
+        $key = isset(NotificacionPeer::$fieldKeys[$fromType][$name]) ? NotificacionPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ProductosucursalPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(NotificacionPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -145,11 +124,11 @@ abstract class BaseProductosucursalPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, ProductosucursalPeer::$fieldNames)) {
+        if (!array_key_exists($type, NotificacionPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return ProductosucursalPeer::$fieldNames[$type];
+        return NotificacionPeer::$fieldNames[$type];
     }
 
     /**
@@ -161,12 +140,12 @@ abstract class BaseProductosucursalPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. ProductosucursalPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. NotificacionPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(ProductosucursalPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(NotificacionPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -184,33 +163,19 @@ abstract class BaseProductosucursalPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ProductosucursalPeer::IDPRODUCTOSUCURSAL);
-            $criteria->addSelectColumn(ProductosucursalPeer::IDPRODUCTOVARIANTE);
-            $criteria->addSelectColumn(ProductosucursalPeer::IDSUCURSAL);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_EXISTENCIA);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_MINIMO);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_REORDEN);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTA);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO);
-            $criteria->addSelectColumn(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOAPLICADO);
+            $criteria->addSelectColumn(NotificacionPeer::IDNOTIFICACION);
+            $criteria->addSelectColumn(NotificacionPeer::IDPRODUCTO);
+            $criteria->addSelectColumn(NotificacionPeer::IDSUCURSAL);
+            $criteria->addSelectColumn(NotificacionPeer::NOTIFICACION_APLICADA);
+            $criteria->addSelectColumn(NotificacionPeer::IDEMPLEADO);
+            $criteria->addSelectColumn(NotificacionPeer::NOTIFICACION_APLICADAEN);
         } else {
-            $criteria->addSelectColumn($alias . '.idproductosucursal');
-            $criteria->addSelectColumn($alias . '.idproductovariante');
+            $criteria->addSelectColumn($alias . '.idnotificacion');
+            $criteria->addSelectColumn($alias . '.idproducto');
             $criteria->addSelectColumn($alias . '.idsucursal');
-            $criteria->addSelectColumn($alias . '.productosucursal_existencia');
-            $criteria->addSelectColumn($alias . '.productosucursal_minimo');
-            $criteria->addSelectColumn($alias . '.productosucursal_reorden');
-            $criteria->addSelectColumn($alias . '.productosucursal_precioventa');
-            $criteria->addSelectColumn($alias . '.productosucursal_preciomayoreo');
-            $criteria->addSelectColumn($alias . '.productosucursal_estatus');
-            $criteria->addSelectColumn($alias . '.productosucursal_costo');
-            $criteria->addSelectColumn($alias . '.productosucursal_precioventamayoreonuevo');
-            $criteria->addSelectColumn($alias . '.productosucursal_precioventanuevo');
-            $criteria->addSelectColumn($alias . '.productosucursal_precioaplicado');
+            $criteria->addSelectColumn($alias . '.notificacion_aplicada');
+            $criteria->addSelectColumn($alias . '.idempleado');
+            $criteria->addSelectColumn($alias . '.notificacion_aplicadaen');
         }
     }
 
@@ -230,21 +195,21 @@ abstract class BaseProductosucursalPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductosucursalPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(NotificacionPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductosucursalPeer::addSelectColumns($criteria);
+            NotificacionPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -263,7 +228,7 @@ abstract class BaseProductosucursalPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return Productosucursal
+     * @return Notificacion
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -271,7 +236,7 @@ abstract class BaseProductosucursalPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = ProductosucursalPeer::doSelect($critcopy, $con);
+        $objects = NotificacionPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -289,7 +254,7 @@ abstract class BaseProductosucursalPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return ProductosucursalPeer::populateObjects(ProductosucursalPeer::doSelectStmt($criteria, $con));
+        return NotificacionPeer::populateObjects(NotificacionPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -307,16 +272,16 @@ abstract class BaseProductosucursalPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            ProductosucursalPeer::addSelectColumns($criteria);
+            NotificacionPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -330,16 +295,16 @@ abstract class BaseProductosucursalPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param Productosucursal $obj A Productosucursal object.
+     * @param Notificacion $obj A Notificacion object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = (string) $obj->getIdproductosucursal();
+                $key = (string) $obj->getIdnotificacion();
             } // if key === null
-            ProductosucursalPeer::$instances[$key] = $obj;
+            NotificacionPeer::$instances[$key] = $obj;
         }
     }
 
@@ -351,7 +316,7 @@ abstract class BaseProductosucursalPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A Productosucursal object or a primary key value.
+     * @param      mixed $value A Notificacion object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -359,17 +324,17 @@ abstract class BaseProductosucursalPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof Productosucursal) {
-                $key = (string) $value->getIdproductosucursal();
+            if (is_object($value) && $value instanceof Notificacion) {
+                $key = (string) $value->getIdnotificacion();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Productosucursal object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Notificacion object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(ProductosucursalPeer::$instances[$key]);
+            unset(NotificacionPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -380,14 +345,14 @@ abstract class BaseProductosucursalPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return Productosucursal Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return Notificacion Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(ProductosucursalPeer::$instances[$key])) {
-                return ProductosucursalPeer::$instances[$key];
+            if (isset(NotificacionPeer::$instances[$key])) {
+                return NotificacionPeer::$instances[$key];
             }
         }
 
@@ -402,15 +367,15 @@ abstract class BaseProductosucursalPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (ProductosucursalPeer::$instances as $instance) {
+        foreach (NotificacionPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        ProductosucursalPeer::$instances = array();
+        NotificacionPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to productosucursal
+     * Method to invalidate the instance pool of all tables related to notificacion
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
@@ -464,11 +429,11 @@ abstract class BaseProductosucursalPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = ProductosucursalPeer::getOMClass();
+        $cls = NotificacionPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = ProductosucursalPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = ProductosucursalPeer::getInstanceFromPool($key))) {
+            $key = NotificacionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = NotificacionPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -477,7 +442,7 @@ abstract class BaseProductosucursalPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                ProductosucursalPeer::addInstanceToPool($obj, $key);
+                NotificacionPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -491,21 +456,21 @@ abstract class BaseProductosucursalPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (Productosucursal object, last column rank)
+     * @return array (Notificacion object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = ProductosucursalPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = ProductosucursalPeer::getInstanceFromPool($key))) {
+        $key = NotificacionPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = NotificacionPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + ProductosucursalPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + NotificacionPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = ProductosucursalPeer::OM_CLASS;
+            $cls = NotificacionPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            ProductosucursalPeer::addInstanceToPool($obj, $key);
+            NotificacionPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -513,7 +478,7 @@ abstract class BaseProductosucursalPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Productovariante table
+     * Returns the number of rows matching criteria, joining the related Producto table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -521,7 +486,7 @@ abstract class BaseProductosucursalPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinProductovariante(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinProducto(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -529,26 +494,26 @@ abstract class BaseProductosucursalPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductosucursalPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(NotificacionPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductosucursalPeer::addSelectColumns($criteria);
+            NotificacionPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductosucursalPeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
+        $criteria->addJoin(NotificacionPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -580,26 +545,26 @@ abstract class BaseProductosucursalPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductosucursalPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(NotificacionPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductosucursalPeer::addSelectColumns($criteria);
+            NotificacionPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductosucursalPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+        $criteria->addJoin(NotificacionPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -615,61 +580,112 @@ abstract class BaseProductosucursalPeer
 
 
     /**
-     * Selects a collection of Productosucursal objects pre-filled with their Productovariante objects.
+     * Returns the number of rows matching criteria, joining the related Empleado table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinEmpleado(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(NotificacionPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            NotificacionPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(NotificacionPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Notificacion objects pre-filled with their Producto objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productosucursal objects.
+     * @return array           Array of Notificacion objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinProductovariante(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinProducto(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+            $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
         }
 
-        ProductosucursalPeer::addSelectColumns($criteria);
-        $startcol = ProductosucursalPeer::NUM_HYDRATE_COLUMNS;
-        ProductovariantePeer::addSelectColumns($criteria);
+        NotificacionPeer::addSelectColumns($criteria);
+        $startcol = NotificacionPeer::NUM_HYDRATE_COLUMNS;
+        ProductoPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(ProductosucursalPeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
+        $criteria->addJoin(NotificacionPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductosucursalPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductosucursalPeer::getInstanceFromPool($key1))) {
+            $key1 = NotificacionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = NotificacionPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = ProductosucursalPeer::getOMClass();
+                $cls = NotificacionPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                ProductosucursalPeer::addInstanceToPool($obj1, $key1);
+                NotificacionPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
-            $key2 = ProductovariantePeer::getPrimaryKeyHashFromRow($row, $startcol);
+            $key2 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol);
             if ($key2 !== null) {
-                $obj2 = ProductovariantePeer::getInstanceFromPool($key2);
+                $obj2 = ProductoPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = ProductovariantePeer::getOMClass();
+                    $cls = ProductoPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol);
-                    ProductovariantePeer::addInstanceToPool($obj2, $key2);
+                    ProductoPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (Productosucursal) to $obj2 (Productovariante)
-                $obj2->addProductosucursal($obj1);
+                // Add the $obj1 (Notificacion) to $obj2 (Producto)
+                $obj2->addNotificacion($obj1);
 
             } // if joined row was not null
 
@@ -682,11 +698,11 @@ abstract class BaseProductosucursalPeer
 
 
     /**
-     * Selects a collection of Productosucursal objects pre-filled with their Sucursal objects.
+     * Selects a collection of Notificacion objects pre-filled with their Sucursal objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productosucursal objects.
+     * @return array           Array of Notificacion objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -696,31 +712,31 @@ abstract class BaseProductosucursalPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+            $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
         }
 
-        ProductosucursalPeer::addSelectColumns($criteria);
-        $startcol = ProductosucursalPeer::NUM_HYDRATE_COLUMNS;
+        NotificacionPeer::addSelectColumns($criteria);
+        $startcol = NotificacionPeer::NUM_HYDRATE_COLUMNS;
         SucursalPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(ProductosucursalPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+        $criteria->addJoin(NotificacionPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductosucursalPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductosucursalPeer::getInstanceFromPool($key1))) {
+            $key1 = NotificacionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = NotificacionPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
 
-                $cls = ProductosucursalPeer::getOMClass();
+                $cls = NotificacionPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                ProductosucursalPeer::addInstanceToPool($obj1, $key1);
+                NotificacionPeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
             $key2 = SucursalPeer::getPrimaryKeyHashFromRow($row, $startcol);
@@ -735,8 +751,75 @@ abstract class BaseProductosucursalPeer
                     SucursalPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (Productosucursal) to $obj2 (Sucursal)
-                $obj2->addProductosucursal($obj1);
+                // Add the $obj1 (Notificacion) to $obj2 (Sucursal)
+                $obj2->addNotificacion($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Notificacion objects pre-filled with their Empleado objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Notificacion objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinEmpleado(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
+        }
+
+        NotificacionPeer::addSelectColumns($criteria);
+        $startcol = NotificacionPeer::NUM_HYDRATE_COLUMNS;
+        EmpleadoPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(NotificacionPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = NotificacionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = NotificacionPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = NotificacionPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                NotificacionPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = EmpleadoPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = EmpleadoPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    EmpleadoPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Notificacion) to $obj2 (Empleado)
+                $obj2->addNotificacion($obj1);
 
             } // if joined row was not null
 
@@ -765,28 +848,30 @@ abstract class BaseProductosucursalPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductosucursalPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(NotificacionPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductosucursalPeer::addSelectColumns($criteria);
+            NotificacionPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductosucursalPeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
+        $criteria->addJoin(NotificacionPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
 
-        $criteria->addJoin(ProductosucursalPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+        $criteria->addJoin(NotificacionPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+
+        $criteria->addJoin(NotificacionPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -801,12 +886,12 @@ abstract class BaseProductosucursalPeer
     }
 
     /**
-     * Selects a collection of Productosucursal objects pre-filled with all related objects.
+     * Selects a collection of Notificacion objects pre-filled with all related objects.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productosucursal objects.
+     * @return array           Array of Notificacion objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -816,55 +901,60 @@ abstract class BaseProductosucursalPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+            $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
         }
 
-        ProductosucursalPeer::addSelectColumns($criteria);
-        $startcol2 = ProductosucursalPeer::NUM_HYDRATE_COLUMNS;
+        NotificacionPeer::addSelectColumns($criteria);
+        $startcol2 = NotificacionPeer::NUM_HYDRATE_COLUMNS;
 
-        ProductovariantePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + ProductovariantePeer::NUM_HYDRATE_COLUMNS;
+        ProductoPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ProductoPeer::NUM_HYDRATE_COLUMNS;
 
         SucursalPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + SucursalPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(ProductosucursalPeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(ProductosucursalPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+        $criteria->addJoin(NotificacionPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+
+        $criteria->addJoin(NotificacionPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+
+        $criteria->addJoin(NotificacionPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductosucursalPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductosucursalPeer::getInstanceFromPool($key1))) {
+            $key1 = NotificacionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = NotificacionPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = ProductosucursalPeer::getOMClass();
+                $cls = NotificacionPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                ProductosucursalPeer::addInstanceToPool($obj1, $key1);
+                NotificacionPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined Productovariante rows
+            // Add objects for joined Producto rows
 
-            $key2 = ProductovariantePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = ProductovariantePeer::getInstanceFromPool($key2);
+                $obj2 = ProductoPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = ProductovariantePeer::getOMClass();
+                    $cls = ProductoPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    ProductovariantePeer::addInstanceToPool($obj2, $key2);
+                    ProductoPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (Productosucursal) to the collection in $obj2 (Productovariante)
-                $obj2->addProductosucursal($obj1);
+                // Add the $obj1 (Notificacion) to the collection in $obj2 (Producto)
+                $obj2->addNotificacion($obj1);
             } // if joined row not null
 
             // Add objects for joined Sucursal rows
@@ -881,8 +971,26 @@ abstract class BaseProductosucursalPeer
                     SucursalPeer::addInstanceToPool($obj3, $key3);
                 } // if obj3 loaded
 
-                // Add the $obj1 (Productosucursal) to the collection in $obj3 (Sucursal)
-                $obj3->addProductosucursal($obj1);
+                // Add the $obj1 (Notificacion) to the collection in $obj3 (Sucursal)
+                $obj3->addNotificacion($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Empleado rows
+
+            $key4 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            if ($key4 !== null) {
+                $obj4 = EmpleadoPeer::getInstanceFromPool($key4);
+                if (!$obj4) {
+
+                    $cls = EmpleadoPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    EmpleadoPeer::addInstanceToPool($obj4, $key4);
+                } // if obj4 loaded
+
+                // Add the $obj1 (Notificacion) to the collection in $obj4 (Empleado)
+                $obj4->addNotificacion($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -894,7 +1002,7 @@ abstract class BaseProductosucursalPeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Productovariante table
+     * Returns the number of rows matching criteria, joining the related Producto table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -902,7 +1010,7 @@ abstract class BaseProductosucursalPeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinAllExceptProductovariante(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinAllExceptProducto(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -910,26 +1018,28 @@ abstract class BaseProductosucursalPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductosucursalPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(NotificacionPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductosucursalPeer::addSelectColumns($criteria);
+            NotificacionPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductosucursalPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+        $criteria->addJoin(NotificacionPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+
+        $criteria->addJoin(NotificacionPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -961,26 +1071,28 @@ abstract class BaseProductosucursalPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(ProductosucursalPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(NotificacionPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            ProductosucursalPeer::addSelectColumns($criteria);
+            NotificacionPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(ProductosucursalPeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
+        $criteria->addJoin(NotificacionPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+
+        $criteria->addJoin(NotificacionPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -996,16 +1108,69 @@ abstract class BaseProductosucursalPeer
 
 
     /**
-     * Selects a collection of Productosucursal objects pre-filled with all related objects except Productovariante.
+     * Returns the number of rows matching criteria, joining the related Empleado table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptEmpleado(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(NotificacionPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            NotificacionPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(NotificacionPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+
+        $criteria->addJoin(NotificacionPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Notificacion objects pre-filled with all related objects except Producto.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productosucursal objects.
+     * @return array           Array of Notificacion objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptProductovariante(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptProducto(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1013,33 +1178,38 @@ abstract class BaseProductosucursalPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+            $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
         }
 
-        ProductosucursalPeer::addSelectColumns($criteria);
-        $startcol2 = ProductosucursalPeer::NUM_HYDRATE_COLUMNS;
+        NotificacionPeer::addSelectColumns($criteria);
+        $startcol2 = NotificacionPeer::NUM_HYDRATE_COLUMNS;
 
         SucursalPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + SucursalPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(ProductosucursalPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(NotificacionPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+
+        $criteria->addJoin(NotificacionPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductosucursalPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductosucursalPeer::getInstanceFromPool($key1))) {
+            $key1 = NotificacionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = NotificacionPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = ProductosucursalPeer::getOMClass();
+                $cls = NotificacionPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                ProductosucursalPeer::addInstanceToPool($obj1, $key1);
+                NotificacionPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
                 // Add objects for joined Sucursal rows
@@ -1056,8 +1226,27 @@ abstract class BaseProductosucursalPeer
                     SucursalPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (Productosucursal) to the collection in $obj2 (Sucursal)
-                $obj2->addProductosucursal($obj1);
+                // Add the $obj1 (Notificacion) to the collection in $obj2 (Sucursal)
+                $obj2->addNotificacion($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Empleado rows
+
+                $key3 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = EmpleadoPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = EmpleadoPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    EmpleadoPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Notificacion) to the collection in $obj3 (Empleado)
+                $obj3->addNotificacion($obj1);
 
             } // if joined row is not null
 
@@ -1070,12 +1259,12 @@ abstract class BaseProductosucursalPeer
 
 
     /**
-     * Selects a collection of Productosucursal objects pre-filled with all related objects except Sucursal.
+     * Selects a collection of Notificacion objects pre-filled with all related objects except Sucursal.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of Productosucursal objects.
+     * @return array           Array of Notificacion objects.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -1087,51 +1276,173 @@ abstract class BaseProductosucursalPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+            $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
         }
 
-        ProductosucursalPeer::addSelectColumns($criteria);
-        $startcol2 = ProductosucursalPeer::NUM_HYDRATE_COLUMNS;
+        NotificacionPeer::addSelectColumns($criteria);
+        $startcol2 = NotificacionPeer::NUM_HYDRATE_COLUMNS;
 
-        ProductovariantePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + ProductovariantePeer::NUM_HYDRATE_COLUMNS;
+        ProductoPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ProductoPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(ProductosucursalPeer::IDPRODUCTOVARIANTE, ProductovariantePeer::IDPRODUCTOVARIANTE, $join_behavior);
+        EmpleadoPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + EmpleadoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(NotificacionPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+
+        $criteria->addJoin(NotificacionPeer::IDEMPLEADO, EmpleadoPeer::IDEMPLEADO, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
 
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = ProductosucursalPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = ProductosucursalPeer::getInstanceFromPool($key1))) {
+            $key1 = NotificacionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = NotificacionPeer::getInstanceFromPool($key1))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj1->hydrate($row, 0, true); // rehydrate
             } else {
-                $cls = ProductosucursalPeer::getOMClass();
+                $cls = NotificacionPeer::getOMClass();
 
                 $obj1 = new $cls();
                 $obj1->hydrate($row);
-                ProductosucursalPeer::addInstanceToPool($obj1, $key1);
+                NotificacionPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined Productovariante rows
+                // Add objects for joined Producto rows
 
-                $key2 = ProductovariantePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                $key2 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
                 if ($key2 !== null) {
-                    $obj2 = ProductovariantePeer::getInstanceFromPool($key2);
+                    $obj2 = ProductoPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
 
-                        $cls = ProductovariantePeer::getOMClass();
+                        $cls = ProductoPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    ProductovariantePeer::addInstanceToPool($obj2, $key2);
+                    ProductoPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (Productosucursal) to the collection in $obj2 (Productovariante)
-                $obj2->addProductosucursal($obj1);
+                // Add the $obj1 (Notificacion) to the collection in $obj2 (Producto)
+                $obj2->addNotificacion($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Empleado rows
+
+                $key3 = EmpleadoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = EmpleadoPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = EmpleadoPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    EmpleadoPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Notificacion) to the collection in $obj3 (Empleado)
+                $obj3->addNotificacion($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Notificacion objects pre-filled with all related objects except Empleado.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Notificacion objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptEmpleado(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
+        }
+
+        NotificacionPeer::addSelectColumns($criteria);
+        $startcol2 = NotificacionPeer::NUM_HYDRATE_COLUMNS;
+
+        ProductoPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + ProductoPeer::NUM_HYDRATE_COLUMNS;
+
+        SucursalPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + SucursalPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(NotificacionPeer::IDPRODUCTO, ProductoPeer::IDPRODUCTO, $join_behavior);
+
+        $criteria->addJoin(NotificacionPeer::IDSUCURSAL, SucursalPeer::IDSUCURSAL, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = NotificacionPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = NotificacionPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = NotificacionPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                NotificacionPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Producto rows
+
+                $key2 = ProductoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = ProductoPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = ProductoPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    ProductoPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Notificacion) to the collection in $obj2 (Producto)
+                $obj2->addNotificacion($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Sucursal rows
+
+                $key3 = SucursalPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = SucursalPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = SucursalPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    SucursalPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Notificacion) to the collection in $obj3 (Sucursal)
+                $obj3->addNotificacion($obj1);
 
             } // if joined row is not null
 
@@ -1151,7 +1462,7 @@ abstract class BaseProductosucursalPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(ProductosucursalPeer::DATABASE_NAME)->getTable(ProductosucursalPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(NotificacionPeer::DATABASE_NAME)->getTable(NotificacionPeer::TABLE_NAME);
     }
 
     /**
@@ -1159,9 +1470,9 @@ abstract class BaseProductosucursalPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BaseProductosucursalPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BaseProductosucursalPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \ProductosucursalTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseNotificacionPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseNotificacionPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \NotificacionTableMap());
       }
     }
 
@@ -1173,13 +1484,13 @@ abstract class BaseProductosucursalPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return ProductosucursalPeer::OM_CLASS;
+        return NotificacionPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a Productosucursal or Criteria object.
+     * Performs an INSERT on the database, given a Notificacion or Criteria object.
      *
-     * @param      mixed $values Criteria or Productosucursal object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or Notificacion object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -1188,22 +1499,22 @@ abstract class BaseProductosucursalPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from Productosucursal object
+            $criteria = $values->buildCriteria(); // build Criteria from Notificacion object
         }
 
-        if ($criteria->containsKey(ProductosucursalPeer::IDPRODUCTOSUCURSAL) && $criteria->keyContainsValue(ProductosucursalPeer::IDPRODUCTOSUCURSAL) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProductosucursalPeer::IDPRODUCTOSUCURSAL.')');
+        if ($criteria->containsKey(NotificacionPeer::IDNOTIFICACION) && $criteria->keyContainsValue(NotificacionPeer::IDNOTIFICACION) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.NotificacionPeer::IDNOTIFICACION.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1220,9 +1531,9 @@ abstract class BaseProductosucursalPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a Productosucursal or Criteria object.
+     * Performs an UPDATE on the database, given a Notificacion or Criteria object.
      *
-     * @param      mixed $values Criteria or Productosucursal object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or Notificacion object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -1231,35 +1542,35 @@ abstract class BaseProductosucursalPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(ProductosucursalPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(NotificacionPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(ProductosucursalPeer::IDPRODUCTOSUCURSAL);
-            $value = $criteria->remove(ProductosucursalPeer::IDPRODUCTOSUCURSAL);
+            $comparison = $criteria->getComparison(NotificacionPeer::IDNOTIFICACION);
+            $value = $criteria->remove(NotificacionPeer::IDNOTIFICACION);
             if ($value) {
-                $selectCriteria->add(ProductosucursalPeer::IDPRODUCTOSUCURSAL, $value, $comparison);
+                $selectCriteria->add(NotificacionPeer::IDNOTIFICACION, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(ProductosucursalPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(NotificacionPeer::TABLE_NAME);
             }
 
-        } else { // $values is Productosucursal object
+        } else { // $values is Notificacion object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the productosucursal table.
+     * Deletes all rows from the notificacion table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -1268,19 +1579,19 @@ abstract class BaseProductosucursalPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(ProductosucursalPeer::TABLE_NAME, $con, ProductosucursalPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(NotificacionPeer::TABLE_NAME, $con, NotificacionPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            ProductosucursalPeer::clearInstancePool();
-            ProductosucursalPeer::clearRelatedInstancePool();
+            NotificacionPeer::clearInstancePool();
+            NotificacionPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1291,9 +1602,9 @@ abstract class BaseProductosucursalPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a Productosucursal or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Notificacion or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or Productosucursal object or primary key or array of primary keys
+     * @param      mixed $values Criteria or Notificacion object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -1304,32 +1615,32 @@ abstract class BaseProductosucursalPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            ProductosucursalPeer::clearInstancePool();
+            NotificacionPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof Productosucursal) { // it's a model object
+        } elseif ($values instanceof Notificacion) { // it's a model object
             // invalidate the cache for this single object
-            ProductosucursalPeer::removeInstanceFromPool($values);
+            NotificacionPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ProductosucursalPeer::DATABASE_NAME);
-            $criteria->add(ProductosucursalPeer::IDPRODUCTOSUCURSAL, (array) $values, Criteria::IN);
+            $criteria = new Criteria(NotificacionPeer::DATABASE_NAME);
+            $criteria->add(NotificacionPeer::IDNOTIFICACION, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                ProductosucursalPeer::removeInstanceFromPool($singleval);
+                NotificacionPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ProductosucursalPeer::DATABASE_NAME);
+        $criteria->setDbName(NotificacionPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1339,7 +1650,7 @@ abstract class BaseProductosucursalPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            ProductosucursalPeer::clearRelatedInstancePool();
+            NotificacionPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -1350,13 +1661,13 @@ abstract class BaseProductosucursalPeer
     }
 
     /**
-     * Validates all modified columns of given Productosucursal object.
+     * Validates all modified columns of given Notificacion object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param Productosucursal $obj The object to validate.
+     * @param Notificacion $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -1366,8 +1677,8 @@ abstract class BaseProductosucursalPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(ProductosucursalPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(ProductosucursalPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(NotificacionPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(NotificacionPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -1383,7 +1694,7 @@ abstract class BaseProductosucursalPeer
 
         }
 
-        return BasePeer::doValidate(ProductosucursalPeer::DATABASE_NAME, ProductosucursalPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(NotificacionPeer::DATABASE_NAME, NotificacionPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -1391,23 +1702,23 @@ abstract class BaseProductosucursalPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return Productosucursal
+     * @return Notificacion
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = ProductosucursalPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = NotificacionPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(ProductosucursalPeer::DATABASE_NAME);
-        $criteria->add(ProductosucursalPeer::IDPRODUCTOSUCURSAL, $pk);
+        $criteria = new Criteria(NotificacionPeer::DATABASE_NAME);
+        $criteria->add(NotificacionPeer::IDNOTIFICACION, $pk);
 
-        $v = ProductosucursalPeer::doSelect($criteria, $con);
+        $v = NotificacionPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -1417,31 +1728,31 @@ abstract class BaseProductosucursalPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return Productosucursal[]
+     * @return Notificacion[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(ProductosucursalPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(ProductosucursalPeer::DATABASE_NAME);
-            $criteria->add(ProductosucursalPeer::IDPRODUCTOSUCURSAL, $pks, Criteria::IN);
-            $objs = ProductosucursalPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(NotificacionPeer::DATABASE_NAME);
+            $criteria->add(NotificacionPeer::IDNOTIFICACION, $pks, Criteria::IN);
+            $objs = NotificacionPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BaseProductosucursalPeer
+} // BaseNotificacionPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseProductosucursalPeer::buildTableMap();
+BaseNotificacionPeer::buildTableMap();
 

@@ -48,6 +48,9 @@ class ProductosucursalTableMap extends TableMap
         $this->addColumn('productosucursal_preciomayoreo', 'ProductosucursalPreciomayoreo', 'DECIMAL', true, 10, null);
         $this->addColumn('productosucursal_estatus', 'ProductosucursalEstatus', 'BOOLEAN', true, 1, true);
         $this->addColumn('productosucursal_costo', 'ProductosucursalCosto', 'DECIMAL', true, 10, null);
+        $this->addColumn('productosucursal_precioventamayoreonuevo', 'ProductosucursalPrecioventamayoreonuevo', 'DECIMAL', false, 10, null);
+        $this->addColumn('productosucursal_precioventanuevo', 'ProductosucursalPrecioventanuevo', 'DECIMAL', false, 10, null);
+        $this->addColumn('productosucursal_precioaplicado', 'ProductosucursalPrecioaplicado', 'BOOLEAN', false, 1, null);
         // validators
     } // initialize()
 
