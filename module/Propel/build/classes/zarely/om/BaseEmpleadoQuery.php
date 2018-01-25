@@ -1318,7 +1318,7 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
      *
      * @return EmpleadoQuery The current query, for fluid interface
      */
-    public function joinNotificacion($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinNotificacion($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Notificacion');
@@ -1353,7 +1353,7 @@ abstract class BaseEmpleadoQuery extends ModelCriteria
      *
      * @return   NotificacionQuery A secondary query class using the current class as primary query
      */
-    public function useNotificacionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useNotificacionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinNotificacion($relationAlias, $joinType)

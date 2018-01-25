@@ -371,8 +371,8 @@
     <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
     <column name="idsucursal" phpName="Idsucursal" type="INTEGER" required="true"/>
     <column name="notificacion_aplicada" phpName="NotificacionAplicada" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
-    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="true"/>
-    <column name="notificacion_aplicadaen" phpName="NotificacionAplicadaen" type="TIMESTAMP" required="true"/>
+    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="false"/>
+    <column name="notificacion_aplicadaen" phpName="NotificacionAplicadaen" type="TIMESTAMP" required="false"/>
     <foreign-key foreignTable="producto" name="notificacion_idproducto" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idproducto" foreign="idproducto"/>
     </foreign-key>

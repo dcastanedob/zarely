@@ -42,8 +42,8 @@ class NotificacionTableMap extends TableMap
         $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', true, null, null);
         $this->addForeignKey('idsucursal', 'Idsucursal', 'INTEGER', 'sucursal', 'idsucursal', true, null, null);
         $this->addColumn('notificacion_aplicada', 'NotificacionAplicada', 'BOOLEAN', true, 1, false);
-        $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', true, null, null);
-        $this->addColumn('notificacion_aplicadaen', 'NotificacionAplicadaen', 'TIMESTAMP', true, null, null);
+        $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', false, null, null);
+        $this->addColumn('notificacion_aplicadaen', 'NotificacionAplicadaen', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 

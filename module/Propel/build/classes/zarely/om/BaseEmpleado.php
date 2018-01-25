@@ -3297,7 +3297,7 @@ abstract class BaseEmpleado extends BaseObject implements Persistent
                 $this->notificacionsScheduledForDeletion = clone $this->collNotificacions;
                 $this->notificacionsScheduledForDeletion->clear();
             }
-            $this->notificacionsScheduledForDeletion[]= clone $notificacion;
+            $this->notificacionsScheduledForDeletion[]= $notificacion;
             $notificacion->setEmpleado(null);
         }
 

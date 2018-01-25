@@ -84,7 +84,7 @@
                 <a href="/notificaciones" style="color:#fff" >
                   <span class="icon-with-child hidden-xs">
                     <span class="icon icon-bell-o icon-lg"></span>
-                    <span class="badge badge-success badge-above right"><?php echo \NotificacionQuery::create()->filterByNotificacionAplicada(false)->count()?></span>
+                    <span class="badge badge-success badge-above right"><?php echo \Notificacion::getNotifications($session['idsucursal'])->count()?></span>
                   </span>
                 </a>
               </li>
@@ -96,6 +96,7 @@
         </div>
       </div>
     </div>
+
     <div class="layout-main" >
       <div class="layout-sidebar" >
         <div class="layout-sidebar-backdrop" style="background-color: #fff; border-right-width: 2px;border-right-style: solid; border-right-color:  #eee;"></div>

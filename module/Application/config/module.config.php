@@ -583,6 +583,18 @@ return array(
             ),
 
 
+            'notificaciones' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/notificaciones[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Notificaciones\Controller\Notificaciones',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -699,6 +711,7 @@ return array(
             'Application\Reporte\Controller\ReporteAdministracionRemision' => 'Application\Reporte\Controller\ReporteAdministracionRemisionController',
             'Application\Reporte\Controller\ReporteAdministracionBodega' => 'Application\Reporte\Controller\ReporteAdministracionBodegaController',
             'Application\Configuraciones\Controller\Configuraciones' => 'Application\Configuraciones\Controller\ConfiguracionesController',
+            'Application\Notificaciones\Controller\Notificaciones' => 'Application\Notificaciones\Controller\NotificacionesController',
 
 
 
