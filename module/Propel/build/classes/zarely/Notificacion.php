@@ -15,4 +15,13 @@
  */
 class Notificacion extends BaseNotificacion
 {
+    public static function getNotifications($idSucursal)
+        {
+             if ( $idSucursal == null)
+                {
+                        return \NotificacionQuery::create()->filterByNotificacionAplicada(false);
+                }else{
+                      	return \NotificacionQuery::create()->filterByNotificacionAplicada(false)->filterByIdsucursal($idSucursal);
+                }
+        }
 }
