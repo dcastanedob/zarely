@@ -16,6 +16,9 @@
  * @method ProductosucursalQuery orderByProductosucursalPreciomayoreo($order = Criteria::ASC) Order by the productosucursal_preciomayoreo column
  * @method ProductosucursalQuery orderByProductosucursalEstatus($order = Criteria::ASC) Order by the productosucursal_estatus column
  * @method ProductosucursalQuery orderByProductosucursalCosto($order = Criteria::ASC) Order by the productosucursal_costo column
+ * @method ProductosucursalQuery orderByProductosucursalPrecioventamayoreonuevo($order = Criteria::ASC) Order by the productosucursal_precioventamayoreonuevo column
+ * @method ProductosucursalQuery orderByProductosucursalPrecioventanuevo($order = Criteria::ASC) Order by the productosucursal_precioventanuevo column
+ * @method ProductosucursalQuery orderByProductosucursalPrecioaplicado($order = Criteria::ASC) Order by the productosucursal_precioaplicado column
  *
  * @method ProductosucursalQuery groupByIdproductosucursal() Group by the idproductosucursal column
  * @method ProductosucursalQuery groupByIdproductovariante() Group by the idproductovariante column
@@ -27,6 +30,9 @@
  * @method ProductosucursalQuery groupByProductosucursalPreciomayoreo() Group by the productosucursal_preciomayoreo column
  * @method ProductosucursalQuery groupByProductosucursalEstatus() Group by the productosucursal_estatus column
  * @method ProductosucursalQuery groupByProductosucursalCosto() Group by the productosucursal_costo column
+ * @method ProductosucursalQuery groupByProductosucursalPrecioventamayoreonuevo() Group by the productosucursal_precioventamayoreonuevo column
+ * @method ProductosucursalQuery groupByProductosucursalPrecioventanuevo() Group by the productosucursal_precioventanuevo column
+ * @method ProductosucursalQuery groupByProductosucursalPrecioaplicado() Group by the productosucursal_precioaplicado column
  *
  * @method ProductosucursalQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProductosucursalQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -52,6 +58,9 @@
  * @method Productosucursal findOneByProductosucursalPreciomayoreo(string $productosucursal_preciomayoreo) Return the first Productosucursal filtered by the productosucursal_preciomayoreo column
  * @method Productosucursal findOneByProductosucursalEstatus(boolean $productosucursal_estatus) Return the first Productosucursal filtered by the productosucursal_estatus column
  * @method Productosucursal findOneByProductosucursalCosto(string $productosucursal_costo) Return the first Productosucursal filtered by the productosucursal_costo column
+ * @method Productosucursal findOneByProductosucursalPrecioventamayoreonuevo(string $productosucursal_precioventamayoreonuevo) Return the first Productosucursal filtered by the productosucursal_precioventamayoreonuevo column
+ * @method Productosucursal findOneByProductosucursalPrecioventanuevo(string $productosucursal_precioventanuevo) Return the first Productosucursal filtered by the productosucursal_precioventanuevo column
+ * @method Productosucursal findOneByProductosucursalPrecioaplicado(boolean $productosucursal_precioaplicado) Return the first Productosucursal filtered by the productosucursal_precioaplicado column
  *
  * @method array findByIdproductosucursal(int $idproductosucursal) Return Productosucursal objects filtered by the idproductosucursal column
  * @method array findByIdproductovariante(int $idproductovariante) Return Productosucursal objects filtered by the idproductovariante column
@@ -63,6 +72,9 @@
  * @method array findByProductosucursalPreciomayoreo(string $productosucursal_preciomayoreo) Return Productosucursal objects filtered by the productosucursal_preciomayoreo column
  * @method array findByProductosucursalEstatus(boolean $productosucursal_estatus) Return Productosucursal objects filtered by the productosucursal_estatus column
  * @method array findByProductosucursalCosto(string $productosucursal_costo) Return Productosucursal objects filtered by the productosucursal_costo column
+ * @method array findByProductosucursalPrecioventamayoreonuevo(string $productosucursal_precioventamayoreonuevo) Return Productosucursal objects filtered by the productosucursal_precioventamayoreonuevo column
+ * @method array findByProductosucursalPrecioventanuevo(string $productosucursal_precioventanuevo) Return Productosucursal objects filtered by the productosucursal_precioventanuevo column
+ * @method array findByProductosucursalPrecioaplicado(boolean $productosucursal_precioaplicado) Return Productosucursal objects filtered by the productosucursal_precioaplicado column
  *
  * @package    propel.generator.zarely.om
  */
@@ -170,7 +182,7 @@ abstract class BaseProductosucursalQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo` FROM `productosucursal` WHERE `idproductosucursal` = :p0';
+        $sql = 'SELECT `idproductosucursal`, `idproductovariante`, `idsucursal`, `productosucursal_existencia`, `productosucursal_minimo`, `productosucursal_reorden`, `productosucursal_precioventa`, `productosucursal_preciomayoreo`, `productosucursal_estatus`, `productosucursal_costo`, `productosucursal_precioventamayoreonuevo`, `productosucursal_precioventanuevo`, `productosucursal_precioaplicado` FROM `productosucursal` WHERE `idproductosucursal` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -666,6 +678,117 @@ abstract class BaseProductosucursalQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO, $productosucursalCosto, $comparison);
+    }
+
+    /**
+     * Filter the query on the productosucursal_precioventamayoreonuevo column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProductosucursalPrecioventamayoreonuevo(1234); // WHERE productosucursal_precioventamayoreonuevo = 1234
+     * $query->filterByProductosucursalPrecioventamayoreonuevo(array(12, 34)); // WHERE productosucursal_precioventamayoreonuevo IN (12, 34)
+     * $query->filterByProductosucursalPrecioventamayoreonuevo(array('min' => 12)); // WHERE productosucursal_precioventamayoreonuevo >= 12
+     * $query->filterByProductosucursalPrecioventamayoreonuevo(array('max' => 12)); // WHERE productosucursal_precioventamayoreonuevo <= 12
+     * </code>
+     *
+     * @param     mixed $productosucursalPrecioventamayoreonuevo The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProductosucursalQuery The current query, for fluid interface
+     */
+    public function filterByProductosucursalPrecioventamayoreonuevo($productosucursalPrecioventamayoreonuevo = null, $comparison = null)
+    {
+        if (is_array($productosucursalPrecioventamayoreonuevo)) {
+            $useMinMax = false;
+            if (isset($productosucursalPrecioventamayoreonuevo['min'])) {
+                $this->addUsingAlias(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO, $productosucursalPrecioventamayoreonuevo['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($productosucursalPrecioventamayoreonuevo['max'])) {
+                $this->addUsingAlias(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO, $productosucursalPrecioventamayoreonuevo['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO, $productosucursalPrecioventamayoreonuevo, $comparison);
+    }
+
+    /**
+     * Filter the query on the productosucursal_precioventanuevo column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProductosucursalPrecioventanuevo(1234); // WHERE productosucursal_precioventanuevo = 1234
+     * $query->filterByProductosucursalPrecioventanuevo(array(12, 34)); // WHERE productosucursal_precioventanuevo IN (12, 34)
+     * $query->filterByProductosucursalPrecioventanuevo(array('min' => 12)); // WHERE productosucursal_precioventanuevo >= 12
+     * $query->filterByProductosucursalPrecioventanuevo(array('max' => 12)); // WHERE productosucursal_precioventanuevo <= 12
+     * </code>
+     *
+     * @param     mixed $productosucursalPrecioventanuevo The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProductosucursalQuery The current query, for fluid interface
+     */
+    public function filterByProductosucursalPrecioventanuevo($productosucursalPrecioventanuevo = null, $comparison = null)
+    {
+        if (is_array($productosucursalPrecioventanuevo)) {
+            $useMinMax = false;
+            if (isset($productosucursalPrecioventanuevo['min'])) {
+                $this->addUsingAlias(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO, $productosucursalPrecioventanuevo['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($productosucursalPrecioventanuevo['max'])) {
+                $this->addUsingAlias(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO, $productosucursalPrecioventanuevo['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO, $productosucursalPrecioventanuevo, $comparison);
+    }
+
+    /**
+     * Filter the query on the productosucursal_precioaplicado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProductosucursalPrecioaplicado(true); // WHERE productosucursal_precioaplicado = true
+     * $query->filterByProductosucursalPrecioaplicado('yes'); // WHERE productosucursal_precioaplicado = true
+     * </code>
+     *
+     * @param     boolean|string $productosucursalPrecioaplicado The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProductosucursalQuery The current query, for fluid interface
+     */
+    public function filterByProductosucursalPrecioaplicado($productosucursalPrecioaplicado = null, $comparison = null)
+    {
+        if (is_string($productosucursalPrecioaplicado)) {
+            $productosucursalPrecioaplicado = in_array(strtolower($productosucursalPrecioaplicado), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOAPLICADO, $productosucursalPrecioaplicado, $comparison);
     }
 
     /**

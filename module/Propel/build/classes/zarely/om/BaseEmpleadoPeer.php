@@ -471,6 +471,9 @@ abstract class BaseEmpleadoPeer
         // Invalidate objects in CuentabancariamovimientoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CuentabancariamovimientoPeer::clearInstancePool();
+        // Invalidate objects in NotificacionPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        NotificacionPeer::clearInstancePool();
         // Invalidate objects in SucursalempleadoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         SucursalempleadoPeer::clearInstancePool();
@@ -1072,6 +1075,12 @@ abstract class BaseEmpleadoPeer
 
             $criteria->add(CuentabancariamovimientoPeer::IDEMPLEADO, $obj->getIdempleado());
             $affectedRows += CuentabancariamovimientoPeer::doDelete($criteria, $con);
+
+            // delete related Notificacion objects
+            $criteria = new Criteria(NotificacionPeer::DATABASE_NAME);
+
+            $criteria->add(NotificacionPeer::IDEMPLEADO, $obj->getIdempleado());
+            $affectedRows += NotificacionPeer::doDelete($criteria, $con);
 
             // delete related Sucursalempleado objects
             $criteria = new Criteria(SucursalempleadoPeer::DATABASE_NAME);

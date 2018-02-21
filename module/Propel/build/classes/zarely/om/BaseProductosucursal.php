@@ -92,6 +92,24 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
     protected $productosucursal_costo;
 
     /**
+     * The value for the productosucursal_precioventamayoreonuevo field.
+     * @var        string
+     */
+    protected $productosucursal_precioventamayoreonuevo;
+
+    /**
+     * The value for the productosucursal_precioventanuevo field.
+     * @var        string
+     */
+    protected $productosucursal_precioventanuevo;
+
+    /**
+     * The value for the productosucursal_precioaplicado field.
+     * @var        boolean
+     */
+    protected $productosucursal_precioaplicado;
+
+    /**
      * @var        Productovariante
      */
     protected $aProductovariante;
@@ -251,6 +269,39 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
     {
 
         return $this->productosucursal_costo;
+    }
+
+    /**
+     * Get the [productosucursal_precioventamayoreonuevo] column value.
+     *
+     * @return string
+     */
+    public function getProductosucursalPrecioventamayoreonuevo()
+    {
+
+        return $this->productosucursal_precioventamayoreonuevo;
+    }
+
+    /**
+     * Get the [productosucursal_precioventanuevo] column value.
+     *
+     * @return string
+     */
+    public function getProductosucursalPrecioventanuevo()
+    {
+
+        return $this->productosucursal_precioventanuevo;
+    }
+
+    /**
+     * Get the [productosucursal_precioaplicado] column value.
+     *
+     * @return boolean
+     */
+    public function getProductosucursalPrecioaplicado()
+    {
+
+        return $this->productosucursal_precioaplicado;
     }
 
     /**
@@ -480,6 +531,77 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
     } // setProductosucursalCosto()
 
     /**
+     * Set the value of [productosucursal_precioventamayoreonuevo] column.
+     *
+     * @param  string $v new value
+     * @return Productosucursal The current object (for fluent API support)
+     */
+    public function setProductosucursalPrecioventamayoreonuevo($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->productosucursal_precioventamayoreonuevo !== $v) {
+            $this->productosucursal_precioventamayoreonuevo = $v;
+            $this->modifiedColumns[] = ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO;
+        }
+
+
+        return $this;
+    } // setProductosucursalPrecioventamayoreonuevo()
+
+    /**
+     * Set the value of [productosucursal_precioventanuevo] column.
+     *
+     * @param  string $v new value
+     * @return Productosucursal The current object (for fluent API support)
+     */
+    public function setProductosucursalPrecioventanuevo($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->productosucursal_precioventanuevo !== $v) {
+            $this->productosucursal_precioventanuevo = $v;
+            $this->modifiedColumns[] = ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO;
+        }
+
+
+        return $this;
+    } // setProductosucursalPrecioventanuevo()
+
+    /**
+     * Sets the value of the [productosucursal_precioaplicado] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Productosucursal The current object (for fluent API support)
+     */
+    public function setProductosucursalPrecioaplicado($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->productosucursal_precioaplicado !== $v) {
+            $this->productosucursal_precioaplicado = $v;
+            $this->modifiedColumns[] = ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOAPLICADO;
+        }
+
+
+        return $this;
+    } // setProductosucursalPrecioaplicado()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -529,6 +651,9 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
             $this->productosucursal_preciomayoreo = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->productosucursal_estatus = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
             $this->productosucursal_costo = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->productosucursal_precioventamayoreonuevo = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->productosucursal_precioventanuevo = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->productosucursal_precioaplicado = ($row[$startcol + 12] !== null) ? (boolean) $row[$startcol + 12] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -538,7 +663,7 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 10; // 10 = ProductosucursalPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = ProductosucursalPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Productosucursal object", $e);
@@ -807,6 +932,15 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO)) {
             $modifiedColumns[':p' . $index++]  = '`productosucursal_costo`';
         }
+        if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO)) {
+            $modifiedColumns[':p' . $index++]  = '`productosucursal_precioventamayoreonuevo`';
+        }
+        if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO)) {
+            $modifiedColumns[':p' . $index++]  = '`productosucursal_precioventanuevo`';
+        }
+        if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOAPLICADO)) {
+            $modifiedColumns[':p' . $index++]  = '`productosucursal_precioaplicado`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `productosucursal` (%s) VALUES (%s)',
@@ -847,6 +981,15 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
                         break;
                     case '`productosucursal_costo`':
                         $stmt->bindValue($identifier, $this->productosucursal_costo, PDO::PARAM_STR);
+                        break;
+                    case '`productosucursal_precioventamayoreonuevo`':
+                        $stmt->bindValue($identifier, $this->productosucursal_precioventamayoreonuevo, PDO::PARAM_STR);
+                        break;
+                    case '`productosucursal_precioventanuevo`':
+                        $stmt->bindValue($identifier, $this->productosucursal_precioventanuevo, PDO::PARAM_STR);
+                        break;
+                    case '`productosucursal_precioaplicado`':
+                        $stmt->bindValue($identifier, (int) $this->productosucursal_precioaplicado, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1030,6 +1173,15 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
             case 9:
                 return $this->getProductosucursalCosto();
                 break;
+            case 10:
+                return $this->getProductosucursalPrecioventamayoreonuevo();
+                break;
+            case 11:
+                return $this->getProductosucursalPrecioventanuevo();
+                break;
+            case 12:
+                return $this->getProductosucursalPrecioaplicado();
+                break;
             default:
                 return null;
                 break;
@@ -1069,6 +1221,9 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
             $keys[7] => $this->getProductosucursalPreciomayoreo(),
             $keys[8] => $this->getProductosucursalEstatus(),
             $keys[9] => $this->getProductosucursalCosto(),
+            $keys[10] => $this->getProductosucursalPrecioventamayoreonuevo(),
+            $keys[11] => $this->getProductosucursalPrecioventanuevo(),
+            $keys[12] => $this->getProductosucursalPrecioaplicado(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1146,6 +1301,15 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
             case 9:
                 $this->setProductosucursalCosto($value);
                 break;
+            case 10:
+                $this->setProductosucursalPrecioventamayoreonuevo($value);
+                break;
+            case 11:
+                $this->setProductosucursalPrecioventanuevo($value);
+                break;
+            case 12:
+                $this->setProductosucursalPrecioaplicado($value);
+                break;
         } // switch()
     }
 
@@ -1180,6 +1344,9 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
         if (array_key_exists($keys[7], $arr)) $this->setProductosucursalPreciomayoreo($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setProductosucursalEstatus($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setProductosucursalCosto($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setProductosucursalPrecioventamayoreonuevo($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setProductosucursalPrecioventanuevo($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setProductosucursalPrecioaplicado($arr[$keys[12]]);
     }
 
     /**
@@ -1201,6 +1368,9 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO)) $criteria->add(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOMAYOREO, $this->productosucursal_preciomayoreo);
         if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS)) $criteria->add(ProductosucursalPeer::PRODUCTOSUCURSAL_ESTATUS, $this->productosucursal_estatus);
         if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO)) $criteria->add(ProductosucursalPeer::PRODUCTOSUCURSAL_COSTO, $this->productosucursal_costo);
+        if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO)) $criteria->add(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTAMAYOREONUEVO, $this->productosucursal_precioventamayoreonuevo);
+        if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO)) $criteria->add(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOVENTANUEVO, $this->productosucursal_precioventanuevo);
+        if ($this->isColumnModified(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOAPLICADO)) $criteria->add(ProductosucursalPeer::PRODUCTOSUCURSAL_PRECIOAPLICADO, $this->productosucursal_precioaplicado);
 
         return $criteria;
     }
@@ -1273,6 +1443,9 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
         $copyObj->setProductosucursalPreciomayoreo($this->getProductosucursalPreciomayoreo());
         $copyObj->setProductosucursalEstatus($this->getProductosucursalEstatus());
         $copyObj->setProductosucursalCosto($this->getProductosucursalCosto());
+        $copyObj->setProductosucursalPrecioventamayoreonuevo($this->getProductosucursalPrecioventamayoreonuevo());
+        $copyObj->setProductosucursalPrecioventanuevo($this->getProductosucursalPrecioventanuevo());
+        $copyObj->setProductosucursalPrecioaplicado($this->getProductosucursalPrecioaplicado());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1450,6 +1623,9 @@ abstract class BaseProductosucursal extends BaseObject implements Persistent
         $this->productosucursal_preciomayoreo = null;
         $this->productosucursal_estatus = null;
         $this->productosucursal_costo = null;
+        $this->productosucursal_precioventamayoreonuevo = null;
+        $this->productosucursal_precioventanuevo = null;
+        $this->productosucursal_precioaplicado = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

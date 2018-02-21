@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'productomaterial' table.
+ * Base class that represents a row from the 'notificacion' table.
  *
  *
  *
  * @package    propel.generator.zarely.om
  */
-abstract class BaseProductomaterial extends BaseObject implements Persistent
+abstract class BaseNotificacion extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'ProductomaterialPeer';
+    const PEER = 'NotificacionPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        ProductomaterialPeer
+     * @var        NotificacionPeer
      */
     protected static $peer;
 
@@ -30,10 +30,10 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     protected $startCopy = false;
 
     /**
-     * The value for the idproductomaterial field.
+     * The value for the idnotificacion field.
      * @var        int
      */
-    protected $idproductomaterial;
+    protected $idnotificacion;
 
     /**
      * The value for the idproducto field.
@@ -42,15 +42,29 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     protected $idproducto;
 
     /**
-     * The value for the idmaterial field.
+     * The value for the idsucursal field.
      * @var        int
      */
-    protected $idmaterial;
+    protected $idsucursal;
 
     /**
-     * @var        Material
+     * The value for the notificacion_aplicada field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
      */
-    protected $aMaterial;
+    protected $notificacion_aplicada;
+
+    /**
+     * The value for the idempleado field.
+     * @var        int
+     */
+    protected $idempleado;
+
+    /**
+     * The value for the notificacion_aplicadaen field.
+     * @var        string
+     */
+    protected $notificacion_aplicadaen;
 
     /**
      * @var        Producto
@@ -58,10 +72,14 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     protected $aProducto;
 
     /**
-     * @var        PropelObjectCollection|Productovariante[] Collection to store aggregation of Productovariante objects.
+     * @var        Sucursal
      */
-    protected $collProductovariantes;
-    protected $collProductovariantesPartial;
+    protected $aSucursal;
+
+    /**
+     * @var        Empleado
+     */
+    protected $aEmpleado;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -84,20 +102,35 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
      */
-    protected $productovariantesScheduledForDeletion = null;
+    public function applyDefaultValues()
+    {
+        $this->notificacion_aplicada = false;
+    }
 
     /**
-     * Get the [idproductomaterial] column value.
+     * Initializes internal state of BaseNotificacion object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
+
+    /**
+     * Get the [idnotificacion] column value.
      *
      * @return int
      */
-    public function getIdproductomaterial()
+    public function getIdnotificacion()
     {
 
-        return $this->idproductomaterial;
+        return $this->idnotificacion;
     }
 
     /**
@@ -112,42 +145,104 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [idmaterial] column value.
+     * Get the [idsucursal] column value.
      *
      * @return int
      */
-    public function getIdmaterial()
+    public function getIdsucursal()
     {
 
-        return $this->idmaterial;
+        return $this->idsucursal;
     }
 
     /**
-     * Set the value of [idproductomaterial] column.
+     * Get the [notificacion_aplicada] column value.
+     *
+     * @return boolean
+     */
+    public function getNotificacionAplicada()
+    {
+
+        return $this->notificacion_aplicada;
+    }
+
+    /**
+     * Get the [idempleado] column value.
+     *
+     * @return int
+     */
+    public function getIdempleado()
+    {
+
+        return $this->idempleado;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [notificacion_aplicadaen] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getNotificacionAplicadaen($format = 'Y-m-d H:i:s')
+    {
+        if ($this->notificacion_aplicadaen === null) {
+            return null;
+        }
+
+        if ($this->notificacion_aplicadaen === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->notificacion_aplicadaen);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->notificacion_aplicadaen, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Set the value of [idnotificacion] column.
      *
      * @param  int $v new value
-     * @return Productomaterial The current object (for fluent API support)
+     * @return Notificacion The current object (for fluent API support)
      */
-    public function setIdproductomaterial($v)
+    public function setIdnotificacion($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idproductomaterial !== $v) {
-            $this->idproductomaterial = $v;
-            $this->modifiedColumns[] = ProductomaterialPeer::IDPRODUCTOMATERIAL;
+        if ($this->idnotificacion !== $v) {
+            $this->idnotificacion = $v;
+            $this->modifiedColumns[] = NotificacionPeer::IDNOTIFICACION;
         }
 
 
         return $this;
-    } // setIdproductomaterial()
+    } // setIdnotificacion()
 
     /**
      * Set the value of [idproducto] column.
      *
      * @param  int $v new value
-     * @return Productomaterial The current object (for fluent API support)
+     * @return Notificacion The current object (for fluent API support)
      */
     public function setIdproducto($v)
     {
@@ -157,7 +252,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
 
         if ($this->idproducto !== $v) {
             $this->idproducto = $v;
-            $this->modifiedColumns[] = ProductomaterialPeer::IDPRODUCTO;
+            $this->modifiedColumns[] = NotificacionPeer::IDPRODUCTO;
         }
 
         if ($this->aProducto !== null && $this->aProducto->getIdproducto() !== $v) {
@@ -169,29 +264,106 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     } // setIdproducto()
 
     /**
-     * Set the value of [idmaterial] column.
+     * Set the value of [idsucursal] column.
      *
      * @param  int $v new value
-     * @return Productomaterial The current object (for fluent API support)
+     * @return Notificacion The current object (for fluent API support)
      */
-    public function setIdmaterial($v)
+    public function setIdsucursal($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->idmaterial !== $v) {
-            $this->idmaterial = $v;
-            $this->modifiedColumns[] = ProductomaterialPeer::IDMATERIAL;
+        if ($this->idsucursal !== $v) {
+            $this->idsucursal = $v;
+            $this->modifiedColumns[] = NotificacionPeer::IDSUCURSAL;
         }
 
-        if ($this->aMaterial !== null && $this->aMaterial->getIdmaterial() !== $v) {
-            $this->aMaterial = null;
+        if ($this->aSucursal !== null && $this->aSucursal->getIdsucursal() !== $v) {
+            $this->aSucursal = null;
         }
 
 
         return $this;
-    } // setIdmaterial()
+    } // setIdsucursal()
+
+    /**
+     * Sets the value of the [notificacion_aplicada] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Notificacion The current object (for fluent API support)
+     */
+    public function setNotificacionAplicada($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->notificacion_aplicada !== $v) {
+            $this->notificacion_aplicada = $v;
+            $this->modifiedColumns[] = NotificacionPeer::NOTIFICACION_APLICADA;
+        }
+
+
+        return $this;
+    } // setNotificacionAplicada()
+
+    /**
+     * Set the value of [idempleado] column.
+     *
+     * @param  int $v new value
+     * @return Notificacion The current object (for fluent API support)
+     */
+    public function setIdempleado($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->idempleado !== $v) {
+            $this->idempleado = $v;
+            $this->modifiedColumns[] = NotificacionPeer::IDEMPLEADO;
+        }
+
+        if ($this->aEmpleado !== null && $this->aEmpleado->getIdempleado() !== $v) {
+            $this->aEmpleado = null;
+        }
+
+
+        return $this;
+    } // setIdempleado()
+
+    /**
+     * Sets the value of [notificacion_aplicadaen] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Notificacion The current object (for fluent API support)
+     */
+    public function setNotificacionAplicadaen($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->notificacion_aplicadaen !== null || $dt !== null) {
+            $currentDateAsString = ($this->notificacion_aplicadaen !== null && $tmpDt = new DateTime($this->notificacion_aplicadaen)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->notificacion_aplicadaen = $newDateAsString;
+                $this->modifiedColumns[] = NotificacionPeer::NOTIFICACION_APLICADAEN;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setNotificacionAplicadaen()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -203,6 +375,10 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->notificacion_aplicada !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -225,9 +401,12 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     {
         try {
 
-            $this->idproductomaterial = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+            $this->idnotificacion = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->idproducto = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->idmaterial = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->idsucursal = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->notificacion_aplicada = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+            $this->idempleado = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->notificacion_aplicadaen = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -237,10 +416,10 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 3; // 3 = ProductomaterialPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = NotificacionPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Productomaterial object", $e);
+            throw new PropelException("Error populating Notificacion object", $e);
         }
     }
 
@@ -263,8 +442,11 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         if ($this->aProducto !== null && $this->idproducto !== $this->aProducto->getIdproducto()) {
             $this->aProducto = null;
         }
-        if ($this->aMaterial !== null && $this->idmaterial !== $this->aMaterial->getIdmaterial()) {
-            $this->aMaterial = null;
+        if ($this->aSucursal !== null && $this->idsucursal !== $this->aSucursal->getIdsucursal()) {
+            $this->aSucursal = null;
+        }
+        if ($this->aEmpleado !== null && $this->idempleado !== $this->aEmpleado->getIdempleado()) {
+            $this->aEmpleado = null;
         }
     } // ensureConsistency
 
@@ -289,13 +471,13 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = ProductomaterialPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = NotificacionPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -305,10 +487,9 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aMaterial = null;
             $this->aProducto = null;
-            $this->collProductovariantes = null;
-
+            $this->aSucursal = null;
+            $this->aEmpleado = null;
         } // if (deep)
     }
 
@@ -329,12 +510,12 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ProductomaterialQuery::create()
+            $deleteQuery = NotificacionQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -372,7 +553,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(ProductomaterialPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(NotificacionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -392,7 +573,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ProductomaterialPeer::addInstanceToPool($this);
+                NotificacionPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -427,18 +608,25 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aMaterial !== null) {
-                if ($this->aMaterial->isModified() || $this->aMaterial->isNew()) {
-                    $affectedRows += $this->aMaterial->save($con);
-                }
-                $this->setMaterial($this->aMaterial);
-            }
-
             if ($this->aProducto !== null) {
                 if ($this->aProducto->isModified() || $this->aProducto->isNew()) {
                     $affectedRows += $this->aProducto->save($con);
                 }
                 $this->setProducto($this->aProducto);
+            }
+
+            if ($this->aSucursal !== null) {
+                if ($this->aSucursal->isModified() || $this->aSucursal->isNew()) {
+                    $affectedRows += $this->aSucursal->save($con);
+                }
+                $this->setSucursal($this->aSucursal);
+            }
+
+            if ($this->aEmpleado !== null) {
+                if ($this->aEmpleado->isModified() || $this->aEmpleado->isNew()) {
+                    $affectedRows += $this->aEmpleado->save($con);
+                }
+                $this->setEmpleado($this->aEmpleado);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -450,23 +638,6 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->productovariantesScheduledForDeletion !== null) {
-                if (!$this->productovariantesScheduledForDeletion->isEmpty()) {
-                    ProductovarianteQuery::create()
-                        ->filterByPrimaryKeys($this->productovariantesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->productovariantesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collProductovariantes !== null) {
-                foreach ($this->collProductovariantes as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -489,24 +660,33 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = ProductomaterialPeer::IDPRODUCTOMATERIAL;
-        if (null !== $this->idproductomaterial) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ProductomaterialPeer::IDPRODUCTOMATERIAL . ')');
+        $this->modifiedColumns[] = NotificacionPeer::IDNOTIFICACION;
+        if (null !== $this->idnotificacion) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . NotificacionPeer::IDNOTIFICACION . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ProductomaterialPeer::IDPRODUCTOMATERIAL)) {
-            $modifiedColumns[':p' . $index++]  = '`idproductomaterial`';
+        if ($this->isColumnModified(NotificacionPeer::IDNOTIFICACION)) {
+            $modifiedColumns[':p' . $index++]  = '`idnotificacion`';
         }
-        if ($this->isColumnModified(ProductomaterialPeer::IDPRODUCTO)) {
+        if ($this->isColumnModified(NotificacionPeer::IDPRODUCTO)) {
             $modifiedColumns[':p' . $index++]  = '`idproducto`';
         }
-        if ($this->isColumnModified(ProductomaterialPeer::IDMATERIAL)) {
-            $modifiedColumns[':p' . $index++]  = '`idmaterial`';
+        if ($this->isColumnModified(NotificacionPeer::IDSUCURSAL)) {
+            $modifiedColumns[':p' . $index++]  = '`idsucursal`';
+        }
+        if ($this->isColumnModified(NotificacionPeer::NOTIFICACION_APLICADA)) {
+            $modifiedColumns[':p' . $index++]  = '`notificacion_aplicada`';
+        }
+        if ($this->isColumnModified(NotificacionPeer::IDEMPLEADO)) {
+            $modifiedColumns[':p' . $index++]  = '`idempleado`';
+        }
+        if ($this->isColumnModified(NotificacionPeer::NOTIFICACION_APLICADAEN)) {
+            $modifiedColumns[':p' . $index++]  = '`notificacion_aplicadaen`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `productomaterial` (%s) VALUES (%s)',
+            'INSERT INTO `notificacion` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -515,14 +695,23 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`idproductomaterial`':
-                        $stmt->bindValue($identifier, $this->idproductomaterial, PDO::PARAM_INT);
+                    case '`idnotificacion`':
+                        $stmt->bindValue($identifier, $this->idnotificacion, PDO::PARAM_INT);
                         break;
                     case '`idproducto`':
                         $stmt->bindValue($identifier, $this->idproducto, PDO::PARAM_INT);
                         break;
-                    case '`idmaterial`':
-                        $stmt->bindValue($identifier, $this->idmaterial, PDO::PARAM_INT);
+                    case '`idsucursal`':
+                        $stmt->bindValue($identifier, $this->idsucursal, PDO::PARAM_INT);
+                        break;
+                    case '`notificacion_aplicada`':
+                        $stmt->bindValue($identifier, (int) $this->notificacion_aplicada, PDO::PARAM_INT);
+                        break;
+                    case '`idempleado`':
+                        $stmt->bindValue($identifier, $this->idempleado, PDO::PARAM_INT);
+                        break;
+                    case '`notificacion_aplicadaen`':
+                        $stmt->bindValue($identifier, $this->notificacion_aplicadaen, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -537,7 +726,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
-        $this->setIdproductomaterial($pk);
+        $this->setIdnotificacion($pk);
 
         $this->setNew(false);
     }
@@ -623,31 +812,29 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aMaterial !== null) {
-                if (!$this->aMaterial->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aMaterial->getValidationFailures());
-                }
-            }
-
             if ($this->aProducto !== null) {
                 if (!$this->aProducto->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aProducto->getValidationFailures());
                 }
             }
 
+            if ($this->aSucursal !== null) {
+                if (!$this->aSucursal->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aSucursal->getValidationFailures());
+                }
+            }
 
-            if (($retval = ProductomaterialPeer::doValidate($this, $columns)) !== true) {
-                $failureMap = array_merge($failureMap, $retval);
+            if ($this->aEmpleado !== null) {
+                if (!$this->aEmpleado->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aEmpleado->getValidationFailures());
+                }
             }
 
 
-                if ($this->collProductovariantes !== null) {
-                    foreach ($this->collProductovariantes as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
+            if (($retval = NotificacionPeer::doValidate($this, $columns)) !== true) {
+                $failureMap = array_merge($failureMap, $retval);
+            }
+
 
 
             $this->alreadyInValidation = false;
@@ -668,7 +855,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ProductomaterialPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = NotificacionPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -685,13 +872,22 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                return $this->getIdproductomaterial();
+                return $this->getIdnotificacion();
                 break;
             case 1:
                 return $this->getIdproducto();
                 break;
             case 2:
-                return $this->getIdmaterial();
+                return $this->getIdsucursal();
+                break;
+            case 3:
+                return $this->getNotificacionAplicada();
+                break;
+            case 4:
+                return $this->getIdempleado();
+                break;
+            case 5:
+                return $this->getNotificacionAplicadaen();
                 break;
             default:
                 return null;
@@ -716,15 +912,18 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Productomaterial'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Notificacion'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Productomaterial'][$this->getPrimaryKey()] = true;
-        $keys = ProductomaterialPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Notificacion'][$this->getPrimaryKey()] = true;
+        $keys = NotificacionPeer::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getIdproductomaterial(),
+            $keys[0] => $this->getIdnotificacion(),
             $keys[1] => $this->getIdproducto(),
-            $keys[2] => $this->getIdmaterial(),
+            $keys[2] => $this->getIdsucursal(),
+            $keys[3] => $this->getNotificacionAplicada(),
+            $keys[4] => $this->getIdempleado(),
+            $keys[5] => $this->getNotificacionAplicadaen(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -732,14 +931,14 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aMaterial) {
-                $result['Material'] = $this->aMaterial->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->aProducto) {
                 $result['Producto'] = $this->aProducto->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->collProductovariantes) {
-                $result['Productovariantes'] = $this->collProductovariantes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->aSucursal) {
+                $result['Sucursal'] = $this->aSucursal->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aEmpleado) {
+                $result['Empleado'] = $this->aEmpleado->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -759,7 +958,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = ProductomaterialPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = NotificacionPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -776,13 +975,22 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     {
         switch ($pos) {
             case 0:
-                $this->setIdproductomaterial($value);
+                $this->setIdnotificacion($value);
                 break;
             case 1:
                 $this->setIdproducto($value);
                 break;
             case 2:
-                $this->setIdmaterial($value);
+                $this->setIdsucursal($value);
+                break;
+            case 3:
+                $this->setNotificacionAplicada($value);
+                break;
+            case 4:
+                $this->setIdempleado($value);
+                break;
+            case 5:
+                $this->setNotificacionAplicadaen($value);
                 break;
         } // switch()
     }
@@ -806,11 +1014,14 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = ProductomaterialPeer::getFieldNames($keyType);
+        $keys = NotificacionPeer::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setIdproductomaterial($arr[$keys[0]]);
+        if (array_key_exists($keys[0], $arr)) $this->setIdnotificacion($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setIdproducto($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setIdmaterial($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setIdsucursal($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setNotificacionAplicada($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setIdempleado($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setNotificacionAplicadaen($arr[$keys[5]]);
     }
 
     /**
@@ -820,11 +1031,14 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ProductomaterialPeer::DATABASE_NAME);
+        $criteria = new Criteria(NotificacionPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(ProductomaterialPeer::IDPRODUCTOMATERIAL)) $criteria->add(ProductomaterialPeer::IDPRODUCTOMATERIAL, $this->idproductomaterial);
-        if ($this->isColumnModified(ProductomaterialPeer::IDPRODUCTO)) $criteria->add(ProductomaterialPeer::IDPRODUCTO, $this->idproducto);
-        if ($this->isColumnModified(ProductomaterialPeer::IDMATERIAL)) $criteria->add(ProductomaterialPeer::IDMATERIAL, $this->idmaterial);
+        if ($this->isColumnModified(NotificacionPeer::IDNOTIFICACION)) $criteria->add(NotificacionPeer::IDNOTIFICACION, $this->idnotificacion);
+        if ($this->isColumnModified(NotificacionPeer::IDPRODUCTO)) $criteria->add(NotificacionPeer::IDPRODUCTO, $this->idproducto);
+        if ($this->isColumnModified(NotificacionPeer::IDSUCURSAL)) $criteria->add(NotificacionPeer::IDSUCURSAL, $this->idsucursal);
+        if ($this->isColumnModified(NotificacionPeer::NOTIFICACION_APLICADA)) $criteria->add(NotificacionPeer::NOTIFICACION_APLICADA, $this->notificacion_aplicada);
+        if ($this->isColumnModified(NotificacionPeer::IDEMPLEADO)) $criteria->add(NotificacionPeer::IDEMPLEADO, $this->idempleado);
+        if ($this->isColumnModified(NotificacionPeer::NOTIFICACION_APLICADAEN)) $criteria->add(NotificacionPeer::NOTIFICACION_APLICADAEN, $this->notificacion_aplicadaen);
 
         return $criteria;
     }
@@ -839,8 +1053,8 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(ProductomaterialPeer::DATABASE_NAME);
-        $criteria->add(ProductomaterialPeer::IDPRODUCTOMATERIAL, $this->idproductomaterial);
+        $criteria = new Criteria(NotificacionPeer::DATABASE_NAME);
+        $criteria->add(NotificacionPeer::IDNOTIFICACION, $this->idnotificacion);
 
         return $criteria;
     }
@@ -851,18 +1065,18 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function getPrimaryKey()
     {
-        return $this->getIdproductomaterial();
+        return $this->getIdnotificacion();
     }
 
     /**
-     * Generic method to set the primary key (idproductomaterial column).
+     * Generic method to set the primary key (idnotificacion column).
      *
      * @param  int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setIdproductomaterial($key);
+        $this->setIdnotificacion($key);
     }
 
     /**
@@ -872,7 +1086,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getIdproductomaterial();
+        return null === $this->getIdnotificacion();
     }
 
     /**
@@ -881,7 +1095,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Productomaterial (or compatible) type.
+     * @param object $copyObj An object of Notificacion (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -889,7 +1103,10 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setIdproducto($this->getIdproducto());
-        $copyObj->setIdmaterial($this->getIdmaterial());
+        $copyObj->setIdsucursal($this->getIdsucursal());
+        $copyObj->setNotificacionAplicada($this->getNotificacionAplicada());
+        $copyObj->setIdempleado($this->getIdempleado());
+        $copyObj->setNotificacionAplicadaen($this->getNotificacionAplicadaen());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -898,19 +1115,13 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getProductovariantes() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addProductovariante($relObj->copy($deepCopy));
-                }
-            }
-
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
 
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setIdproductomaterial(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setIdnotificacion(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -923,7 +1134,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Productomaterial Clone of current object.
+     * @return Notificacion Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -943,74 +1154,22 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return ProductomaterialPeer
+     * @return NotificacionPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new ProductomaterialPeer();
+            self::$peer = new NotificacionPeer();
         }
 
         return self::$peer;
     }
 
     /**
-     * Declares an association between this object and a Material object.
-     *
-     * @param                  Material $v
-     * @return Productomaterial The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setMaterial(Material $v = null)
-    {
-        if ($v === null) {
-            $this->setIdmaterial(NULL);
-        } else {
-            $this->setIdmaterial($v->getIdmaterial());
-        }
-
-        $this->aMaterial = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Material object, it will not be re-added.
-        if ($v !== null) {
-            $v->addProductomaterial($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Material object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Material The associated Material object.
-     * @throws PropelException
-     */
-    public function getMaterial(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aMaterial === null && ($this->idmaterial !== null) && $doQuery) {
-            $this->aMaterial = MaterialQuery::create()->findPk($this->idmaterial, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aMaterial->addProductomaterials($this);
-             */
-        }
-
-        return $this->aMaterial;
-    }
-
-    /**
      * Declares an association between this object and a Producto object.
      *
      * @param                  Producto $v
-     * @return Productomaterial The current object (for fluent API support)
+     * @return Notificacion The current object (for fluent API support)
      * @throws PropelException
      */
     public function setProducto(Producto $v = null)
@@ -1026,7 +1185,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the Producto object, it will not be re-added.
         if ($v !== null) {
-            $v->addProductomaterial($this);
+            $v->addNotificacion($this);
         }
 
 
@@ -1051,302 +1210,115 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aProducto->addProductomaterials($this);
+                $this->aProducto->addNotificacions($this);
              */
         }
 
         return $this->aProducto;
     }
 
-
     /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
+     * Declares an association between this object and a Sucursal object.
      *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Productovariante' == $relationName) {
-            $this->initProductovariantes();
-        }
-    }
-
-    /**
-     * Clears out the collProductovariantes collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Productomaterial The current object (for fluent API support)
-     * @see        addProductovariantes()
-     */
-    public function clearProductovariantes()
-    {
-        $this->collProductovariantes = null; // important to set this to null since that means it is uninitialized
-        $this->collProductovariantesPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collProductovariantes collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialProductovariantes($v = true)
-    {
-        $this->collProductovariantesPartial = $v;
-    }
-
-    /**
-     * Initializes the collProductovariantes collection.
-     *
-     * By default this just sets the collProductovariantes collection to an empty array (like clearcollProductovariantes());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initProductovariantes($overrideExisting = true)
-    {
-        if (null !== $this->collProductovariantes && !$overrideExisting) {
-            return;
-        }
-        $this->collProductovariantes = new PropelObjectCollection();
-        $this->collProductovariantes->setModel('Productovariante');
-    }
-
-    /**
-     * Gets an array of Productovariante objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Productomaterial is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Productovariante[] List of Productovariante objects
+     * @param                  Sucursal $v
+     * @return Notificacion The current object (for fluent API support)
      * @throws PropelException
      */
-    public function getProductovariantes($criteria = null, PropelPDO $con = null)
+    public function setSucursal(Sucursal $v = null)
     {
-        $partial = $this->collProductovariantesPartial && !$this->isNew();
-        if (null === $this->collProductovariantes || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collProductovariantes) {
-                // return empty collection
-                $this->initProductovariantes();
-            } else {
-                $collProductovariantes = ProductovarianteQuery::create(null, $criteria)
-                    ->filterByProductomaterial($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collProductovariantesPartial && count($collProductovariantes)) {
-                      $this->initProductovariantes(false);
-
-                      foreach ($collProductovariantes as $obj) {
-                        if (false == $this->collProductovariantes->contains($obj)) {
-                          $this->collProductovariantes->append($obj);
-                        }
-                      }
-
-                      $this->collProductovariantesPartial = true;
-                    }
-
-                    $collProductovariantes->getInternalIterator()->rewind();
-
-                    return $collProductovariantes;
-                }
-
-                if ($partial && $this->collProductovariantes) {
-                    foreach ($this->collProductovariantes as $obj) {
-                        if ($obj->isNew()) {
-                            $collProductovariantes[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collProductovariantes = $collProductovariantes;
-                $this->collProductovariantesPartial = false;
-            }
+        if ($v === null) {
+            $this->setIdsucursal(NULL);
+        } else {
+            $this->setIdsucursal($v->getIdsucursal());
         }
 
-        return $this->collProductovariantes;
-    }
+        $this->aSucursal = $v;
 
-    /**
-     * Sets a collection of Productovariante objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $productovariantes A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Productomaterial The current object (for fluent API support)
-     */
-    public function setProductovariantes(PropelCollection $productovariantes, PropelPDO $con = null)
-    {
-        $productovariantesToDelete = $this->getProductovariantes(new Criteria(), $con)->diff($productovariantes);
-
-
-        $this->productovariantesScheduledForDeletion = $productovariantesToDelete;
-
-        foreach ($productovariantesToDelete as $productovarianteRemoved) {
-            $productovarianteRemoved->setProductomaterial(null);
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Sucursal object, it will not be re-added.
+        if ($v !== null) {
+            $v->addNotificacion($this);
         }
 
-        $this->collProductovariantes = null;
-        foreach ($productovariantes as $productovariante) {
-            $this->addProductovariante($productovariante);
-        }
-
-        $this->collProductovariantes = $productovariantes;
-        $this->collProductovariantesPartial = false;
 
         return $this;
     }
 
+
     /**
-     * Returns the number of related Productovariante objects.
+     * Get the associated Sucursal object
      *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Productovariante objects.
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Sucursal The associated Sucursal object.
      * @throws PropelException
      */
-    public function countProductovariantes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function getSucursal(PropelPDO $con = null, $doQuery = true)
     {
-        $partial = $this->collProductovariantesPartial && !$this->isNew();
-        if (null === $this->collProductovariantes || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collProductovariantes) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getProductovariantes());
-            }
-            $query = ProductovarianteQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProductomaterial($this)
-                ->count($con);
+        if ($this->aSucursal === null && ($this->idsucursal !== null) && $doQuery) {
+            $this->aSucursal = SucursalQuery::create()->findPk($this->idsucursal, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aSucursal->addNotificacions($this);
+             */
         }
 
-        return count($this->collProductovariantes);
+        return $this->aSucursal;
     }
 
     /**
-     * Method called to associate a Productovariante object to this object
-     * through the Productovariante foreign key attribute.
+     * Declares an association between this object and a Empleado object.
      *
-     * @param    Productovariante $l Productovariante
-     * @return Productomaterial The current object (for fluent API support)
+     * @param                  Empleado $v
+     * @return Notificacion The current object (for fluent API support)
+     * @throws PropelException
      */
-    public function addProductovariante(Productovariante $l)
+    public function setEmpleado(Empleado $v = null)
     {
-        if ($this->collProductovariantes === null) {
-            $this->initProductovariantes();
-            $this->collProductovariantesPartial = true;
+        if ($v === null) {
+            $this->setIdempleado(NULL);
+        } else {
+            $this->setIdempleado($v->getIdempleado());
         }
 
-        if (!in_array($l, $this->collProductovariantes->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddProductovariante($l);
+        $this->aEmpleado = $v;
 
-            if ($this->productovariantesScheduledForDeletion and $this->productovariantesScheduledForDeletion->contains($l)) {
-                $this->productovariantesScheduledForDeletion->remove($this->productovariantesScheduledForDeletion->search($l));
-            }
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Empleado object, it will not be re-added.
+        if ($v !== null) {
+            $v->addNotificacion($this);
         }
 
-        return $this;
-    }
-
-    /**
-     * @param	Productovariante $productovariante The productovariante object to add.
-     */
-    protected function doAddProductovariante($productovariante)
-    {
-        $this->collProductovariantes[]= $productovariante;
-        $productovariante->setProductomaterial($this);
-    }
-
-    /**
-     * @param	Productovariante $productovariante The productovariante object to remove.
-     * @return Productomaterial The current object (for fluent API support)
-     */
-    public function removeProductovariante($productovariante)
-    {
-        if ($this->getProductovariantes()->contains($productovariante)) {
-            $this->collProductovariantes->remove($this->collProductovariantes->search($productovariante));
-            if (null === $this->productovariantesScheduledForDeletion) {
-                $this->productovariantesScheduledForDeletion = clone $this->collProductovariantes;
-                $this->productovariantesScheduledForDeletion->clear();
-            }
-            $this->productovariantesScheduledForDeletion[]= clone $productovariante;
-            $productovariante->setProductomaterial(null);
-        }
 
         return $this;
     }
 
 
     /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Productomaterial is new, it will return
-     * an empty collection; or if this Productomaterial has previously
-     * been saved, it will retrieve related Productovariantes from storage.
+     * Get the associated Empleado object
      *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Productomaterial.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Productovariante[] List of Productovariante objects
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Empleado The associated Empleado object.
+     * @throws PropelException
      */
-    public function getProductovariantesJoinProducto($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getEmpleado(PropelPDO $con = null, $doQuery = true)
     {
-        $query = ProductovarianteQuery::create(null, $criteria);
-        $query->joinWith('Producto', $join_behavior);
+        if ($this->aEmpleado === null && ($this->idempleado !== null) && $doQuery) {
+            $this->aEmpleado = EmpleadoQuery::create()->findPk($this->idempleado, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aEmpleado->addNotificacions($this);
+             */
+        }
 
-        return $this->getProductovariantes($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Productomaterial is new, it will return
-     * an empty collection; or if this Productomaterial has previously
-     * been saved, it will retrieve related Productovariantes from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Productomaterial.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Productovariante[] List of Productovariante objects
-     */
-    public function getProductovariantesJoinProductocolor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ProductovarianteQuery::create(null, $criteria);
-        $query->joinWith('Productocolor', $join_behavior);
-
-        return $this->getProductovariantes($query, $con);
+        return $this->aEmpleado;
     }
 
     /**
@@ -1354,13 +1326,17 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function clear()
     {
-        $this->idproductomaterial = null;
+        $this->idnotificacion = null;
         $this->idproducto = null;
-        $this->idmaterial = null;
+        $this->idsucursal = null;
+        $this->notificacion_aplicada = null;
+        $this->idempleado = null;
+        $this->notificacion_aplicadaen = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1379,27 +1355,22 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collProductovariantes) {
-                foreach ($this->collProductovariantes as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->aMaterial instanceof Persistent) {
-              $this->aMaterial->clearAllReferences($deep);
-            }
             if ($this->aProducto instanceof Persistent) {
               $this->aProducto->clearAllReferences($deep);
+            }
+            if ($this->aSucursal instanceof Persistent) {
+              $this->aSucursal->clearAllReferences($deep);
+            }
+            if ($this->aEmpleado instanceof Persistent) {
+              $this->aEmpleado->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collProductovariantes instanceof PropelCollection) {
-            $this->collProductovariantes->clearIterator();
-        }
-        $this->collProductovariantes = null;
-        $this->aMaterial = null;
         $this->aProducto = null;
+        $this->aSucursal = null;
+        $this->aEmpleado = null;
     }
 
     /**
@@ -1409,7 +1380,7 @@ abstract class BaseProductomaterial extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ProductomaterialPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(NotificacionPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

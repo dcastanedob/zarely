@@ -403,6 +403,9 @@ abstract class BaseSucursalPeer
         // Invalidate objects in CortecajaPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CortecajaPeer::clearInstancePool();
+        // Invalidate objects in NotificacionPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        NotificacionPeer::clearInstancePool();
         // Invalidate objects in PedidoPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PedidoPeer::clearInstancePool();
@@ -760,6 +763,12 @@ abstract class BaseSucursalPeer
 
             $criteria->add(CortecajaPeer::IDSUCURSAL, $obj->getIdsucursal());
             $affectedRows += CortecajaPeer::doDelete($criteria, $con);
+
+            // delete related Notificacion objects
+            $criteria = new Criteria(NotificacionPeer::DATABASE_NAME);
+
+            $criteria->add(NotificacionPeer::IDSUCURSAL, $obj->getIdsucursal());
+            $affectedRows += NotificacionPeer::doDelete($criteria, $con);
 
             // delete related Pedido objects
             $criteria = new Criteria(PedidoPeer::DATABASE_NAME);

@@ -195,25 +195,39 @@ class MedidasController extends AbstractActionController
             $fin =null;
             $inicioEncontrado = false;
 
-            foreach ($post_data as $key => $value) {
-                if(\MedidaPeer::getTableMap()->hasColumn($key))
-                {
-                    if(!$inicioEncontrado && $value == 1 ){
-                        $inicio = $key;
-                        $inicioEncontrado = true;
-                    }
-                    if($inicioEncontrado && $value == 1)
-                    {
-                        $fin = $key;
-                    }
-
-                    $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
-                }
-            }
-            $inicio = str_replace("medida_", "", $inicio);
-            $fin = str_replace("medida_", "", $fin);
-            $rango = $inicio ." - ". $fin;
-            $entity->setByName("medidasrango",$rango,\BasePeer::TYPE_FIELDNAME);
+            
+            
+//            foreach ($post_data as $key => $value) {
+//                if(\MedidaPeer::getTableMap()->hasColumn($key))
+//                {
+//                    var_dump($post_data["medida_nombre"]);
+//            exit();
+                    $entity->setMedidaNombre($post_data["medida_nombre"]);
+                    $entity->setMedidaXs($post_data["medida_xs"]);
+                    $entity->setMedidaS($post_data["medida_s"]);
+                    $entity->setMedidaM($post_data["medida_m"]);
+                    $entity->setMedidaL($post_data["medida_l"]);
+                    $entity->setMedidaXl($post_data["medida_xl"]);
+                    $entity->setMedidaXxl($post_data["medida_xxl"]);
+                    $entity->setMedidaUnitalla($post_data["medida_unitalla"]);
+                    
+//                    if(!$inicioEncontrado && $value == 1 ){
+//                        $inicio = $key;
+//                        $inicioEncontrado = true;
+//                    }
+//                    if($inicioEncontrado && $value == 1)
+//                    {
+//                        $fin = $key;
+//                    }
+//
+//                    $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
+//                    
+//                }
+//            }
+//            $inicio = str_replace("medida_", "", $inicio);
+//            $fin = str_replace("medida_", "", $fin);
+//            $rango = $inicio ." - ". $fin;
+//           // $entity->setByName("medidasrango",$rango,\BasePeer::TYPE_FIELDNAME);
 
             $entity->save();
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
@@ -251,28 +265,38 @@ class MedidasController extends AbstractActionController
                 $inicio =null;
                 $fin =null;
                 $inicioEncontrado = false;
-
-                foreach ($post_data as $key => $value) {
-                    if(\MedidaPeer::getTableMap()->hasColumn($key))
-                    {
-                        if(!$inicioEncontrado && $value == 1 ){
-                            $inicio = $key;
-                            $inicioEncontrado = true;
-                        }
-                        if($inicioEncontrado && $value == 1)
-                        {
-                            $fin = $key;
-                        }
-
-                        $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
-                    }
-                }
-                $inicio = str_replace("medida_", "", $inicio);
                 
-                $fin = str_replace("medida_", "", $fin);
-                
-                $rango = $inicio ." - ". $fin;
-                $entity->setByName("medidasrango",$rango,\BasePeer::TYPE_FIELDNAME);
+                $entity->setMedidaNombre($post_data["medida_nombre"]);
+                    $entity->setMedidaXs($post_data["medida_xs"]);
+                    $entity->setMedidaS($post_data["medida_s"]);
+                    $entity->setMedidaM($post_data["medida_m"]);
+                    $entity->setMedidaL($post_data["medida_l"]);
+                    $entity->setMedidaXl($post_data["medida_xl"]);
+                    $entity->setMedidaXxl($post_data["medida_xxl"]);
+                    $entity->setMedidaUnitalla($post_data["medida_unitalla"]);
+                    
+
+//                foreach ($post_data as $key => $value) {
+//                    if(\MedidaPeer::getTableMap()->hasColumn($key))
+//                    {
+//                        if(!$inicioEncontrado && $value == 1 ){
+//                            $inicio = $key;
+//                            $inicioEncontrado = true;
+//                        }
+//                        if($inicioEncontrado && $value == 1)
+//                        {
+//                            $fin = $key;
+//                        }
+//
+//                        $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
+//                    }
+//                }
+//                $inicio = str_replace("medida_", "", $inicio);
+//                
+//                $fin = str_replace("medida_", "", $fin);
+//                
+//                $rango = $inicio ." - ". $fin;
+//                $entity->setByName("medidasrango",$rango,\BasePeer::TYPE_FIELDNAME);
                 $entity->save();
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
