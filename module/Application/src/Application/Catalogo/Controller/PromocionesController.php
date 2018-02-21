@@ -283,7 +283,7 @@ class PromocionesController extends AbstractActionController
 
 
 
-        $form = new \Application\Catalogo\Form\promocionesForm($productos_array,$marcas_array,$variantes_array);
+        $form = new \Application\Catalogo\Form\PromocionesForm($productos_array,$marcas_array,$variantes_array);
         
         $view_model = new ViewModel();
         $view_model->setTemplate('application/catalogo/promociones/nuevo');

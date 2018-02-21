@@ -215,7 +215,7 @@ class DescuentosController extends AbstractActionController
             }
 
             $entity->save();
-
+           
             foreach ($post_data['variante'] as $variante) {
                 $detalle = new \Descuentodetalle();
                 $detalle->setIddescuento($entity->getIddescuento())
