@@ -26,14 +26,7 @@ class TipoCalzadosForm extends Form
             ),
         ));
 
-        $this->add(array(
-            'name' => 'tipocalzado_descripcion',
-            'type' => 'Textarea',
-            'attributes' => array(
-                'required' => true,
-                'class' => 'form-control',
-            ),
-        ));
+        
         
     }
 }

@@ -18,7 +18,6 @@ class TipoCalzadosController extends AbstractActionController
     public $column_map = array(
         0 => 'Idtipocalzado',
         1 => 'TipocalzadoNombre',
-        2 => 'TipocalzadoDescripcion',
     );
 
     public function serversideAction()
@@ -77,10 +76,8 @@ class TipoCalzadosController extends AbstractActionController
                 $c1= $c->getNewCriterion('tipocalzado.idtipocalzado', '%'.$search_value.'%', \Criteria::LIKE);
                 $c2= $c->getNewCriterion('tipocalzado.tipocalzado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 $c3= $c->getNewCriterion('tipocalzado.tipocalzado_descripcion', '%'.$search_value.'%', \Criteria::LIKE);
-
           
-                $c1->addOr($c2)->addOr($c3);
+                $c1->addOr($c2);
 
                 $query->addAnd($c1);
                 $query->groupByIdtipocalzado();
