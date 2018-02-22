@@ -206,6 +206,16 @@ class EmpleadosController extends AbstractActionController
             
 
             $entity = new \Empleado();
+
+            //verificamos si existe el nombre de empleado
+            $exist = \EmpleadoQuery::create()->filterByEmpleadoUsername($post_data['empleado_username'])->exists();
+
+            if($exist)
+            {
+                $this->flashMessenger()->addErrorMessage('El nombre de usuario ya se había agregado anteriormente.');
+                
+                return $this->redirect()->toUrl('/catalogo/empleados');
+            }
             
             $post_data['empleado_fechaentrada'] = date_create_from_format('d/m/Y', $post_data['empleado_fechaentrada']);
             $post_data['empleado_fechanacimiento'] = date_create_from_format('d/m/Y', $post_data['empleado_fechanacimiento']);

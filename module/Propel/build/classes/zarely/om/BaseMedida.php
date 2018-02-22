@@ -37,7 +37,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
 
     /**
      * The value for the medida_nombre field.
-     * @var        boolean
+     * @var        string
      */
     protected $medida_nombre;
 
@@ -79,7 +79,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
 
     /**
      * The value for the medida_unitalla field.
-     * @var        string
+     * @var        boolean
      */
     protected $medida_unitalla;
 
@@ -129,7 +129,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
     /**
      * Get the [medida_nombre] column value.
      *
-     * @return boolean
+     * @return string
      */
     public function getMedidaNombre()
     {
@@ -206,7 +206,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
     /**
      * Get the [medida_unitalla] column value.
      *
-     * @return string
+     * @return boolean
      */
     public function getMedidaUnitalla()
     {
@@ -236,23 +236,15 @@ abstract class BaseMedida extends BaseObject implements Persistent
     } // setIdmedida()
 
     /**
-     * Sets the value of the [medida_nombre] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * Set the value of [medida_nombre] column.
      *
-     * @param boolean|integer|string $v The new value
+     * @param  string $v new value
      * @return Medida The current object (for fluent API support)
      */
     public function setMedidaNombre($v)
     {
         if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
+            $v = (string) $v;
         }
 
         if ($this->medida_nombre !== $v) {
@@ -439,15 +431,23 @@ abstract class BaseMedida extends BaseObject implements Persistent
     } // setMedidaXxl()
 
     /**
-     * Set the value of [medida_unitalla] column.
+     * Sets the value of the [medida_unitalla] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      *
-     * @param  string $v new value
+     * @param boolean|integer|string $v The new value
      * @return Medida The current object (for fluent API support)
      */
     public function setMedidaUnitalla($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
         }
 
         if ($this->medida_unitalla !== $v) {
@@ -492,14 +492,14 @@ abstract class BaseMedida extends BaseObject implements Persistent
         try {
 
             $this->idmedida = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->medida_nombre = ($row[$startcol + 1] !== null) ? (boolean) $row[$startcol + 1] : null;
+            $this->medida_nombre = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->medida_xs = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
             $this->medida_s = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
             $this->medida_m = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
             $this->medida_l = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
             $this->medida_xl = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
             $this->medida_xxl = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-            $this->medida_unitalla = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->medida_unitalla = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -782,7 +782,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
                         $stmt->bindValue($identifier, $this->idmedida, PDO::PARAM_INT);
                         break;
                     case '`medida_nombre`':
-                        $stmt->bindValue($identifier, (int) $this->medida_nombre, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->medida_nombre, PDO::PARAM_STR);
                         break;
                     case '`medida_xs`':
                         $stmt->bindValue($identifier, (int) $this->medida_xs, PDO::PARAM_INT);
@@ -803,7 +803,7 @@ abstract class BaseMedida extends BaseObject implements Persistent
                         $stmt->bindValue($identifier, (int) $this->medida_xxl, PDO::PARAM_INT);
                         break;
                     case '`medida_unitalla`':
-                        $stmt->bindValue($identifier, $this->medida_unitalla, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, (int) $this->medida_unitalla, PDO::PARAM_INT);
                         break;
                 }
             }

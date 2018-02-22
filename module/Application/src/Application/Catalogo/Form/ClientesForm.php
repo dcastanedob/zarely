@@ -54,7 +54,7 @@ class ClientesForm extends Form
             'name' => 'cliente_rfc',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 15,
             ),
@@ -65,7 +65,7 @@ class ClientesForm extends Form
             'name' => 'cliente_razonsocial',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 14,
             ),
@@ -76,7 +76,7 @@ class ClientesForm extends Form
             'name' => 'cliente_callefiscal',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 16,
             ),
@@ -86,7 +86,7 @@ class ClientesForm extends Form
             'name' => 'cliente_numerofiscal',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 17,
             ),
@@ -96,7 +96,7 @@ class ClientesForm extends Form
             'name' => 'cliente_interiorfiscal',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 18,
             ),
@@ -107,7 +107,7 @@ class ClientesForm extends Form
             'name' => 'cliente_coloniafiscal',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 19,
             ),
@@ -118,7 +118,7 @@ class ClientesForm extends Form
             'name' => 'cliente_ciudadfiscal',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 21,
             ),
@@ -129,7 +129,7 @@ class ClientesForm extends Form
             'name' => 'cliente_cpfiscal',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 20,
             ),
@@ -140,7 +140,7 @@ class ClientesForm extends Form
             'name' => 'cliente_estadofiscal',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 22,
             ),
@@ -259,8 +259,8 @@ class ClientesForm extends Form
             'options' => array(
               
                 'value_options' => array(
-                    1 => 'Si',
-                    0 => 'No',
+                    1 => 'Activo',
+                    0 => 'Inactivo',
                 ),
             ),
 
@@ -312,7 +312,7 @@ class ClientesForm extends Form
             'value_options' => $clientes_array,   
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => '',
                 
 

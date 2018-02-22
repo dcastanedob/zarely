@@ -26,4 +26,5 @@ class Notificacion extends BaseNotificacion
 		
 		
 	}
+
 }

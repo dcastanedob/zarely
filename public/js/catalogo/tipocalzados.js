@@ -66,7 +66,6 @@
                     columns:[
                         {"data":"idtipocalzado","name":"idtipocalzado","orderable":true},
                         {"data":"tipocalzado_nombre","name":"tipocalzado_nombre","orderable":true},
-                        {"data":"tipocalzado_descripcion","name":"tipocalzado_descripcion","orderable":true},
                         {"data":"options","name":"options","orderable":false, class:"td_options"},
                     ],
                     proccesing: true,
