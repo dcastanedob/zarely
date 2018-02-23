@@ -25,6 +25,15 @@
     <script src="/plugins/Numeric/numeric.js"></script>
     <script src="/plugins/Accounting/accounting.js"></script>
     <script src="/plugins/Download/download.js"></script>
+    <style type="text/css">
+      .form-group{
+        margin-bottom: 8px;
+      }
+      .alineamiento
+      {
+        margin-top: -8px;
+      }
+    </style>
   </head>
   <body class="layout">
     <?php $session = new \Application\Session\AouthSession();
@@ -80,7 +89,14 @@
                   </div>
                 </form>
               </li>
-              <li style="border-left-width: 0px;"><a href="#" style="color:#fff" >Link</a></li>
+              <li style="border-left-width: 0px;">
+                <a href="/notificaciones" style="color:#fff" >
+                  <span class="icon-with-child hidden-xs">
+                    <span class="icon icon-bell-o icon-lg"></span>
+                    <span class="badge badge-success badge-above right"><?php echo \Notificacion::getNotifications($session['idsucursal'])->count()?></span>
+                  </span>
+                </a>
+              </li>
               <li style="border-left-width: 0px;"><a href="/" style="color:#fff"><?php echo $session["empleado_nombre"]?></a>
               </li>
               <li style="border-left-width: 0px;"> <a href="/login/out" style="color:#fff">Cerrar sesión</a></li>
@@ -89,6 +105,7 @@
         </div>
       </div>
     </div>
+
     <div class="layout-main" >
       <div class="layout-sidebar" >
         <div class="layout-sidebar-backdrop" style="background-color: #fff; border-right-width: 2px;border-right-style: solid; border-right-color:  #eee;"></div>

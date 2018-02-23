@@ -4,6 +4,7 @@ return array(
     'Caja' => array(
         //login
         'home',
+        'notificaciones',
         'auth',
         'login/select',
         'login',
@@ -20,6 +21,7 @@ return array(
     'Vendedora' => array(
         //login
         'home',
+        'notificaciones',
         'auth',
         'login/select',
         'login',
@@ -41,6 +43,7 @@ return array(
     'Secretaria B' => array(
         //login
         'home',
+        'notificaciones',
         'auth',
         'login/select',
         'login',
@@ -85,6 +88,7 @@ return array(
     'Secretaria A' => array(
         //login
         'home',
+        'notificaciones',
         'auth',
         'login/select',
         'login',
@@ -130,6 +134,7 @@ return array(
     'Administrador' => array(
         //login
         'home',
+        'notificaciones',
         'auth',
         'login/select',
         'login',
@@ -215,6 +220,7 @@ return array(
     'Sat' => array(
         //login
         'home',
+        'notificaciones',
         'auth',
         'login/select',
         'login',
@@ -299,6 +305,7 @@ return array(
     'Cajero super' => array(
         //login
         'home',
+        'notificaciones',
         'auth',
         'login/select',
         'login',

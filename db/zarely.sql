@@ -226,7 +226,7 @@ CREATE TABLE `configuracion` (
 
 LOCK TABLES `configuracion` WRITE;
 /*!40000 ALTER TABLE `configuracion` DISABLE KEYS */;
-INSERT INTO `configuracion` VALUES (1,22);
+INSERT INTO `configuracion` VALUES (1,13);
 /*!40000 ALTER TABLE `configuracion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -629,6 +629,40 @@ LOCK TABLES `medida` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `notificacion`
+--
+
+DROP TABLE IF EXISTS `notificacion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `notificacion` (
+  `idnotificacion` int(11) NOT NULL AUTO_INCREMENT,
+  `idproducto` int(11) NOT NULL,
+  `idsucursal` int(11) NOT NULL,
+  `notificacion_aplicada` tinyint(1) NOT NULL DEFAULT '0',
+  `idempleado` int(11) DEFAULT NULL,
+  `notificacion_aplicadaen` datetime DEFAULT NULL,
+  PRIMARY KEY (`idnotificacion`),
+  KEY `idproducto` (`idproducto`),
+  KEY `idsucursal` (`idsucursal`),
+  KEY `idusuario` (`idempleado`),
+  CONSTRAINT `notificacion_idproducto` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `notificacion_idsucursal` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `notificacion_idusuario` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`idempleado`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notificacion`
+--
+
+LOCK TABLES `notificacion` WRITE;
+/*!40000 ALTER TABLE `notificacion` DISABLE KEYS */;
+INSERT INTO `notificacion` VALUES (1,14,1,1,4,'2018-01-19 00:00:00'),(2,13,2,0,NULL,NULL);
+/*!40000 ALTER TABLE `notificacion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pedido`
 --
 
@@ -747,6 +781,7 @@ CREATE TABLE `producto` (
   `producto_reorden` int(11) NOT NULL,
   `idtipocalzado` int(11) NOT NULL,
   `producto_descripcion` varchar(500) DEFAULT NULL,
+  `producto_costo` int(11) DEFAULT NULL,
   PRIMARY KEY (`idproducto`),
   KEY `idmarca` (`idmarca`),
   KEY `idtemporada` (`idtemporada`),
@@ -756,7 +791,7 @@ CREATE TABLE `producto` (
   CONSTRAINT `idproveedor_producto` FOREIGN KEY (`idproveedor`) REFERENCES `proveedor` (`idproveedor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idtemporada_producto` FOREIGN KEY (`idtemporada`) REFERENCES `temporada` (`idtemporada`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idtipocalzado_producto` FOREIGN KEY (`idtipocalzado`) REFERENCES `tipocalzado` (`idtipocalzado`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -765,7 +800,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (2,'M234',1,1,0,1,'jovenes',800.00000,750.00000,750,10,1,NULL),(8,'M1234',1,1,0,1,'dama',790.00000,750.00000,745,10,1,NULL),(9,'M1234',1,1,0,1,'dama',790.00000,750.00000,745,10,1,NULL),(10,'R001',1,1,0,1,'dama',790.00000,750.00000,740,10,1,NULL);
+INSERT INTO `producto` VALUES (2,'M234',1,1,0,1,'jovenes',800.00000,750.00000,750,10,1,NULL,NULL),(8,'M1234',1,1,0,1,'dama',790.00000,750.00000,745,10,1,NULL,NULL),(9,'M1234',1,1,0,1,'dama',790.00000,750.00000,745,10,1,NULL,NULL),(10,'R001',1,1,0,1,'dama',790.00000,750.00000,740,10,1,NULL,NULL),(11,'R432',1,1,0,1,'nina',234.00000,234.00000,234,234,1,NULL,NULL),(12,'R93',1,1,0,1,'dama',23.00000,23.00000,2,3,1,NULL,NULL),(13,'R93',1,1,0,1,'dama',23.00000,23.00000,2,3,1,NULL,NULL),(14,'R93',1,1,0,1,'dama',23.00000,23.00000,2,3,1,NULL,3),(15,'Nike 43',1,1,0,1,'dama',200.00000,203.00000,23,32,1,NULL,32);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -786,7 +821,7 @@ CREATE TABLE `productocolor` (
   KEY `idcolor` (`idcolor`),
   CONSTRAINT `idcolor_productocolor` FOREIGN KEY (`idcolor`) REFERENCES `color` (`idcolor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idproducto_productocolor` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -795,7 +830,7 @@ CREATE TABLE `productocolor` (
 
 LOCK TABLES `productocolor` WRITE;
 /*!40000 ALTER TABLE `productocolor` DISABLE KEYS */;
-INSERT INTO `productocolor` VALUES (2,2,1,'/img/productocolor/2.jpg'),(3,2,2,'/img/productocolor/3.jpg'),(4,8,1,'/img/productocolor/4.jpg'),(5,8,2,'/img/productocolor/5.jpg'),(6,10,1,'/img/productocolor/6.jpg'),(7,10,2,'/img/productocolor/7.jpg');
+INSERT INTO `productocolor` VALUES (2,2,1,'/img/productocolor/2.jpg'),(3,2,2,'/img/productocolor/3.jpg'),(4,8,1,'/img/productocolor/4.jpg'),(5,8,2,'/img/productocolor/5.jpg'),(6,10,1,'/img/productocolor/6.jpg'),(7,10,2,'/img/productocolor/7.jpg'),(8,13,2,'/img/productocolor/8.jpg'),(9,14,2,'/img/productocolor/9.jpg'),(10,15,1,'/img/productocolor/10.jpg'),(11,15,2,'/img/productocolor/11.jpg');
 /*!40000 ALTER TABLE `productocolor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -807,15 +842,15 @@ DROP TABLE IF EXISTS `productomaterial`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `productomaterial` (
-  `idproductomaterial` int(11) NOT NULL,
+  `idproductomaterial` int(11) NOT NULL AUTO_INCREMENT,
   `idproducto` int(11) NOT NULL,
   `idmaterial` int(11) NOT NULL,
   PRIMARY KEY (`idproductomaterial`),
   KEY `idproducto` (`idproducto`),
   KEY `idmaterial` (`idmaterial`),
   CONSTRAINT `idmaterial_productomaterial` FOREIGN KEY (`idmaterial`) REFERENCES `material` (`idmaterial`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idproducto_productomaterial` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `idproducto_productomaterial` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -824,7 +859,7 @@ CREATE TABLE `productomaterial` (
 
 LOCK TABLES `productomaterial` WRITE;
 /*!40000 ALTER TABLE `productomaterial` DISABLE KEYS */;
-INSERT INTO `productomaterial` VALUES (0,10,1),(1,8,1);
+INSERT INTO `productomaterial` VALUES (1,13,1),(2,14,1),(3,15,1);
 /*!40000 ALTER TABLE `productomaterial` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -874,12 +909,15 @@ CREATE TABLE `productosucursal` (
   `productosucursal_preciomayoreo` decimal(10,5) NOT NULL,
   `productosucursal_estatus` tinyint(1) NOT NULL DEFAULT '1',
   `productosucursal_costo` decimal(10,5) NOT NULL,
+  `productosucursal_precioventamayoreonuevo` decimal(10,5) DEFAULT NULL,
+  `productosucursal_precioventanuevo` decimal(10,5) DEFAULT NULL,
+  `productosucursal_precioaplicado` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`idproductosucursal`),
   KEY `idproductovariante` (`idproductovariante`),
   KEY `idsucursal` (`idsucursal`),
   CONSTRAINT `idproductovariante_productosucursal` FOREIGN KEY (`idproductovariante`) REFERENCES `productovariante` (`idproductovariante`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idsucursal_productosucursal` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -888,7 +926,7 @@ CREATE TABLE `productosucursal` (
 
 LOCK TABLES `productosucursal` WRITE;
 /*!40000 ALTER TABLE `productosucursal` DISABLE KEYS */;
-INSERT INTO `productosucursal` VALUES (1,21,1,3,740,10,790.00000,750.00000,1,10.00000),(2,22,1,0,740,10,790.00000,750.00000,1,10.00000),(3,23,1,0,740,10,790.00000,750.00000,1,10.00000),(4,24,1,0,740,10,790.00000,750.00000,1,10.00000),(5,25,1,0,740,10,790.00000,750.00000,1,10.00000),(6,26,1,0,740,10,790.00000,750.00000,1,10.00000),(7,27,1,0,740,10,790.00000,750.00000,1,10.00000),(8,28,1,0,740,10,790.00000,750.00000,1,10.00000),(9,29,1,0,740,10,790.00000,750.00000,1,10.00000),(10,30,1,10,740,10,790.00000,750.00000,1,10.00000),(11,21,2,3,740,10,790.00000,750.00000,1,10.00000);
+INSERT INTO `productosucursal` VALUES (1,21,1,3,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(2,22,1,0,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(3,23,1,0,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(4,24,1,0,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(5,25,1,0,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(6,26,1,0,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(7,27,1,0,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(8,28,1,0,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(9,29,1,0,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(10,30,1,10,740,10,790.00000,750.00000,1,10.00000,NULL,780.00000,NULL),(11,21,2,3,740,10,790.00000,750.00000,1,10.00000,NULL,NULL,NULL),(12,36,1,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(13,37,1,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(14,38,1,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(15,39,1,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(16,40,1,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(17,36,2,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(18,37,2,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(19,38,2,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(20,39,2,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(21,40,2,0,2,3,23.00000,23.00000,1,3.00000,NULL,23.00000,0),(22,41,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(23,42,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(24,43,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(25,44,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(26,45,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(27,46,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(28,47,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(29,48,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(30,49,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(31,50,1,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(32,41,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(33,42,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(34,43,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(35,44,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(36,45,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(37,46,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(38,47,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(39,48,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(40,49,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL),(41,50,2,0,23,32,200.00000,203.00000,1,32.00000,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `productosucursal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -908,7 +946,7 @@ CREATE TABLE `productotallaje` (
   KEY `idtallaje` (`idtallaje`),
   CONSTRAINT `idproducto_productotallaje` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idtallaje_productotallaje` FOREIGN KEY (`idtallaje`) REFERENCES `tallaje` (`idtallaje`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -917,7 +955,7 @@ CREATE TABLE `productotallaje` (
 
 LOCK TABLES `productotallaje` WRITE;
 /*!40000 ALTER TABLE `productotallaje` DISABLE KEYS */;
-INSERT INTO `productotallaje` VALUES (1,10,1);
+INSERT INTO `productotallaje` VALUES (1,13,1),(2,14,1),(3,15,1);
 /*!40000 ALTER TABLE `productotallaje` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -944,7 +982,7 @@ CREATE TABLE `productovariante` (
   CONSTRAINT `idproducto_productovariante` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idproductocolor_productovariante` FOREIGN KEY (`idproductocolor`) REFERENCES `productocolor` (`idproductocolor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `idproductomaterial_productomaterial` FOREIGN KEY (`idproductomaterial`) REFERENCES `productomaterial` (`idproductomaterial`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -953,7 +991,7 @@ CREATE TABLE `productovariante` (
 
 LOCK TABLES `productovariante` WRITE;
 /*!40000 ALTER TABLE `productovariante` DISABLE KEYS */;
-INSERT INTO `productovariante` VALUES (21,10,6,0,'zarely21','7','numero',1),(22,10,7,0,'zarely22','7','numero',1),(23,10,6,0,'zarely23','7.5','numero',1),(24,10,7,0,'zarely24','7.5','numero',1),(25,10,6,0,'zarely25','8','numero',1),(26,10,7,0,'zarely26','8','numero',1),(27,10,6,0,'zarely27','8.5','numero',1),(28,10,7,0,'zarely28','8.5','numero',1),(29,10,6,0,'zarely29','9','numero',1),(30,10,7,0,'zarely30','9','numero',1);
+INSERT INTO `productovariante` VALUES (21,10,6,0,'zarely21','7','numero',1),(22,10,7,0,'zarely22','7','numero',1),(23,10,6,0,'zarely23','7.5','numero',1),(24,10,7,0,'zarely24','7.5','numero',1),(25,10,6,0,'zarely25','8','numero',1),(26,10,7,0,'zarely26','8','numero',1),(27,10,6,0,'zarely27','8.5','numero',1),(28,10,7,0,'zarely28','8.5','numero',1),(29,10,6,0,'zarely29','9','numero',1),(30,10,7,0,'zarely30','9','numero',1),(31,13,8,1,NULL,'7','numero',1),(32,13,8,1,NULL,'7.5','numero',1),(33,13,8,1,NULL,'8','numero',1),(34,13,8,1,NULL,'8.5','numero',1),(35,13,8,1,NULL,'9','numero',1),(36,14,9,2,'zarely36','7','numero',1),(37,14,9,2,'zarely37','7.5','numero',1),(38,14,9,2,'zarely38','8','numero',1),(39,14,9,2,'zarely39','8.5','numero',1),(40,14,9,2,'zarely40','9','numero',1),(41,15,10,3,'zarely41','7','numero',1),(42,15,11,3,'zarely42','7','numero',1),(43,15,10,3,'zarely43','7.5','numero',1),(44,15,11,3,'zarely44','7.5','numero',1),(45,15,10,3,'zarely45','8','numero',1),(46,15,11,3,'zarely46','8','numero',1),(47,15,10,3,'zarely47','8.5','numero',1),(48,15,11,3,'zarely48','8.5','numero',1),(49,15,10,3,'zarely49','9','numero',1),(50,15,11,3,'zarely50','9','numero',1);
 /*!40000 ALTER TABLE `productovariante` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1489,4 +1527,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-05 16:43:39
+-- Dump completed on 2018-01-24 22:25:31
