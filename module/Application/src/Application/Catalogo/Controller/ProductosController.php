@@ -582,7 +582,7 @@ class ProductosController extends AbstractActionController
         $medidas_array = array();
         $value = new \Medida();
         foreach ($medidas as $value){
-            $medidas_array[$value->getIdmedida()] = $value->getMedidaNombre()." (".$value->getMedidasrango().")";
+            $medidas_array[$value->getIdmedida()] = $value->getMedidaNombre();
         }
 
 
@@ -843,7 +843,7 @@ class ProductosController extends AbstractActionController
             $medidas_array = array();
             $value = new \Medida();
             foreach ($medidas as $value){
-                $medidas_array[$value->getIdmedida()] = $value->getMedidaNombre()." (".$value->getMedidasrango().")";
+                $medidas_array[$value->getIdmedida()] = $value->getMedidaNombre();
             }
 
             //traer los materiales
