@@ -90,6 +90,12 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     protected $sucursal_estado;
 
     /**
+     * The value for the sucursal_rfc field.
+     * @var        string
+     */
+    protected $sucursal_rfc;
+
+    /**
      * @var        PropelObjectCollection|Cortecaja[] Collection to store aggregation of Cortecaja objects.
      */
     protected $collCortecajas;
@@ -316,6 +322,17 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [sucursal_rfc] column value.
+     *
+     * @return string
+     */
+    public function getSucursalRfc()
+    {
+
+        return $this->sucursal_rfc;
+    }
+
+    /**
      * Set the value of [idsucursal] column.
      *
      * @param  int $v new value
@@ -526,6 +543,27 @@ abstract class BaseSucursal extends BaseObject implements Persistent
     } // setSucursalEstado()
 
     /**
+     * Set the value of [sucursal_rfc] column.
+     *
+     * @param  string $v new value
+     * @return Sucursal The current object (for fluent API support)
+     */
+    public function setSucursalRfc($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->sucursal_rfc !== $v) {
+            $this->sucursal_rfc = $v;
+            $this->modifiedColumns[] = SucursalPeer::SUCURSAL_RFC;
+        }
+
+
+        return $this;
+    } // setSucursalRfc()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -567,6 +605,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $this->sucursal_codigopostal = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->sucursal_ciudad = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->sucursal_estado = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->sucursal_rfc = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -576,7 +615,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 10; // 10 = SucursalPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = SucursalPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Sucursal object", $e);
@@ -970,6 +1009,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         if ($this->isColumnModified(SucursalPeer::SUCURSAL_ESTADO)) {
             $modifiedColumns[':p' . $index++]  = '`sucursal_estado`';
         }
+        if ($this->isColumnModified(SucursalPeer::SUCURSAL_RFC)) {
+            $modifiedColumns[':p' . $index++]  = '`sucursal_rfc`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `sucursal` (%s) VALUES (%s)',
@@ -1010,6 +1052,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
                         break;
                     case '`sucursal_estado`':
                         $stmt->bindValue($identifier, $this->sucursal_estado, PDO::PARAM_STR);
+                        break;
+                    case '`sucursal_rfc`':
+                        $stmt->bindValue($identifier, $this->sucursal_rfc, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1239,6 +1284,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             case 9:
                 return $this->getSucursalEstado();
                 break;
+            case 10:
+                return $this->getSucursalRfc();
+                break;
             default:
                 return null;
                 break;
@@ -1278,6 +1326,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             $keys[7] => $this->getSucursalCodigopostal(),
             $keys[8] => $this->getSucursalCiudad(),
             $keys[9] => $this->getSucursalEstado(),
+            $keys[10] => $this->getSucursalRfc(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1373,6 +1422,9 @@ abstract class BaseSucursal extends BaseObject implements Persistent
             case 9:
                 $this->setSucursalEstado($value);
                 break;
+            case 10:
+                $this->setSucursalRfc($value);
+                break;
         } // switch()
     }
 
@@ -1407,6 +1459,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         if (array_key_exists($keys[7], $arr)) $this->setSucursalCodigopostal($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setSucursalCiudad($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setSucursalEstado($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setSucursalRfc($arr[$keys[10]]);
     }
 
     /**
@@ -1428,6 +1481,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         if ($this->isColumnModified(SucursalPeer::SUCURSAL_CODIGOPOSTAL)) $criteria->add(SucursalPeer::SUCURSAL_CODIGOPOSTAL, $this->sucursal_codigopostal);
         if ($this->isColumnModified(SucursalPeer::SUCURSAL_CIUDAD)) $criteria->add(SucursalPeer::SUCURSAL_CIUDAD, $this->sucursal_ciudad);
         if ($this->isColumnModified(SucursalPeer::SUCURSAL_ESTADO)) $criteria->add(SucursalPeer::SUCURSAL_ESTADO, $this->sucursal_estado);
+        if ($this->isColumnModified(SucursalPeer::SUCURSAL_RFC)) $criteria->add(SucursalPeer::SUCURSAL_RFC, $this->sucursal_rfc);
 
         return $criteria;
     }
@@ -1500,6 +1554,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         $copyObj->setSucursalCodigopostal($this->getSucursalCodigopostal());
         $copyObj->setSucursalCiudad($this->getSucursalCiudad());
         $copyObj->setSucursalEstado($this->getSucursalEstado());
+        $copyObj->setSucursalRfc($this->getSucursalRfc());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3808,6 +3863,7 @@ abstract class BaseSucursal extends BaseObject implements Persistent
         $this->sucursal_codigopostal = null;
         $this->sucursal_ciudad = null;
         $this->sucursal_estado = null;
+        $this->sucursal_rfc = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

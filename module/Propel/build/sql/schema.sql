@@ -475,14 +475,14 @@ DROP TABLE IF EXISTS `medida`;
 CREATE TABLE `medida`
 (
     `idmedida` INTEGER NOT NULL AUTO_INCREMENT,
-    `medida_nombre` TINYINT(1),
+    `medida_nombre` VARCHAR(255),
     `medida_xs` TINYINT(1),
     `medida_s` TINYINT(1),
     `medida_m` TINYINT(1),
     `medida_l` TINYINT(1),
     `medida_xl` TINYINT(1),
     `medida_xxl` TINYINT(1),
-    `medida_unitalla` VARCHAR(45),
+    `medida_unitalla` TINYINT(1),
     PRIMARY KEY (`idmedida`)
 ) ENGINE=InnoDB;
 
@@ -974,6 +974,7 @@ CREATE TABLE `sucursal`
     `sucursal_codigopostal` VARCHAR(45),
     `sucursal_ciudad` VARCHAR(45),
     `sucursal_estado` VARCHAR(45),
+    `sucursal_rfc` VARCHAR(45) NOT NULL,
     PRIMARY KEY (`idsucursal`)
 ) ENGINE=InnoDB;
 

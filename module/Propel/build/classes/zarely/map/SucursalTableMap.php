@@ -48,6 +48,7 @@ class SucursalTableMap extends TableMap
         $this->addColumn('sucursal_codigopostal', 'SucursalCodigopostal', 'VARCHAR', false, 45, null);
         $this->addColumn('sucursal_ciudad', 'SucursalCiudad', 'VARCHAR', false, 45, null);
         $this->addColumn('sucursal_estado', 'SucursalEstado', 'VARCHAR', false, 45, null);
+        $this->addColumn('sucursal_rfc', 'SucursalRfc', 'VARCHAR', true, 45, null);
         // validators
     } // initialize()
 

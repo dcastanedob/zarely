@@ -16,6 +16,7 @@
  * @method SucursalQuery orderBySucursalCodigopostal($order = Criteria::ASC) Order by the sucursal_codigopostal column
  * @method SucursalQuery orderBySucursalCiudad($order = Criteria::ASC) Order by the sucursal_ciudad column
  * @method SucursalQuery orderBySucursalEstado($order = Criteria::ASC) Order by the sucursal_estado column
+ * @method SucursalQuery orderBySucursalRfc($order = Criteria::ASC) Order by the sucursal_rfc column
  *
  * @method SucursalQuery groupByIdsucursal() Group by the idsucursal column
  * @method SucursalQuery groupBySucursalNombrecomercial() Group by the sucursal_nombrecomercial column
@@ -27,6 +28,7 @@
  * @method SucursalQuery groupBySucursalCodigopostal() Group by the sucursal_codigopostal column
  * @method SucursalQuery groupBySucursalCiudad() Group by the sucursal_ciudad column
  * @method SucursalQuery groupBySucursalEstado() Group by the sucursal_estado column
+ * @method SucursalQuery groupBySucursalRfc() Group by the sucursal_rfc column
  *
  * @method SucursalQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method SucursalQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -76,6 +78,7 @@
  * @method Sucursal findOneBySucursalCodigopostal(string $sucursal_codigopostal) Return the first Sucursal filtered by the sucursal_codigopostal column
  * @method Sucursal findOneBySucursalCiudad(string $sucursal_ciudad) Return the first Sucursal filtered by the sucursal_ciudad column
  * @method Sucursal findOneBySucursalEstado(string $sucursal_estado) Return the first Sucursal filtered by the sucursal_estado column
+ * @method Sucursal findOneBySucursalRfc(string $sucursal_rfc) Return the first Sucursal filtered by the sucursal_rfc column
  *
  * @method array findByIdsucursal(int $idsucursal) Return Sucursal objects filtered by the idsucursal column
  * @method array findBySucursalNombrecomercial(string $sucursal_nombrecomercial) Return Sucursal objects filtered by the sucursal_nombrecomercial column
@@ -87,6 +90,7 @@
  * @method array findBySucursalCodigopostal(string $sucursal_codigopostal) Return Sucursal objects filtered by the sucursal_codigopostal column
  * @method array findBySucursalCiudad(string $sucursal_ciudad) Return Sucursal objects filtered by the sucursal_ciudad column
  * @method array findBySucursalEstado(string $sucursal_estado) Return Sucursal objects filtered by the sucursal_estado column
+ * @method array findBySucursalRfc(string $sucursal_rfc) Return Sucursal objects filtered by the sucursal_rfc column
  *
  * @package    propel.generator.zarely.om
  */
@@ -194,7 +198,7 @@ abstract class BaseSucursalQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idsucursal`, `sucursal_nombrecomercial`, `sucursal_razonsocial`, `sucursal_calle`, `sucursal_numexterno`, `sucursal_numinterior`, `sucursal_colonia`, `sucursal_codigopostal`, `sucursal_ciudad`, `sucursal_estado` FROM `sucursal` WHERE `idsucursal` = :p0';
+        $sql = 'SELECT `idsucursal`, `sucursal_nombrecomercial`, `sucursal_razonsocial`, `sucursal_calle`, `sucursal_numexterno`, `sucursal_numinterior`, `sucursal_colonia`, `sucursal_codigopostal`, `sucursal_ciudad`, `sucursal_estado`, `sucursal_rfc` FROM `sucursal` WHERE `idsucursal` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -584,6 +588,35 @@ abstract class BaseSucursalQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SucursalPeer::SUCURSAL_ESTADO, $sucursalEstado, $comparison);
+    }
+
+    /**
+     * Filter the query on the sucursal_rfc column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySucursalRfc('fooValue');   // WHERE sucursal_rfc = 'fooValue'
+     * $query->filterBySucursalRfc('%fooValue%'); // WHERE sucursal_rfc LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $sucursalRfc The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return SucursalQuery The current query, for fluid interface
+     */
+    public function filterBySucursalRfc($sucursalRfc = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($sucursalRfc)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $sucursalRfc)) {
+                $sucursalRfc = str_replace('*', '%', $sucursalRfc);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SucursalPeer::SUCURSAL_RFC, $sucursalRfc, $comparison);
     }
 
     /**

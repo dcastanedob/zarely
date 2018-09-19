@@ -24,13 +24,13 @@ abstract class BaseSucursalPeer
     const TM_CLASS = 'SucursalTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 11;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /** the column name for the idsucursal field */
     const IDSUCURSAL = 'sucursal.idsucursal';
@@ -62,6 +62,9 @@ abstract class BaseSucursalPeer
     /** the column name for the sucursal_estado field */
     const SUCURSAL_ESTADO = 'sucursal.sucursal_estado';
 
+    /** the column name for the sucursal_rfc field */
+    const SUCURSAL_RFC = 'sucursal.sucursal_rfc';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -81,12 +84,12 @@ abstract class BaseSucursalPeer
      * e.g. SucursalPeer::$fieldNames[SucursalPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idsucursal', 'SucursalNombrecomercial', 'SucursalRazonsocial', 'SucursalCalle', 'SucursalNumexterno', 'SucursalNuminterior', 'SucursalColonia', 'SucursalCodigopostal', 'SucursalCiudad', 'SucursalEstado', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idsucursal', 'sucursalNombrecomercial', 'sucursalRazonsocial', 'sucursalCalle', 'sucursalNumexterno', 'sucursalNuminterior', 'sucursalColonia', 'sucursalCodigopostal', 'sucursalCiudad', 'sucursalEstado', ),
-        BasePeer::TYPE_COLNAME => array (SucursalPeer::IDSUCURSAL, SucursalPeer::SUCURSAL_NOMBRECOMERCIAL, SucursalPeer::SUCURSAL_RAZONSOCIAL, SucursalPeer::SUCURSAL_CALLE, SucursalPeer::SUCURSAL_NUMEXTERNO, SucursalPeer::SUCURSAL_NUMINTERIOR, SucursalPeer::SUCURSAL_COLONIA, SucursalPeer::SUCURSAL_CODIGOPOSTAL, SucursalPeer::SUCURSAL_CIUDAD, SucursalPeer::SUCURSAL_ESTADO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDSUCURSAL', 'SUCURSAL_NOMBRECOMERCIAL', 'SUCURSAL_RAZONSOCIAL', 'SUCURSAL_CALLE', 'SUCURSAL_NUMEXTERNO', 'SUCURSAL_NUMINTERIOR', 'SUCURSAL_COLONIA', 'SUCURSAL_CODIGOPOSTAL', 'SUCURSAL_CIUDAD', 'SUCURSAL_ESTADO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idsucursal', 'sucursal_nombrecomercial', 'sucursal_razonsocial', 'sucursal_calle', 'sucursal_numexterno', 'sucursal_numinterior', 'sucursal_colonia', 'sucursal_codigopostal', 'sucursal_ciudad', 'sucursal_estado', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Idsucursal', 'SucursalNombrecomercial', 'SucursalRazonsocial', 'SucursalCalle', 'SucursalNumexterno', 'SucursalNuminterior', 'SucursalColonia', 'SucursalCodigopostal', 'SucursalCiudad', 'SucursalEstado', 'SucursalRfc', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idsucursal', 'sucursalNombrecomercial', 'sucursalRazonsocial', 'sucursalCalle', 'sucursalNumexterno', 'sucursalNuminterior', 'sucursalColonia', 'sucursalCodigopostal', 'sucursalCiudad', 'sucursalEstado', 'sucursalRfc', ),
+        BasePeer::TYPE_COLNAME => array (SucursalPeer::IDSUCURSAL, SucursalPeer::SUCURSAL_NOMBRECOMERCIAL, SucursalPeer::SUCURSAL_RAZONSOCIAL, SucursalPeer::SUCURSAL_CALLE, SucursalPeer::SUCURSAL_NUMEXTERNO, SucursalPeer::SUCURSAL_NUMINTERIOR, SucursalPeer::SUCURSAL_COLONIA, SucursalPeer::SUCURSAL_CODIGOPOSTAL, SucursalPeer::SUCURSAL_CIUDAD, SucursalPeer::SUCURSAL_ESTADO, SucursalPeer::SUCURSAL_RFC, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDSUCURSAL', 'SUCURSAL_NOMBRECOMERCIAL', 'SUCURSAL_RAZONSOCIAL', 'SUCURSAL_CALLE', 'SUCURSAL_NUMEXTERNO', 'SUCURSAL_NUMINTERIOR', 'SUCURSAL_COLONIA', 'SUCURSAL_CODIGOPOSTAL', 'SUCURSAL_CIUDAD', 'SUCURSAL_ESTADO', 'SUCURSAL_RFC', ),
+        BasePeer::TYPE_FIELDNAME => array ('idsucursal', 'sucursal_nombrecomercial', 'sucursal_razonsocial', 'sucursal_calle', 'sucursal_numexterno', 'sucursal_numinterior', 'sucursal_colonia', 'sucursal_codigopostal', 'sucursal_ciudad', 'sucursal_estado', 'sucursal_rfc', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -96,12 +99,12 @@ abstract class BaseSucursalPeer
      * e.g. SucursalPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idsucursal' => 0, 'SucursalNombrecomercial' => 1, 'SucursalRazonsocial' => 2, 'SucursalCalle' => 3, 'SucursalNumexterno' => 4, 'SucursalNuminterior' => 5, 'SucursalColonia' => 6, 'SucursalCodigopostal' => 7, 'SucursalCiudad' => 8, 'SucursalEstado' => 9, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idsucursal' => 0, 'sucursalNombrecomercial' => 1, 'sucursalRazonsocial' => 2, 'sucursalCalle' => 3, 'sucursalNumexterno' => 4, 'sucursalNuminterior' => 5, 'sucursalColonia' => 6, 'sucursalCodigopostal' => 7, 'sucursalCiudad' => 8, 'sucursalEstado' => 9, ),
-        BasePeer::TYPE_COLNAME => array (SucursalPeer::IDSUCURSAL => 0, SucursalPeer::SUCURSAL_NOMBRECOMERCIAL => 1, SucursalPeer::SUCURSAL_RAZONSOCIAL => 2, SucursalPeer::SUCURSAL_CALLE => 3, SucursalPeer::SUCURSAL_NUMEXTERNO => 4, SucursalPeer::SUCURSAL_NUMINTERIOR => 5, SucursalPeer::SUCURSAL_COLONIA => 6, SucursalPeer::SUCURSAL_CODIGOPOSTAL => 7, SucursalPeer::SUCURSAL_CIUDAD => 8, SucursalPeer::SUCURSAL_ESTADO => 9, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDSUCURSAL' => 0, 'SUCURSAL_NOMBRECOMERCIAL' => 1, 'SUCURSAL_RAZONSOCIAL' => 2, 'SUCURSAL_CALLE' => 3, 'SUCURSAL_NUMEXTERNO' => 4, 'SUCURSAL_NUMINTERIOR' => 5, 'SUCURSAL_COLONIA' => 6, 'SUCURSAL_CODIGOPOSTAL' => 7, 'SUCURSAL_CIUDAD' => 8, 'SUCURSAL_ESTADO' => 9, ),
-        BasePeer::TYPE_FIELDNAME => array ('idsucursal' => 0, 'sucursal_nombrecomercial' => 1, 'sucursal_razonsocial' => 2, 'sucursal_calle' => 3, 'sucursal_numexterno' => 4, 'sucursal_numinterior' => 5, 'sucursal_colonia' => 6, 'sucursal_codigopostal' => 7, 'sucursal_ciudad' => 8, 'sucursal_estado' => 9, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        BasePeer::TYPE_PHPNAME => array ('Idsucursal' => 0, 'SucursalNombrecomercial' => 1, 'SucursalRazonsocial' => 2, 'SucursalCalle' => 3, 'SucursalNumexterno' => 4, 'SucursalNuminterior' => 5, 'SucursalColonia' => 6, 'SucursalCodigopostal' => 7, 'SucursalCiudad' => 8, 'SucursalEstado' => 9, 'SucursalRfc' => 10, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idsucursal' => 0, 'sucursalNombrecomercial' => 1, 'sucursalRazonsocial' => 2, 'sucursalCalle' => 3, 'sucursalNumexterno' => 4, 'sucursalNuminterior' => 5, 'sucursalColonia' => 6, 'sucursalCodigopostal' => 7, 'sucursalCiudad' => 8, 'sucursalEstado' => 9, 'sucursalRfc' => 10, ),
+        BasePeer::TYPE_COLNAME => array (SucursalPeer::IDSUCURSAL => 0, SucursalPeer::SUCURSAL_NOMBRECOMERCIAL => 1, SucursalPeer::SUCURSAL_RAZONSOCIAL => 2, SucursalPeer::SUCURSAL_CALLE => 3, SucursalPeer::SUCURSAL_NUMEXTERNO => 4, SucursalPeer::SUCURSAL_NUMINTERIOR => 5, SucursalPeer::SUCURSAL_COLONIA => 6, SucursalPeer::SUCURSAL_CODIGOPOSTAL => 7, SucursalPeer::SUCURSAL_CIUDAD => 8, SucursalPeer::SUCURSAL_ESTADO => 9, SucursalPeer::SUCURSAL_RFC => 10, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDSUCURSAL' => 0, 'SUCURSAL_NOMBRECOMERCIAL' => 1, 'SUCURSAL_RAZONSOCIAL' => 2, 'SUCURSAL_CALLE' => 3, 'SUCURSAL_NUMEXTERNO' => 4, 'SUCURSAL_NUMINTERIOR' => 5, 'SUCURSAL_COLONIA' => 6, 'SUCURSAL_CODIGOPOSTAL' => 7, 'SUCURSAL_CIUDAD' => 8, 'SUCURSAL_ESTADO' => 9, 'SUCURSAL_RFC' => 10, ),
+        BasePeer::TYPE_FIELDNAME => array ('idsucursal' => 0, 'sucursal_nombrecomercial' => 1, 'sucursal_razonsocial' => 2, 'sucursal_calle' => 3, 'sucursal_numexterno' => 4, 'sucursal_numinterior' => 5, 'sucursal_colonia' => 6, 'sucursal_codigopostal' => 7, 'sucursal_ciudad' => 8, 'sucursal_estado' => 9, 'sucursal_rfc' => 10, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -185,6 +188,7 @@ abstract class BaseSucursalPeer
             $criteria->addSelectColumn(SucursalPeer::SUCURSAL_CODIGOPOSTAL);
             $criteria->addSelectColumn(SucursalPeer::SUCURSAL_CIUDAD);
             $criteria->addSelectColumn(SucursalPeer::SUCURSAL_ESTADO);
+            $criteria->addSelectColumn(SucursalPeer::SUCURSAL_RFC);
         } else {
             $criteria->addSelectColumn($alias . '.idsucursal');
             $criteria->addSelectColumn($alias . '.sucursal_nombrecomercial');
@@ -196,6 +200,7 @@ abstract class BaseSucursalPeer
             $criteria->addSelectColumn($alias . '.sucursal_codigopostal');
             $criteria->addSelectColumn($alias . '.sucursal_ciudad');
             $criteria->addSelectColumn($alias . '.sucursal_estado');
+            $criteria->addSelectColumn($alias . '.sucursal_rfc');
         }
     }
 

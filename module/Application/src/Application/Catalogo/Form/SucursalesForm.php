@@ -11,12 +11,12 @@ class SucursalesForm extends Form
         // we want to ignore the name passed
         parent::__construct('SucursalesForm');
         $this->setAttribute('method', 'post');
-        
+
         $this->add(array(
             'name' => 'idsucursal',
             'type' => 'Hidden',
         ));
-        
+
         $this->add(array(
             'name' => 'sucursal_nombrecomercial',
             'type' => 'Text',
@@ -29,6 +29,16 @@ class SucursalesForm extends Form
 
         $this->add(array(
             'name' => 'sucursal_razonsocial',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => true,
+                'class' => 'form-control infput-thick',
+                'tabindex' => '2'
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'sucursal_rfc',
             'type' => 'Text',
             'attributes' => array(
                 'required' => true,
@@ -112,14 +122,14 @@ class SucursalesForm extends Form
             'name' => 'idempleadovendedor[]',
             'type' => 'Select',
             'options' => array(
-              
-            'value_options' => $vendedores_array,   
+
+            'value_options' => $vendedores_array,
             ),
             'attributes' => array(
                 'required' => true,
                 'class' => '',
                 'tabindex' => '11'
-               
+
             ),
         ));
 
@@ -127,17 +137,17 @@ class SucursalesForm extends Form
             'name' => 'idempleadocajero[]',
             'type' => 'Select',
             'options' => array(
-              
-            'value_options' => $cajeros_array,   
+
+            'value_options' => $cajeros_array,
             ),
             'attributes' => array(
                 'required' => true,
                 'class' => '',
                 'tabindex' => '10'
-               
+
             ),
         ));
 
-        
+
     }
 }
