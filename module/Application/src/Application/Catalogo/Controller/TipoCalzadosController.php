@@ -26,9 +26,9 @@ class TipoCalzadosController extends AbstractActionController
 
         if($request->isPost()){
             $post_data = $request->getPost();
-           
+
             $query = new \TipocalzadoQuery();
-            
+
              /*JOIN
             $query->useCategoriaRelatedByIdcategoriaQuery('a')->endUse();
             $query->useCategoriaRelatedByIdsubcategoriaQuery('b')->endUse();
@@ -40,11 +40,11 @@ class TipoCalzadosController extends AbstractActionController
 
 
             $records_filtered = $query->count();
-            
+
             //SEARCH
             if(!empty($post_data['search']['value'])){
                 $search_value = $post_data['search']['value'];
-                
+
                 $search_value = str_replace("Ñ", "Ã‘", $search_value);
                 $search_value = str_replace("L'", "L'", $search_value);
                 $search_value = str_replace("Ç", "Ã‡", $search_value);
@@ -72,25 +72,25 @@ class TipoCalzadosController extends AbstractActionController
                     $search_value = str_replace("Í", "Ã", $search_value);
                 }
                 $c = new \Criteria();
-               
+
                 $c1= $c->getNewCriterion('tipocalzado.idtipocalzado', '%'.$search_value.'%', \Criteria::LIKE);
                 $c2= $c->getNewCriterion('tipocalzado.tipocalzado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
-          
+
                 $c1->addOr($c2);
 
                 $query->addAnd($c1);
                 $query->groupByIdtipocalzado();
-                
+
                 $records_filtered = $query->count();
-                
+
             }
-            
+
             //LIMIT
             $query->setOffset((int)$post_data['start']);
             $query->setLimit((int)$post_data['length']);
-            
-            
+
+
             //ORDER
             $order_column = $post_data['order'][0]['column'];
             $order_column = $this->column_map[$order_column];
@@ -101,16 +101,16 @@ class TipoCalzadosController extends AbstractActionController
                 $query->orderBy($order_column,  \Criteria::ASC);
             }
 
-            
-            
+
+
             //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
             $data = array();
-            
-           
-            
+
+
+
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
 
-                
+
                 $tmp['DT_RowId'] = $value['idtipocalzado'];
                 $tmp['idtipocalzado'] = $value['idtipocalzado'];
                 $tmp['tipocalzado_nombre'] = $value['tipocalzado_nombre'];
@@ -130,7 +130,7 @@ class TipoCalzadosController extends AbstractActionController
                           </div>
                           <div class="media-body">
                             <span class="d-b">Editar</span>
-                           
+
                           </div>
                         </div>
                       </a>
@@ -143,18 +143,18 @@ class TipoCalzadosController extends AbstractActionController
                           </div>
                           <div class="media-body">
                             <span class="d-b">Eliminar</span>
-                       
+
                           </div>
                         </div>
                       </a>
                     </li>
                   </ul>
                 </div></td>';
-                
+
                 $data[] = $tmp;
- 
-            }   
-      
+
+            }
+
             //El arreglo que regresamos
             $json_data = array(
                 'order' => $order_column,
@@ -163,9 +163,9 @@ class TipoCalzadosController extends AbstractActionController
                 "recordsFiltered" => $records_filtered,
                 "data"            => $data
             );
-            
 
-            
+
+
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }
@@ -186,7 +186,7 @@ class TipoCalzadosController extends AbstractActionController
 
         if($request->isPost())
         {
-            
+
             $post_data = $request->getPost();
 
             $entity = new \Tipocalzado();
@@ -204,13 +204,13 @@ class TipoCalzadosController extends AbstractActionController
         }
 
 
-        $form = new \Application\Catalogo\Form\TipocalzadosForm();
+        $form = new \Application\Catalogo\Form\TipoCalzadosForm();
         $view_model = new ViewModel();
         $view_model->setTemplate('application/catalogo/tipocalzados/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
-  
+
         return $view_model;
     }
 
@@ -260,7 +260,7 @@ class TipoCalzadosController extends AbstractActionController
         }else
         {
             $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/tipocalzados');   
+            return $this->redirect()->toUrl('/catalogo/tipocalzados');
         }
     }
 
