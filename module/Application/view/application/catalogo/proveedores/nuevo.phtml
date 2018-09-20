@@ -10,60 +10,118 @@
 						<div class="panel-heading"><h4>INFORMACIÓN</h4></div>
 
 						 <div class="panel-body">
-			       			<div class="form-group">
-				           		<label class="col-sm-3 control-label" for="form-control-18">Nombre</label>
-				            	<div class="col-sm-8">
-				                	<?php echo $this->formText($form->get('proveedor_nombrecomercial')) ?>
-				            	</div>
-			        		</div>
+							 		<div class="row">
+										<div class="col-xs-6">
+						           		<label class="control-label" for="form-control-18">Nombre</label>
+						            	<?php echo $this->formText($form->get('proveedor_nombrecomercial')) ?>
+										</div>
+										<div class="col-xs-6">
+						           		<label class="control-label" for="form-control-18">Razón social</label>
+						            	<?php echo $this->formText($form->get('proveedor_razonsocial')) ?>
+										</div>
+									</div>
 
-			        		<div class="form-group">
-				           		<label class="col-sm-3 control-label" for="form-control-18">Teléfono</label>
-				            	<div class="col-sm-8">
-				                	<?php echo $this->formText($form->get('proveedor_telefono')) ?>
-				            	</div>
-			        		</div>
+									<div class="row">
+										<div class="col-xs-6">
+						           		<label class="control-label" for="form-control-18">RFC</label>
+						            	<?php echo $this->formText($form->get('proveedor_rfc')) ?>
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Teléfono</label>
+											<?php echo $this->formText($form->get('proveedor_telefono')) ?>
+										</div>
+									</div>
 
-			        		<div class="form-group">
-				           		<label class="col-sm-3 control-label" for="form-control-18">Celular</label>
-				            	<div class="col-sm-8">
-				                	<?php echo $this->formText($form->get('proveedor_celular')) ?>
-				            	</div>
-			        		</div>
-
-			        		<div class="form-group">
-				           		<label class="col-sm-3 control-label" for="form-control-18">Email</label>
-				            	<div class="col-sm-8">
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Celular</label>
+											<?php echo $this->formText($form->get('proveedor_celular')) ?>
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Email</label>
 				                	<?php echo $this->formText($form->get('proveedor_email')) ?>
-				            	</div>
-			        		</div>
+										</div>
+									</div>
 
-			        		<div class="form-group">
-				           		<label class="col-sm-3 control-label" for="form-control-18">Fecha de inicio</label>
-				            	<div class="col-sm-8">
-				                	<?php echo $this->formText($form->get('proveedor_fechainicio')) ?>
-				            	</div>
-			        		</div>
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Fecha de inicio</label>
+				              <?php echo $this->formText($form->get('proveedor_fechainicio')) ?>
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Marcas</label>
+				              <?php echo $this->formSelect($form->get('idmarca[]')) ?>
+										</div>
+									</div>
 
-			        		<div class="form-group">
-				           		<label class="col-sm-3 control-label" for="form-control-18">Marcas</label>
-				            	<div class="col-sm-8">
-				                	<?php echo $this->formSelect($form->get('idmarca[]')) ?>
-				           		</div>
-			        		</div>
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Dirección</label>
+											<?php echo $this->formText($form->get('proveedor_direccion')) ?>
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Colonia</label>
+											<?php echo $this->formText($form->get('proveedor_colonia')) ?>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">CP</label>
+											<?php echo $this->formText($form->get('proveedor_cp')) ?>
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Ciudad</label>
+											<?php echo $this->formText($form->get('proveedor_ciudad')) ?>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Estado</label>
+											<?php echo $this->formText($form->get('proveedor_estado')) ?>
+										</div>
+										<div class="col-xs-6">
+
+										</div>
+									</div>
+									<br>
+									<div class="panel panel-info">
+									<div class="panel-heading"><h4>Contacto del proveedor</h4></div>
+								</div>
+
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Nombre</label>
+											<?php echo $this->formText($form->get('proveedor_contactonombre')) ?>
+										</div>
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Teléfono</label>
+											<?php echo $this->formText($form->get('proveedor_contactotelefono')) ?>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-6">
+											<label class="control-label" for="form-control-18">Email</label>
+											<?php echo $this->formText($form->get('proveedor_contactoemail')) ?>
+										</div>
+										<div class="col-xs-6">
+										</div>
+									</div>
+
 			        	</div>
 			        </div>
 
 
-                    
+
 
 		        	<div class="form-group">
 		           		<label  for="guardar"></label>
 		                <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="23">Guardar</button>
 		    		</div>
- 
+
     			</form>
-                    
+
     		</div>
     	</div>
 	</div>

@@ -11,12 +11,12 @@ class ProveedoresForm  extends Form
         // we want to ignore the name passed
         parent::__construct('ProveedoresForm');
         $this->setAttribute('method', 'post');
-        
+
         $this->add(array(
             'name' => 'idproveedor',
             'type' => 'Hidden',
         ));
-        
+
         $this->add(array(
             'name' => 'proveedor_nombrecomercial',
             'type' => 'Text',
@@ -63,21 +63,111 @@ class ProveedoresForm  extends Form
             ),
         ));
 
-        
+        $this->add(array(
+            'name' => 'proveedor_razonsocial',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'proveedor_rfc',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'proveedor_direccion',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'proveedor_colonia',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'proveedor_cp',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'proveedor_ciudad',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'proveedor_estado',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'proveedor_contactonombre',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'proveedor_contactoemail',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'proveedor_contactotelefono',
+            'type' => 'Text',
+            'attributes' => array(
+                'required' => false,
+                'class' => 'form-control infput-thick',
+            ),
+        ));
+
         $this->add(array(
             'name' => 'idmarca[]',
             'type' => 'Select',
             'options' => array(
-              
+
                 'value_options' => $marcas_array,
             ),
             'attributes' => array(
                 'required' => true,
                 'class' => '',
-               
+
             ),
         ));
 
-        
+
     }
 }

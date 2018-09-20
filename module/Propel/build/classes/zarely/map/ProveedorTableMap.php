@@ -44,6 +44,16 @@ class ProveedorTableMap extends TableMap
         $this->addColumn('proveedor_celular', 'ProveedorCelular', 'VARCHAR', false, 45, null);
         $this->addColumn('proveedor_fechainicio', 'ProveedorFechainicio', 'DATE', false, null, null);
         $this->addColumn('proveedor_email', 'ProveedorEmail', 'VARCHAR', false, 45, null);
+        $this->addColumn('proveedor_razonsocial', 'ProveedorRazonsocial', 'VARCHAR', false, 255, null);
+        $this->addColumn('proveedor_rfc', 'ProveedorRfc', 'VARCHAR', false, 255, null);
+        $this->addColumn('proveedor_direccion', 'ProveedorDireccion', 'VARCHAR', false, 255, null);
+        $this->addColumn('proveedor_colonia', 'ProveedorColonia', 'VARCHAR', false, 255, null);
+        $this->addColumn('proveedor_cp', 'ProveedorCp', 'VARCHAR', false, 10, null);
+        $this->addColumn('proveedor_ciudad', 'ProveedorCiudad', 'VARCHAR', false, 255, null);
+        $this->addColumn('proveedor_estado', 'ProveedorEstado', 'VARCHAR', false, 255, null);
+        $this->addColumn('proveedor_contactonombre', 'ProveedorContactonombre', 'VARCHAR', false, 255, null);
+        $this->addColumn('proveedor_contactotelefono', 'ProveedorContactotelefono', 'VARCHAR', false, 255, null);
+        $this->addColumn('proveedor_contactoemail', 'ProveedorContactoemail', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 

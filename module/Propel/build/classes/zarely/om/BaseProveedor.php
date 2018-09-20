@@ -66,6 +66,66 @@ abstract class BaseProveedor extends BaseObject implements Persistent
     protected $proveedor_email;
 
     /**
+     * The value for the proveedor_razonsocial field.
+     * @var        string
+     */
+    protected $proveedor_razonsocial;
+
+    /**
+     * The value for the proveedor_rfc field.
+     * @var        string
+     */
+    protected $proveedor_rfc;
+
+    /**
+     * The value for the proveedor_direccion field.
+     * @var        string
+     */
+    protected $proveedor_direccion;
+
+    /**
+     * The value for the proveedor_colonia field.
+     * @var        string
+     */
+    protected $proveedor_colonia;
+
+    /**
+     * The value for the proveedor_cp field.
+     * @var        string
+     */
+    protected $proveedor_cp;
+
+    /**
+     * The value for the proveedor_ciudad field.
+     * @var        string
+     */
+    protected $proveedor_ciudad;
+
+    /**
+     * The value for the proveedor_estado field.
+     * @var        string
+     */
+    protected $proveedor_estado;
+
+    /**
+     * The value for the proveedor_contactonombre field.
+     * @var        string
+     */
+    protected $proveedor_contactonombre;
+
+    /**
+     * The value for the proveedor_contactotelefono field.
+     * @var        string
+     */
+    protected $proveedor_contactotelefono;
+
+    /**
+     * The value for the proveedor_contactoemail field.
+     * @var        string
+     */
+    protected $proveedor_contactoemail;
+
+    /**
      * @var        PropelObjectCollection|Compra[] Collection to store aggregation of Compra objects.
      */
     protected $collCompras;
@@ -229,6 +289,116 @@ abstract class BaseProveedor extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [proveedor_razonsocial] column value.
+     *
+     * @return string
+     */
+    public function getProveedorRazonsocial()
+    {
+
+        return $this->proveedor_razonsocial;
+    }
+
+    /**
+     * Get the [proveedor_rfc] column value.
+     *
+     * @return string
+     */
+    public function getProveedorRfc()
+    {
+
+        return $this->proveedor_rfc;
+    }
+
+    /**
+     * Get the [proveedor_direccion] column value.
+     *
+     * @return string
+     */
+    public function getProveedorDireccion()
+    {
+
+        return $this->proveedor_direccion;
+    }
+
+    /**
+     * Get the [proveedor_colonia] column value.
+     *
+     * @return string
+     */
+    public function getProveedorColonia()
+    {
+
+        return $this->proveedor_colonia;
+    }
+
+    /**
+     * Get the [proveedor_cp] column value.
+     *
+     * @return string
+     */
+    public function getProveedorCp()
+    {
+
+        return $this->proveedor_cp;
+    }
+
+    /**
+     * Get the [proveedor_ciudad] column value.
+     *
+     * @return string
+     */
+    public function getProveedorCiudad()
+    {
+
+        return $this->proveedor_ciudad;
+    }
+
+    /**
+     * Get the [proveedor_estado] column value.
+     *
+     * @return string
+     */
+    public function getProveedorEstado()
+    {
+
+        return $this->proveedor_estado;
+    }
+
+    /**
+     * Get the [proveedor_contactonombre] column value.
+     *
+     * @return string
+     */
+    public function getProveedorContactonombre()
+    {
+
+        return $this->proveedor_contactonombre;
+    }
+
+    /**
+     * Get the [proveedor_contactotelefono] column value.
+     *
+     * @return string
+     */
+    public function getProveedorContactotelefono()
+    {
+
+        return $this->proveedor_contactotelefono;
+    }
+
+    /**
+     * Get the [proveedor_contactoemail] column value.
+     *
+     * @return string
+     */
+    public function getProveedorContactoemail()
+    {
+
+        return $this->proveedor_contactoemail;
+    }
+
+    /**
      * Set the value of [idproveedor] column.
      *
      * @param  int $v new value
@@ -357,6 +527,216 @@ abstract class BaseProveedor extends BaseObject implements Persistent
     } // setProveedorEmail()
 
     /**
+     * Set the value of [proveedor_razonsocial] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorRazonsocial($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_razonsocial !== $v) {
+            $this->proveedor_razonsocial = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_RAZONSOCIAL;
+        }
+
+
+        return $this;
+    } // setProveedorRazonsocial()
+
+    /**
+     * Set the value of [proveedor_rfc] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorRfc($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_rfc !== $v) {
+            $this->proveedor_rfc = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_RFC;
+        }
+
+
+        return $this;
+    } // setProveedorRfc()
+
+    /**
+     * Set the value of [proveedor_direccion] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorDireccion($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_direccion !== $v) {
+            $this->proveedor_direccion = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_DIRECCION;
+        }
+
+
+        return $this;
+    } // setProveedorDireccion()
+
+    /**
+     * Set the value of [proveedor_colonia] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorColonia($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_colonia !== $v) {
+            $this->proveedor_colonia = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_COLONIA;
+        }
+
+
+        return $this;
+    } // setProveedorColonia()
+
+    /**
+     * Set the value of [proveedor_cp] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorCp($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_cp !== $v) {
+            $this->proveedor_cp = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_CP;
+        }
+
+
+        return $this;
+    } // setProveedorCp()
+
+    /**
+     * Set the value of [proveedor_ciudad] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorCiudad($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_ciudad !== $v) {
+            $this->proveedor_ciudad = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_CIUDAD;
+        }
+
+
+        return $this;
+    } // setProveedorCiudad()
+
+    /**
+     * Set the value of [proveedor_estado] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorEstado($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_estado !== $v) {
+            $this->proveedor_estado = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_ESTADO;
+        }
+
+
+        return $this;
+    } // setProveedorEstado()
+
+    /**
+     * Set the value of [proveedor_contactonombre] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorContactonombre($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_contactonombre !== $v) {
+            $this->proveedor_contactonombre = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_CONTACTONOMBRE;
+        }
+
+
+        return $this;
+    } // setProveedorContactonombre()
+
+    /**
+     * Set the value of [proveedor_contactotelefono] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorContactotelefono($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_contactotelefono !== $v) {
+            $this->proveedor_contactotelefono = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_CONTACTOTELEFONO;
+        }
+
+
+        return $this;
+    } // setProveedorContactotelefono()
+
+    /**
+     * Set the value of [proveedor_contactoemail] column.
+     *
+     * @param  string $v new value
+     * @return Proveedor The current object (for fluent API support)
+     */
+    public function setProveedorContactoemail($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->proveedor_contactoemail !== $v) {
+            $this->proveedor_contactoemail = $v;
+            $this->modifiedColumns[] = ProveedorPeer::PROVEEDOR_CONTACTOEMAIL;
+        }
+
+
+        return $this;
+    } // setProveedorContactoemail()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -394,6 +774,16 @@ abstract class BaseProveedor extends BaseObject implements Persistent
             $this->proveedor_celular = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->proveedor_fechainicio = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->proveedor_email = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->proveedor_razonsocial = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->proveedor_rfc = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->proveedor_direccion = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->proveedor_colonia = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->proveedor_cp = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->proveedor_ciudad = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->proveedor_estado = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->proveedor_contactonombre = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->proveedor_contactotelefono = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->proveedor_contactoemail = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -403,7 +793,7 @@ abstract class BaseProveedor extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 6; // 6 = ProveedorPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = ProveedorPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Proveedor object", $e);
@@ -709,6 +1099,36 @@ abstract class BaseProveedor extends BaseObject implements Persistent
         if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_EMAIL)) {
             $modifiedColumns[':p' . $index++]  = '`proveedor_email`';
         }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_RAZONSOCIAL)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_razonsocial`';
+        }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_RFC)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_rfc`';
+        }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_DIRECCION)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_direccion`';
+        }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_COLONIA)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_colonia`';
+        }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CP)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_cp`';
+        }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CIUDAD)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_ciudad`';
+        }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_ESTADO)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_estado`';
+        }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CONTACTONOMBRE)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_contactonombre`';
+        }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CONTACTOTELEFONO)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_contactotelefono`';
+        }
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CONTACTOEMAIL)) {
+            $modifiedColumns[':p' . $index++]  = '`proveedor_contactoemail`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `proveedor` (%s) VALUES (%s)',
@@ -737,6 +1157,36 @@ abstract class BaseProveedor extends BaseObject implements Persistent
                         break;
                     case '`proveedor_email`':
                         $stmt->bindValue($identifier, $this->proveedor_email, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_razonsocial`':
+                        $stmt->bindValue($identifier, $this->proveedor_razonsocial, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_rfc`':
+                        $stmt->bindValue($identifier, $this->proveedor_rfc, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_direccion`':
+                        $stmt->bindValue($identifier, $this->proveedor_direccion, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_colonia`':
+                        $stmt->bindValue($identifier, $this->proveedor_colonia, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_cp`':
+                        $stmt->bindValue($identifier, $this->proveedor_cp, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_ciudad`':
+                        $stmt->bindValue($identifier, $this->proveedor_ciudad, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_estado`':
+                        $stmt->bindValue($identifier, $this->proveedor_estado, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_contactonombre`':
+                        $stmt->bindValue($identifier, $this->proveedor_contactonombre, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_contactotelefono`':
+                        $stmt->bindValue($identifier, $this->proveedor_contactotelefono, PDO::PARAM_STR);
+                        break;
+                    case '`proveedor_contactoemail`':
+                        $stmt->bindValue($identifier, $this->proveedor_contactoemail, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -922,6 +1372,36 @@ abstract class BaseProveedor extends BaseObject implements Persistent
             case 5:
                 return $this->getProveedorEmail();
                 break;
+            case 6:
+                return $this->getProveedorRazonsocial();
+                break;
+            case 7:
+                return $this->getProveedorRfc();
+                break;
+            case 8:
+                return $this->getProveedorDireccion();
+                break;
+            case 9:
+                return $this->getProveedorColonia();
+                break;
+            case 10:
+                return $this->getProveedorCp();
+                break;
+            case 11:
+                return $this->getProveedorCiudad();
+                break;
+            case 12:
+                return $this->getProveedorEstado();
+                break;
+            case 13:
+                return $this->getProveedorContactonombre();
+                break;
+            case 14:
+                return $this->getProveedorContactotelefono();
+                break;
+            case 15:
+                return $this->getProveedorContactoemail();
+                break;
             default:
                 return null;
                 break;
@@ -957,6 +1437,16 @@ abstract class BaseProveedor extends BaseObject implements Persistent
             $keys[3] => $this->getProveedorCelular(),
             $keys[4] => $this->getProveedorFechainicio(),
             $keys[5] => $this->getProveedorEmail(),
+            $keys[6] => $this->getProveedorRazonsocial(),
+            $keys[7] => $this->getProveedorRfc(),
+            $keys[8] => $this->getProveedorDireccion(),
+            $keys[9] => $this->getProveedorColonia(),
+            $keys[10] => $this->getProveedorCp(),
+            $keys[11] => $this->getProveedorCiudad(),
+            $keys[12] => $this->getProveedorEstado(),
+            $keys[13] => $this->getProveedorContactonombre(),
+            $keys[14] => $this->getProveedorContactotelefono(),
+            $keys[15] => $this->getProveedorContactoemail(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1028,6 +1518,36 @@ abstract class BaseProveedor extends BaseObject implements Persistent
             case 5:
                 $this->setProveedorEmail($value);
                 break;
+            case 6:
+                $this->setProveedorRazonsocial($value);
+                break;
+            case 7:
+                $this->setProveedorRfc($value);
+                break;
+            case 8:
+                $this->setProveedorDireccion($value);
+                break;
+            case 9:
+                $this->setProveedorColonia($value);
+                break;
+            case 10:
+                $this->setProveedorCp($value);
+                break;
+            case 11:
+                $this->setProveedorCiudad($value);
+                break;
+            case 12:
+                $this->setProveedorEstado($value);
+                break;
+            case 13:
+                $this->setProveedorContactonombre($value);
+                break;
+            case 14:
+                $this->setProveedorContactotelefono($value);
+                break;
+            case 15:
+                $this->setProveedorContactoemail($value);
+                break;
         } // switch()
     }
 
@@ -1058,6 +1578,16 @@ abstract class BaseProveedor extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setProveedorCelular($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setProveedorFechainicio($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setProveedorEmail($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setProveedorRazonsocial($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setProveedorRfc($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setProveedorDireccion($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setProveedorColonia($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setProveedorCp($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setProveedorCiudad($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setProveedorEstado($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setProveedorContactonombre($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setProveedorContactotelefono($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setProveedorContactoemail($arr[$keys[15]]);
     }
 
     /**
@@ -1075,6 +1605,16 @@ abstract class BaseProveedor extends BaseObject implements Persistent
         if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CELULAR)) $criteria->add(ProveedorPeer::PROVEEDOR_CELULAR, $this->proveedor_celular);
         if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_FECHAINICIO)) $criteria->add(ProveedorPeer::PROVEEDOR_FECHAINICIO, $this->proveedor_fechainicio);
         if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_EMAIL)) $criteria->add(ProveedorPeer::PROVEEDOR_EMAIL, $this->proveedor_email);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_RAZONSOCIAL)) $criteria->add(ProveedorPeer::PROVEEDOR_RAZONSOCIAL, $this->proveedor_razonsocial);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_RFC)) $criteria->add(ProveedorPeer::PROVEEDOR_RFC, $this->proveedor_rfc);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_DIRECCION)) $criteria->add(ProveedorPeer::PROVEEDOR_DIRECCION, $this->proveedor_direccion);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_COLONIA)) $criteria->add(ProveedorPeer::PROVEEDOR_COLONIA, $this->proveedor_colonia);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CP)) $criteria->add(ProveedorPeer::PROVEEDOR_CP, $this->proveedor_cp);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CIUDAD)) $criteria->add(ProveedorPeer::PROVEEDOR_CIUDAD, $this->proveedor_ciudad);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_ESTADO)) $criteria->add(ProveedorPeer::PROVEEDOR_ESTADO, $this->proveedor_estado);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CONTACTONOMBRE)) $criteria->add(ProveedorPeer::PROVEEDOR_CONTACTONOMBRE, $this->proveedor_contactonombre);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CONTACTOTELEFONO)) $criteria->add(ProveedorPeer::PROVEEDOR_CONTACTOTELEFONO, $this->proveedor_contactotelefono);
+        if ($this->isColumnModified(ProveedorPeer::PROVEEDOR_CONTACTOEMAIL)) $criteria->add(ProveedorPeer::PROVEEDOR_CONTACTOEMAIL, $this->proveedor_contactoemail);
 
         return $criteria;
     }
@@ -1143,6 +1683,16 @@ abstract class BaseProveedor extends BaseObject implements Persistent
         $copyObj->setProveedorCelular($this->getProveedorCelular());
         $copyObj->setProveedorFechainicio($this->getProveedorFechainicio());
         $copyObj->setProveedorEmail($this->getProveedorEmail());
+        $copyObj->setProveedorRazonsocial($this->getProveedorRazonsocial());
+        $copyObj->setProveedorRfc($this->getProveedorRfc());
+        $copyObj->setProveedorDireccion($this->getProveedorDireccion());
+        $copyObj->setProveedorColonia($this->getProveedorColonia());
+        $copyObj->setProveedorCp($this->getProveedorCp());
+        $copyObj->setProveedorCiudad($this->getProveedorCiudad());
+        $copyObj->setProveedorEstado($this->getProveedorEstado());
+        $copyObj->setProveedorContactonombre($this->getProveedorContactonombre());
+        $copyObj->setProveedorContactotelefono($this->getProveedorContactotelefono());
+        $copyObj->setProveedorContactoemail($this->getProveedorContactoemail());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2261,6 +2811,16 @@ abstract class BaseProveedor extends BaseObject implements Persistent
         $this->proveedor_celular = null;
         $this->proveedor_fechainicio = null;
         $this->proveedor_email = null;
+        $this->proveedor_razonsocial = null;
+        $this->proveedor_rfc = null;
+        $this->proveedor_direccion = null;
+        $this->proveedor_colonia = null;
+        $this->proveedor_cp = null;
+        $this->proveedor_ciudad = null;
+        $this->proveedor_estado = null;
+        $this->proveedor_contactonombre = null;
+        $this->proveedor_contactotelefono = null;
+        $this->proveedor_contactoemail = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

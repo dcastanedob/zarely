@@ -12,6 +12,16 @@
  * @method ProveedorQuery orderByProveedorCelular($order = Criteria::ASC) Order by the proveedor_celular column
  * @method ProveedorQuery orderByProveedorFechainicio($order = Criteria::ASC) Order by the proveedor_fechainicio column
  * @method ProveedorQuery orderByProveedorEmail($order = Criteria::ASC) Order by the proveedor_email column
+ * @method ProveedorQuery orderByProveedorRazonsocial($order = Criteria::ASC) Order by the proveedor_razonsocial column
+ * @method ProveedorQuery orderByProveedorRfc($order = Criteria::ASC) Order by the proveedor_rfc column
+ * @method ProveedorQuery orderByProveedorDireccion($order = Criteria::ASC) Order by the proveedor_direccion column
+ * @method ProveedorQuery orderByProveedorColonia($order = Criteria::ASC) Order by the proveedor_colonia column
+ * @method ProveedorQuery orderByProveedorCp($order = Criteria::ASC) Order by the proveedor_cp column
+ * @method ProveedorQuery orderByProveedorCiudad($order = Criteria::ASC) Order by the proveedor_ciudad column
+ * @method ProveedorQuery orderByProveedorEstado($order = Criteria::ASC) Order by the proveedor_estado column
+ * @method ProveedorQuery orderByProveedorContactonombre($order = Criteria::ASC) Order by the proveedor_contactonombre column
+ * @method ProveedorQuery orderByProveedorContactotelefono($order = Criteria::ASC) Order by the proveedor_contactotelefono column
+ * @method ProveedorQuery orderByProveedorContactoemail($order = Criteria::ASC) Order by the proveedor_contactoemail column
  *
  * @method ProveedorQuery groupByIdproveedor() Group by the idproveedor column
  * @method ProveedorQuery groupByProveedorNombrecomercial() Group by the proveedor_nombrecomercial column
@@ -19,6 +29,16 @@
  * @method ProveedorQuery groupByProveedorCelular() Group by the proveedor_celular column
  * @method ProveedorQuery groupByProveedorFechainicio() Group by the proveedor_fechainicio column
  * @method ProveedorQuery groupByProveedorEmail() Group by the proveedor_email column
+ * @method ProveedorQuery groupByProveedorRazonsocial() Group by the proveedor_razonsocial column
+ * @method ProveedorQuery groupByProveedorRfc() Group by the proveedor_rfc column
+ * @method ProveedorQuery groupByProveedorDireccion() Group by the proveedor_direccion column
+ * @method ProveedorQuery groupByProveedorColonia() Group by the proveedor_colonia column
+ * @method ProveedorQuery groupByProveedorCp() Group by the proveedor_cp column
+ * @method ProveedorQuery groupByProveedorCiudad() Group by the proveedor_ciudad column
+ * @method ProveedorQuery groupByProveedorEstado() Group by the proveedor_estado column
+ * @method ProveedorQuery groupByProveedorContactonombre() Group by the proveedor_contactonombre column
+ * @method ProveedorQuery groupByProveedorContactotelefono() Group by the proveedor_contactotelefono column
+ * @method ProveedorQuery groupByProveedorContactoemail() Group by the proveedor_contactoemail column
  *
  * @method ProveedorQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProveedorQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -48,6 +68,16 @@
  * @method Proveedor findOneByProveedorCelular(string $proveedor_celular) Return the first Proveedor filtered by the proveedor_celular column
  * @method Proveedor findOneByProveedorFechainicio(string $proveedor_fechainicio) Return the first Proveedor filtered by the proveedor_fechainicio column
  * @method Proveedor findOneByProveedorEmail(string $proveedor_email) Return the first Proveedor filtered by the proveedor_email column
+ * @method Proveedor findOneByProveedorRazonsocial(string $proveedor_razonsocial) Return the first Proveedor filtered by the proveedor_razonsocial column
+ * @method Proveedor findOneByProveedorRfc(string $proveedor_rfc) Return the first Proveedor filtered by the proveedor_rfc column
+ * @method Proveedor findOneByProveedorDireccion(string $proveedor_direccion) Return the first Proveedor filtered by the proveedor_direccion column
+ * @method Proveedor findOneByProveedorColonia(string $proveedor_colonia) Return the first Proveedor filtered by the proveedor_colonia column
+ * @method Proveedor findOneByProveedorCp(string $proveedor_cp) Return the first Proveedor filtered by the proveedor_cp column
+ * @method Proveedor findOneByProveedorCiudad(string $proveedor_ciudad) Return the first Proveedor filtered by the proveedor_ciudad column
+ * @method Proveedor findOneByProveedorEstado(string $proveedor_estado) Return the first Proveedor filtered by the proveedor_estado column
+ * @method Proveedor findOneByProveedorContactonombre(string $proveedor_contactonombre) Return the first Proveedor filtered by the proveedor_contactonombre column
+ * @method Proveedor findOneByProveedorContactotelefono(string $proveedor_contactotelefono) Return the first Proveedor filtered by the proveedor_contactotelefono column
+ * @method Proveedor findOneByProveedorContactoemail(string $proveedor_contactoemail) Return the first Proveedor filtered by the proveedor_contactoemail column
  *
  * @method array findByIdproveedor(int $idproveedor) Return Proveedor objects filtered by the idproveedor column
  * @method array findByProveedorNombrecomercial(string $proveedor_nombrecomercial) Return Proveedor objects filtered by the proveedor_nombrecomercial column
@@ -55,6 +85,16 @@
  * @method array findByProveedorCelular(string $proveedor_celular) Return Proveedor objects filtered by the proveedor_celular column
  * @method array findByProveedorFechainicio(string $proveedor_fechainicio) Return Proveedor objects filtered by the proveedor_fechainicio column
  * @method array findByProveedorEmail(string $proveedor_email) Return Proveedor objects filtered by the proveedor_email column
+ * @method array findByProveedorRazonsocial(string $proveedor_razonsocial) Return Proveedor objects filtered by the proveedor_razonsocial column
+ * @method array findByProveedorRfc(string $proveedor_rfc) Return Proveedor objects filtered by the proveedor_rfc column
+ * @method array findByProveedorDireccion(string $proveedor_direccion) Return Proveedor objects filtered by the proveedor_direccion column
+ * @method array findByProveedorColonia(string $proveedor_colonia) Return Proveedor objects filtered by the proveedor_colonia column
+ * @method array findByProveedorCp(string $proveedor_cp) Return Proveedor objects filtered by the proveedor_cp column
+ * @method array findByProveedorCiudad(string $proveedor_ciudad) Return Proveedor objects filtered by the proveedor_ciudad column
+ * @method array findByProveedorEstado(string $proveedor_estado) Return Proveedor objects filtered by the proveedor_estado column
+ * @method array findByProveedorContactonombre(string $proveedor_contactonombre) Return Proveedor objects filtered by the proveedor_contactonombre column
+ * @method array findByProveedorContactotelefono(string $proveedor_contactotelefono) Return Proveedor objects filtered by the proveedor_contactotelefono column
+ * @method array findByProveedorContactoemail(string $proveedor_contactoemail) Return Proveedor objects filtered by the proveedor_contactoemail column
  *
  * @package    propel.generator.zarely.om
  */
@@ -162,7 +202,7 @@ abstract class BaseProveedorQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idproveedor`, `proveedor_nombrecomercial`, `proveedor_telefono`, `proveedor_celular`, `proveedor_fechainicio`, `proveedor_email` FROM `proveedor` WHERE `idproveedor` = :p0';
+        $sql = 'SELECT `idproveedor`, `proveedor_nombrecomercial`, `proveedor_telefono`, `proveedor_celular`, `proveedor_fechainicio`, `proveedor_email`, `proveedor_razonsocial`, `proveedor_rfc`, `proveedor_direccion`, `proveedor_colonia`, `proveedor_cp`, `proveedor_ciudad`, `proveedor_estado`, `proveedor_contactonombre`, `proveedor_contactotelefono`, `proveedor_contactoemail` FROM `proveedor` WHERE `idproveedor` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -450,6 +490,296 @@ abstract class BaseProveedorQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_EMAIL, $proveedorEmail, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_razonsocial column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorRazonsocial('fooValue');   // WHERE proveedor_razonsocial = 'fooValue'
+     * $query->filterByProveedorRazonsocial('%fooValue%'); // WHERE proveedor_razonsocial LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorRazonsocial The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorRazonsocial($proveedorRazonsocial = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorRazonsocial)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorRazonsocial)) {
+                $proveedorRazonsocial = str_replace('*', '%', $proveedorRazonsocial);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_RAZONSOCIAL, $proveedorRazonsocial, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_rfc column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorRfc('fooValue');   // WHERE proveedor_rfc = 'fooValue'
+     * $query->filterByProveedorRfc('%fooValue%'); // WHERE proveedor_rfc LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorRfc The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorRfc($proveedorRfc = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorRfc)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorRfc)) {
+                $proveedorRfc = str_replace('*', '%', $proveedorRfc);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_RFC, $proveedorRfc, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_direccion column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorDireccion('fooValue');   // WHERE proveedor_direccion = 'fooValue'
+     * $query->filterByProveedorDireccion('%fooValue%'); // WHERE proveedor_direccion LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorDireccion The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorDireccion($proveedorDireccion = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorDireccion)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorDireccion)) {
+                $proveedorDireccion = str_replace('*', '%', $proveedorDireccion);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_DIRECCION, $proveedorDireccion, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_colonia column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorColonia('fooValue');   // WHERE proveedor_colonia = 'fooValue'
+     * $query->filterByProveedorColonia('%fooValue%'); // WHERE proveedor_colonia LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorColonia The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorColonia($proveedorColonia = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorColonia)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorColonia)) {
+                $proveedorColonia = str_replace('*', '%', $proveedorColonia);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_COLONIA, $proveedorColonia, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_cp column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorCp('fooValue');   // WHERE proveedor_cp = 'fooValue'
+     * $query->filterByProveedorCp('%fooValue%'); // WHERE proveedor_cp LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorCp The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorCp($proveedorCp = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorCp)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorCp)) {
+                $proveedorCp = str_replace('*', '%', $proveedorCp);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_CP, $proveedorCp, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_ciudad column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorCiudad('fooValue');   // WHERE proveedor_ciudad = 'fooValue'
+     * $query->filterByProveedorCiudad('%fooValue%'); // WHERE proveedor_ciudad LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorCiudad The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorCiudad($proveedorCiudad = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorCiudad)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorCiudad)) {
+                $proveedorCiudad = str_replace('*', '%', $proveedorCiudad);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_CIUDAD, $proveedorCiudad, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_estado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorEstado('fooValue');   // WHERE proveedor_estado = 'fooValue'
+     * $query->filterByProveedorEstado('%fooValue%'); // WHERE proveedor_estado LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorEstado The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorEstado($proveedorEstado = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorEstado)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorEstado)) {
+                $proveedorEstado = str_replace('*', '%', $proveedorEstado);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_ESTADO, $proveedorEstado, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_contactonombre column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorContactonombre('fooValue');   // WHERE proveedor_contactonombre = 'fooValue'
+     * $query->filterByProveedorContactonombre('%fooValue%'); // WHERE proveedor_contactonombre LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorContactonombre The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorContactonombre($proveedorContactonombre = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorContactonombre)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorContactonombre)) {
+                $proveedorContactonombre = str_replace('*', '%', $proveedorContactonombre);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_CONTACTONOMBRE, $proveedorContactonombre, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_contactotelefono column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorContactotelefono('fooValue');   // WHERE proveedor_contactotelefono = 'fooValue'
+     * $query->filterByProveedorContactotelefono('%fooValue%'); // WHERE proveedor_contactotelefono LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorContactotelefono The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorContactotelefono($proveedorContactotelefono = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorContactotelefono)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorContactotelefono)) {
+                $proveedorContactotelefono = str_replace('*', '%', $proveedorContactotelefono);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_CONTACTOTELEFONO, $proveedorContactotelefono, $comparison);
+    }
+
+    /**
+     * Filter the query on the proveedor_contactoemail column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProveedorContactoemail('fooValue');   // WHERE proveedor_contactoemail = 'fooValue'
+     * $query->filterByProveedorContactoemail('%fooValue%'); // WHERE proveedor_contactoemail LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $proveedorContactoemail The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProveedorQuery The current query, for fluid interface
+     */
+    public function filterByProveedorContactoemail($proveedorContactoemail = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($proveedorContactoemail)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $proveedorContactoemail)) {
+                $proveedorContactoemail = str_replace('*', '%', $proveedorContactoemail);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProveedorPeer::PROVEEDOR_CONTACTOEMAIL, $proveedorContactoemail, $comparison);
     }
 
     /**

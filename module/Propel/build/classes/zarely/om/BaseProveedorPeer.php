@@ -24,13 +24,13 @@ abstract class BaseProveedorPeer
     const TM_CLASS = 'ProveedorTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 16;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 16;
 
     /** the column name for the idproveedor field */
     const IDPROVEEDOR = 'proveedor.idproveedor';
@@ -49,6 +49,36 @@ abstract class BaseProveedorPeer
 
     /** the column name for the proveedor_email field */
     const PROVEEDOR_EMAIL = 'proveedor.proveedor_email';
+
+    /** the column name for the proveedor_razonsocial field */
+    const PROVEEDOR_RAZONSOCIAL = 'proveedor.proveedor_razonsocial';
+
+    /** the column name for the proveedor_rfc field */
+    const PROVEEDOR_RFC = 'proveedor.proveedor_rfc';
+
+    /** the column name for the proveedor_direccion field */
+    const PROVEEDOR_DIRECCION = 'proveedor.proveedor_direccion';
+
+    /** the column name for the proveedor_colonia field */
+    const PROVEEDOR_COLONIA = 'proveedor.proveedor_colonia';
+
+    /** the column name for the proveedor_cp field */
+    const PROVEEDOR_CP = 'proveedor.proveedor_cp';
+
+    /** the column name for the proveedor_ciudad field */
+    const PROVEEDOR_CIUDAD = 'proveedor.proveedor_ciudad';
+
+    /** the column name for the proveedor_estado field */
+    const PROVEEDOR_ESTADO = 'proveedor.proveedor_estado';
+
+    /** the column name for the proveedor_contactonombre field */
+    const PROVEEDOR_CONTACTONOMBRE = 'proveedor.proveedor_contactonombre';
+
+    /** the column name for the proveedor_contactotelefono field */
+    const PROVEEDOR_CONTACTOTELEFONO = 'proveedor.proveedor_contactotelefono';
+
+    /** the column name for the proveedor_contactoemail field */
+    const PROVEEDOR_CONTACTOEMAIL = 'proveedor.proveedor_contactoemail';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -69,12 +99,12 @@ abstract class BaseProveedorPeer
      * e.g. ProveedorPeer::$fieldNames[ProveedorPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproveedor', 'ProveedorNombrecomercial', 'ProveedorTelefono', 'ProveedorCelular', 'ProveedorFechainicio', 'ProveedorEmail', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproveedor', 'proveedorNombrecomercial', 'proveedorTelefono', 'proveedorCelular', 'proveedorFechainicio', 'proveedorEmail', ),
-        BasePeer::TYPE_COLNAME => array (ProveedorPeer::IDPROVEEDOR, ProveedorPeer::PROVEEDOR_NOMBRECOMERCIAL, ProveedorPeer::PROVEEDOR_TELEFONO, ProveedorPeer::PROVEEDOR_CELULAR, ProveedorPeer::PROVEEDOR_FECHAINICIO, ProveedorPeer::PROVEEDOR_EMAIL, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPROVEEDOR', 'PROVEEDOR_NOMBRECOMERCIAL', 'PROVEEDOR_TELEFONO', 'PROVEEDOR_CELULAR', 'PROVEEDOR_FECHAINICIO', 'PROVEEDOR_EMAIL', ),
-        BasePeer::TYPE_FIELDNAME => array ('idproveedor', 'proveedor_nombrecomercial', 'proveedor_telefono', 'proveedor_celular', 'proveedor_fechainicio', 'proveedor_email', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Idproveedor', 'ProveedorNombrecomercial', 'ProveedorTelefono', 'ProveedorCelular', 'ProveedorFechainicio', 'ProveedorEmail', 'ProveedorRazonsocial', 'ProveedorRfc', 'ProveedorDireccion', 'ProveedorColonia', 'ProveedorCp', 'ProveedorCiudad', 'ProveedorEstado', 'ProveedorContactonombre', 'ProveedorContactotelefono', 'ProveedorContactoemail', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproveedor', 'proveedorNombrecomercial', 'proveedorTelefono', 'proveedorCelular', 'proveedorFechainicio', 'proveedorEmail', 'proveedorRazonsocial', 'proveedorRfc', 'proveedorDireccion', 'proveedorColonia', 'proveedorCp', 'proveedorCiudad', 'proveedorEstado', 'proveedorContactonombre', 'proveedorContactotelefono', 'proveedorContactoemail', ),
+        BasePeer::TYPE_COLNAME => array (ProveedorPeer::IDPROVEEDOR, ProveedorPeer::PROVEEDOR_NOMBRECOMERCIAL, ProveedorPeer::PROVEEDOR_TELEFONO, ProveedorPeer::PROVEEDOR_CELULAR, ProveedorPeer::PROVEEDOR_FECHAINICIO, ProveedorPeer::PROVEEDOR_EMAIL, ProveedorPeer::PROVEEDOR_RAZONSOCIAL, ProveedorPeer::PROVEEDOR_RFC, ProveedorPeer::PROVEEDOR_DIRECCION, ProveedorPeer::PROVEEDOR_COLONIA, ProveedorPeer::PROVEEDOR_CP, ProveedorPeer::PROVEEDOR_CIUDAD, ProveedorPeer::PROVEEDOR_ESTADO, ProveedorPeer::PROVEEDOR_CONTACTONOMBRE, ProveedorPeer::PROVEEDOR_CONTACTOTELEFONO, ProveedorPeer::PROVEEDOR_CONTACTOEMAIL, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPROVEEDOR', 'PROVEEDOR_NOMBRECOMERCIAL', 'PROVEEDOR_TELEFONO', 'PROVEEDOR_CELULAR', 'PROVEEDOR_FECHAINICIO', 'PROVEEDOR_EMAIL', 'PROVEEDOR_RAZONSOCIAL', 'PROVEEDOR_RFC', 'PROVEEDOR_DIRECCION', 'PROVEEDOR_COLONIA', 'PROVEEDOR_CP', 'PROVEEDOR_CIUDAD', 'PROVEEDOR_ESTADO', 'PROVEEDOR_CONTACTONOMBRE', 'PROVEEDOR_CONTACTOTELEFONO', 'PROVEEDOR_CONTACTOEMAIL', ),
+        BasePeer::TYPE_FIELDNAME => array ('idproveedor', 'proveedor_nombrecomercial', 'proveedor_telefono', 'proveedor_celular', 'proveedor_fechainicio', 'proveedor_email', 'proveedor_razonsocial', 'proveedor_rfc', 'proveedor_direccion', 'proveedor_colonia', 'proveedor_cp', 'proveedor_ciudad', 'proveedor_estado', 'proveedor_contactonombre', 'proveedor_contactotelefono', 'proveedor_contactoemail', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -84,12 +114,12 @@ abstract class BaseProveedorPeer
      * e.g. ProveedorPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idproveedor' => 0, 'ProveedorNombrecomercial' => 1, 'ProveedorTelefono' => 2, 'ProveedorCelular' => 3, 'ProveedorFechainicio' => 4, 'ProveedorEmail' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idproveedor' => 0, 'proveedorNombrecomercial' => 1, 'proveedorTelefono' => 2, 'proveedorCelular' => 3, 'proveedorFechainicio' => 4, 'proveedorEmail' => 5, ),
-        BasePeer::TYPE_COLNAME => array (ProveedorPeer::IDPROVEEDOR => 0, ProveedorPeer::PROVEEDOR_NOMBRECOMERCIAL => 1, ProveedorPeer::PROVEEDOR_TELEFONO => 2, ProveedorPeer::PROVEEDOR_CELULAR => 3, ProveedorPeer::PROVEEDOR_FECHAINICIO => 4, ProveedorPeer::PROVEEDOR_EMAIL => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDPROVEEDOR' => 0, 'PROVEEDOR_NOMBRECOMERCIAL' => 1, 'PROVEEDOR_TELEFONO' => 2, 'PROVEEDOR_CELULAR' => 3, 'PROVEEDOR_FECHAINICIO' => 4, 'PROVEEDOR_EMAIL' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('idproveedor' => 0, 'proveedor_nombrecomercial' => 1, 'proveedor_telefono' => 2, 'proveedor_celular' => 3, 'proveedor_fechainicio' => 4, 'proveedor_email' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Idproveedor' => 0, 'ProveedorNombrecomercial' => 1, 'ProveedorTelefono' => 2, 'ProveedorCelular' => 3, 'ProveedorFechainicio' => 4, 'ProveedorEmail' => 5, 'ProveedorRazonsocial' => 6, 'ProveedorRfc' => 7, 'ProveedorDireccion' => 8, 'ProveedorColonia' => 9, 'ProveedorCp' => 10, 'ProveedorCiudad' => 11, 'ProveedorEstado' => 12, 'ProveedorContactonombre' => 13, 'ProveedorContactotelefono' => 14, 'ProveedorContactoemail' => 15, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idproveedor' => 0, 'proveedorNombrecomercial' => 1, 'proveedorTelefono' => 2, 'proveedorCelular' => 3, 'proveedorFechainicio' => 4, 'proveedorEmail' => 5, 'proveedorRazonsocial' => 6, 'proveedorRfc' => 7, 'proveedorDireccion' => 8, 'proveedorColonia' => 9, 'proveedorCp' => 10, 'proveedorCiudad' => 11, 'proveedorEstado' => 12, 'proveedorContactonombre' => 13, 'proveedorContactotelefono' => 14, 'proveedorContactoemail' => 15, ),
+        BasePeer::TYPE_COLNAME => array (ProveedorPeer::IDPROVEEDOR => 0, ProveedorPeer::PROVEEDOR_NOMBRECOMERCIAL => 1, ProveedorPeer::PROVEEDOR_TELEFONO => 2, ProveedorPeer::PROVEEDOR_CELULAR => 3, ProveedorPeer::PROVEEDOR_FECHAINICIO => 4, ProveedorPeer::PROVEEDOR_EMAIL => 5, ProveedorPeer::PROVEEDOR_RAZONSOCIAL => 6, ProveedorPeer::PROVEEDOR_RFC => 7, ProveedorPeer::PROVEEDOR_DIRECCION => 8, ProveedorPeer::PROVEEDOR_COLONIA => 9, ProveedorPeer::PROVEEDOR_CP => 10, ProveedorPeer::PROVEEDOR_CIUDAD => 11, ProveedorPeer::PROVEEDOR_ESTADO => 12, ProveedorPeer::PROVEEDOR_CONTACTONOMBRE => 13, ProveedorPeer::PROVEEDOR_CONTACTOTELEFONO => 14, ProveedorPeer::PROVEEDOR_CONTACTOEMAIL => 15, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDPROVEEDOR' => 0, 'PROVEEDOR_NOMBRECOMERCIAL' => 1, 'PROVEEDOR_TELEFONO' => 2, 'PROVEEDOR_CELULAR' => 3, 'PROVEEDOR_FECHAINICIO' => 4, 'PROVEEDOR_EMAIL' => 5, 'PROVEEDOR_RAZONSOCIAL' => 6, 'PROVEEDOR_RFC' => 7, 'PROVEEDOR_DIRECCION' => 8, 'PROVEEDOR_COLONIA' => 9, 'PROVEEDOR_CP' => 10, 'PROVEEDOR_CIUDAD' => 11, 'PROVEEDOR_ESTADO' => 12, 'PROVEEDOR_CONTACTONOMBRE' => 13, 'PROVEEDOR_CONTACTOTELEFONO' => 14, 'PROVEEDOR_CONTACTOEMAIL' => 15, ),
+        BasePeer::TYPE_FIELDNAME => array ('idproveedor' => 0, 'proveedor_nombrecomercial' => 1, 'proveedor_telefono' => 2, 'proveedor_celular' => 3, 'proveedor_fechainicio' => 4, 'proveedor_email' => 5, 'proveedor_razonsocial' => 6, 'proveedor_rfc' => 7, 'proveedor_direccion' => 8, 'proveedor_colonia' => 9, 'proveedor_cp' => 10, 'proveedor_ciudad' => 11, 'proveedor_estado' => 12, 'proveedor_contactonombre' => 13, 'proveedor_contactotelefono' => 14, 'proveedor_contactoemail' => 15, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -169,6 +199,16 @@ abstract class BaseProveedorPeer
             $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_CELULAR);
             $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_FECHAINICIO);
             $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_EMAIL);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_RAZONSOCIAL);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_RFC);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_DIRECCION);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_COLONIA);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_CP);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_CIUDAD);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_ESTADO);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_CONTACTONOMBRE);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_CONTACTOTELEFONO);
+            $criteria->addSelectColumn(ProveedorPeer::PROVEEDOR_CONTACTOEMAIL);
         } else {
             $criteria->addSelectColumn($alias . '.idproveedor');
             $criteria->addSelectColumn($alias . '.proveedor_nombrecomercial');
@@ -176,6 +216,16 @@ abstract class BaseProveedorPeer
             $criteria->addSelectColumn($alias . '.proveedor_celular');
             $criteria->addSelectColumn($alias . '.proveedor_fechainicio');
             $criteria->addSelectColumn($alias . '.proveedor_email');
+            $criteria->addSelectColumn($alias . '.proveedor_razonsocial');
+            $criteria->addSelectColumn($alias . '.proveedor_rfc');
+            $criteria->addSelectColumn($alias . '.proveedor_direccion');
+            $criteria->addSelectColumn($alias . '.proveedor_colonia');
+            $criteria->addSelectColumn($alias . '.proveedor_cp');
+            $criteria->addSelectColumn($alias . '.proveedor_ciudad');
+            $criteria->addSelectColumn($alias . '.proveedor_estado');
+            $criteria->addSelectColumn($alias . '.proveedor_contactonombre');
+            $criteria->addSelectColumn($alias . '.proveedor_contactotelefono');
+            $criteria->addSelectColumn($alias . '.proveedor_contactoemail');
         }
     }
 
