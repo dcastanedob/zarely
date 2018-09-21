@@ -30,9 +30,9 @@ class EmpleadosController extends AbstractActionController
         $request = $this->getRequest();
         if($request->isPost()){
             $post_data = $request->getPost();
-           
+
             $query = new \EmpleadoQuery();
-            
+
              /*JOIN
             $query->useCategoriaRelatedByIdcategoriaQuery('a')->endUse();
             $query->useCategoriaRelatedByIdsubcategoriaQuery('b')->endUse();
@@ -44,11 +44,11 @@ class EmpleadosController extends AbstractActionController
 
 
             $records_filtered = $query->count();
-            
+
             //SEARCH
             if(!empty($post_data['search']['value'])){
                 $search_value = $post_data['search']['value'];
-                
+
                 $search_value = str_replace("Ñ", "Ã‘", $search_value);
                 $search_value = str_replace("L'", "L'", $search_value);
                 $search_value = str_replace("Ç", "Ã‡", $search_value);
@@ -76,7 +76,7 @@ class EmpleadosController extends AbstractActionController
                     $search_value = str_replace("Í", "Ã", $search_value);
                 }
                 $c = new \Criteria();
-               
+
                 $c1= $c->getNewCriterion('empleado.idempleado', '%'.$search_value.'%', \Criteria::LIKE);
                 $c2= $c->getNewCriterion('empleado.empleado_nombre', '%'.$search_value.'%', \Criteria::LIKE);
 
@@ -86,21 +86,21 @@ class EmpleadosController extends AbstractActionController
 
                  $c5= $c->getNewCriterion('empleado.empleado_estatus', '%'.$search_value.'%', \Criteria::LIKE);
 
-          
+
                 $c1->addOr($c2)->addOr($c3)->addOr($c4)->addOr($c5);
 
                 $query->addAnd($c1);
                 $query->groupByIdempleado();
-                
+
                 $records_filtered = $query->count();
-                
+
             }
-            
+
             //LIMIT
             $query->setOffset((int)$post_data['start']);
             $query->setLimit((int)$post_data['length']);
-            
-            
+
+
             //ORDER
             $order_column = $post_data['order'][0]['column'];
             $order_column = $this->column_map[$order_column];
@@ -111,13 +111,13 @@ class EmpleadosController extends AbstractActionController
                 $query->orderBy($order_column,  \Criteria::ASC);
             }
 
-            
-            
+
+
             //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
             $data = array();
-            
-           
-            
+
+
+
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
 
                 if($value['empleado_estatus']){
@@ -145,7 +145,7 @@ class EmpleadosController extends AbstractActionController
                           </div>
                           <div class="media-body">
                             <span class="d-b">Editar</span>
-                           
+
                           </div>
                         </div>
                       </a>
@@ -158,18 +158,18 @@ class EmpleadosController extends AbstractActionController
                           </div>
                           <div class="media-body">
                             <span class="d-b">Eliminar</span>
-                       
+
                           </div>
                         </div>
                       </a>
                     </li>
                   </ul>
                 </div></td>';
-                
+
                 $data[] = $tmp;
- 
-            }   
-      
+
+            }
+
             //El arreglo que regresamos
             $json_data = array(
                 'order' => $order_column,
@@ -178,9 +178,9 @@ class EmpleadosController extends AbstractActionController
                 "recordsFiltered" => $records_filtered,
                 "data"            => $data
             );
-            
 
-            
+
+
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }
@@ -203,7 +203,7 @@ class EmpleadosController extends AbstractActionController
         if($request->isPost())
         {
             $post_data = $request->getPost();
-            
+
 
             $entity = new \Empleado();
 
@@ -213,25 +213,25 @@ class EmpleadosController extends AbstractActionController
             if($exist)
             {
                 $this->flashMessenger()->addErrorMessage('El nombre de usuario ya se había agregado anteriormente.');
-                
+
                 return $this->redirect()->toUrl('/catalogo/empleados');
             }
-            
+
             $post_data['empleado_fechaentrada'] = date_create_from_format('d/m/Y', $post_data['empleado_fechaentrada']);
             $post_data['empleado_fechanacimiento'] = date_create_from_format('d/m/Y', $post_data['empleado_fechanacimiento']);
 
             $post_data['empleado_password'] = md5($post_data['empleado_password']);
-             
+
             foreach ($post_data as $key => $value) {
                 if(\EmpleadoPeer::getTableMap()->hasColumn($key))
                 {
                     $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                 }
             }
-            
+
             $entity->save();
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-           
+
             return $this->redirect()->toUrl('/catalogo/empleados');
         }
 
@@ -247,7 +247,7 @@ class EmpleadosController extends AbstractActionController
         $view_model->setVariables(array(
             'form' => $form
         ));
-  
+
         return $view_model;
     }
 
@@ -266,12 +266,13 @@ class EmpleadosController extends AbstractActionController
 
             if($request->isPost())
             {
-                $post_data = $request->getPost();
-                $post_data['empleado_fechaentrada'] = date_create_from_format('d/m/Y', $post_data['empleado_fechaentrada']);
-                $post_data['empleado_fechanacimiento'] = date_create_from_format('d/m/Y', $post_data['empleado_fechanacimiento']);
+              $post_data = $request->getPost();
+              
+                $post_data['empleado_fechaentrada'] = date_create_from_format('Y-m-d', $post_data['empleado_fechaentrada']);
+                $post_data['empleado_fechanacimiento'] = date_create_from_format('Y-m-d', $post_data['empleado_fechanacimiento']);
 
                 $post_data['empleado_password'] = md5($post_data['empleado_password']);
-                
+
                 foreach ($post_data as $key => $value) {
                     if(\EmpleadoPeer::getTableMap()->hasColumn($key))
                     {
@@ -292,9 +293,9 @@ class EmpleadosController extends AbstractActionController
             $form = new \Application\Catalogo\Form\EmpleadosForm($roles_array );
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            $form->get('empleado_fechaentrada')->setValue($entity->getEmpleadoFechaentrada('d/m/Y'));
-            $form->get('empleado_fechanacimiento')->setValue($entity->getEmpleadoFechanacimiento('d/m/Y'));
-            
+            $form->get('empleado_fechaentrada')->setValue($entity->getEmpleadoFechaentrada('Y-m-d'));
+            $form->get('empleado_fechanacimiento')->setValue($entity->getEmpleadoFechanacimiento('Y-m-d'));
+
             $view_model = new ViewModel();
             $view_model->setTemplate('application/catalogo/empleados/ver');
 
@@ -307,7 +308,7 @@ class EmpleadosController extends AbstractActionController
         }else
         {
             $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/empleados');   
+            return $this->redirect()->toUrl('/catalogo/empleados');
         }
     }
 
