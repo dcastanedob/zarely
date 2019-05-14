@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'productomaterial' table.
+ * This class defines the structure of the 'notificacion' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.zarely.map
  */
-class ProductomaterialTableMap extends TableMap
+class NotificacionTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'zarely.map.ProductomaterialTableMap';
+    const CLASS_NAME = 'zarely.map.NotificacionTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,15 +32,18 @@ class ProductomaterialTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('productomaterial');
-        $this->setPhpName('Productomaterial');
-        $this->setClassname('Productomaterial');
+        $this->setName('notificacion');
+        $this->setPhpName('Notificacion');
+        $this->setClassname('Notificacion');
         $this->setPackage('zarely');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('idproductomaterial', 'Idproductomaterial', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('idnotificacion', 'Idnotificacion', 'INTEGER', true, null, null);
         $this->addForeignKey('idproducto', 'Idproducto', 'INTEGER', 'producto', 'idproducto', true, null, null);
-        $this->addForeignKey('idmaterial', 'Idmaterial', 'INTEGER', 'material', 'idmaterial', true, null, null);
+        $this->addForeignKey('idsucursal', 'Idsucursal', 'INTEGER', 'sucursal', 'idsucursal', true, null, null);
+        $this->addColumn('notificacion_aplicada', 'NotificacionAplicada', 'BOOLEAN', true, 1, false);
+        $this->addForeignKey('idempleado', 'Idempleado', 'INTEGER', 'empleado', 'idempleado', false, null, null);
+        $this->addColumn('notificacion_aplicadaen', 'NotificacionAplicadaen', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 
@@ -49,9 +52,9 @@ class ProductomaterialTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Material', 'Material', RelationMap::MANY_TO_ONE, array('idmaterial' => 'idmaterial', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Producto', 'Producto', RelationMap::MANY_TO_ONE, array('idproducto' => 'idproducto', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Productovariante', 'Productovariante', RelationMap::ONE_TO_MANY, array('idproductomaterial' => 'idproductomaterial', ), 'CASCADE', 'CASCADE', 'Productovariantes');
+        $this->addRelation('Sucursal', 'Sucursal', RelationMap::MANY_TO_ONE, array('idsucursal' => 'idsucursal', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Empleado', 'Empleado', RelationMap::MANY_TO_ONE, array('idempleado' => 'idempleado', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
-} // ProductomaterialTableMap
+} // NotificacionTableMap

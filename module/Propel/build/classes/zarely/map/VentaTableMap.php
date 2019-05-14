@@ -47,7 +47,7 @@ class VentaTableMap extends TableMap
         $this->addColumn('venta_comprobante', 'VentaComprobante', 'LONGVARCHAR', false, null, null);
         $this->addForeignKey('idsucursal', 'Idsucursal', 'INTEGER', 'sucursal', 'idsucursal', true, null, null);
         $this->addColumn('venta_estatuspago', 'VentaEstatuspago', 'BOOLEAN', true, 1, null);
-        $this->addColumn('venta_tipo', 'VentaTipo', 'CHAR', true, null, null);
+        $this->addColumn('venta_tipo', 'VentaTipo', 'CHAR', true, null, 'compra');
         $this->getColumn('venta_tipo', false)->setValueSet(array (
   0 => 'compra',
   1 => 'credito',
@@ -55,7 +55,7 @@ class VentaTableMap extends TableMap
 ));
         $this->addColumn('venta_subtotal', 'VentaSubtotal', 'DECIMAL', true, 15, null);
         $this->addColumn('venta_iva', 'VentaIva', 'DECIMAL', true, 15, null);
-        $this->addColumn('venta_estatus', 'VentaEstatus', 'CHAR', true, null, null);
+        $this->addColumn('venta_estatus', 'VentaEstatus', 'CHAR', true, null, 'completada');
         $this->getColumn('venta_estatus', false)->setValueSet(array (
   0 => 'cancelada',
   1 => 'completada',

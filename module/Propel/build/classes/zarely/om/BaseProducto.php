@@ -108,6 +108,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
     protected $producto_descripcion;
 
     /**
+     * The value for the producto_costo field.
+     * @var        int
+     */
+    protected $producto_costo;
+
+    /**
      * @var        Marca
      */
     protected $aMarca;
@@ -132,6 +138,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
      */
     protected $collDescuentodetalles;
     protected $collDescuentodetallesPartial;
+
+    /**
+     * @var        PropelObjectCollection|Notificacion[] Collection to store aggregation of Notificacion objects.
+     */
+    protected $collNotificacions;
+    protected $collNotificacionsPartial;
 
     /**
      * @var        PropelObjectCollection|Pedido[] Collection to store aggregation of Pedido objects.
@@ -206,6 +218,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $descuentodetallesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $notificacionsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -396,6 +414,17 @@ abstract class BaseProducto extends BaseObject implements Persistent
     {
 
         return $this->producto_descripcion;
+    }
+
+    /**
+     * Get the [producto_costo] column value.
+     *
+     * @return int
+     */
+    public function getProductoCosto()
+    {
+
+        return $this->producto_costo;
     }
 
     /**
@@ -688,6 +717,27 @@ abstract class BaseProducto extends BaseObject implements Persistent
     } // setProductoDescripcion()
 
     /**
+     * Set the value of [producto_costo] column.
+     *
+     * @param  int $v new value
+     * @return Producto The current object (for fluent API support)
+     */
+    public function setProductoCosto($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->producto_costo !== $v) {
+            $this->producto_costo = $v;
+            $this->modifiedColumns[] = ProductoPeer::PRODUCTO_COSTO;
+        }
+
+
+        return $this;
+    } // setProductoCosto()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -732,6 +782,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->producto_reorden = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
             $this->idtipocalzado = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
             $this->producto_descripcion = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->producto_costo = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -741,7 +792,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 13; // 13 = ProductoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = ProductoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Producto object", $e);
@@ -820,6 +871,8 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->aTemporada = null;
             $this->aTipocalzado = null;
             $this->collDescuentodetalles = null;
+
+            $this->collNotificacions = null;
 
             $this->collPedidos = null;
 
@@ -1005,6 +1058,23 @@ abstract class BaseProducto extends BaseObject implements Persistent
 
             if ($this->collDescuentodetalles !== null) {
                 foreach ($this->collDescuentodetalles as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->notificacionsScheduledForDeletion !== null) {
+                if (!$this->notificacionsScheduledForDeletion->isEmpty()) {
+                    NotificacionQuery::create()
+                        ->filterByPrimaryKeys($this->notificacionsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->notificacionsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collNotificacions !== null) {
+                foreach ($this->collNotificacions as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1212,6 +1282,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_DESCRIPCION)) {
             $modifiedColumns[':p' . $index++]  = '`producto_descripcion`';
         }
+        if ($this->isColumnModified(ProductoPeer::PRODUCTO_COSTO)) {
+            $modifiedColumns[':p' . $index++]  = '`producto_costo`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `producto` (%s) VALUES (%s)',
@@ -1261,6 +1334,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
                         break;
                     case '`producto_descripcion`':
                         $stmt->bindValue($identifier, $this->producto_descripcion, PDO::PARAM_STR);
+                        break;
+                    case '`producto_costo`':
+                        $stmt->bindValue($identifier, $this->producto_costo, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1393,6 +1469,14 @@ abstract class BaseProducto extends BaseObject implements Persistent
 
                 if ($this->collDescuentodetalles !== null) {
                     foreach ($this->collDescuentodetalles as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
+                if ($this->collNotificacions !== null) {
+                    foreach ($this->collNotificacions as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1537,6 +1621,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
             case 12:
                 return $this->getProductoDescripcion();
                 break;
+            case 13:
+                return $this->getProductoCosto();
+                break;
             default:
                 return null;
                 break;
@@ -1579,6 +1666,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $keys[10] => $this->getProductoReorden(),
             $keys[11] => $this->getIdtipocalzado(),
             $keys[12] => $this->getProductoDescripcion(),
+            $keys[13] => $this->getProductoCosto(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1600,6 +1688,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
             }
             if (null !== $this->collDescuentodetalles) {
                 $result['Descuentodetalles'] = $this->collDescuentodetalles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collNotificacions) {
+                $result['Notificacions'] = $this->collNotificacions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collPedidos) {
                 $result['Pedidos'] = $this->collPedidos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1698,6 +1789,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
             case 12:
                 $this->setProductoDescripcion($value);
                 break;
+            case 13:
+                $this->setProductoCosto($value);
+                break;
         } // switch()
     }
 
@@ -1735,6 +1829,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if (array_key_exists($keys[10], $arr)) $this->setProductoReorden($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setIdtipocalzado($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setProductoDescripcion($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setProductoCosto($arr[$keys[13]]);
     }
 
     /**
@@ -1759,6 +1854,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_REORDEN)) $criteria->add(ProductoPeer::PRODUCTO_REORDEN, $this->producto_reorden);
         if ($this->isColumnModified(ProductoPeer::IDTIPOCALZADO)) $criteria->add(ProductoPeer::IDTIPOCALZADO, $this->idtipocalzado);
         if ($this->isColumnModified(ProductoPeer::PRODUCTO_DESCRIPCION)) $criteria->add(ProductoPeer::PRODUCTO_DESCRIPCION, $this->producto_descripcion);
+        if ($this->isColumnModified(ProductoPeer::PRODUCTO_COSTO)) $criteria->add(ProductoPeer::PRODUCTO_COSTO, $this->producto_costo);
 
         return $criteria;
     }
@@ -1834,6 +1930,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $copyObj->setProductoReorden($this->getProductoReorden());
         $copyObj->setIdtipocalzado($this->getIdtipocalzado());
         $copyObj->setProductoDescripcion($this->getProductoDescripcion());
+        $copyObj->setProductoCosto($this->getProductoCosto());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1845,6 +1942,12 @@ abstract class BaseProducto extends BaseObject implements Persistent
             foreach ($this->getDescuentodetalles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addDescuentodetalle($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getNotificacions() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addNotificacion($relObj->copy($deepCopy));
                 }
             }
 
@@ -2167,6 +2270,9 @@ abstract class BaseProducto extends BaseObject implements Persistent
     {
         if ('Descuentodetalle' == $relationName) {
             $this->initDescuentodetalles();
+        }
+        if ('Notificacion' == $relationName) {
+            $this->initNotificacions();
         }
         if ('Pedido' == $relationName) {
             $this->initPedidos();
@@ -2492,6 +2598,281 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $query->joinWith('Productovariante', $join_behavior);
 
         return $this->getDescuentodetalles($query, $con);
+    }
+
+    /**
+     * Clears out the collNotificacions collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Producto The current object (for fluent API support)
+     * @see        addNotificacions()
+     */
+    public function clearNotificacions()
+    {
+        $this->collNotificacions = null; // important to set this to null since that means it is uninitialized
+        $this->collNotificacionsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collNotificacions collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialNotificacions($v = true)
+    {
+        $this->collNotificacionsPartial = $v;
+    }
+
+    /**
+     * Initializes the collNotificacions collection.
+     *
+     * By default this just sets the collNotificacions collection to an empty array (like clearcollNotificacions());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initNotificacions($overrideExisting = true)
+    {
+        if (null !== $this->collNotificacions && !$overrideExisting) {
+            return;
+        }
+        $this->collNotificacions = new PropelObjectCollection();
+        $this->collNotificacions->setModel('Notificacion');
+    }
+
+    /**
+     * Gets an array of Notificacion objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Producto is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Notificacion[] List of Notificacion objects
+     * @throws PropelException
+     */
+    public function getNotificacions($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collNotificacionsPartial && !$this->isNew();
+        if (null === $this->collNotificacions || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collNotificacions) {
+                // return empty collection
+                $this->initNotificacions();
+            } else {
+                $collNotificacions = NotificacionQuery::create(null, $criteria)
+                    ->filterByProducto($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collNotificacionsPartial && count($collNotificacions)) {
+                      $this->initNotificacions(false);
+
+                      foreach ($collNotificacions as $obj) {
+                        if (false == $this->collNotificacions->contains($obj)) {
+                          $this->collNotificacions->append($obj);
+                        }
+                      }
+
+                      $this->collNotificacionsPartial = true;
+                    }
+
+                    $collNotificacions->getInternalIterator()->rewind();
+
+                    return $collNotificacions;
+                }
+
+                if ($partial && $this->collNotificacions) {
+                    foreach ($this->collNotificacions as $obj) {
+                        if ($obj->isNew()) {
+                            $collNotificacions[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collNotificacions = $collNotificacions;
+                $this->collNotificacionsPartial = false;
+            }
+        }
+
+        return $this->collNotificacions;
+    }
+
+    /**
+     * Sets a collection of Notificacion objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $notificacions A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Producto The current object (for fluent API support)
+     */
+    public function setNotificacions(PropelCollection $notificacions, PropelPDO $con = null)
+    {
+        $notificacionsToDelete = $this->getNotificacions(new Criteria(), $con)->diff($notificacions);
+
+
+        $this->notificacionsScheduledForDeletion = $notificacionsToDelete;
+
+        foreach ($notificacionsToDelete as $notificacionRemoved) {
+            $notificacionRemoved->setProducto(null);
+        }
+
+        $this->collNotificacions = null;
+        foreach ($notificacions as $notificacion) {
+            $this->addNotificacion($notificacion);
+        }
+
+        $this->collNotificacions = $notificacions;
+        $this->collNotificacionsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Notificacion objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Notificacion objects.
+     * @throws PropelException
+     */
+    public function countNotificacions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collNotificacionsPartial && !$this->isNew();
+        if (null === $this->collNotificacions || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collNotificacions) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getNotificacions());
+            }
+            $query = NotificacionQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByProducto($this)
+                ->count($con);
+        }
+
+        return count($this->collNotificacions);
+    }
+
+    /**
+     * Method called to associate a Notificacion object to this object
+     * through the Notificacion foreign key attribute.
+     *
+     * @param    Notificacion $l Notificacion
+     * @return Producto The current object (for fluent API support)
+     */
+    public function addNotificacion(Notificacion $l)
+    {
+        if ($this->collNotificacions === null) {
+            $this->initNotificacions();
+            $this->collNotificacionsPartial = true;
+        }
+
+        if (!in_array($l, $this->collNotificacions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddNotificacion($l);
+
+            if ($this->notificacionsScheduledForDeletion and $this->notificacionsScheduledForDeletion->contains($l)) {
+                $this->notificacionsScheduledForDeletion->remove($this->notificacionsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Notificacion $notificacion The notificacion object to add.
+     */
+    protected function doAddNotificacion($notificacion)
+    {
+        $this->collNotificacions[]= $notificacion;
+        $notificacion->setProducto($this);
+    }
+
+    /**
+     * @param	Notificacion $notificacion The notificacion object to remove.
+     * @return Producto The current object (for fluent API support)
+     */
+    public function removeNotificacion($notificacion)
+    {
+        if ($this->getNotificacions()->contains($notificacion)) {
+            $this->collNotificacions->remove($this->collNotificacions->search($notificacion));
+            if (null === $this->notificacionsScheduledForDeletion) {
+                $this->notificacionsScheduledForDeletion = clone $this->collNotificacions;
+                $this->notificacionsScheduledForDeletion->clear();
+            }
+            $this->notificacionsScheduledForDeletion[]= clone $notificacion;
+            $notificacion->setProducto(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Producto is new, it will return
+     * an empty collection; or if this Producto has previously
+     * been saved, it will retrieve related Notificacions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Producto.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Notificacion[] List of Notificacion objects
+     */
+    public function getNotificacionsJoinSucursal($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = NotificacionQuery::create(null, $criteria);
+        $query->joinWith('Sucursal', $join_behavior);
+
+        return $this->getNotificacions($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Producto is new, it will return
+     * an empty collection; or if this Producto has previously
+     * been saved, it will retrieve related Notificacions from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Producto.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Notificacion[] List of Notificacion objects
+     */
+    public function getNotificacionsJoinEmpleado($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = NotificacionQuery::create(null, $criteria);
+        $query->joinWith('Empleado', $join_behavior);
+
+        return $this->getNotificacions($query, $con);
     }
 
     /**
@@ -4637,6 +5018,7 @@ abstract class BaseProducto extends BaseObject implements Persistent
         $this->producto_reorden = null;
         $this->idtipocalzado = null;
         $this->producto_descripcion = null;
+        $this->producto_costo = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -4661,6 +5043,11 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->alreadyInClearAllReferencesDeep = true;
             if ($this->collDescuentodetalles) {
                 foreach ($this->collDescuentodetalles as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collNotificacions) {
+                foreach ($this->collNotificacions as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -4724,6 +5111,10 @@ abstract class BaseProducto extends BaseObject implements Persistent
             $this->collDescuentodetalles->clearIterator();
         }
         $this->collDescuentodetalles = null;
+        if ($this->collNotificacions instanceof PropelCollection) {
+            $this->collNotificacions->clearIterator();
+        }
+        $this->collNotificacions = null;
         if ($this->collPedidos instanceof PropelCollection) {
             $this->collPedidos->clearIterator();
         }

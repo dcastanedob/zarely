@@ -366,6 +366,35 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="notificacion" phpName="Notificacion" idMethod="native">
+    <column name="idnotificacion" phpName="Idnotificacion" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
+    <column name="idsucursal" phpName="Idsucursal" type="INTEGER" required="true"/>
+    <column name="notificacion_aplicada" phpName="NotificacionAplicada" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="idempleado" phpName="Idempleado" type="INTEGER" required="false"/>
+    <column name="notificacion_aplicadaen" phpName="NotificacionAplicadaen" type="TIMESTAMP" required="false"/>
+    <foreign-key foreignTable="producto" name="notificacion_idproducto" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idproducto" foreign="idproducto"/>
+    </foreign-key>
+    <foreign-key foreignTable="sucursal" name="notificacion_idsucursal" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idsucursal" foreign="idsucursal"/>
+    </foreign-key>
+    <foreign-key foreignTable="empleado" name="notificacion_idusuario" onDelete="CASCADE" onUpdate="CASCADE">
+      <reference local="idempleado" foreign="idempleado"/>
+    </foreign-key>
+    <index name="idproducto">
+      <index-column name="idproducto"/>
+    </index>
+    <index name="idsucursal">
+      <index-column name="idsucursal"/>
+    </index>
+    <index name="idusuario">
+      <index-column name="idempleado"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="pedido" phpName="Pedido" idMethod="native">
     <column name="idpedido" phpName="Idpedido" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idsucursal" phpName="Idsucursal" type="INTEGER" required="true"/>
@@ -458,6 +487,7 @@
     <column name="producto_reorden" phpName="ProductoReorden" type="INTEGER" required="true"/>
     <column name="idtipocalzado" phpName="Idtipocalzado" type="INTEGER" required="true"/>
     <column name="producto_descripcion" phpName="ProductoDescripcion" type="VARCHAR" size="500" required="false"/>
+    <column name="producto_costo" phpName="ProductoCosto" type="INTEGER" required="false"/>
     <foreign-key foreignTable="marca" name="idmarca_producto" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idmarca" foreign="idmarca"/>
     </foreign-key>
@@ -508,14 +538,14 @@
     </vendor>
   </table>
   <table name="productomaterial" phpName="Productomaterial" idMethod="native">
-    <column name="idproductomaterial" phpName="Idproductomaterial" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="idproductomaterial" phpName="Idproductomaterial" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="idproducto" phpName="Idproducto" type="INTEGER" required="true"/>
     <column name="idmaterial" phpName="Idmaterial" type="INTEGER" required="true"/>
     <foreign-key foreignTable="material" name="idmaterial_productomaterial" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idmaterial" foreign="idmaterial"/>
     </foreign-key>
     <foreign-key foreignTable="producto" name="idproducto_productomaterial" onDelete="CASCADE" onUpdate="CASCADE">
-      <reference local="idmaterial" foreign="idproducto"/>
+      <reference local="idproducto" foreign="idproducto"/>
     </foreign-key>
     <index name="idproducto">
       <index-column name="idproducto"/>
@@ -558,6 +588,9 @@
     <column name="productosucursal_preciomayoreo" phpName="ProductosucursalPreciomayoreo" type="DECIMAL" size="10" scale="5" required="true"/>
     <column name="productosucursal_estatus" phpName="ProductosucursalEstatus" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
     <column name="productosucursal_costo" phpName="ProductosucursalCosto" type="DECIMAL" size="10" scale="5" required="true"/>
+    <column name="productosucursal_precioventamayoreonuevo" phpName="ProductosucursalPrecioventamayoreonuevo" type="DECIMAL" size="10" scale="5" required="false"/>
+    <column name="productosucursal_precioventanuevo" phpName="ProductosucursalPrecioventanuevo" type="DECIMAL" size="10" scale="5" required="false"/>
+    <column name="productosucursal_precioaplicado" phpName="ProductosucursalPrecioaplicado" type="BOOLEAN" size="1" required="false"/>
     <foreign-key foreignTable="productovariante" name="idproductovariante_productosucursal" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idproductovariante" foreign="idproductovariante"/>
     </foreign-key>
@@ -895,10 +928,10 @@
     <column name="venta_comprobante" phpName="VentaComprobante" type="LONGVARCHAR" required="false"/>
     <column name="idsucursal" phpName="Idsucursal" type="INTEGER" required="true"/>
     <column name="venta_estatuspago" phpName="VentaEstatuspago" type="BOOLEAN" size="1" required="true"/>
-    <column name="venta_tipo" phpName="VentaTipo" type="CHAR" sqlType="enum('compra','credito','apartado')" required="true"/>
+    <column name="venta_tipo" phpName="VentaTipo" type="CHAR" sqlType="enum('compra','credito','apartado')" required="true" defaultValue="compra"/>
     <column name="venta_subtotal" phpName="VentaSubtotal" type="DECIMAL" size="15" scale="5" required="true"/>
     <column name="venta_iva" phpName="VentaIva" type="DECIMAL" size="15" scale="5" required="true"/>
-    <column name="venta_estatus" phpName="VentaEstatus" type="CHAR" sqlType="enum('cancelada','completada','')" required="true"/>
+    <column name="venta_estatus" phpName="VentaEstatus" type="CHAR" sqlType="enum('cancelada','completada','')" required="true" defaultValue="completada"/>
     <column name="venta_facturacion" phpName="VentaFacturacion" type="BOOLEAN" size="1" required="false"/>
     <foreign-key foreignTable="cliente" name="idcliente_venta" onDelete="CASCADE" onUpdate="CASCADE">
       <reference local="idcliente" foreign="idcliente"/>

@@ -85,6 +85,7 @@ abstract class BaseVenta extends BaseObject implements Persistent
 
     /**
      * The value for the venta_tipo field.
+     * Note: this column has a database default value of: 'compra'
      * @var        string
      */
     protected $venta_tipo;
@@ -103,6 +104,7 @@ abstract class BaseVenta extends BaseObject implements Persistent
 
     /**
      * The value for the venta_estatus field.
+     * Note: this column has a database default value of: 'completada'
      * @var        string
      */
     protected $venta_estatus;
@@ -176,6 +178,28 @@ abstract class BaseVenta extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $ventapagosScheduledForDeletion = null;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->venta_tipo = 'compra';
+        $this->venta_estatus = 'completada';
+    }
+
+    /**
+     * Initializes internal state of BaseVenta object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
 
     /**
      * Get the [idventa] column value.
@@ -698,6 +722,14 @@ abstract class BaseVenta extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->venta_tipo !== 'compra') {
+                return false;
+            }
+
+            if ($this->venta_estatus !== 'completada') {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -2537,6 +2569,7 @@ abstract class BaseVenta extends BaseObject implements Persistent
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

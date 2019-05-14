@@ -487,6 +487,41 @@ CREATE TABLE `medida`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- notificacion
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `notificacion`;
+
+CREATE TABLE `notificacion`
+(
+    `idnotificacion` INTEGER NOT NULL AUTO_INCREMENT,
+    `idproducto` INTEGER NOT NULL,
+    `idsucursal` INTEGER NOT NULL,
+    `notificacion_aplicada` TINYINT(1) DEFAULT 0 NOT NULL,
+    `idempleado` INTEGER,
+    `notificacion_aplicadaen` DATETIME,
+    PRIMARY KEY (`idnotificacion`),
+    INDEX `idproducto` (`idproducto`),
+    INDEX `idsucursal` (`idsucursal`),
+    INDEX `idusuario` (`idempleado`),
+    CONSTRAINT `notificacion_idproducto`
+        FOREIGN KEY (`idproducto`)
+        REFERENCES `producto` (`idproducto`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `notificacion_idsucursal`
+        FOREIGN KEY (`idsucursal`)
+        REFERENCES `sucursal` (`idsucursal`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `notificacion_idusuario`
+        FOREIGN KEY (`idempleado`)
+        REFERENCES `empleado` (`idempleado`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- pedido
 -- ---------------------------------------------------------------------
 
@@ -603,6 +638,7 @@ CREATE TABLE `producto`
     `producto_reorden` INTEGER NOT NULL,
     `idtipocalzado` INTEGER NOT NULL,
     `producto_descripcion` VARCHAR(500),
+    `producto_costo` INTEGER,
     PRIMARY KEY (`idproducto`),
     INDEX `idmarca` (`idmarca`),
     INDEX `idtemporada` (`idtemporada`),
@@ -663,7 +699,7 @@ DROP TABLE IF EXISTS `productomaterial`;
 
 CREATE TABLE `productomaterial`
 (
-    `idproductomaterial` INTEGER NOT NULL,
+    `idproductomaterial` INTEGER NOT NULL AUTO_INCREMENT,
     `idproducto` INTEGER NOT NULL,
     `idmaterial` INTEGER NOT NULL,
     PRIMARY KEY (`idproductomaterial`),
@@ -675,7 +711,7 @@ CREATE TABLE `productomaterial`
         ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `idproducto_productomaterial`
-        FOREIGN KEY (`idmaterial`)
+        FOREIGN KEY (`idproducto`)
         REFERENCES `producto` (`idproducto`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
@@ -725,6 +761,9 @@ CREATE TABLE `productosucursal`
     `productosucursal_preciomayoreo` DECIMAL(10,5) NOT NULL,
     `productosucursal_estatus` TINYINT(1) DEFAULT 1 NOT NULL,
     `productosucursal_costo` DECIMAL(10,5) NOT NULL,
+    `productosucursal_precioventamayoreonuevo` DECIMAL(10,5),
+    `productosucursal_precioventanuevo` DECIMAL(10,5),
+    `productosucursal_precioaplicado` TINYINT(1),
     PRIMARY KEY (`idproductosucursal`),
     INDEX `idproductovariante` (`idproductovariante`),
     INDEX `idsucursal` (`idsucursal`),
@@ -1152,10 +1191,10 @@ CREATE TABLE `venta`
     `venta_comprobante` TEXT,
     `idsucursal` INTEGER NOT NULL,
     `venta_estatuspago` TINYINT(1) NOT NULL,
-    `venta_tipo` enum('compra','credito','apartado') NOT NULL,
+    `venta_tipo` enum('compra','credito','apartado') DEFAULT 'compra' NOT NULL,
     `venta_subtotal` DECIMAL(15,5) NOT NULL,
     `venta_iva` DECIMAL(15,5) NOT NULL,
-    `venta_estatus` enum('cancelada','completada','') NOT NULL,
+    `venta_estatus` enum('cancelada','completada','') DEFAULT 'completada' NOT NULL,
     `venta_facturacion` TINYINT(1),
     PRIMARY KEY (`idventa`),
     INDEX `idempleadocajero` (`idempleadocajero`),
