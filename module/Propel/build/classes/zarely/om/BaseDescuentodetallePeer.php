@@ -1901,10 +1901,6 @@ abstract class BaseDescuentodetallePeer
             $criteria = $values->buildCriteria(); // build Criteria from Descuentodetalle object
         }
 
-        if ($criteria->containsKey(DescuentodetallePeer::IDDESCUENTODETALLE) && $criteria->keyContainsValue(DescuentodetallePeer::IDDESCUENTODETALLE) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.DescuentodetallePeer::IDDESCUENTODETALLE.')');
-        }
-
 
         // Set the correct dbName
         $criteria->setDbName(DescuentodetallePeer::DATABASE_NAME);

@@ -54,6 +54,12 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
     protected $cuentabancaria_saldo;
 
     /**
+     * The value for the cuentabancaria_propietario field.
+     * @var        string
+     */
+    protected $cuentabancaria_propietario;
+
+    /**
      * @var        PropelObjectCollection|Cuentabancariamovimiento[] Collection to store aggregation of Cuentabancariamovimiento objects.
      */
     protected $collCuentabancariamovimientos;
@@ -127,6 +133,17 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
     {
 
         return $this->cuentabancaria_saldo;
+    }
+
+    /**
+     * Get the [cuentabancaria_propietario] column value.
+     *
+     * @return string
+     */
+    public function getCuentabancariaPropietario()
+    {
+
+        return $this->cuentabancaria_propietario;
     }
 
     /**
@@ -214,6 +231,27 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
     } // setCuentabancariaSaldo()
 
     /**
+     * Set the value of [cuentabancaria_propietario] column.
+     *
+     * @param  string $v new value
+     * @return Cuentabancaria The current object (for fluent API support)
+     */
+    public function setCuentabancariaPropietario($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cuentabancaria_propietario !== $v) {
+            $this->cuentabancaria_propietario = $v;
+            $this->modifiedColumns[] = CuentabancariaPeer::CUENTABANCARIA_PROPIETARIO;
+        }
+
+
+        return $this;
+    } // setCuentabancariaPropietario()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -249,6 +287,7 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
             $this->cuentabancaria_banco = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->cuentabancaria_cuenta = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->cuentabancaria_saldo = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->cuentabancaria_propietario = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -258,7 +297,7 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = CuentabancariaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = CuentabancariaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Cuentabancaria object", $e);
@@ -501,6 +540,9 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
         if ($this->isColumnModified(CuentabancariaPeer::CUENTABANCARIA_SALDO)) {
             $modifiedColumns[':p' . $index++]  = '`cuentabancaria_saldo`';
         }
+        if ($this->isColumnModified(CuentabancariaPeer::CUENTABANCARIA_PROPIETARIO)) {
+            $modifiedColumns[':p' . $index++]  = '`cuentabancaria_propietario`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `cuentabancaria` (%s) VALUES (%s)',
@@ -523,6 +565,9 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
                         break;
                     case '`cuentabancaria_saldo`':
                         $stmt->bindValue($identifier, $this->cuentabancaria_saldo, PDO::PARAM_STR);
+                        break;
+                    case '`cuentabancaria_propietario`':
+                        $stmt->bindValue($identifier, $this->cuentabancaria_propietario, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -678,6 +723,9 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
             case 3:
                 return $this->getCuentabancariaSaldo();
                 break;
+            case 4:
+                return $this->getCuentabancariaPropietario();
+                break;
             default:
                 return null;
                 break;
@@ -711,6 +759,7 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
             $keys[1] => $this->getCuentabancariaBanco(),
             $keys[2] => $this->getCuentabancariaCuenta(),
             $keys[3] => $this->getCuentabancariaSaldo(),
+            $keys[4] => $this->getCuentabancariaPropietario(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -767,6 +816,9 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
             case 3:
                 $this->setCuentabancariaSaldo($value);
                 break;
+            case 4:
+                $this->setCuentabancariaPropietario($value);
+                break;
         } // switch()
     }
 
@@ -795,6 +847,7 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setCuentabancariaBanco($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setCuentabancariaCuenta($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setCuentabancariaSaldo($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCuentabancariaPropietario($arr[$keys[4]]);
     }
 
     /**
@@ -810,6 +863,7 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
         if ($this->isColumnModified(CuentabancariaPeer::CUENTABANCARIA_BANCO)) $criteria->add(CuentabancariaPeer::CUENTABANCARIA_BANCO, $this->cuentabancaria_banco);
         if ($this->isColumnModified(CuentabancariaPeer::CUENTABANCARIA_CUENTA)) $criteria->add(CuentabancariaPeer::CUENTABANCARIA_CUENTA, $this->cuentabancaria_cuenta);
         if ($this->isColumnModified(CuentabancariaPeer::CUENTABANCARIA_SALDO)) $criteria->add(CuentabancariaPeer::CUENTABANCARIA_SALDO, $this->cuentabancaria_saldo);
+        if ($this->isColumnModified(CuentabancariaPeer::CUENTABANCARIA_PROPIETARIO)) $criteria->add(CuentabancariaPeer::CUENTABANCARIA_PROPIETARIO, $this->cuentabancaria_propietario);
 
         return $criteria;
     }
@@ -876,6 +930,7 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
         $copyObj->setCuentabancariaBanco($this->getCuentabancariaBanco());
         $copyObj->setCuentabancariaCuenta($this->getCuentabancariaCuenta());
         $copyObj->setCuentabancariaSaldo($this->getCuentabancariaSaldo());
+        $copyObj->setCuentabancariaPropietario($this->getCuentabancariaPropietario());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1215,6 +1270,7 @@ abstract class BaseCuentabancaria extends BaseObject implements Persistent
         $this->cuentabancaria_banco = null;
         $this->cuentabancaria_cuenta = null;
         $this->cuentabancaria_saldo = null;
+        $this->cuentabancaria_propietario = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

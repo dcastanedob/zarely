@@ -13,12 +13,12 @@ class ClientesForm extends Form
         // we want to ignore the name passed
         parent::__construct('ClientesForm');
         $this->setAttribute('method', 'post');
-        
+
         $this->add(array(
             'name' => 'idcliente',
             'type' => 'Hidden',
         ));
-        
+
         $this->add(array(
             'name' => 'cliente_nombre',
             'type' => 'Text',
@@ -238,10 +238,10 @@ class ClientesForm extends Form
             'name' => 'cliente_tipo',
             'type' => 'Select',
             'options' => array(
-              
+
                 'value_options' => array(
                     'mayorista' => 'Mayorista',
-                    'general' => 'General',
+                  
                 ),
             ),
             'attributes' => array(
@@ -251,13 +251,13 @@ class ClientesForm extends Form
             ),
         ));
 
-     
+
 
         $this->add(array(
             'name' => 'cliente_estatus',
             'type' => 'Select',
             'options' => array(
-              
+
                 'value_options' => array(
                     1 => 'Activo',
                     0 => 'Inactivo',
@@ -276,7 +276,7 @@ class ClientesForm extends Form
             'name' => 'cliente_credito',
             'type' => 'Select',
             'options' => array(
-              
+
                 'value_options' => array(
                     1 => 'Si',
                     0 => 'No',
@@ -290,7 +290,7 @@ class ClientesForm extends Form
             ),
         ));
 
-        
+
 
 
         $this->add(array(
@@ -308,17 +308,17 @@ class ClientesForm extends Form
             'name' => 'idclientes[]',
             'type' => 'Select',
             'options' => array(
-              
-            'value_options' => $clientes_array,   
+
+            'value_options' => $clientes_array,
             ),
             'attributes' => array(
                 'required' => false,
                 'class' => '',
-                
 
-               
+
+
             ),
         ));
-        
+
     }
 }

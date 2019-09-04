@@ -27,17 +27,17 @@ class CuentasController  extends AbstractActionController
         $request = $this->getRequest();
         if($request->isPost()){
             $post_data = $request->getPost();
-           
+
             $query = new \CuentabancariaQuery();
-            
+
 
 
             $records_filtered = $query->count();
-            
+
             //SEARCH
             if(!empty($post_data['search']['value'])){
                 $search_value = $post_data['search']['value'];
-                
+
                 $search_value = str_replace("Ñ", "Ã‘", $search_value);
                 $search_value = str_replace("L'", "L'", $search_value);
                 $search_value = str_replace("Ç", "Ã‡", $search_value);
@@ -65,7 +65,7 @@ class CuentasController  extends AbstractActionController
                     $search_value = str_replace("Í", "Ã", $search_value);
                 }
                 $c = new \Criteria();
-               
+
                 $c1= $c->getNewCriterion('cuentabancaria.idcuentabancaria', '%'.$search_value.'%', \Criteria::LIKE);
                 $c2= $c->getNewCriterion('cuentabancaria.cuentabancaria_banco', '%'.$search_value.'%', \Criteria::LIKE);
 
@@ -73,23 +73,23 @@ class CuentasController  extends AbstractActionController
 
                  $c4= $c->getNewCriterion('cuentabancaria.cuentabancaria_saldo', '%'.$search_value.'%', \Criteria::LIKE);
 
-                 
 
-          
+
+
                 $c1->addOr($c2)->addOr($c3)->addOr($c4);
 
                 $query->addAnd($c1);
                 $query->groupByIdcuentabancaria();
-                
+
                 $records_filtered = $query->count();
-                
+
             }
-            
+
             //LIMIT
             $query->setOffset((int)$post_data['start']);
             $query->setLimit((int)$post_data['length']);
-            
-            
+
+
             //ORDER
             $order_column = $post_data['order'][0]['column'];
             $order_column = $this->column_map[$order_column];
@@ -100,13 +100,13 @@ class CuentasController  extends AbstractActionController
                 $query->orderBy($order_column,  \Criteria::ASC);
             }
 
-            
-            
+
+
             //DAMOS EL FORMATO PARA EL PLUGIN (DATATABLE)
             $data = array();
-            
-           
-            
+
+
+
             foreach ($query->find()->toArray(null,false,  \BasePeer::TYPE_FIELDNAME) as $value){
 
 
@@ -130,7 +130,7 @@ class CuentasController  extends AbstractActionController
                           </div>
                           <div class="media-body">
                             <span class="d-b">Editar</span>
-                           
+
                           </div>
                         </div>
                       </a>
@@ -143,18 +143,18 @@ class CuentasController  extends AbstractActionController
                           </div>
                           <div class="media-body">
                             <span class="d-b">Eliminar</span>
-                       
+
                           </div>
                         </div>
                       </a>
                     </li>
                   </ul>
                 </div></td>';
-                
+
                 $data[] = $tmp;
- 
-            }   
-      
+
+            }
+
             //El arreglo que regresamos
             $json_data = array(
                 'order' => $order_column,
@@ -163,9 +163,9 @@ class CuentasController  extends AbstractActionController
                 "recordsFiltered" => $records_filtered,
                 "data"            => $data
             );
-            
 
-            
+
+
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }
@@ -188,33 +188,33 @@ class CuentasController  extends AbstractActionController
         if($request->isPost())
         {
             $post_data = $request->getPost();
-            
+
 
             $entity = new \Cuentabancaria();
-            
 
-             
+
+
             foreach ($post_data as $key => $value) {
                 if(\CuentabancariaPeer::getTableMap()->hasColumn($key))
                 {
                     $entity->setByName($key,$value,\BasePeer::TYPE_FIELDNAME);
                 }
             }
-            
+
             $entity->save();
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
-           
+
             return $this->redirect()->toUrl('/catalogo/cuentas');
         }
 
-        
+
         $form = new \Application\Catalogo\Form\CuentasbancariasForm( );
         $view_model = new ViewModel();
         $view_model->setTemplate('application/catalogo/cuentas/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
-  
+
         return $view_model;
     }
 
@@ -234,8 +234,9 @@ class CuentasController  extends AbstractActionController
             if($request->isPost())
             {
                 $post_data = $request->getPost();
+
                 
-                
+
                 foreach ($post_data as $key => $value) {
                     if(\CuentabancariaPeer::getTableMap()->hasColumn($key))
                     {
@@ -247,12 +248,12 @@ class CuentasController  extends AbstractActionController
 
                 return $this->redirect()->toUrl('/catalogo/cuentas');
             }
-           
+
             $form = new \Application\Catalogo\Form\CuentasbancariasForm();
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
-            
-            
+
+
             $view_model = new ViewModel();
             $view_model->setTemplate('application/catalogo/cuentas/ver');
 
@@ -265,7 +266,7 @@ class CuentasController  extends AbstractActionController
         }else
         {
             $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/cuentas');   
+            return $this->redirect()->toUrl('/catalogo/cuentas');
         }
     }
 

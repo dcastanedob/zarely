@@ -222,6 +222,7 @@ class EmpleadosController extends AbstractActionController
 
             $post_data['empleado_password'] = md5($post_data['empleado_password']);
 
+
             foreach ($post_data as $key => $value) {
                 if(\EmpleadoPeer::getTableMap()->hasColumn($key))
                 {
@@ -230,6 +231,16 @@ class EmpleadosController extends AbstractActionController
             }
 
             $entity->save();
+            /*$sucursalempleado = new \SucursalEmpleado();
+            $sucursalempleado->setByidempleado($entity->getIdempleado());
+            $sucursalempleado->setByidsucursal($post_data['idsucursal'] );
+            $sucursalempleado->save();*/
+
+            $sucursalempleado = new \Sucursalempleado();
+            $sucursalempleado->setIdsucursal($post_data['idsucursal'] )
+                         ->setIdempleado($entity->getIdempleado())
+                         ->save();
+
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
             return $this->redirect()->toUrl('/catalogo/empleados');
@@ -241,7 +252,18 @@ class EmpleadosController extends AbstractActionController
         foreach ($roles as $value){
             $roles_array[$value->getIdrol()] = $value->getRolNombre();
         }
-        $form = new \Application\Catalogo\Form\EmpleadosForm($roles_array );
+
+        $sucursales = \SucursalQuery::create()->find();
+        $sucursales_array = array();
+        $value = new \Sucursal();
+        foreach ($sucursales as $value){
+            $sucursales_array[$value->getIdSucursal()] = $value->getSucursalNombreComercial();
+        }
+
+
+
+        $form = new \Application\Catalogo\Form\EmpleadosForm($roles_array,$sucursales_array );
+        //$form = new \Application\Catalogo\Form\EmpleadosForm($sucursales_array );
         $view_model = new ViewModel();
         $view_model->setTemplate('application/catalogo/empleados/nuevo');
         $view_model->setVariables(array(
@@ -267,7 +289,7 @@ class EmpleadosController extends AbstractActionController
             if($request->isPost())
             {
               $post_data = $request->getPost();
-              
+
                 $post_data['empleado_fechaentrada'] = date_create_from_format('Y-m-d', $post_data['empleado_fechaentrada']);
                 $post_data['empleado_fechanacimiento'] = date_create_from_format('Y-m-d', $post_data['empleado_fechanacimiento']);
 
@@ -290,10 +312,25 @@ class EmpleadosController extends AbstractActionController
             foreach ($roles as $value){
                 $roles_array[$value->getIdrol()] = $value->getRolNombre();
             }
+
+            /*$sucursales = \SucursalQuery::create()->find();
+            $sucursales_array = array();
+            $value = new \Sucursal();
+            foreach ($sucursales as $value){
+                $sucursales_array[$value->getIdSucursal()] = $value->getSucursalNombreComercial();
+            }*/
+
+            $sucursalempleado  = \SucursalempleadoQuery::create()->filterByIdempleado($id)->findone()->getSucursal()->getSucursalNombreComercial();
+
+            //var_dump($sucursalempleado);
+            //exit();
+          //  $sucursalasignada = $sucursalempleado->filterByIdempleado($id)->find()->getSucursal()->getSucursalNombreComercial();
+
             $form = new \Application\Catalogo\Form\EmpleadosForm($roles_array );
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
             $form->get('empleado_fechaentrada')->setValue($entity->getEmpleadoFechaentrada('Y-m-d'));
+            $form->get('sucursal')->setValue($sucursalempleado);
             $form->get('empleado_fechanacimiento')->setValue($entity->getEmpleadoFechanacimiento('Y-m-d'));
 
             $view_model = new ViewModel();

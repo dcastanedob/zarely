@@ -42,6 +42,7 @@ class CuentabancariaTableMap extends TableMap
         $this->addColumn('cuentabancaria_banco', 'CuentabancariaBanco', 'VARCHAR', true, 255, null);
         $this->addColumn('cuentabancaria_cuenta', 'CuentabancariaCuenta', 'VARCHAR', true, 45, null);
         $this->addColumn('cuentabancaria_saldo', 'CuentabancariaSaldo', 'DECIMAL', true, 15, null);
+        $this->addColumn('cuentabancaria_propietario', 'CuentabancariaPropietario', 'VARCHAR', false, 250, null);
         // validators
     } // initialize()
 

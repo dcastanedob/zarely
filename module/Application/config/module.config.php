@@ -63,6 +63,17 @@ return array(
                 ),
             ),
 
+            'clientesgenerales' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/catalogo/clientesgenerales[/:action][/:id]',
+                    'defaults' => array(
+                        'controller' => 'Application\Catalogo\Controller\clientesgenerales',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
             'cuentas' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -138,7 +149,7 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
-            ),  
+            ),
 
             'marcas' => array(
                 'type' => 'Segment',
@@ -646,7 +657,7 @@ return array(
             ),
         ),
     ),
-    
+
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
@@ -658,6 +669,7 @@ return array(
             'Application\Catalogo\Controller\Gastos' => 'Application\Catalogo\Controller\GastosController',
             'Application\Catalogo\Controller\Empleados' => 'Application\Catalogo\Controller\EmpleadosController',
             'Application\Catalogo\Controller\Clientes' => 'Application\Catalogo\Controller\ClientesController',
+            'Application\Catalogo\Controller\clientesGenerales' => 'Application\Catalogo\Controller\ClientesGeneralesController',
             'Application\Catalogo\Controller\Cuentas' => 'Application\Catalogo\Controller\CuentasController',
             'Application\Catalogo\Controller\Sucursales' => 'Application\Catalogo\Controller\SucursalesController',
             'Application\Catalogo\Controller\Tallajes' => 'Application\Catalogo\Controller\TallajesController',

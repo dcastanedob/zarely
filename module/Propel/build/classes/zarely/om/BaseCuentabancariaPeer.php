@@ -24,13 +24,13 @@ abstract class BaseCuentabancariaPeer
     const TM_CLASS = 'CuentabancariaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the idcuentabancaria field */
     const IDCUENTABANCARIA = 'cuentabancaria.idcuentabancaria';
@@ -43,6 +43,9 @@ abstract class BaseCuentabancariaPeer
 
     /** the column name for the cuentabancaria_saldo field */
     const CUENTABANCARIA_SALDO = 'cuentabancaria.cuentabancaria_saldo';
+
+    /** the column name for the cuentabancaria_propietario field */
+    const CUENTABANCARIA_PROPIETARIO = 'cuentabancaria.cuentabancaria_propietario';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -63,12 +66,12 @@ abstract class BaseCuentabancariaPeer
      * e.g. CuentabancariaPeer::$fieldNames[CuentabancariaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcuentabancaria', 'CuentabancariaBanco', 'CuentabancariaCuenta', 'CuentabancariaSaldo', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancaria', 'cuentabancariaBanco', 'cuentabancariaCuenta', 'cuentabancariaSaldo', ),
-        BasePeer::TYPE_COLNAME => array (CuentabancariaPeer::IDCUENTABANCARIA, CuentabancariaPeer::CUENTABANCARIA_BANCO, CuentabancariaPeer::CUENTABANCARIA_CUENTA, CuentabancariaPeer::CUENTABANCARIA_SALDO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIA', 'CUENTABANCARIA_BANCO', 'CUENTABANCARIA_CUENTA', 'CUENTABANCARIA_SALDO', ),
-        BasePeer::TYPE_FIELDNAME => array ('idcuentabancaria', 'cuentabancaria_banco', 'cuentabancaria_cuenta', 'cuentabancaria_saldo', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Idcuentabancaria', 'CuentabancariaBanco', 'CuentabancariaCuenta', 'CuentabancariaSaldo', 'CuentabancariaPropietario', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancaria', 'cuentabancariaBanco', 'cuentabancariaCuenta', 'cuentabancariaSaldo', 'cuentabancariaPropietario', ),
+        BasePeer::TYPE_COLNAME => array (CuentabancariaPeer::IDCUENTABANCARIA, CuentabancariaPeer::CUENTABANCARIA_BANCO, CuentabancariaPeer::CUENTABANCARIA_CUENTA, CuentabancariaPeer::CUENTABANCARIA_SALDO, CuentabancariaPeer::CUENTABANCARIA_PROPIETARIO, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIA', 'CUENTABANCARIA_BANCO', 'CUENTABANCARIA_CUENTA', 'CUENTABANCARIA_SALDO', 'CUENTABANCARIA_PROPIETARIO', ),
+        BasePeer::TYPE_FIELDNAME => array ('idcuentabancaria', 'cuentabancaria_banco', 'cuentabancaria_cuenta', 'cuentabancaria_saldo', 'cuentabancaria_propietario', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -78,12 +81,12 @@ abstract class BaseCuentabancariaPeer
      * e.g. CuentabancariaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Idcuentabancaria' => 0, 'CuentabancariaBanco' => 1, 'CuentabancariaCuenta' => 2, 'CuentabancariaSaldo' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancaria' => 0, 'cuentabancariaBanco' => 1, 'cuentabancariaCuenta' => 2, 'cuentabancariaSaldo' => 3, ),
-        BasePeer::TYPE_COLNAME => array (CuentabancariaPeer::IDCUENTABANCARIA => 0, CuentabancariaPeer::CUENTABANCARIA_BANCO => 1, CuentabancariaPeer::CUENTABANCARIA_CUENTA => 2, CuentabancariaPeer::CUENTABANCARIA_SALDO => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIA' => 0, 'CUENTABANCARIA_BANCO' => 1, 'CUENTABANCARIA_CUENTA' => 2, 'CUENTABANCARIA_SALDO' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('idcuentabancaria' => 0, 'cuentabancaria_banco' => 1, 'cuentabancaria_cuenta' => 2, 'cuentabancaria_saldo' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Idcuentabancaria' => 0, 'CuentabancariaBanco' => 1, 'CuentabancariaCuenta' => 2, 'CuentabancariaSaldo' => 3, 'CuentabancariaPropietario' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idcuentabancaria' => 0, 'cuentabancariaBanco' => 1, 'cuentabancariaCuenta' => 2, 'cuentabancariaSaldo' => 3, 'cuentabancariaPropietario' => 4, ),
+        BasePeer::TYPE_COLNAME => array (CuentabancariaPeer::IDCUENTABANCARIA => 0, CuentabancariaPeer::CUENTABANCARIA_BANCO => 1, CuentabancariaPeer::CUENTABANCARIA_CUENTA => 2, CuentabancariaPeer::CUENTABANCARIA_SALDO => 3, CuentabancariaPeer::CUENTABANCARIA_PROPIETARIO => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('IDCUENTABANCARIA' => 0, 'CUENTABANCARIA_BANCO' => 1, 'CUENTABANCARIA_CUENTA' => 2, 'CUENTABANCARIA_SALDO' => 3, 'CUENTABANCARIA_PROPIETARIO' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('idcuentabancaria' => 0, 'cuentabancaria_banco' => 1, 'cuentabancaria_cuenta' => 2, 'cuentabancaria_saldo' => 3, 'cuentabancaria_propietario' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -161,11 +164,13 @@ abstract class BaseCuentabancariaPeer
             $criteria->addSelectColumn(CuentabancariaPeer::CUENTABANCARIA_BANCO);
             $criteria->addSelectColumn(CuentabancariaPeer::CUENTABANCARIA_CUENTA);
             $criteria->addSelectColumn(CuentabancariaPeer::CUENTABANCARIA_SALDO);
+            $criteria->addSelectColumn(CuentabancariaPeer::CUENTABANCARIA_PROPIETARIO);
         } else {
             $criteria->addSelectColumn($alias . '.idcuentabancaria');
             $criteria->addSelectColumn($alias . '.cuentabancaria_banco');
             $criteria->addSelectColumn($alias . '.cuentabancaria_cuenta');
             $criteria->addSelectColumn($alias . '.cuentabancaria_saldo');
+            $criteria->addSelectColumn($alias . '.cuentabancaria_propietario');
         }
     }
 

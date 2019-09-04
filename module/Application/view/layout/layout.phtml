@@ -122,7 +122,7 @@
                       <span class="sidenav-icon icon icon-cog"></span>
                       <span class="sidenav-label">Configuraciones</span>
                     </a>
-                    
+
 
                   </li>
 
@@ -134,10 +134,11 @@
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Catálogos</li>
                       <li><a href="/catalogo/empleados" ><span class="icon icon-user" ></span>Empleados</a></li>
-                      <li><a href="/catalogo/clientes" >Clientes</a></li>
+                      <li><a href="/catalogo/clientes" >Clientes Mayoreo</a></li>
+                      <li><a href="/catalogo/clientesgenerales" >Clientes Generales</a></li>
                       <li><a href="/catalogo/proveedores" >Proveedores</a></li>
                       <li><a href="/catalogo/cuentas" >Cuenta bancaria</a></li>
-                      <li><a href="/catalogo/sucursales" >Sucursales</a></li>  
+                      <li><a href="/catalogo/sucursales" >Sucursales</a></li>
                       <li><a href="/catalogo/productos" >Productos</a></li>
                       <li><a href="/catalogo/descuentos" >Descuentos</a></li>
                       <li><a href="/catalogo/promociones" >Promociones</a></li>
@@ -162,11 +163,11 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Inventario</li>
-                      
+
                       <li><a href="/producto/existencias">Existencia</a></li>
                       <li><a href="/producto/reordenes">Reorden</a></li>
-                      <li><a href="/producto/precios">Precios</a></li>   
-                      <li><a href="/producto/enreorden">Productos en reorden</a></li>     
+                      <li><a href="/producto/precios">Precios</a></li>
+                      <li><a href="/producto/enreorden">Productos en reorden</a></li>
                     </ul>
 
                   </li>
@@ -181,8 +182,8 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Codigo de barras</li>
-                      
-                      <li><a href="/producto/codigodebarras">Código de barras</a></li>   
+
+                      <li><a href="/producto/codigodebarras">Código de barras</a></li>
                     </ul>
 
                   </li>
@@ -206,10 +207,10 @@
 
                       <li><a href="/pedidos/solicitados">Solicitados por sucursal</a></li>
                       <li><a href="/pedidos/solicitados-producto">Solicitados por producto</a></li>
-                      
+
                       <li><a href="/pedidos/transitos">Tránsito por sucursal</a></li>
                       <li><a href="/pedidos/transitos-producto">Tránsito por producto</a></li>
-                          
+
                     </ul>
 
                   </li>
@@ -238,8 +239,8 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Compras</li>
-                      
-                      <li><a href="/compras/generales">Generales</a></li>   
+
+                      <li><a href="/compras/generales">Generales</a></li>
                     </ul>
 
                   </li>
@@ -254,8 +255,8 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Devoluciones</li>
-                      
-                      <li><a href="/devoluciones/generales">Generales</a></li>   
+
+                      <li><a href="/devoluciones/generales">Generales</a></li>
                     </ul>
 
                   </li>
@@ -270,9 +271,9 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Flujo de efectivo</li>
-                      
-                      <li><a href="/flujo-efectivo/porpagar">Cuentas por pagar</a></li>   
-                      <li><a href="/flujo-efectivo/porcobrar">Cuentas por cobrar</a></li> 
+
+                      <li><a href="/flujo-efectivo/porpagar">Cuentas por pagar</a></li>
+                      <li><a href="/flujo-efectivo/porcobrar">Cuentas por cobrar</a></li>
                     </ul>
 
                   </li>
@@ -287,8 +288,8 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Transferencias</li>
-                      
-                      <li><a href="/transferencias">Transferencia</a></li>   
+
+                      <li><a href="/transferencias">Transferencia</a></li>
                     </ul>
 
                   </li>
@@ -303,12 +304,12 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Punto de venta</li>
-                      
-                      <li><a href="/puntodeventa">Punto de venta</a></li>   
+
+                      <li><a href="/puntodeventa">Punto de venta</a></li>
                     </ul>
                   </li>
                 <?php }?>
-                
+
 
                 <?php if( $session['idrol'] == 6){?>
 
@@ -319,15 +320,15 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Reportes</li>
-                      
-                      <li><a href="/reporte/masvendidos">Productos más vendidos</a></li>  
-                      <li><a href="/reporte/variantes-mas-vendidas">Variantes más vendidas</a></li>     
 
-                      <li><a href="/reporte/mascreditos">Productos con más créditos</a></li>     
-                      <li><a href="/reporte/masapartados">Productos con más apartados</a></li>  
-                      <li><a href="/reporte/ventas">De ventas</a></li>     
-                      <li><a href="/reporte/por-pagar">Cuentas por pagar</a></li>     
-                      <li><a href="/reporte/bajas-existencias">Bajas existencias</a></li>     
+                      <li><a href="/reporte/masvendidos">Productos más vendidos</a></li>
+                      <li><a href="/reporte/variantes-mas-vendidas">Variantes más vendidas</a></li>
+
+                      <li><a href="/reporte/mascreditos">Productos con más créditos</a></li>
+                      <li><a href="/reporte/masapartados">Productos con más apartados</a></li>
+                      <li><a href="/reporte/ventas">De ventas</a></li>
+                      <li><a href="/reporte/por-pagar">Cuentas por pagar</a></li>
+                      <li><a href="/reporte/bajas-existencias">Bajas existencias</a></li>
                     </ul>
 
                   </li>
@@ -345,7 +346,7 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Reportes</li>
-                      
+
                       <li>
                         <a href="/">Proveedores</a>
                         <ul>
@@ -355,15 +356,15 @@
 
                           <li>
                             <a href="/reporte-administracion/modelos-mas-vendidos">Modelos más vendidos</a>
-                          </li>     
+                          </li>
 
                           <li>
                             <a href="/reporte-administracion/linea-mas-vendida">
                               Líneas más vendidas
                             </a>
-                          </li> 
+                          </li>
                         </ul>
-                      </li>  
+                      </li>
 
 
                       <li>
@@ -385,9 +386,9 @@
                             <a href="/reporte-administracion/pedidos-solicitados-proveedor">
                               Pedidos solicitados
                             </a>
-                          </li> 
+                          </li>
                         </ul>
-                      </li> 
+                      </li>
 
 
                       <li>
@@ -399,7 +400,7 @@
 
                           <li>
                             <a href="/reporte-administracion-comparacion/articulos">Comparativo de articulos vendidos</a>
-                          </li>     
+                          </li>
 
                         </ul>
                       </li>
@@ -413,15 +414,15 @@
 
                           <li>
                             <a href="/reporte-administracion-remision/entregadas">Remisiones entregadas</a>
-                          </li>  
+                          </li>
 
                           <li>
                             <a href="/reporte-administracion-remision/pagadas-proveedor">Remisiones pagadas a proveedores</a>
-                          </li>   
+                          </li>
 
                           <li>
                             <a href="/reporte-administracion-remision/pagadas-cliente">Remisiones pagadas a clientes</a>
-                          </li>  
+                          </li>
 
                         </ul>
                       </li>
@@ -436,43 +437,43 @@
 
                           <li>
                             <a href="/reporte-bodega/mas-vendidos">Artículos más vendidos</a>
-                          </li>  
+                          </li>
 
                           <li>
                             <a href="/reporte-bodega/pendientes-proveedor">Pedidos pendientes a proveedores</a>
-                          </li>   
+                          </li>
 
                           <li>
                             <a href="/reporte-bodega/pendientes-sucursal">Pedidos pendientes de sucursal</a>
-                          </li>  
+                          </li>
 
                           <li>
                             <a href="/reporte-bodega/ventas-sucursal">Ventas entre sucursales</a>
-                          </li>  
+                          </li>
 
                           <li>
                             <a href="/reporte-bodega/mas-vendidos-sucursal">Modelos más vendidos entre sucursales</a>
-                          </li>  
+                          </li>
 
                           <li>
                             <a href="/reporte-bodega/modelos-mas-vendidos-sucursal">Productos más vendidos entre sucursales</a>
-                          </li> 
+                          </li>
 
                           <li>
                             <a href="/reporte-bodega/ventas-vendedor">Ventas por vendedor</a>
-                          </li> 
+                          </li>
 
                           <li>
                             <a href="/reporte-bodega/medidas-mas-vendidas">Medidas más vendidas</a>
-                          </li> 
+                          </li>
 
                           <li>
                             <a href="/reporte-bodega/ventas-dia">Ventas por día</a>
-                          </li> 
+                          </li>
 
                           <li>
                             <a href="/reporte-bodega/ventas-hora">Ventas por hora</a>
-                          </li> 
+                          </li>
 
                         </ul>
                       </li>
@@ -492,12 +493,12 @@
 
 
 
-                      
-
-                      
 
 
-                      
+
+
+
+
                     </ul>
 
                   </li>
@@ -506,7 +507,7 @@
 
 
 
-                
+
 
                 <?php if($session['idrol'] == 5 || $session['idrol'] == 6){?>
 
@@ -517,16 +518,16 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Inventarios</li>
-                      
+
                       <li><a href="/producto/existencias-sucursal">Existencia</a></li>
                       <li><a href="/producto/reordenes-sucursal">Reorden</a></li>
-                      <li><a href="/producto/precios-sucursal">Precios</a></li>   
-                      <li><a href="/producto/enreorden-sucursal">Productos en reorden</a></li>     
+                      <li><a href="/producto/precios-sucursal">Precios</a></li>
+                      <li><a href="/producto/enreorden-sucursal">Productos en reorden</a></li>
                     </ul>
 
                   </li>
                 <?php }?>
-                
+
 
                 <?php if($session['idrol'] == 4  || $session['idrol'] == 6){?>
 
@@ -537,13 +538,13 @@
                     </a>
                     <ul class="sidenav-subnav collapse" aria-expanded="false">
                       <li class="sidenav-subheading">Transferencias </li>
-                      
-                      <li><a href="/transferencias-sucursal">Transferencia</a></li>   
+
+                      <li><a href="/transferencias-sucursal">Transferencia</a></li>
                     </ul>
 
                   </li>
                 <?php }?>
-                
+
 
 
             </ul>
@@ -555,10 +556,10 @@
           <?php echo $this->content?>
         </div>
       </div>
-      <!-- 
+      <!--
       <div class="layout-footer">
         <div class="layout-footer-body">
-          
+
         </div>
       </div>
         -->
@@ -570,9 +571,9 @@
         <br>
 
     </div>
-    
+
   </body>
     <script src="/js/application.min.js"></script>
-    
+
 
 </html>

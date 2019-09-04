@@ -13,7 +13,7 @@
 
 						 <div class="panel-body">
 		          			<div class="col-xs-5">
-		      	       			
+
 		      	        		<div class="form-group">
 					           		<label  for="Nombre">Nombre</label>
 					                <?php echo $this->formText($form->get('empleado_nombre')) ?>
@@ -24,7 +24,7 @@
 					                <?php echo $this->formText($form->get('empleado_amaterno')) ?>
 				        		</div>
 
-				        		
+
 
 				        		<div class="form-group">
 					           		<label  for="CURP">CURP</label>
@@ -41,7 +41,7 @@
 					                <?php echo $this->formText($form->get('empleado_email')) ?>
 				        		</div>
 
-				        		
+
 
 
 		      	        	</div>
@@ -71,7 +71,7 @@
 					                <?php echo $this->formPassword($form->get('empleado_password')) ?>
 				        		</div>
 
-				        		
+
 		      	        	</div>
 						</div>
 					</div>
@@ -82,7 +82,7 @@
 
 						 <div class="panel-body">
 		          			<div class="col-xs-5">
-		      	       			
+
 		      	        		<div class="form-group">
 					           		<label  for="Estado">Estado</label>
 					                <?php echo $this->formText($form->get('empleado_estado')) ?>
@@ -147,7 +147,12 @@
 					           		<label  for="Comision">Comision</label>
 					                <?php echo $this->formSelect($form->get('empleado_comision')) ?>
 				        		</div>
-		      	        		
+										<div class="form-group">
+												<label  for="Sucursal">Sucursal Asignada</label>
+													<?php
+													echo $this->formSelect($form->get('idsucursal')) 
+													?>
+										</div>
 
 		      	        	</div>
 
@@ -175,15 +180,15 @@
 						</div>
 					</div>
 
-					
 
-		     
+
+
 
 		        	<div class="form-group">
 		           		<label  for="guardar"></label>
 		                <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="23">Guardar</button>
 	        		</div>
- 
+
     			</form>
     		</div>
     	</div>

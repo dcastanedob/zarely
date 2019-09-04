@@ -10,11 +10,13 @@
  * @method CuentabancariaQuery orderByCuentabancariaBanco($order = Criteria::ASC) Order by the cuentabancaria_banco column
  * @method CuentabancariaQuery orderByCuentabancariaCuenta($order = Criteria::ASC) Order by the cuentabancaria_cuenta column
  * @method CuentabancariaQuery orderByCuentabancariaSaldo($order = Criteria::ASC) Order by the cuentabancaria_saldo column
+ * @method CuentabancariaQuery orderByCuentabancariaPropietario($order = Criteria::ASC) Order by the cuentabancaria_propietario column
  *
  * @method CuentabancariaQuery groupByIdcuentabancaria() Group by the idcuentabancaria column
  * @method CuentabancariaQuery groupByCuentabancariaBanco() Group by the cuentabancaria_banco column
  * @method CuentabancariaQuery groupByCuentabancariaCuenta() Group by the cuentabancaria_cuenta column
  * @method CuentabancariaQuery groupByCuentabancariaSaldo() Group by the cuentabancaria_saldo column
+ * @method CuentabancariaQuery groupByCuentabancariaPropietario() Group by the cuentabancaria_propietario column
  *
  * @method CuentabancariaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method CuentabancariaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -30,11 +32,13 @@
  * @method Cuentabancaria findOneByCuentabancariaBanco(string $cuentabancaria_banco) Return the first Cuentabancaria filtered by the cuentabancaria_banco column
  * @method Cuentabancaria findOneByCuentabancariaCuenta(string $cuentabancaria_cuenta) Return the first Cuentabancaria filtered by the cuentabancaria_cuenta column
  * @method Cuentabancaria findOneByCuentabancariaSaldo(string $cuentabancaria_saldo) Return the first Cuentabancaria filtered by the cuentabancaria_saldo column
+ * @method Cuentabancaria findOneByCuentabancariaPropietario(string $cuentabancaria_propietario) Return the first Cuentabancaria filtered by the cuentabancaria_propietario column
  *
  * @method array findByIdcuentabancaria(int $idcuentabancaria) Return Cuentabancaria objects filtered by the idcuentabancaria column
  * @method array findByCuentabancariaBanco(string $cuentabancaria_banco) Return Cuentabancaria objects filtered by the cuentabancaria_banco column
  * @method array findByCuentabancariaCuenta(string $cuentabancaria_cuenta) Return Cuentabancaria objects filtered by the cuentabancaria_cuenta column
  * @method array findByCuentabancariaSaldo(string $cuentabancaria_saldo) Return Cuentabancaria objects filtered by the cuentabancaria_saldo column
+ * @method array findByCuentabancariaPropietario(string $cuentabancaria_propietario) Return Cuentabancaria objects filtered by the cuentabancaria_propietario column
  *
  * @package    propel.generator.zarely.om
  */
@@ -142,7 +146,7 @@ abstract class BaseCuentabancariaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `idcuentabancaria`, `cuentabancaria_banco`, `cuentabancaria_cuenta`, `cuentabancaria_saldo` FROM `cuentabancaria` WHERE `idcuentabancaria` = :p0';
+        $sql = 'SELECT `idcuentabancaria`, `cuentabancaria_banco`, `cuentabancaria_cuenta`, `cuentabancaria_saldo`, `cuentabancaria_propietario` FROM `cuentabancaria` WHERE `idcuentabancaria` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -371,6 +375,35 @@ abstract class BaseCuentabancariaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CuentabancariaPeer::CUENTABANCARIA_SALDO, $cuentabancariaSaldo, $comparison);
+    }
+
+    /**
+     * Filter the query on the cuentabancaria_propietario column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCuentabancariaPropietario('fooValue');   // WHERE cuentabancaria_propietario = 'fooValue'
+     * $query->filterByCuentabancariaPropietario('%fooValue%'); // WHERE cuentabancaria_propietario LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $cuentabancariaPropietario The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CuentabancariaQuery The current query, for fluid interface
+     */
+    public function filterByCuentabancariaPropietario($cuentabancariaPropietario = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($cuentabancariaPropietario)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $cuentabancariaPropietario)) {
+                $cuentabancariaPropietario = str_replace('*', '%', $cuentabancariaPropietario);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CuentabancariaPeer::CUENTABANCARIA_PROPIETARIO, $cuentabancariaPropietario, $comparison);
     }
 
     /**

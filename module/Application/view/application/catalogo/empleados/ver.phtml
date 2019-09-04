@@ -6,7 +6,7 @@
         <div class="col-md-offset-1 col-md-10">
     		<div class="demo-form-wrapper">
     			<form class="form form-horizontal" action="/catalogo/empleados/ver/<?php echo $entity->getIdempleado()?>" method="POST">
-    				
+
 
 
     				<div class="panel panel-info">
@@ -14,7 +14,7 @@
 
 						 <div class="panel-body">
 		          			<div class="col-xs-5">
-		      	       			
+
 		      	        		<div class="form-group">
 					           		<label  for="Nombre">Nombre</label>
 					                <?php echo $this->formText($form->get('empleado_nombre')) ?>
@@ -25,7 +25,7 @@
 					                <?php echo $this->formText($form->get('empleado_amaterno')) ?>
 				        		</div>
 
-				        		
+
 
 				        		<div class="form-group">
 					           		<label  for="CURP">CURP</label>
@@ -42,7 +42,7 @@
 					                <?php echo $this->formText($form->get('empleado_email')) ?>
 				        		</div>
 
-				        		
+
 
 
 		      	        	</div>
@@ -72,7 +72,7 @@
 					                <?php echo $this->formPassword($form->get('empleado_password')) ?>
 				        		</div>
 
-				        		
+
 		      	        	</div>
 						</div>
 					</div>
@@ -83,7 +83,7 @@
 
 						 <div class="panel-body">
 		          			<div class="col-xs-5">
-		      	       			
+
 		      	        		<div class="form-group">
 					           		<label  for="Estado">Estado</label>
 					                <?php echo $this->formText($form->get('empleado_estado')) ?>
@@ -148,8 +148,11 @@
 					           		<label  for="Comision">Comision</label>
 					                <?php echo $this->formSelect($form->get('empleado_comision')) ?>
 				        		</div>
-		      	        		
 
+										<div class="form-group">
+					           		<label  for="Fecha de entrada">Sucursal Asignada</label>
+					                <?php echo $this->formText($form->get('sucursal')) ?>
+				        		</div>
 		      	        	</div>
 
 		      	        	<div class="col-xs-1"></div>
@@ -172,19 +175,21 @@
 					           		<label  for="Fecha de entrada">Fecha de entrada</label>
 					                <?php echo $this->formDate($form->get('empleado_fechaentrada')) ?>
 				        		</div>
+
+
 		      	        	</div>
 						</div>
 					</div>
 
-					
 
-		     
+
+
 
 		        	<div class="form-group">
 		           		<label  for="guardar"></label>
 		                <button class="btn btn-primary btn-block btn-next" type="submit" tabindex="23">Guardar</button>
 	        		</div>
- 
+
     			</form>
     		</div>
     	</div>

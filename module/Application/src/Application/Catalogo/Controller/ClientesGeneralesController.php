@@ -12,7 +12,7 @@ namespace Application\Catalogo\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class ClientesController extends AbstractActionController
+class ClientesGeneralesController extends AbstractActionController
 {
 
     public $column_map = array(
@@ -90,8 +90,7 @@ class ClientesController extends AbstractActionController
             //LIMIT
             $query->setOffset((int)$post_data['start']);
             $query->setLimit((int)$post_data['length']);
-            $query->filterbyclientetipo('mayorista');
-
+            $query->filterbyclientetipo('general');
 
             //ORDER
             $order_column = $post_data['order'][0]['column'];
@@ -133,7 +132,7 @@ class ClientesController extends AbstractActionController
                       </button>
                       <ul class="dropdown-menu">
                         <li>
-                          <a href="/catalogo/clientes/ver/' . $value['idcliente'] . '">
+                          <a href="/catalogo/clientesgenerales/ver/' . $value['idcliente'] . '">
                             <div class="media">
                               <div class="media-left">
                                 <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -147,7 +146,7 @@ class ClientesController extends AbstractActionController
                         </li>
 
                         <li>
-                          <a href="/catalogo/clientes/credito/' . $value['idcliente'] . '">
+                          <a href="/catalogo/clientesgenerales/credito/' . $value['idcliente'] . '">
                             <div class="media">
                               <div class="media-left">
                                 <span class="icon icon-usd icon-lg icon-fw"></span>
@@ -186,7 +185,7 @@ class ClientesController extends AbstractActionController
                       </button>
                       <ul class="dropdown-menu">
                         <li>
-                          <a href="/catalogo/clientes/ver/' . $value['idcliente'] . '">
+                          <a href="/catalogo/clientesgenerales/ver/' . $value['idcliente'] . '">
                             <div class="media">
                               <div class="media-left">
                                 <span class="icon icon-edit icon-lg icon-fw"></span>
@@ -243,7 +242,7 @@ class ClientesController extends AbstractActionController
     {
         $view_model = new ViewModel();
 
-        $view_model->setTemplate('application/catalogo/clientes/index');
+        $view_model->setTemplate('application/catalogo/clientesgenerales/index');
         $view_model->setVariables(array(
             'messages' =>$this->flashMessenger()
         ));
@@ -283,7 +282,7 @@ class ClientesController extends AbstractActionController
 
             $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-            return $this->redirect()->toUrl('/catalogo/clientes');
+            return $this->redirect()->toUrl('/catalogo/clientesgenerales');
         }
 
         //traer los clientes
@@ -294,9 +293,9 @@ class ClientesController extends AbstractActionController
             $clientes_array[$value->getIdcliente()] = $value->getClienteNombre() . " " . $value->getClienteApaterno() . " " . $value->getClienteAmaterno();
         }
 
-        $form = new \Application\Catalogo\Form\ClientesForm( $clientes_array);
+        $form = new \Application\Catalogo\Form\ClientesGeneralesForm( $clientes_array);
         $view_model = new ViewModel();
-        $view_model->setTemplate('application/catalogo/clientes/nuevo');
+        $view_model->setTemplate('application/catalogo/clientesgenerales/nuevo');
         $view_model->setVariables(array(
             'form' => $form
         ));
@@ -343,7 +342,7 @@ class ClientesController extends AbstractActionController
 
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-                return $this->redirect()->toUrl('/catalogo/clientes');
+                return $this->redirect()->toUrl('/catalogo/clientesgenerales');
             }
 
             //traer los clientes
@@ -359,14 +358,14 @@ class ClientesController extends AbstractActionController
             }
 
 
-            $form = new \Application\Catalogo\Form\ClientesForm($clientes_array);
+            $form = new \Application\Catalogo\Form\clientesgeneralesForm($clientes_array);
 
             $form->setData($entity->toArray(\BasePeer::TYPE_FIELDNAME));
             $form->get('cliente_fecharegistro')->setValue($entity->getClienteFecharegistro('d/m/Y'));
 
 
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/catalogo/clientes/ver');
+            $view_model->setTemplate('application/catalogo/clientesgenerales/ver');
 
             $view_model->setVariables(array(
                 'form' => $form,
@@ -377,7 +376,7 @@ class ClientesController extends AbstractActionController
         }else
         {
             $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/clientes');
+            return $this->redirect()->toUrl('/catalogo/clientesgenerales');
         }
     }
 
@@ -397,7 +396,7 @@ class ClientesController extends AbstractActionController
             }
         }
 
-        return $this->redirect()->toUrl('/catalogo/clientes');
+        return $this->redirect()->toUrl('/catalogo/clientesgenerales');
     }
 
 
@@ -423,7 +422,7 @@ class ClientesController extends AbstractActionController
                 $entity->save();
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
 
-                return $this->redirect()->toUrl('/catalogo/clientes');
+                return $this->redirect()->toUrl('/catalogo/clientesgenerales');
             }
 
             $form = new \Application\Catalogo\Form\CreditoForm();
@@ -432,7 +431,7 @@ class ClientesController extends AbstractActionController
 
 
             $view_model = new ViewModel();
-            $view_model->setTemplate('application/catalogo/clientes/credito');
+            $view_model->setTemplate('application/catalogo/clientesgenerales/credito');
 
             $view_model->setVariables(array(
                 'form' => $form,
@@ -443,7 +442,7 @@ class ClientesController extends AbstractActionController
         }else
         {
             $this->flashMessenger()->addErrorMessage('Id inválido');
-            return $this->redirect()->toUrl('/catalogo/clientes');
+            return $this->redirect()->toUrl('/catalogo/clientesgenerales');
         }
     }
 

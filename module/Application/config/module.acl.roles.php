@@ -16,7 +16,7 @@ return array(
         'transferencias',
         'json',
 
-        
+
     ),
     'Vendedora' => array(
         //login
@@ -38,7 +38,7 @@ return array(
         'existencias',
         'reordenes'
 
-        
+
     ),
     'Secretaria B' => array(
         //login
@@ -48,7 +48,7 @@ return array(
         'login/select',
         'login',
 
-        
+
         //pedidos
         'mayoristas',
         'pendientes',
@@ -71,7 +71,7 @@ return array(
 
         //flujo efectivo
         'porpagar',
-        'porcobrar',   
+        'porcobrar',
 
         //compras
         'comprasgenerales',
@@ -83,7 +83,7 @@ return array(
         'precios',
         'reordenes',
         'existencias',
-        'enreorden',    
+        'enreorden',
     ),
     'Secretaria A' => array(
         //login
@@ -104,7 +104,7 @@ return array(
         'comprasgenerales',
 
          //devoluciones
-        'devolucionesgenerales', 
+        'devolucionesgenerales',
 
         'codigodebarras',
 
@@ -127,8 +127,8 @@ return array(
         'precios',
         'reordenes',
         'existencias',
-        'enreorden',    
-        
+        'enreorden',
+
     ),
 
     'Administrador' => array(
@@ -142,6 +142,7 @@ return array(
         //catalogos
         'empleados',
         'clientes',
+        'clientesgenerales',
         'proveedores',
         'cuentas',
         'temporadas',
@@ -171,16 +172,16 @@ return array(
         'completados',
         'completadosproducto',
         'mayoristas-sucursal',
-        
+
         //flujo efectivo
         'porpagar',
-        'porcobrar',   
+        'porcobrar',
 
         //inventarios
         'precios',
         'reordenes',
         'existencias',
-        'enreorden', 
+        'enreorden',
         'codigodebarras',
 
         //reportes
@@ -201,15 +202,15 @@ return array(
 
         //reportes
 
-        'reporte',    
+        'reporte',
 
         //inventarios
         'precios-sucursal',
         'reordenes-sucursal',
         'existencias-sucursal',
-        'enreorden-sucursal', 
+        'enreorden-sucursal',
 
-        //reportes 
+        //reportes
         'reporte-administracion-comparacion',
         'reporte-administracion-remision',
         'reporte-bodega',
@@ -257,16 +258,16 @@ return array(
         'completados',
         'completadosproducto',
         'mayoristas-sucursal',
-        
+
         //flujo efectivo
         'porpagar',
-        'porcobrar',   
+        'porcobrar',
 
         //inventarios
         'precios',
         'reordenes',
         'existencias',
-        'enreorden', 
+        'enreorden',
         'codigodebarras',
 
         //reportes
@@ -287,15 +288,15 @@ return array(
 
         //reportes
 
-        'reporte',    
+        'reporte',
 
         //inventarios
         'precios-sucursal',
         'reordenes-sucursal',
         'existencias-sucursal',
-        'enreorden-sucursal', 
+        'enreorden-sucursal',
 
-        //reportes 
+        //reportes
         'reporte-administracion-comparacion',
         'reporte-administracion-remision',
         'reporte-bodega'
