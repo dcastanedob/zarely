@@ -155,6 +155,7 @@
     <column name="cuentabancaria_banco" phpName="CuentabancariaBanco" type="VARCHAR" size="255" required="true"/>
     <column name="cuentabancaria_cuenta" phpName="CuentabancariaCuenta" type="VARCHAR" size="45" required="true"/>
     <column name="cuentabancaria_saldo" phpName="CuentabancariaSaldo" type="DECIMAL" size="15" scale="5" required="true"/>
+    <column name="cuentabancaria_propietario" phpName="CuentabancariaPropietario" type="VARCHAR" size="250" required="false"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -354,14 +355,14 @@
   </table>
   <table name="medida" phpName="Medida" idMethod="native">
     <column name="idmedida" phpName="Idmedida" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="medida_nombre" phpName="MedidaNombre" type="BOOLEAN" size="1" required="false"/>
+    <column name="medida_nombre" phpName="MedidaNombre" type="VARCHAR" size="255" required="false"/>
     <column name="medida_xs" phpName="MedidaXs" type="BOOLEAN" size="1" required="false"/>
     <column name="medida_s" phpName="MedidaS" type="BOOLEAN" size="1" required="false"/>
     <column name="medida_m" phpName="MedidaM" type="BOOLEAN" size="1" required="false"/>
     <column name="medida_l" phpName="MedidaL" type="BOOLEAN" size="1" required="false"/>
     <column name="medida_xl" phpName="MedidaXl" type="BOOLEAN" size="1" required="false"/>
     <column name="medida_xxl" phpName="MedidaXxl" type="BOOLEAN" size="1" required="false"/>
-    <column name="medida_unitalla" phpName="MedidaUnitalla" type="VARCHAR" size="45" required="false"/>
+    <column name="medida_unitalla" phpName="MedidaUnitalla" type="BOOLEAN" size="1" required="false"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -710,6 +711,16 @@
     <column name="proveedor_celular" phpName="ProveedorCelular" type="VARCHAR" size="45" required="false"/>
     <column name="proveedor_fechainicio" phpName="ProveedorFechainicio" type="DATE" required="false"/>
     <column name="proveedor_email" phpName="ProveedorEmail" type="VARCHAR" size="45" required="false"/>
+    <column name="proveedor_razonsocial" phpName="ProveedorRazonsocial" type="VARCHAR" size="255" required="false"/>
+    <column name="proveedor_rfc" phpName="ProveedorRfc" type="VARCHAR" size="255" required="false"/>
+    <column name="proveedor_direccion" phpName="ProveedorDireccion" type="VARCHAR" size="255" required="false"/>
+    <column name="proveedor_colonia" phpName="ProveedorColonia" type="VARCHAR" size="255" required="false"/>
+    <column name="proveedor_cp" phpName="ProveedorCp" type="VARCHAR" size="10" required="false"/>
+    <column name="proveedor_ciudad" phpName="ProveedorCiudad" type="VARCHAR" size="255" required="false"/>
+    <column name="proveedor_estado" phpName="ProveedorEstado" type="VARCHAR" size="255" required="false"/>
+    <column name="proveedor_contactonombre" phpName="ProveedorContactonombre" type="VARCHAR" size="255" required="false"/>
+    <column name="proveedor_contactotelefono" phpName="ProveedorContactotelefono" type="VARCHAR" size="255" required="false"/>
+    <column name="proveedor_contactoemail" phpName="ProveedorContactoemail" type="VARCHAR" size="255" required="false"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
@@ -753,6 +764,7 @@
     <column name="sucursal_codigopostal" phpName="SucursalCodigopostal" type="VARCHAR" size="45" required="false"/>
     <column name="sucursal_ciudad" phpName="SucursalCiudad" type="VARCHAR" size="45" required="false"/>
     <column name="sucursal_estado" phpName="SucursalEstado" type="VARCHAR" size="45" required="false"/>
+    <column name="sucursal_rfc" phpName="SucursalRfc" type="VARCHAR" size="45" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

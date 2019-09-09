@@ -5,9 +5,9 @@
             <datasource id="zarely">
                 <adapter>mysql</adapter> <!-- sqlite, mysql, myssql, oracle, or pgsql -->
                 <connection>
-                    <dsn>mysql:host=localhost;dbname=oneclick_zarely</dsn>
-                    <user>oneclick_zarely</user>
-                    <password>Q5DYve2mxZfmgbFt</password>
+                    <dsn>mysql:host=localhost;dbname=zarely</dsn>
+                    <user>root</user>
+                    <password>mysql</password>
                 </connection>
             </datasource>
         </datasources>

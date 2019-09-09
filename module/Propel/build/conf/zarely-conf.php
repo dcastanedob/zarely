@@ -9,9 +9,9 @@ $conf = array (
       'adapter' => 'mysql',
       'connection' => 
       array (
-        'dsn' => 'mysql:host=localhost;dbname=oneclick_zarely',
-        'user' => 'oneclick_zarely',
-        'password' => 'Q5DYve2mxZfmgbFt',
+        'dsn' => 'mysql:host=localhost;dbname=zarely',
+        'user' => 'root',
+        'password' => 'mysql',
       ),
     ),
     'default' => 'zarely',

@@ -210,6 +210,7 @@ CREATE TABLE `cuentabancaria`
     `cuentabancaria_banco` VARCHAR(255) NOT NULL,
     `cuentabancaria_cuenta` VARCHAR(45) NOT NULL,
     `cuentabancaria_saldo` DECIMAL(15,5) NOT NULL,
+    `cuentabancaria_propietario` VARCHAR(250),
     PRIMARY KEY (`idcuentabancaria`)
 ) ENGINE=InnoDB;
 
@@ -913,6 +914,16 @@ CREATE TABLE `proveedor`
     `proveedor_celular` VARCHAR(45),
     `proveedor_fechainicio` DATE,
     `proveedor_email` VARCHAR(45),
+    `proveedor_razonsocial` VARCHAR(255),
+    `proveedor_rfc` VARCHAR(255),
+    `proveedor_direccion` VARCHAR(255),
+    `proveedor_colonia` VARCHAR(255),
+    `proveedor_cp` VARCHAR(10),
+    `proveedor_ciudad` VARCHAR(255),
+    `proveedor_estado` VARCHAR(255),
+    `proveedor_contactonombre` VARCHAR(255),
+    `proveedor_contactotelefono` VARCHAR(255),
+    `proveedor_contactoemail` VARCHAR(255),
     PRIMARY KEY (`idproveedor`)
 ) ENGINE=InnoDB;
 

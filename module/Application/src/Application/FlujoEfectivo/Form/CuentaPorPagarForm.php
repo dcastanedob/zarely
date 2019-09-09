@@ -14,13 +14,13 @@ class CuentaPorPagarForm extends Form
         // we want to ignore the name passed
         parent::__construct('CuentaPorPagarForm');
         $this->setAttribute('method', 'post');
-        
+
         $this->add(array(
             'name' => 'idcompra',
             'type' => 'Hidden',
         ));
-        
-        
+
+
 
         $this->add(array(
             'name' => 'cuentabancariamovimiento_comprobante',
@@ -69,7 +69,7 @@ class CuentaPorPagarForm extends Form
         ));
 
 
-        
+
 
 
 
@@ -77,7 +77,7 @@ class CuentaPorPagarForm extends Form
             'name' => 'cuentabancariamovimiento_medio',
             'type' => 'Select',
             'options' => array(
-              
+
                 'value_options' => array(
                     'cheque' => 'Cheque',
                     'efectivo' => 'Efectivo',
@@ -98,7 +98,7 @@ class CuentaPorPagarForm extends Form
             'name' => 'idcuentabancaria',
             'type' => 'Select',
             'options' => array(
-              
+
                 'value_options' => $cuentas,
             ),
             'attributes' => array(
@@ -109,14 +109,14 @@ class CuentaPorPagarForm extends Form
         ));
 
 
-        
-
-        
 
 
-      
-        
 
-        
+
+
+
+
+
+
     }
 }
