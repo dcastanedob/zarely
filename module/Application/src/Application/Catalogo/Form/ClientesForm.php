@@ -181,7 +181,7 @@ class ClientesForm extends Form
             'name' => 'cliente_limitecredito',
             'type' => 'Text',
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'form-control infput-thick',
                 'tabindex' => 21,
             ),

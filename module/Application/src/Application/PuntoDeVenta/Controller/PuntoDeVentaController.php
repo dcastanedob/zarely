@@ -25,17 +25,17 @@ class PuntoDeVentaController extends AbstractActionController
 
 
     );
-    
+
     public function serversideAction(){
 
         $request = $this->getRequest();
-        
+
         if ($request->isPost()) {
-            
+
             $post_data = $request->getPost();
 
             $query = new \VentaQuery();
-            
+
             //Creamos una instancia de la sesión
             $user = new \Application\Session\AouthSession();
             $user = $user->getData();
@@ -50,7 +50,7 @@ class PuntoDeVentaController extends AbstractActionController
 
             //SEARCH
             if (!empty($post_data['search']['value'])) {
-                
+
                 $search_value = $post_data['search']['value'];
 
                 $search_value = str_replace("Ñ", "Ã‘", $search_value);
@@ -137,7 +137,7 @@ class PuntoDeVentaController extends AbstractActionController
                 }
 
                 $tmp['venta_tipo'] = $value['venta_tipo'];
-                
+
 
 
                 $tmp['venta_estatus'] = $value['venta_estatus'];
@@ -160,7 +160,7 @@ class PuntoDeVentaController extends AbstractActionController
                               </div>
                               <div class="media-body">
                                 <span class="d-b">Editar</span>
-                               
+
                               </div>
                             </div>
                           </a>
@@ -173,7 +173,7 @@ class PuntoDeVentaController extends AbstractActionController
                               </div>
                               <div class="media-body">
                                 <span class="d-b">Eliminar</span>
-                           
+
                               </div>
                             </div>
                           </a>
@@ -197,7 +197,7 @@ class PuntoDeVentaController extends AbstractActionController
                               </div>
                               <div class="media-body">
                                 <span class="d-b">Editar</span>
-                               
+
                               </div>
                             </div>
                           </a>
@@ -210,7 +210,7 @@ class PuntoDeVentaController extends AbstractActionController
                               </div>
                               <div class="media-body">
                                 <span class="d-b">Devoluciones</span>
-                               
+
                               </div>
                             </div>
                           </a>
@@ -223,7 +223,7 @@ class PuntoDeVentaController extends AbstractActionController
                               </div>
                               <div class="media-body">
                                 <span class="d-b">Defectos</span>
-                               
+
                               </div>
                             </div>
                           </a>
@@ -236,7 +236,7 @@ class PuntoDeVentaController extends AbstractActionController
                               </div>
                               <div class="media-body">
                                 <span class="d-b">Eliminar</span>
-                           
+
                               </div>
                             </div>
                           </a>
@@ -259,7 +259,7 @@ class PuntoDeVentaController extends AbstractActionController
                               </div>
                               <div class="media-body">
                                 <span class="d-b">Editar</span>
-                               
+
                               </div>
                             </div>
                           </a>
@@ -272,7 +272,7 @@ class PuntoDeVentaController extends AbstractActionController
                               </div>
                               <div class="media-body">
                                 <span class="d-b">Eliminar</span>
-                           
+
                               </div>
                             </div>
                           </a>
@@ -280,7 +280,7 @@ class PuntoDeVentaController extends AbstractActionController
                       </ul>
                     </div></td>';
                  }
-                
+
 
 
                 $data[] = $tmp;
@@ -300,12 +300,12 @@ class PuntoDeVentaController extends AbstractActionController
             return $this->getResponse()->setContent(json_encode($json_data));
         }
     }
-    
-    
+
+
 
     public function indexAction()
-    {   
-        
+    {
+
         $view_model = new ViewModel();
         $view_model->setTemplate('application/puntodeventa/index');
         $view_model->setVariables(array(
@@ -316,20 +316,22 @@ class PuntoDeVentaController extends AbstractActionController
 
 
     public function nuevoAction(){
-        
+
         $request = $this->getRequest();
         if($request->isPost()){
 
             $post_data = $request->getPost();
+
+
             $entity = new \Venta();
 
             $post_data['venta_fecha'] = date_create_from_format('d/m/Y', $post_data['venta_fecha']);
-            
+
             $user = new \Application\Session\AouthSession();
             $user = $user->getData();
             $post_data['idempleadocajero'] = $user['idempleado'];
             $post_data['venta_estatuspago'] = 0;
-            $post_data['venta_estatus'] = "procesando";
+            $post_data['venta_estatus'] = "completada";
             $post_data['idsucursal'] = $user['idsucursal'];
             $post_data['venta_total'] = 0;
             $post_data['venta_subtotal'] = 0;
@@ -357,12 +359,12 @@ class PuntoDeVentaController extends AbstractActionController
                 if(substr( $key, 0, 8 ) === "cantidad")
                 {
                     $cantidades[str_replace("cantidad", "", $key)] = [];
-                    
+
                     $temp = array(
                         "valor" => $value
                     );
                     array_push($cantidades[str_replace("cantidad", "", $key)], $temp);
-     
+
                 }
             }
 
@@ -371,10 +373,11 @@ class PuntoDeVentaController extends AbstractActionController
             {
                 //asignamos el tipo de venta
                 $entity->setVentaTipo = $post_data['venta_tipo'];
+                //var_dump($entity->toArray());exit();
                 $entity->save();
 
                 $total = 0;
-                
+
                 foreach ($descuentos as $variante => $value) {
                     $cantidad = $cantidades[$variante][0]['valor'];
 
@@ -388,11 +391,11 @@ class PuntoDeVentaController extends AbstractActionController
                       if($producto_sucursal != null)
                       {
                           $precioUnitario = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
-                          
+
                           $descuento = $value[0]['valor'];
                           $subtotal = ($precioUnitario * $cantidad);
                           $subtotal = $subtotal - ($subtotal * ($descuento/100));
-                          
+
                           $venta_detalle = new \Ventadetalle();
                           $venta_detalle->setIdventa($entity->getIdventa())
                                           ->setIdproductovariante($variante)
@@ -404,8 +407,8 @@ class PuntoDeVentaController extends AbstractActionController
                                           ->save();
                           $total += $venta_detalle->getVentadetalleSubtotal();
 
-                        
-                        
+
+
 
                       }
                     }
@@ -416,7 +419,7 @@ class PuntoDeVentaController extends AbstractActionController
 
                     foreach ($post_data['id_promocion'] as $value) {
                         $cantidad = intval($cantidades[$value][0]['valor'] / 2);
-                        
+
                         if($cantidad > 0)
                         {
 
@@ -426,7 +429,7 @@ class PuntoDeVentaController extends AbstractActionController
                           if($producto_sucursal != null)
                           {
                               $precioUnitario = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
-                              
+
                               $descuento = 150;
                               $subtotal = ($precioUnitario * $cantidad);
                               $subtotal = $subtotal - ($subtotal * ($descuento/100));
@@ -440,8 +443,9 @@ class PuntoDeVentaController extends AbstractActionController
                                               ->setVentadetalleEstatus('completo')
                                               ->setVentadetalleDescuento($descuento)
                                               ->save();
+
                               $total += $venta_detalle->getVentadetalleSubtotal();
-                              
+
                           }
                         }
                     }
@@ -453,7 +457,7 @@ class PuntoDeVentaController extends AbstractActionController
                 $iva = $total- $subtotal;
                 $entity->setVentaTotal($total)->setVentaSubtotal($subtotal)->setVentaIva($iva)->save();
 
-                
+
 
                 if($post_data['venta_tipo'] == "credito")
                 {
@@ -466,12 +470,12 @@ class PuntoDeVentaController extends AbstractActionController
                 {
                     return $this->getResponse()->setContent(json_encode(array('response' => true,'message'=>'Venta realizada','id' =>$entity->getIdventa(),"credito" =>false)));
                 }
-                
+
             }else{
                 return $this->getResponse()->setContent(json_encode(array('response' => false)));
             }
-            
-        
+
+
 
         }
 
@@ -494,9 +498,9 @@ class PuntoDeVentaController extends AbstractActionController
         //traer la sesiòn
         $user = new \Application\Session\AouthSession();
         $user = $user->getData();
-        
+
         $venta = \VentaQuery::create()->orderBy('idventa', \Criteria::DESC)->findOne();
-        
+
         $id = null;
 
         if($venta != null)
@@ -545,11 +549,11 @@ class PuntoDeVentaController extends AbstractActionController
             $productos_generales_array[$value->getIdproducto()] = $value->getProductoModelo();
         }
 
-        
+
 
 
         $form = new \Application\PuntoDeVenta\Form\PuntoDeVentaForm($vendedores_array,$clientes_array,$productosvariante_array,$productos_generales_array,$user,$id);
-        
+
         $view_model = new ViewModel();
         $view_model->setTemplate('application/puntodeventa/nuevo');
         $view_model->setVariables(array(
@@ -557,19 +561,19 @@ class PuntoDeVentaController extends AbstractActionController
             'id' => $id
         ));
         return $view_model;
-        
+
     }
 
     public function checkdayAction()
     {
       $request = $this->getRequest();
-        
+
       if($request->isPost()){
         $post_data = $request->getPost();
         $entity = \VentaQuery::create()->findPk($post_data['id']);
         $dateTemp = explode(" ",$entity->getVentaFecha())[0];
         $date = date_format(date_create_from_format('Y-m-j', $dateTemp),"Y-m-d");
-        $hoy = date("Y-m-d");  
+        $hoy = date("Y-m-d");
 
         if($date==$hoy)
         {
@@ -577,17 +581,17 @@ class PuntoDeVentaController extends AbstractActionController
         }else{
           return $this->getResponse()->setContent(json_encode(array('response' => false)));
         }
-        
-          
+
+
       }
-              
+
     }
 
 
     public function actualizardetallesAction()
     {
       $request = $this->getRequest();
-        
+
       if($request->isPost()){
         $post_data = $request->getPost();
 
@@ -606,7 +610,7 @@ class PuntoDeVentaController extends AbstractActionController
         $devoluciones = [];
         //obtenemos todos los descuentos y cantidades correspondientes al id
         foreach ($post_data as $key => $value){
-            
+
             if(substr( $key, 0, 9 ) === "descuento")
             {
                 $descuentos[str_replace("descuento", "", $key)] = [];
@@ -620,23 +624,23 @@ class PuntoDeVentaController extends AbstractActionController
             if(substr( $key, 0, 8 ) === "cantidad")
             {
                 $cantidades[str_replace("cantidad", "", $key)] = [];
-                
+
                 $temp = array(
                     "valor" => $value
                 );
                 array_push($cantidades[str_replace("cantidad", "", $key)], $temp);
-        
+
             }
 
             if(substr( $key, 0, 10 ) === "devolucion")
             {
                 $devoluciones[str_replace("devolucion", "", $key)] = [];
-                
+
                 $temp = array(
                     "valor" => $value
                 );
                 array_push($devoluciones[str_replace("devolucion", "", $key)], $temp);
-        
+
             }
         }
 
@@ -661,11 +665,11 @@ class PuntoDeVentaController extends AbstractActionController
                 if($producto_sucursal != null)
                 {
                     $precioUnitario = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
-                    
+
                     $descuento = $value[0]['valor'];
                     $subtotal = ($precioUnitario * $cantidad);
                     $subtotal = $subtotal - ($subtotal * ($descuento/100));
-                    
+
                     $venta_detalle = new \Ventadetalle();
                     $venta_detalle->setIdventa($entity->getIdventa())
                                     ->setIdproductovariante($variante)
@@ -676,7 +680,7 @@ class PuntoDeVentaController extends AbstractActionController
                                     ->setVentadetalleDescuento($descuento)
                                     ->save();
                     $total += $venta_detalle->getVentadetalleSubtotal();
-   
+
 
                 }
               }
@@ -688,7 +692,7 @@ class PuntoDeVentaController extends AbstractActionController
           $iva = $total- $subtotal;
           $entity->setVentaTotal($total)->setVentaSubtotal($subtotal)->setVentaIva($iva)->save();
 
-         
+
 
           //insertamos las devoluciones
           if(count($devoluciones) > 0)
@@ -710,7 +714,7 @@ class PuntoDeVentaController extends AbstractActionController
                     $descuento = 0;
                     $subtotal = ($precioUnitario * $cantidad);
                     $subtotal = $subtotal - ($subtotal * ($descuento/100));
-                    
+
                     $venta_detalle = new \Ventadetalle();
                     $venta_detalle->setIdventa($entity->getIdventa())
                                     ->setIdproductovariante($variante)
@@ -720,7 +724,7 @@ class PuntoDeVentaController extends AbstractActionController
                                     ->setVentadetalleEstatus('cambio')
                                     ->setVentadetalleDescuento($descuento)
                                     ->save();
-            
+
 
                 }
               }
@@ -733,9 +737,9 @@ class PuntoDeVentaController extends AbstractActionController
 
         }
 
-        
+
         foreach ($detalles_devolucion as $detalle) {
-          
+
           $venta_detalle = new \Ventadetalle();
           $venta_detalle->setIdventa($detalle['Idventa'])
                           ->setIdproductovariante($detalle['Idproductovariante'])
@@ -748,7 +752,7 @@ class PuntoDeVentaController extends AbstractActionController
         }
 
         foreach ($detalles_defecto as $detalle) {
-          
+
           $venta_detalle = new \Ventadetalle();
           $venta_detalle->setIdventa($detalle['Idventa'])
                           ->setIdproductovariante($detalle['Idproductovariante'])
@@ -763,13 +767,13 @@ class PuntoDeVentaController extends AbstractActionController
         $entity->setVentaEstatus('devolucion')->save();
         return $this->getResponse()->setContent(json_encode(array('response' => true)));
       }
-              
+
     }
 
     public function actualizardetallesdefectoAction()
     {
       $request = $this->getRequest();
-        
+
       if($request->isPost()){
         $post_data = $request->getPost();
 
@@ -788,7 +792,7 @@ class PuntoDeVentaController extends AbstractActionController
         $devoluciones = [];
         //obtenemos todos los descuentos y cantidades correspondientes al id
         foreach ($post_data as $key => $value){
-            
+
             if(substr( $key, 0, 9 ) === "descuento")
             {
                 $descuentos[str_replace("descuento", "", $key)] = [];
@@ -802,23 +806,23 @@ class PuntoDeVentaController extends AbstractActionController
             if(substr( $key, 0, 8 ) === "cantidad")
             {
                 $cantidades[str_replace("cantidad", "", $key)] = [];
-                
+
                 $temp = array(
                     "valor" => $value
                 );
                 array_push($cantidades[str_replace("cantidad", "", $key)], $temp);
-        
+
             }
 
             if(substr( $key, 0, 10 ) === "devolucion")
             {
                 $devoluciones[str_replace("devolucion", "", $key)] = [];
-                
+
                 $temp = array(
                     "valor" => $value
                 );
                 array_push($devoluciones[str_replace("devolucion", "", $key)], $temp);
-        
+
             }
         }
 
@@ -843,11 +847,11 @@ class PuntoDeVentaController extends AbstractActionController
                 if($producto_sucursal != null)
                 {
                     $precioUnitario = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
-                    
+
                     $descuento = $value[0]['valor'];
                     $subtotal = ($precioUnitario * $cantidad);
                     $subtotal = $subtotal - ($subtotal * ($descuento/100));
-                    
+
                     $venta_detalle = new \Ventadetalle();
                     $venta_detalle->setIdventa($entity->getIdventa())
                                     ->setIdproductovariante($variante)
@@ -858,7 +862,7 @@ class PuntoDeVentaController extends AbstractActionController
                                     ->setVentadetalleDescuento($descuento)
                                     ->save();
                     $total += $venta_detalle->getVentadetalleSubtotal();
-   
+
 
                 }
               }
@@ -893,7 +897,7 @@ class PuntoDeVentaController extends AbstractActionController
                     $descuento = 0;
                     $subtotal = ($precioUnitario * $cantidad);
                     $subtotal = $subtotal - ($subtotal * ($descuento/100));
-                    
+
                     $venta_detalle = new \Ventadetalle();
                     $venta_detalle->setIdventa($entity->getIdventa())
                                     ->setIdproductovariante($variante)
@@ -903,7 +907,7 @@ class PuntoDeVentaController extends AbstractActionController
                                     ->setVentadetalleEstatus('defecto')
                                     ->setVentadetalleDescuento($descuento)
                                     ->save();
-            
+
 
                 }
               }
@@ -914,9 +918,9 @@ class PuntoDeVentaController extends AbstractActionController
           }
         }
 
-        
+
         foreach ($detalles_devolucion as $detalle) {
-          
+
           $venta_detalle = new \Ventadetalle();
           $venta_detalle->setIdventa($detalle['Idventa'])
                           ->setIdproductovariante($detalle['Idproductovariante'])
@@ -929,7 +933,7 @@ class PuntoDeVentaController extends AbstractActionController
         }
 
         foreach ($detalles_defecto as $detalle) {
-          
+
           $venta_detalle = new \Ventadetalle();
           $venta_detalle->setIdventa($detalle['Idventa'])
                           ->setIdproductovariante($detalle['Idproductovariante'])
@@ -941,32 +945,32 @@ class PuntoDeVentaController extends AbstractActionController
                           ->save();
         }
 
-       
+
         return $this->getResponse()->setContent(json_encode(array('response' => true)));
       }
-              
+
     }
 
 
     public function devolucionesAction()
     {
         $request = $this->getRequest();
-        
+
         $id = $this->params()->fromRoute('id');
-        
+
         $exist = \VentaQuery::create()->filterByIdventa($id)->exists();
         if($exist){
-            
+
             $entity = \VentaQuery::create()->findPk($id);
             if($request->isPost()){
                 $post_data = $request->getPost();
-                var_dump($post_data);exit();
+
                 //obtenemos un arreglo de variante=>cantidad con los datos que le mandamos
                 $detalles = [];
                 foreach ($post_data as $key => $value) {
                     if(substr( $key, 0, 10 ) === "devolucion")
                     {
-                        
+
                         $detalles[str_replace("devolucion", "", $key)] = $value;
                     }
                 }
@@ -975,7 +979,7 @@ class PuntoDeVentaController extends AbstractActionController
                 foreach ($detalles as $id => $cantidad) {
                     $venta_detalle = \VentadetalleQuery::create()->findPk($id);
                     $venta_detalle->setVentadetalleEstatus('cambio')->save();
-                    
+
                 }
 
                 $this->flashMessenger()->addSuccessMessage('Sus devoluciones han guardado satisfactoriamente.');
@@ -1056,22 +1060,22 @@ class PuntoDeVentaController extends AbstractActionController
     public function defectosAction()
     {
         $request = $this->getRequest();
-        
+
         $id = $this->params()->fromRoute('id');
-        
+
         $exist = \VentaQuery::create()->filterByIdventa($id)->exists();
         if($exist){
-            
+
             $entity = \VentaQuery::create()->findPk($id);
             if($request->isPost()){
                 $post_data = $request->getPost();
-                var_dump($post_data);exit();
+
                 //obtenemos un arreglo de variante=>cantidad con los datos que le mandamos
                 $detalles = [];
                 foreach ($post_data as $key => $value) {
                     if(substr( $key, 0, 10 ) === "devolucion")
                     {
-                        
+
                         $detalles[str_replace("devolucion", "", $key)] = $value;
                     }
                 }
@@ -1080,7 +1084,7 @@ class PuntoDeVentaController extends AbstractActionController
                 foreach ($detalles as $id => $cantidad) {
                     $venta_detalle = \VentadetalleQuery::create()->findPk($id);
                     $venta_detalle->setVentadetalleEstatus('defecto')->save();
-                    
+
                 }
 
                 $this->flashMessenger()->addSuccessMessage('Sus devoluciones han guardado satisfactoriamente.');
@@ -1161,15 +1165,15 @@ class PuntoDeVentaController extends AbstractActionController
     public function verAction()
     {
         $request = $this->getRequest();
-        
+
         $id = $this->params()->fromRoute('id');
-        
+
         $exist = \VentaQuery::create()->filterByIdventa($id)->exists();
-        
+
         if($exist){
-            
+
             $entity = \VentaQuery::create()->findPk($id);
-            
+
             if($request->isPost()){
                 $post_data = $request->getPost();
 
@@ -1188,8 +1192,8 @@ class PuntoDeVentaController extends AbstractActionController
                 $this->flashMessenger()->addSuccessMessage('Su registro ha sido guardado satisfactoriamente.');
                 return $this->redirect()->toUrl('/puntodeventa');
             }
-            
-                
+
+
 
             $form = new \Application\PuntoDeVenta\Form\PuntoDeVentaVerForm();
 
@@ -1219,15 +1223,15 @@ class PuntoDeVentaController extends AbstractActionController
                 'entity' => $entity,
             ));
             return $view_model;
-            
-            
+
+
         }else{
             $this->flashMessenger()->addErrorMessage('Id Invalido.');
             return $this->redirect()->toUrl('/puntodeventa');
         }
         return $view_model;
     }
-    
+
     private function restoreInventory($id)
     {
         //obtenemos instancia del usuario para saber en que sucursal regresaremos el inventario
@@ -1254,7 +1258,7 @@ class PuntoDeVentaController extends AbstractActionController
         $entity = \VentaQuery::Create()->findPk($id);
         $comisiones_array = \ComisionesQuery::create()->filterByIdempleado(4)->filterByIdsucursal(1)->filterByComisionesFecha($entity->getVentaFecha())->find()->toArray();
         $comision = \ComisionesQuery::Create()->findPk($comisiones_array[0]['Idcomisiones']);
-        if($comision != null) 
+        if($comision != null)
         {
           $comision->setComisionesCantidad($comision->getComisionesCantidad()-$comisiones)->save();
         }
@@ -1345,9 +1349,9 @@ class PuntoDeVentaController extends AbstractActionController
                 $temp = $this->totalAlMomento($post_data['id'],0);
                 if($temp != 0)
                 {
-                    
+
                     $cliente = \ClienteQuery::Create()->findPk($post_data['cliente']);
-                    $cliente->setClienteCreditorestante($post_data['credito'] - $temp)->save();       
+                    $cliente->setClienteCreditorestante($post_data['credito'] - $temp)->save();
 
                 }else{
                     //completamos la compra y actualizamos el saldo del cliente
@@ -1365,12 +1369,12 @@ class PuntoDeVentaController extends AbstractActionController
     }
 
     public function ticketAction()
-    { 
+    {
       $request = $this->getRequest();
         if($request->isPost()){
-            
+
           $post_data = $request->getPost();
-          
+
           //obtenemos la venta
           $venta = \VentaQuery::Create()->findPk($post_data['id']);
 
@@ -1399,7 +1403,7 @@ class PuntoDeVentaController extends AbstractActionController
             $tallaje = $variante->getProductovarianteTalla();
 
 
-            
+
             $temp = [];
             $temp['uno'] = $detalle->getVentadetalleCantidad();
             $temp['dos'] = $producto->getProductoModelo() .' - ' . $color->getColorNombre().' / ' . $material->getMaterialNombre().' / ' . $tallaje;
@@ -1413,7 +1417,7 @@ class PuntoDeVentaController extends AbstractActionController
           //cargamos el template
           $template = '/puntodeventa.xlsx';
           $templateDir = $_SERVER['DOCUMENT_ROOT'] . '/application/files/templates';
-          
+
 
           $config = array(
                           'template' => $template,
@@ -1449,25 +1453,25 @@ class PuntoDeVentaController extends AbstractActionController
               )
           ));
           $base_64 = $phpreport->render('excel2003','reporte_venta',true);
-          $json_data['base64'] = $base_64;  
+          $json_data['base64'] = $base_64;
 
           return $this->getResponse()->setContent(json_encode($json_data));
       };
 
-      
+
 
     }
 
-    //funcion para calcular los puntos 
+    //funcion para calcular los puntos
     private function generarPuntos($id, $tarjeta)
     {
       //obtenemos los pagos
       $pagos = \VentapagoQuery::create()->filterByIdventa($id)->find();
       //puntos a acumular
       $puntos = 0;
-      
 
-      foreach ($pagos->toArray() as $pago) 
+
+      foreach ($pagos->toArray() as $pago)
       {
         if($pago['VentapagoMetododepago'] == 'efectivo')
         {
@@ -1478,7 +1482,7 @@ class PuntoDeVentaController extends AbstractActionController
         {
           $puntos += floatval($pago['VentapagoCantidad'] * 0.03);
         }
-        
+
       }
 
       $tarjetapuntos = \BaseTarjetapuntosQuery::create()->findPk($tarjeta);
@@ -1512,7 +1516,7 @@ class PuntoDeVentaController extends AbstractActionController
                         ->setIdempleado($user['idempleado'])
                         ->save();
       }
-     
+
 
 
       //sumamos los nuevos puntos
@@ -1530,7 +1534,7 @@ class PuntoDeVentaController extends AbstractActionController
         $totalAlMomento = 0;
         if($pagos != null)
         {
-            
+
             foreach ($pagos->toArray() as $index => $value) {
                 $totalAlMomento+=$value['VentapagoCantidad'];
             }
@@ -1563,7 +1567,7 @@ class PuntoDeVentaController extends AbstractActionController
             }
         }
 
-        
+
             //verificamos si exista ya la comision del día
             $comisiones = \ComisionesQuery::create()->filterByIdsucursal($sucursal)->filterByIdempleado($user)->filterByComisionesFecha(date("Y/m/d"))->find()->toArray();
 
@@ -1602,18 +1606,18 @@ class PuntoDeVentaController extends AbstractActionController
     }
 
     public function getProductosvariantesAction(){
-        
+
         $request = $this->getRequest();
         if($request->isPost()){
-            
+
             $post_data = $request->getPost();
             if($post_data['name'] == 'productosvariantes'){
                 $response = $this->getProductovariantes($post_data['data']);
 
                 return $this->getResponse()->setContent(json_encode($response));
-                
+
             }
-            
+
         };
     }
 
@@ -1624,10 +1628,10 @@ class PuntoDeVentaController extends AbstractActionController
         if($request->isPost()){
 
             $post_data = $request->getPost();
-            
+
             //filtramos los productos variantes por producto
             $variantes = \ProductovarianteQuery::create()->filterByIdproducto($post_data['idproductogeneral'])->find();
-            
+
             $details = [];
 
 
@@ -1636,7 +1640,7 @@ class PuntoDeVentaController extends AbstractActionController
                 $indice = $variante->getProductocolor()->getColor()->getColorNombre() .'/'. $variante->getProductomaterial()->getMaterial()->getMaterialNombre();
 
 
-                
+
                 //verificamos que la combinacion de material color n oexista
                 if($details[$indice] == null)
                 {
@@ -1658,7 +1662,7 @@ class PuntoDeVentaController extends AbstractActionController
 
                     array_push($details[$indice], $value);
                 }
-                
+
             }
 
             return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
@@ -1666,13 +1670,13 @@ class PuntoDeVentaController extends AbstractActionController
             //echo '<pre>'; var_dump($details); echo '</pre>';exit();
         }
 
-    } 
-    
+    }
+
     public function verproductosventaAction()
     {
         $request = $this->getRequest();
         if($request->isPost()){
-            
+
             $post_data = $request->getPost();
 
             //traemos todos los detalles de la venta
@@ -1728,8 +1732,8 @@ class PuntoDeVentaController extends AbstractActionController
         if($request->isPost()){
 
             $post_data = $request->getPost();
-            
-            //obtenemos la variante 
+
+            //obtenemos la variante
             $variante = \ProductovarianteQuery::create()->findPk($post_data['id']);
 
             $producto = $variante->getProducto();
@@ -1738,7 +1742,7 @@ class PuntoDeVentaController extends AbstractActionController
             $material = $variante->getProductomaterial();
             $material = $material->getMaterial();
             $tallaje = $variante->getProductovarianteTalla();
-            
+
             //traer la sesiòn para ver la sucursal
             $user = new \Application\Session\AouthSession();
             $user = $user->getData();
@@ -1748,21 +1752,21 @@ class PuntoDeVentaController extends AbstractActionController
 
             //verificamos si tiene algun descuento
             $descuento = $this->getDescuento($post_data['id']);
-            
+
             $tieneDescuento = false;
             if($descuento != null)
             {
                 $tieneDescuento = true;
             }
 
-            //si tiene descuento 
+            //si tiene descuento
             if($tieneDescuento)
             {
                 //creamos el objeto que procesará los datos que necesitamos
                 $precio = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
                 $porcentaje = $descuento['DescuentoCantidad'];
                 $descuentoCantidad = floatval($porcentaje/100) * floatval($precio);
-          
+
                 $details = array(
                     'id' => $post_data['id'],
                     'existencias' => $producto_sucursal[0]['ProductosucursalExistencia'],
@@ -1792,22 +1796,22 @@ class PuntoDeVentaController extends AbstractActionController
 
             //verificamos si tiene alguna promociòn
             $promocion = $this->getPromocion($post_data['id']);
-            
-            
+
+
             $tienePromocion = false;
             if($promocion != null)
             {
                 $tienePromocion = true;
             }
 
-            //si tiene promocion 
+            //si tiene promocion
             if($tienePromocion)
             {
                 //creamos el objeto que procesará los datos que necesitamos
                 $precio = money_format('%.2n', $producto_sucursal[0]["ProductosucursalPrecioventa"]);
                 $porcentaje = "50";
                 $promocionCantidad = floatval($porcentaje/100) * floatval($precio);
-          
+
                 $details = array(
                     'id' => $post_data['id'],
                     'existencias' => $producto_sucursal[0]['ProductosucursalExistencia'],
@@ -1818,7 +1822,7 @@ class PuntoDeVentaController extends AbstractActionController
                     'descripcionPromocion' => $promocion['PromocionDescripcion'],
                     'promocion' => $tienePromocion,
                     'promocionPorcentaje' => $porcentaje,
-                    'promocionSubtotal' => $promocionCantidad 
+                    'promocionSubtotal' => $promocionCantidad
                 );
                 return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
             }else{
@@ -1831,14 +1835,14 @@ class PuntoDeVentaController extends AbstractActionController
                     'descuento' => $tienePromocion
                 );
             }
-            
+
 
             return $this->getResponse()->setContent(json_encode(array('response' => true, 'data' => $details)));
 
             //echo '<pre>'; var_dump($details); echo '</pre>';exit();
         }
 
-    } 
+    }
 
 
     private function getDescuento($id)
@@ -1876,8 +1880,8 @@ class PuntoDeVentaController extends AbstractActionController
             return $descuento[0];
         }
 
-        
-        
+
+
         return null;
     }
 
@@ -1916,12 +1920,12 @@ class PuntoDeVentaController extends AbstractActionController
             return $promocion[0];
         }
 
-        
-        
+
+
         return null;
     }
 
-    
+
 
     public function eliminarAction(){
         $request = $this->getRequest();
@@ -1932,7 +1936,7 @@ class PuntoDeVentaController extends AbstractActionController
             $entity = \VentaQuery::Create()->findPk($id);
 
             //unlink("/files/compras/19.");
-            
+
             $entity->delete();
 
             $detalles = \VentadetalleQuery::create()->filterByIdventa($id)->delete();
@@ -1954,14 +1958,14 @@ class PuntoDeVentaController extends AbstractActionController
 
         if($request->isPost())
         {
-            
+
             $post_data = $request->getPost();
             $id = $post_data['id'];
 
             $entity = \VentaQuery::Create()->findPk($id);
 
             //unlink("/files/compras/19.");
-            
+
             $entity->delete();
 
             $detalles = \VentadetalleQuery::create()->filterByIdventa($id)->delete();
@@ -1984,7 +1988,7 @@ class PuntoDeVentaController extends AbstractActionController
         if($request->isPost()){
 
             $post_data = $request->getPost();
-            
+
             if($post_data['tipo'] == "venta")
             {
                 //traer los clientes
@@ -2008,10 +2012,10 @@ class PuntoDeVentaController extends AbstractActionController
                     {
                         $clientes_array[$value->getIdcliente()] = $value->getClienteNombre() ." ". $value->getClienteApaterno() ." ". $value->getClienteAmaterno() ;
                     }
-                    
+
                 }
                 return $this->getResponse()->setContent(json_encode(array('response' => true,'clientes',$clientes_array)));
-            
+
 
             }else
             {
@@ -2026,9 +2030,9 @@ class PuntoDeVentaController extends AbstractActionController
                         {
                             $clientes_array[$value->getIdcliente()] = $value->getClienteNombre() ." ". $value->getClienteApaterno() ." ". $value->getClienteAmaterno() ;
                         }
-                        
+
                     }
-                    
+
                 }
                 return $this->getResponse()->setContent(json_encode(array('response' => true,'clientes',$clientes_array)));
             }
@@ -2062,7 +2066,7 @@ class PuntoDeVentaController extends AbstractActionController
 
     public function generarvaleAction(){
       $request = $this->getRequest();
-      
+
       if($request->isPost()){
         $post_data = $request->getPost();
         $user = new \Application\Session\AouthSession();
@@ -2087,7 +2091,7 @@ class PuntoDeVentaController extends AbstractActionController
 
     public function verificarvaleAction(){
       $request = $this->getRequest();
-      
+
       if($request->isPost()){
         $post_data = $request->getPost();
         $vale = \ValeQuery::create()->findPk($post_data['referencia']);
@@ -2107,7 +2111,7 @@ class PuntoDeVentaController extends AbstractActionController
 
     public function verificarpuntosAction(){
       $request = $this->getRequest();
-      
+
       if($request->isPost()){
         $post_data = $request->getPost();
         $puntos = \BaseTarjetapuntosQuery::create()->findPk($post_data['referencia']);

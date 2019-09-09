@@ -15,6 +15,7 @@
  */
 class Notificacion extends BaseNotificacion
 {
+<<<<<<< HEAD
 	public static function getNotifications($idSucursal)
 	{
 		if ( $idSucursal == null)
@@ -27,4 +28,6 @@ class Notificacion extends BaseNotificacion
 		
 	}
 
+=======
+>>>>>>> e5a721664330df2f328a3d0a49e549e838b5d08d
 }
