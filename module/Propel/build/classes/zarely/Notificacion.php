@@ -21,7 +21,8 @@ class Notificacion extends BaseNotificacion
 		if ( $idSucursal == null)
 		{
 			return \NotificacionQuery::create()->filterByNotificacionAplicada(false);
-		}else{
+		}else
+		{
 			return \NotificacionQuery::create()->filterByNotificacionAplicada(false)->filterByIdsucursal($idSucursal);
 		}
 
